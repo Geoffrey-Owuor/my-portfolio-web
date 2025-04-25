@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-lightHover: #fff0f5;
+  --color-darkHover: #2a004a;
+  --color-darkTheme: #11001f;
+  --color-menuTheme: #18002d;
+
+  --font-esteban: var(--font-esteban);
+  --font-roboto: var(--font-roboto);
+  --font-righteous: var(--font-righteous);
+
+  --shadow-customblack: 4px 4px 0 #000;
+  --shadow-customwhite: 4px 4px 0 #fff;
+
+  --grid-template-columns-auto: repeat(auto-fit, minmax(200px, 1fr));
+}
