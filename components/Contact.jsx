@@ -34,13 +34,13 @@ const Contact = () => {
     const result = await response.json();
 
     if (result.success) {
-      setAlertMessage("✅ Your message has been sent successfully!");
+      setAlertMessage("sent successfully😊");
       setTimeout(() => {
         setAlertMessage("");
       }, 5000); // hides after 5 seconds
       setFormData({ name: "", email: "", message: "" });
     } else {
-      setAlertMessage("❌ Failed to send message. Please try again.");
+      setAlertMessage("internal error😢");
       setTimeout(() => {
         setAlertMessage("");
       }, 5000); // hides after 5 seconds
@@ -93,12 +93,14 @@ const Contact = () => {
       >
         {/* Alert Message */}
         {alertMessage && (
-          <div
-            className={`mb-6 rounded-lg bg-green-100 p-4 text-center text-sm text-green-800 shadow transition-opacity duration-700 ease-in-out ${
-              alertMessage ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            {alertMessage}
+          <div className="flex w-full justify-center">
+            <div
+              className={`mb-6 inline-flex items-center justify-center rounded-full bg-black px-4 py-2 text-center text-sm text-white shadow transition-opacity duration-700 ease-in-out dark:bg-white dark:text-black ${
+                alertMessage ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {alertMessage}
+            </div>
           </div>
         )}
 
@@ -142,13 +144,12 @@ const Contact = () => {
         ></motion.textarea>
 
         <motion.button
-          whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
           type="submit"
           disabled={submitting}
           className={`mx-auto flex w-max cursor-pointer items-center justify-between gap-2 rounded-full px-8 py-3 text-white ${
             submitting
-              ? "cursor-not-allowed bg-gray-700 dark:bg-purple-600"
+              ? "cursor-not-allowed bg-gray-700 dark:bg-purple-500"
               : "bg-black/80 duration-500 hover:bg-black dark:bg-purple-700 dark:hover:bg-purple-800"
           }`}
         >
