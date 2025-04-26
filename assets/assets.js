@@ -1,23 +1,13 @@
-import logo2 from "./logo2.png";
-import logo3 from "./logo3.png";
 import header_bg_color from "./header_bg_color.png";
 import profile_photo from "./profile_photo.png";
 import wave_icon from "./wave_icon.png";
 import about_photo from "./about_photo.png";
-import avatar_photo from "./avatar_photo.jpg";
 import vscode from "./vscode.png";
 import git from "./git.png";
 import github from "./github.png";
 import mongodb from "./mongodb.png";
 import prisma from "./prisma.png";
 import figma from "./figma.png";
-import linkedin from "./linkedin.png";
-import twitter from "./twitter.png";
-import github_logo from "./github_logo.png";
-import logo3_white from "./logo3_white.png";
-import x_twitter from "./x_twitter.svg";
-import linkedin_l from "./linkedin_l.svg";
-import github_g from "./github_g.svg";
 import {
   AppWindow,
   BotMessageSquare,
@@ -33,11 +23,7 @@ import {
 } from "lucide-react";
 
 export const assets = {
-  logo2,
-  avatar_photo,
   header_bg_color,
-  logo3,
-  logo3_white,
   profile_photo,
   wave_icon,
   about_photo,
@@ -47,12 +33,6 @@ export const assets = {
   mongodb,
   prisma,
   figma,
-  linkedin,
-  twitter,
-  github_logo,
-  linkedin_l,
-  x_twitter,
-  github_g,
 };
 
 export const workData = [

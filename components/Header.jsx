@@ -16,6 +16,7 @@ const Header = () => {
           src={assets.profile_photo}
           alt="profile-image"
           className="w-35 rounded-full"
+          priority
         />
       </motion.div>
       <motion.h3
@@ -25,7 +26,12 @@ const Header = () => {
         className="mb-3 flex items-end gap-2 text-xl md:text-2xl"
       >
         Hi! I'm Geoffrey Owuor{" "}
-        <Image src={assets.wave_icon} alt="wave icon" className="mb-0.5 w-6" />
+        <Image
+          src={assets.wave_icon}
+          alt="wave icon"
+          className="mb-0.5 w-6"
+          priority
+        />
       </motion.h3>
       <motion.h1
         initial={{ y: -30, opacity: 0 }}

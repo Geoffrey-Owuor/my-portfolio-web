@@ -44,6 +44,7 @@ const About = () => {
             src={assets.about_photo}
             alt="user"
             className="w-full rounded-3xl"
+            priority
           />
         </motion.div>
         <motion.div
