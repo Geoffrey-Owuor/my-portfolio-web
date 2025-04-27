@@ -12,13 +12,32 @@ import { useEffect, useRef, useState } from "react";
 
 const NavBar = ({ theme, setTheme }) => {
   const [isScroll, setIsScroll] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const sideMenuRef = useRef();
   const openMenu = () => {
     sideMenuRef.current.style.transform = "translateX(-16rem)";
+    setIsMenuOpen(true);
   };
   const closeMenu = () => {
     sideMenuRef.current.style.transform = "translateX(16rem)";
+    setIsMenuOpen(false);
   };
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handleOutsideClick = (event) => {
+      if (sideMenuRef.current && !sideMenuRef.current.contains(event.target)) {
+        closeMenu();
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    // Cleanup function to remove listener
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {

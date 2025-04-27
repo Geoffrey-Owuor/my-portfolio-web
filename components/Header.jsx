@@ -5,12 +5,11 @@ import { motion } from "motion/react";
 
 const Header = () => {
   return (
-    <div className="mx-auto flex h-screen w-11/12 max-w-3xl flex-col items-center justify-center gap-4 text-center">
+    <div className="mx-auto flex h-screen w-11/12 max-w-3xl flex-col items-center justify-center gap-4 pt-11 text-center">
       <motion.div
         initial={{ scale: 0 }}
         whileInView={{ scale: 1 }}
         transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
-        className="md:mt-10"
       >
         <Image
           src={assets.profile_photo}
