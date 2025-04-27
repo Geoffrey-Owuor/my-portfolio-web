@@ -26,7 +26,10 @@ const Footer = () => {
             </a>
           </li>
           <li>
-            <a target="_blank" href="https://github.com/Geoffrey-Owuor">
+            <a
+              target="_blank"
+              href="https://www.linkedin.com/in/owuor-geoffrey22"
+            >
               {/* <Image
                 src={assets.linkedin_l}
                 alt="linkedin_logo"
@@ -36,7 +39,7 @@ const Footer = () => {
             </a>
           </li>
           <li>
-            <a target="_blank" href="https://github.com/Geoffrey-Owuor">
+            <a target="_blank" href="https://x.com/OwuorOkinyi22">
               {/* <Image
                 src={assets.x_twitter}
                 alt="twitter_logo"
