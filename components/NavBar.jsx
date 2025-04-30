@@ -1,6 +1,7 @@
 "use client";
 import { assets } from "@/assets/assets";
 import {
+  CircleArrowOutUpRight,
   CircleXIcon,
   MenuIcon,
   Monitor,
@@ -14,6 +15,7 @@ const NavBar = ({ theme, setTheme }) => {
   const [isScroll, setIsScroll] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const sideMenuRef = useRef();
+
   const openMenu = () => {
     sideMenuRef.current.style.transform = "translateX(-16rem)";
     setIsMenuOpen(true);
@@ -49,6 +51,24 @@ const NavBar = ({ theme, setTheme }) => {
     });
   }, []);
 
+  const getLogoImage = () => {
+    if (theme === "light") return assets.logo_light;
+    if (theme === "dark") return assets.logo_dark;
+
+    // Handle "system" theme using matchMedia
+    if (theme === "system") {
+      if (typeof window !== "undefined") {
+        const isDarkMode = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        return isDarkMode ? assets.logo_dark : assets.logo_light;
+      }
+    }
+
+    // Default fallback
+    return assets.logo_light;
+  };
+
   return (
     <>
       <div className="fixed top-0 right-0 -z-10 w-11/12 translate-y-[-65%] dark:hidden">
@@ -61,16 +81,13 @@ const NavBar = ({ theme, setTheme }) => {
       </div>
 
       <nav
-        className={`font-roboto fixed z-50 flex w-full items-center justify-between px-5 py-4 lg:px-8 xl:px-[8%] ${isScroll ? "dark:bg-darkTheme bg-white/50 shadow-sm backdrop-blur-lg dark:shadow-white/20" : ""}`}
+        className={`font-roboto fixed z-50 flex w-full items-center justify-between py-4 pr-5 pl-0 lg:pr-8 xl:pr-[8%] xl:pl-[5%] ${isScroll ? "dark:bg-darkTheme bg-white/50 shadow-sm backdrop-blur-lg dark:shadow-white/20" : ""}`}
       >
         <a href="#top">
-          <h1 className="font-righteous text-3xl font-extrabold">
-            <span className="text-pink-400 dark:text-purple-700">Geo</span>
-            <span>ffrey</span>
-          </h1>
+          <Image src={getLogoImage()} alt="Logo" className="w-34" priority />
         </a>
         <ul
-          className={`hidden items-center gap-6 rounded-full border-2 border-transparent px-12 py-3 md:flex lg:gap-8 ${isScroll ? "" : "bg-white/50 shadow-sm dark:border-white/50 dark:bg-transparent"}`}
+          className={`hidden items-center gap-6 rounded-full border-2 border-transparent px-12 py-3 sm:ml-0 md:flex lg:ml-10 lg:gap-8 ${isScroll ? "" : "bg-white/50 shadow-sm dark:border-white/50 dark:bg-transparent"}`}
         >
           <li>
             <a
@@ -141,6 +158,13 @@ const NavBar = ({ theme, setTheme }) => {
               <MoonIcon className="h-5 w-5" />
             </button>
           </div>
+          <a
+            href="https://github.com/Geoffrey-Owuor"
+            target="_blank"
+            className="hover:text-gray-600 dark:hover:text-gray-400"
+          >
+            <CircleArrowOutUpRight className="h-5 w-5" />
+          </a>
 
           <button
             className="ml-3 block cursor-pointer md:hidden"

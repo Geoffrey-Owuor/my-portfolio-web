@@ -1,7 +1,6 @@
 import { serviceData } from "@/assets/assets";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import React from "react";
 import { motion } from "motion/react";
 
 const Services = () => {

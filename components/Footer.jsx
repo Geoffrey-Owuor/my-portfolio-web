@@ -1,15 +1,33 @@
 import { GithubIcon, LinkedinIcon, Mail, TwitterIcon } from "lucide-react";
 
-import React from "react";
+import { assets } from "@/assets/assets";
 
-const Footer = () => {
+import Image from "next/image";
+
+const Footer = ({ theme }) => {
+  const getLogoImage = () => {
+    if (theme === "light") return assets.logo_light;
+    if (theme === "dark") return assets.logo_dark;
+
+    // Handle "system" theme using matchMedia
+    if (theme === "system") {
+      if (typeof window !== "undefined") {
+        const isDarkMode = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        return isDarkMode ? assets.logo_dark : assets.logo_light;
+      }
+    }
+
+    // Default fallback
+    return assets.logo_light;
+  };
   return (
     <div className="font-roboto mt-5">
-      <div className="text-center">
-        <h1 className="font-righteous mb-3 text-3xl font-extrabold">
-          <span className="text-pink-400 dark:text-purple-700">Geo</span>
-          <span>ffrey</span>
-        </h1>
+      <div>
+        <div className="mx-auto flex w-max items-center">
+          <Image src={getLogoImage()} alt="Logo" className="w-36" priority />
+        </div>
         <div className="mx-auto flex w-max items-center gap-2">
           <Mail />
           geoffreyowuor22@gmail.com
