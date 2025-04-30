@@ -51,24 +51,6 @@ const NavBar = ({ theme, setTheme }) => {
     });
   }, []);
 
-  const getLogoImage = () => {
-    if (theme === "light") return assets.logo_light;
-    if (theme === "dark") return assets.logo_dark;
-
-    // Handle "system" theme using matchMedia
-    if (theme === "system") {
-      if (typeof window !== "undefined") {
-        const isDarkMode = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-        return isDarkMode ? assets.logo_dark : assets.logo_light;
-      }
-    }
-
-    // Default fallback
-    return assets.logo_light;
-  };
-
   return (
     <>
       <div className="fixed top-0 right-0 -z-10 w-11/12 translate-y-[-65%] dark:hidden">
@@ -84,7 +66,7 @@ const NavBar = ({ theme, setTheme }) => {
         className={`font-roboto fixed z-50 flex w-full items-center justify-between py-4 pr-5 pl-0 lg:pr-8 xl:pr-[8%] xl:pl-[5%] ${isScroll ? "dark:bg-darkTheme bg-white/50 shadow-sm backdrop-blur-lg dark:shadow-white/20" : ""}`}
       >
         <a href="#top">
-          <Image src={getLogoImage()} alt="Logo" className="w-34" priority />
+          <Image src={assets.logo} alt="Logo" className="w-34" priority />
         </a>
         <ul
           className={`hidden items-center gap-6 rounded-full border-2 border-transparent px-12 py-3 sm:ml-0 md:flex lg:ml-10 lg:gap-8 ${isScroll ? "" : "bg-white/50 shadow-sm dark:border-white/50 dark:bg-transparent"}`}

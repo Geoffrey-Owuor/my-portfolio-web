@@ -8,8 +8,8 @@ import github from "./github.png";
 import mongodb from "./mongodb.png";
 import prisma from "./prisma.png";
 import figma from "./figma.png";
-import logo_dark from "./logo_dark.png";
-import logo_light from "./logo_light.png";
+import logo from "./logo.png";
+
 import {
   AppWindow,
   BotMessageSquare,
@@ -35,8 +35,7 @@ export const assets = {
   mongodb,
   prisma,
   figma,
-  logo_dark,
-  logo_light,
+  logo,
 };
 
 export const workData = [

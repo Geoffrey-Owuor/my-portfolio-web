@@ -5,28 +5,11 @@ import { assets } from "@/assets/assets";
 import Image from "next/image";
 
 const Footer = ({ theme }) => {
-  const getLogoImage = () => {
-    if (theme === "light") return assets.logo_light;
-    if (theme === "dark") return assets.logo_dark;
-
-    // Handle "system" theme using matchMedia
-    if (theme === "system") {
-      if (typeof window !== "undefined") {
-        const isDarkMode = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-        return isDarkMode ? assets.logo_dark : assets.logo_light;
-      }
-    }
-
-    // Default fallback
-    return assets.logo_light;
-  };
   return (
     <div className="font-roboto mt-5">
       <div>
         <div className="mx-auto flex w-max items-center">
-          <Image src={getLogoImage()} alt="Logo" className="w-36" priority />
+          <Image src={assets.logo} alt="Logo" className="w-36" priority />
         </div>
         <div className="mx-auto flex w-max items-center gap-2">
           <Mail />
