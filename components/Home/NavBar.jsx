@@ -78,7 +78,7 @@ const NavBar = () => {
         }`}
       >
         {/* Centered Content Container */}
-        <div className="mx-auto flex h-full items-center justify-between px-4">
+        <div className="mx-auto flex h-full containerizing items-center justify-between px-4">
           {/* Logo */}
           <a
             href="#home"

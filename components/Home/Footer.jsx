@@ -13,7 +13,7 @@ const Footer = () => {
     <footer
       id="footer"
       // Use a subtle top border to separate it from the content above
-      className="w-full border-t border-gray-200 px-4 py-6 md:px-6 dark:border-gray-800"
+      className="w-full containerizing border-t border-gray-200 px-4 py-6 md:px-6 dark:border-gray-800"
     >
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
         {/* Copyright Notice */}

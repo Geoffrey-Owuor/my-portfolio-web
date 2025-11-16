@@ -9,7 +9,7 @@ const Hero = () => {
   return (
     <section
       id="home" // ID for the navbar link
-      className="flex min-h-screen w-full items-center justify-center bg-white px-4 pt-24 pb-12 md:px-8 dark:bg-gray-950"
+      className="flex min-h-screen containerizing w-full items-center justify-center bg-white px-4 pt-24 pb-12 md:px-8 dark:bg-gray-950"
     >
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-20">
         {/* --- Image (Left Side) --- */}

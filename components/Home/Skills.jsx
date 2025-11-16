@@ -31,7 +31,10 @@ const Skills = async () => {
   const { technicalSkills, softSkills } = await getSkills();
 
   return (
-    <section id="skills" className="min-h-screen w-full px-4 py-20 md:px-8">
+    <section
+      id="skills"
+      className="min-h-screen containerizing w-full px-4 py-20 md:px-8"
+    >
       <div className="mx-auto">
         {/* Section Title */}
         <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
