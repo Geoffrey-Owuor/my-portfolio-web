@@ -1,85 +1,40 @@
-"use client";
+import { Suspense } from "react";
+import NavBar from "@/components/Home/NavBar";
+import Hero from "@/components/Home/Hero";
+import Skills from "@/components/Home/Skills";
+import Stack from "@/components/Home/Stack";
+import Projects from "@/components/Home/Projects";
+import Experience from "@/components/Home/Experience";
+import Education from "@/components/Home/Education";
+import Contact from "@/components/Home/Contact";
+import SkillsSkeleton from "@/components/Skeletons/SkillsSkeleton";
+import StackSkeleton from "@/components/Skeletons/StackSkeleton";
+import ProjectsSkeleton from "@/components/Skeletons/ProjectsSkeleton";
+import ExperienceSkeleton from "@/components/Skeletons/ExperienceSkeleton";
 
-import { useEffect, useState } from "react";
-import About from "@/components/About";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import NavBar from "@/components/NavBar";
-import Services from "@/components/Services";
-import Work from "@/components/Work";
+export const revalidate = 7200; //Revalidate page after 2 hrs
 
 export default function Home() {
-  const [theme, setTheme] = useState(null); // null means "theme not loaded yet"
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") || "system";
-    setTheme(storedTheme);
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const applyTheme = (selectedTheme) => {
-      if (selectedTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else if (selectedTheme === "light") {
-        document.documentElement.classList.remove("dark");
-      } else {
-        // system
-        if (mediaQuery.matches) {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      }
-    };
-
-    applyTheme(storedTheme);
-
-    const handleSystemThemeChange = () => {
-      if (localStorage.getItem("theme") === "system") {
-        applyTheme("system");
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleSystemThemeChange);
-
-    return () => {
-      mediaQuery.removeEventListener("change", handleSystemThemeChange);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (theme === null) return; // Don't apply theme if not loaded
-    localStorage.setItem("theme", theme);
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else if (theme === "light") {
-      document.documentElement.classList.remove("dark");
-    } else {
-      if (mediaQuery.matches) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    }
-  }, [theme]);
-
-  if (theme === null) {
-    // Prevent hydration mismatch by not rendering until theme is loaded
-    return null;
-  }
-
   return (
-    <>
-      <NavBar theme={theme} setTheme={setTheme} />
-      <Header />
-      <About />
-      <Services />
-      <Work />
+    <main>
+      <NavBar />
+      <Hero />
+      <Suspense fallback={<SkillsSkeleton />}>
+        <Skills />
+      </Suspense>
+      <Suspense fallback={<StackSkeleton />}>
+        <Stack />
+      </Suspense>
+      <Suspense fallback={<ProjectsSkeleton />}>
+        <Projects />
+      </Suspense>
+      <Suspense fallback={<ExperienceSkeleton />}>
+        <Experience />
+      </Suspense>
+      <Suspense fallback={<ExperienceSkeleton />}>
+        <Education />
+      </Suspense>
       <Contact />
-      <Footer theme={theme} />
-    </>
+    </main>
   );
 }

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
   --color-lightHover: #fff0f5;
@@ -16,4 +16,39 @@
   --shadow-customwhite: 4px 4px 0 #fff;
 
   --grid-template-columns-auto: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+@layer utilities {
+  @keyframes slideDown {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slideDown {
+    animation: slideDown 0.2s ease-out forwards;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.2s ease-out forwards;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }

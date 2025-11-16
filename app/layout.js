@@ -1,67 +1,33 @@
-import { Esteban, Righteous, Roboto } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
+import { Providers } from "@/components/Theme/Providers";
+import Footer from "@/components/Home/Footer";
 
-const esteban = Esteban({
-  weight: ["400"],
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-esteban",
-  display: "swap",
 });
 
-const righteous = Righteous({
-  weight: ["400"],
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  variable: "--font-righteous",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-roboto",
 });
 
 export const metadata = {
-  title: "Portfolio - Jeff",
-  description: "",
+  title: "Jeff's Portfolio Website",
+  description: "My personal portfolio website",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className="scroll-smooth transition-colors duration-300 ease-in-out"
-    >
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
-        className={` ${esteban.variable} ${righteous.variable} ${roboto.variable} font-esteban dark:bg-darkTheme overflow-x-hidden leading-6 antialiased dark:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-white antialiased dark:bg-gray-950`}
       >
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function () {
-                try {
-                  const theme = localStorage.getItem("theme");
-                  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-                  if (theme === "dark") {
-                    document.documentElement.classList.add("dark");
-                  } else if (theme === "light") {
-                    document.documentElement.classList.remove("dark");
-                  } else {
-                    // System preference
-                    if (prefersDark) {
-                      document.documentElement.classList.add("dark");
-                    } else {
-                      document.documentElement.classList.remove("dark");
-                    }
-                  }
-                } catch (_) {}
-              })();
-            `,
-          }}
-        />
-        {children}
+        <Providers>
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
