@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggleCompact() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   // Ensure this only renders on the client to avoid hydration mismatch
@@ -15,7 +15,8 @@ export default function ThemeToggleCompact() {
 
   if (!mounted) return null;
 
-  const isDark = theme === "dark";
+  // Check the resolved theme - to show correct theme on initial render
+  const isDark = resolvedTheme === "dark";
 
   return (
     <button
