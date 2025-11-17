@@ -14,6 +14,15 @@ const getToolNames = async () => {
   }
 };
 
+// Icons we want to invert their colors in dark mode
+const iconsToInvert = [
+  "awsLogo",
+  "githubLogo",
+  "nextjsLogo",
+  "prismaLogo",
+  "vercelLogo",
+];
+
 const Stack = async () => {
   // Fetch dynamic data
   const toolNames = await getToolNames();
@@ -54,7 +63,7 @@ const Stack = async () => {
                       alt={name}
                       width={48}
                       height={48}
-                      className="h-12 w-12 object-contain"
+                      className={`h-12 w-12 object-contain ${iconsToInvert.includes(name) ? "dark:invert" : ""}`}
                     />
                   </div>
                 </div>
