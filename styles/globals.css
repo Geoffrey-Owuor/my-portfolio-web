@@ -71,6 +71,12 @@
       max-width: 100rem /* 1536px */;
     }
   }
+
+  /* Custom blur compatible in all browsers */
+  .custom-blur {
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
 }
 
 html {

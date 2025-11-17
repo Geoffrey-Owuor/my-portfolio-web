@@ -5,6 +5,7 @@ import docker from "../public/docker.svg";
 import figma from "../public/figma.svg";
 import git from "../public/git.svg";
 import github from "../public/github.svg";
+import github1 from "../public/github1.svg";
 import javascript from "../public/javascript.svg";
 import mongodb from "../public/mongodb.svg";
 import mysql from "../public/mysql.svg";
@@ -51,7 +52,7 @@ export const socials = {
   },
   githubLogo: {
     link: "https://github.com/Geoffrey-Owuor",
-    icon: github,
+    icon: github1,
   },
   linkedinLogo: {
     link: "https://www.linkedin.com/in/owuor-geoffrey22",

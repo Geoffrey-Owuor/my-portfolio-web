@@ -21,6 +21,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <meta name="apple-mobile-web-app-title" content="Portfolio" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-white antialiased dark:bg-gray-950`}
       >

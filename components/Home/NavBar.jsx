@@ -73,7 +73,7 @@ const NavBar = () => {
       <nav
         className={`fixed top-0 right-0 left-0 z-50 h-18 transition-all duration-300 ease-in-out ${
           isScrolled
-            ? "bg-white/70 shadow-md backdrop-blur-sm dark:bg-gray-950/70"
+            ? "bg-white/70 shadow-md custom-blur dark:bg-gray-950/70"
             : "bg-white dark:bg-gray-950"
         }`}
       >
@@ -82,15 +82,15 @@ const NavBar = () => {
           {/* Logo */}
           <a
             href="#home"
-            className="text-2xl font-semibold text-gray-900 dark:text-white"
+            className="text-2xl font-semibold font-mono text-gray-900 dark:text-white"
             onClick={closeMenu} // Close menu if logo is clicked on mobile
           >
-            Jeff
+            <span>{"<Jeff/>"}</span>
           </a>
 
           {/* Desktop Navigation Links */}
           <ul
-            className={`hidden items-center gap-6 md:flex lg:gap-8 ${isScrolled ? "" : "rounded-full border border-gray-200 px-6 py-3 shadow-md dark:border-none dark:bg-gray-900/50"}`}
+            className={`hidden items-center gap-6 md:flex lg:gap-8 ${isScrolled ? "" : "rounded-full border border-gray-200 px-6 py-3 shadow-md dark:border-none dark:bg-gray-900"}`}
           >
             {navLinks.map((link) => (
               <li key={link.label}>
@@ -115,7 +115,7 @@ const NavBar = () => {
               aria-label="GitHub Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 rounded-[10px] bg-gray-950 px-3 py-1.5 text-white transition-colors hover:bg-gray-900 hover:text-gray-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
+              className="hidden md:flex items-center gap-1.5 rounded-[10px] bg-gray-950 px-3 py-1.5 text-white  transition-colors hover:bg-gray-900 hover:text-gray-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
             >
               My portfolio
               <ArrowUpRight className="h-4 w-4" />
@@ -142,7 +142,7 @@ const NavBar = () => {
       {/* Mobile Menu Drawer */}
       <div
         ref={menuRef}
-        className={`fixed top-20 left-0 z-40 w-full transform overflow-hidden bg-white shadow-lg transition-all duration-300 ease-in-out md:hidden dark:bg-gray-950 ${
+        className={`fixed top-18 left-0 z-40 w-full transform overflow-hidden bg-white shadow-lg transition-all duration-300 ease-in-out md:hidden dark:bg-gray-950 ${
           isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
