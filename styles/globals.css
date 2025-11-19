@@ -82,3 +82,22 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* VIEW TRANSITIONS API CONFIGURATION */
+
+/* Disable the browser's default cross-fade animation */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Ensure the new theme sits on top during transition */
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Ensure the group does not get trapped in a lower stacking context */
+::view-transition-group(root) {
+  z-index: 9999;
+}
