@@ -18,11 +18,17 @@ export default function ThemeToggleCompact() {
   // Check the resolved theme - to show correct theme on initial render
   const isDark = resolvedTheme === "dark";
 
+  // Detect Firefox browser
+  const isFirefox =
+    typeof navigator !== "undefined" &&
+    navigator.userAgent.toLowerCase().includes("firefox");
+
   const toggleTheme = async (e) => {
     // Check if view transitions is supported
     if (
       !document.startViewTransition ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      isFirefox
     ) {
       // Fallback for old browsers or reduced motion preferences
       setTheme(isDark ? "light" : "dark");

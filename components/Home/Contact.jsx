@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { Send, Loader2 } from "lucide-react";
+import { Loader2, SendHorizonal } from "lucide-react";
 import Alert from "../Modules/Alert";
 
 const Contact = () => {
@@ -156,7 +156,7 @@ const Contact = () => {
                 </>
               ) : (
                 <>
-                  Send Message <Send className="h-5 w-5" />
+                  Send Message <SendHorizonal className="h-5 w-5" />
                 </>
               )}
             </motion.button>

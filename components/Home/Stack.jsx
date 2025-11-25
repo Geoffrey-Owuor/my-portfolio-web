@@ -51,7 +51,7 @@ const Stack = async () => {
               <span>Core Technologies</span>
             </div>
             {/* Logo Grid */}
-            <div className="grid grid-cols-3 gap-4 sm:grid-cols-5 sm:gap-6">
+            <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5 lg:gap-6">
               {toolIcons.map(([name, iconSrc]) => (
                 <div
                   key={name}

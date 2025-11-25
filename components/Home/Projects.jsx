@@ -29,7 +29,7 @@ const Projects = async () => {
         </div>
 
         {/* Responsive Projects Grid */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 custom:grid-cols-2 sm:grid-cols-2 gap-8 lg:grid-cols-3">
           {projects.map((project) => (
             <a
               key={project.id}

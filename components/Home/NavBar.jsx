@@ -37,25 +37,18 @@ const NavBar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Effect to handle clicks outside of the mobile menu to close it
+  // Effect to prevent html scroll when menu is open
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      // If the menu is open and the click is outside the menuRef
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    // Add mousedown event listener if the menu is open
     if (isMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "unset";
     }
 
-    // Cleanup function to remove the listener
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.documentElement.style.overflow = "unset";
     };
-  }, [isMenuOpen]); // Only re-run if isMenuOpen changes
+  }, [isMenuOpen]);
 
   // Function to toggle the mobile menu
   const toggleMenu = () => {
@@ -90,7 +83,7 @@ const NavBar = () => {
 
           {/* Desktop Navigation Links */}
           <ul
-            className={`hidden items-center gap-6 md:flex lg:gap-8 ${isScrolled ? "" : "rounded-full border border-gray-200 px-6 py-3 shadow-md dark:border-none dark:bg-gray-900"}`}
+            className={`hidden items-center gap-6 lg:flex lg:gap-8 ${isScrolled ? "" : "rounded-full border border-gray-200 px-6 py-3 shadow-md dark:border-none dark:bg-gray-900"}`}
           >
             {navLinks.map((link) => (
               <li key={link.label}>
@@ -115,7 +108,7 @@ const NavBar = () => {
               aria-label="GitHub Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-1.5 rounded-[10px] bg-gray-950 px-3 py-1.5 text-white  transition-colors hover:bg-gray-900 hover:text-gray-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
+              className="hidden lg:flex items-center gap-1.5 rounded-[10px] bg-gray-950 px-3 py-1.5 text-white  transition-colors hover:bg-gray-900 hover:text-gray-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
             >
               My portfolio
               <ArrowUpRight className="h-4 w-4" />
@@ -124,42 +117,77 @@ const NavBar = () => {
             {/* Mobile Menu Toggle Button */}
             <button
               onClick={toggleMenu}
-              className="rounded-md p-2 text-gray-700 transition hover:bg-gray-100 md:hidden dark:text-gray-300 dark:hover:bg-gray-800"
+              className="rounded-md p-2 text-gray-700 transition hover:bg-gray-100 lg:hidden dark:text-gray-300 dark:hover:bg-gray-800"
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}
             >
-              {/* Switches between Menu and X icons */}
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              <Menu className="h-6 w-6" />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Drawer */}
+      {/* Overlay - appears when menu is open */}
+      <div
+        className={`fixed inset-0 z-70 bg-white/50 dark:bg-black/50 transition-opacity duration-300 lg:hidden ${
+          isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        onClick={closeMenu}
+        aria-hidden="true"
+      />
+
+      {/* Mobile Menu Drawer - slides from right to left */}
       <div
         ref={menuRef}
-        className={`fixed top-18 left-0 z-40 w-full transform overflow-hidden bg-white shadow-lg transition-all duration-300 ease-in-out md:hidden dark:bg-gray-950 ${
-          isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        className={`fixed top-0 right-0 bottom-0 z-80 w-72 transform bg-white shadow-2xl dark:border-l dark:border-gray-800 transition-transform duration-300 ease-in-out lg:hidden dark:bg-gray-950 ${
+          isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
+        {/* Menu Header */}
+        <div className="px-4">
+          <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 p-4">
+            <span className="text-xl font-semibold font-mono  text-gray-900 dark:text-white">
+              {"<Menu/>"}
+            </span>
+
+            <button
+              onClick={closeMenu}
+              className="rounded-md p-2 text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              aria-label="Close menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
         {/* Mobile Navigation Links */}
-        <ul className="flex flex-col gap-4 border-t border-b border-gray-700 p-6">
+        <ul className="flex flex-col gap-2 p-6">
           {navLinks.map((link) => (
             <li key={link.label}>
               <a
                 href={link.href}
                 onClick={closeMenu} // Close menu on link click
-                className="block w-full rounded-md px-4 py-3 text-base font-semibold text-gray-700 transition-colors hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="block w-full rounded-lg px-4 py-3 text-base font-semibold text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 {link.label}
               </a>
             </li>
           ))}
         </ul>
+
+        {/* Mobile GitHub Link */}
+        <div className="absolute bottom-6 left-6 right-6">
+          <a
+            href="https://github.com/Geoffrey-Owuor"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={closeMenu}
+            className="flex items-center justify-center gap-1.5 rounded-lg bg-gray-950 px-4 py-3 text-white transition-colors hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+          >
+            My portfolio
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+        </div>
       </div>
     </>
   );

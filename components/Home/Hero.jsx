@@ -9,9 +9,9 @@ const Hero = () => {
   return (
     <section
       id="home" // ID for the navbar link
-      className="flex min-h-screen containerizing w-full items-center justify-center bg-white px-4 pt-24 pb-12 md:px-8 dark:bg-gray-950"
+      className="flex min-h-screen containerizing w-full items-center justify-center bg-white px-4 pt-24 pb-12 lg:px-8 dark:bg-gray-950"
     >
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-20">
+      <div className="grid grid-cols-1 gap-12 custom:grid-cols-2 custom:gap-20">
         {/* --- Image (Left Side) --- */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
@@ -38,7 +38,7 @@ const Hero = () => {
         </motion.div>
 
         {/* --- Text Content (Right Side) --- */}
-        <div className="flex flex-col justify-center text-center md:text-left">
+        <div className="flex flex-col justify-center text-center custom:text-left">
           <motion.h1
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -66,7 +66,7 @@ const Hero = () => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.5, delay: 0.6, ease: "easeInOut" }}
-            className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center md:justify-start"
+            className="mt-8 flex flex-col items-center gap-4 custom:flex-row custom:justify-center lg:justify-start"
           >
             {/* Contact Me Button */}
             <a
