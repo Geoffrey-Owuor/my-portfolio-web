@@ -1,4 +1,5 @@
 import { socials } from "@/assets/assets";
+import { BrainCog } from "lucide-react";
 import Image from "next/image";
 
 const Footer = () => {
@@ -13,21 +14,30 @@ const Footer = () => {
     <footer
       id="footer"
       // Use a subtle top border to separate it from the content above
-      className="w-full containerizing  px-4 py-6 md:px-6 "
+      className="w-full border-t border-gray-200 dark:border-gray-900 containerizing px-4 py-6 md:px-6 "
     >
+      {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
-        {/* Copyright Notice */}
-        <div className="text-sm text-gray-600 dark:text-gray-400">
-          &copy; {currentYear} Jeff. All rights reserved.
-        </div>
-
-        <div className="text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+        <div className="text-sm text-gray-600 font-semibold font-mono transition-colors hover:text-gray-500 dark:text-gray-400">
           <a
             href="mailto:geoffreyowuor22@gmail.com"
             className="hover:underline"
           >
-            geoffreyowuor22@gmail.com
+            #letsCodeSomething
           </a>
+        </div>
+
+        {/* Copyright Notice */}
+        <div className="text-sm flex items-center justify-center space-x-1 text-gray-600 dark:text-gray-400">
+          <span>
+            &copy; <span className="font-semibold">Jeff</span> {currentYear}.
+          </span>
+          <span className="flex items-center justify-center space-x-1">
+            <span>Made with</span>
+            <BrainCog className="h-4 w-4" />
+            <span>and</span>
+            <span className="mb-0 md:mb-[3px]">❤️</span>
+          </span>
         </div>
 
         {/* Social Icons */}

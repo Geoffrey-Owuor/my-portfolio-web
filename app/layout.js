@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
+import NavBar from "@/components/Home/NavBar";
 import Footer from "@/components/Home/Footer";
 
 const geistSans = Geist({
@@ -25,10 +26,11 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-white antialiased dark:bg-gray-950`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-white flex flex-col antialiased min-h-screen dark:bg-gray-950`}
       >
         <Providers>
-          {children}
+          <NavBar />
+          <main className="grow">{children}</main>
           <Footer />
         </Providers>
       </body>

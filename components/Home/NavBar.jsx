@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { tools } from "@/assets/assets";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 
@@ -14,13 +16,13 @@ const NavBar = () => {
 
   // Array of navigation links for cleaner code
   const navLinks = [
-    { href: "#home", label: "Home" },
-    { href: "#skills", label: "Skills" },
-    { href: "#stack", label: "Stack" },
-    { href: "#projects", label: "Projects" },
-    { href: "#experience", label: "Experience" },
-    { href: "#education", label: "Education" },
-    { href: "#contact", label: "Contact" },
+    { href: "/#home", label: "Home" },
+    { href: "/#skills", label: "Skills" },
+    { href: "/#stack", label: "Stack" },
+    { href: "/#projects", label: "Projects" },
+    { href: "/#experience", label: "Experience" },
+    { href: "/#education", label: "Education" },
+    { href: "/#contact", label: "Contact" },
   ];
 
   // Effect to handle scroll detection
@@ -38,17 +40,17 @@ const NavBar = () => {
   }, []);
 
   // Effect to prevent html scroll when menu is open
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.documentElement.style.overflow = "hidden";
-    } else {
-      document.documentElement.style.overflow = "unset";
-    }
+  // useEffect(() => {
+  //   if (isMenuOpen) {
+  //     document.documentElement.style.overflow = "hidden";
+  //   } else {
+  //     document.documentElement.style.overflow = "unset";
+  //   }
 
-    return () => {
-      document.documentElement.style.overflow = "unset";
-    };
-  }, [isMenuOpen]);
+  //   return () => {
+  //     document.documentElement.style.overflow = "unset";
+  //   };
+  // }, [isMenuOpen]);
 
   // Function to toggle the mobile menu
   const toggleMenu = () => {
@@ -72,14 +74,25 @@ const NavBar = () => {
       >
         {/* Centered Content Container */}
         <div className="mx-auto flex h-full containerizing items-center justify-between px-4">
-          {/* Logo */}
-          <a
-            href="#home"
-            className="text-2xl font-semibold font-mono text-gray-900 dark:text-white"
-            onClick={closeMenu} // Close menu if logo is clicked on mobile
-          >
-            <span>{"<Jeff/>"}</span>
-          </a>
+          {/* Left Side - Mobile Menu Toggle + Logo */}
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu Toggle Button */}
+            <button
+              onClick={toggleMenu}
+              className="rounded-full p-2 text-gray-700 transition hover:bg-gray-100 lg:hidden dark:text-gray-300 dark:hover:bg-gray-800"
+              title="Toggle menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+
+            {/* Logo */}
+            <a
+              href="/#home"
+              className="text-xl md:text-2xl font-semibold font-mono text-gray-900 dark:text-white"
+            >
+              <span>{"<Jeff/>"}</span>
+            </a>
+          </div>
 
           {/* Desktop Navigation Links */}
           <ul
@@ -97,32 +110,45 @@ const NavBar = () => {
             ))}
           </ul>
 
-          {/* Right Side Icons (GitHub + Mobile Toggle) */}
+          {/* Right Side Icons (Theme Toggle + GitHub) */}
           <div className="flex items-center gap-4">
             {/* Theme Toggle Button */}
             <ThemeToggleCompact />
 
-            {/* GitHub Link */}
+            {/* GitHub Link Mobile */}
+            <a
+              href="https://github.com/Geoffrey-Owuor"
+              title="My Portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lg:hidden rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+            >
+              <Image
+                src={tools.githubLogo}
+                alt="GitHub Logo"
+                width={24}
+                height={24}
+                className="h-6 w-6 dark:invert"
+              />
+            </a>
+
+            {/* GitHub Link Desktop */}
             <a
               href="https://github.com/Geoffrey-Owuor"
               aria-label="GitHub Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:flex items-center gap-1.5 rounded-[10px] bg-gray-950 px-3 py-1.5 text-white  transition-colors hover:bg-gray-900 hover:text-gray-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
+              className="hidden lg:flex items-center gap-2 rounded-[10px] bg-gray-950 px-3 py-1.5 text-white  transition-colors hover:bg-gray-900 hover:text-gray-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
             >
+              <Image
+                src={tools.githubLogo}
+                alt="GitHub Logo"
+                width={24}
+                height={24}
+                className="h-6 w-6 invert dark:invert-0"
+              />
               My portfolio
-              <ArrowUpRight className="h-4 w-4" />
             </a>
-
-            {/* Mobile Menu Toggle Button */}
-            <button
-              onClick={toggleMenu}
-              className="rounded-md p-2 text-gray-700 transition hover:bg-gray-100 lg:hidden dark:text-gray-300 dark:hover:bg-gray-800"
-              aria-label="Toggle menu"
-              aria-expanded={isMenuOpen}
-            >
-              <Menu className="h-6 w-6" />
-            </button>
           </div>
         </div>
       </nav>
@@ -136,11 +162,11 @@ const NavBar = () => {
         aria-hidden="true"
       />
 
-      {/* Mobile Menu Drawer - slides from right to left */}
+      {/* Mobile Menu Drawer - slides from left to right */}
       <div
         ref={menuRef}
-        className={`fixed top-0 right-0 bottom-0 z-80 w-72 transform bg-white shadow-2xl dark:border-l dark:border-gray-800 transition-transform duration-300 ease-in-out lg:hidden dark:bg-gray-950 ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 left-0 bottom-0 z-80 w-72 transform bg-white shadow-2xl dark:border-r dark:border-gray-800 transition-transform duration-300 ease-in-out lg:hidden dark:bg-gray-950 ${
+          isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Menu Header */}
@@ -152,7 +178,7 @@ const NavBar = () => {
 
             <button
               onClick={closeMenu}
-              className="rounded-md p-2 text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              className="rounded-full p-2 text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               aria-label="Close menu"
             >
               <X className="h-5 w-5" />
@@ -167,7 +193,7 @@ const NavBar = () => {
               <a
                 href={link.href}
                 onClick={closeMenu} // Close menu on link click
-                className="block w-full rounded-lg px-4 py-3 text-base font-semibold text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="block w-full rounded-xl px-4 py-3 text-base font-semibold text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 {link.label}
               </a>
@@ -175,14 +201,14 @@ const NavBar = () => {
           ))}
         </ul>
 
-        {/* Mobile GitHub Link */}
+        {/* Mobile GitHub Link (In mobile sidebar) */}
         <div className="absolute bottom-6 left-6 right-6">
           <a
             href="https://github.com/Geoffrey-Owuor"
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeMenu}
-            className="flex items-center justify-center gap-1.5 rounded-lg bg-gray-950 px-4 py-3 text-white transition-colors hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="flex items-center justify-center gap-1.5 rounded-xl bg-gray-950 px-4 py-3 text-white transition-colors hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
             My portfolio
             <ArrowUpRight className="h-4 w-4" />

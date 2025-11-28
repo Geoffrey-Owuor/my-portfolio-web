@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import NavBar from "@/components/Home/NavBar";
 import Hero from "@/components/Home/Hero";
 import Skills from "@/components/Home/Skills";
 import Stack from "@/components/Home/Stack";
@@ -17,7 +16,6 @@ export const revalidate = 7200; //Revalidate page after 2 hrs
 export default function Home() {
   return (
     <main>
-      <NavBar />
       <Hero />
       <Suspense fallback={<SkillsSkeleton />}>
         <Skills />

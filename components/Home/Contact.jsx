@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { Loader2, SendHorizonal } from "lucide-react";
 import Alert from "../Modules/Alert";
 
@@ -70,13 +70,63 @@ const Contact = () => {
     }
   };
 
-  // Animation variants
-  const fadeIn = {
-    initial: { y: 30, opacity: 0 },
-    animate: {
+  // Container variants for staggering children
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  // Form field animation variants
+  const fieldVariants = {
+    hidden: {
+      y: 20,
+      opacity: 0,
+    },
+    visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5, ease: "easeInOut" },
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  // Button animation variants
+  const buttonVariants = {
+    rest: {
+      scale: 1,
+    },
+    hover: {
+      scale: 1.05,
+      transition: {
+        duration: 0.2,
+        ease: "easeOut",
+      },
+    },
+    tap: {
+      scale: 0.95,
+    },
+  };
+
+  // Icon animation on button hover
+  const iconVariants = {
+    rest: {
+      x: 0,
+      rotate: 0,
+    },
+    hover: {
+      x: 5,
+      rotate: -15,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+      },
     },
   };
 
@@ -85,32 +135,32 @@ const Contact = () => {
       <section id="contact" className="w-full px-4 py-20 md:px-8">
         <div className="mx-auto max-w-2xl">
           {/* Section Title */}
-          <motion.h2
-            initial={fadeIn.initial}
-            whileInView={fadeIn.animate}
-            viewport={{ once: true, amount: 0.5 }}
-            className="mb-12 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white"
-          >
+          <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Get in Touch
-          </motion.h2>
+          </h2>
 
           <motion.form
             onSubmit={handleSubmit}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
             className="flex flex-col gap-6"
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ staggerChildren: 0.2 }}
           >
             {/* Email/Phone Input */}
-            <motion.div variants={fadeIn} className="flex flex-col">
+            <motion.div variants={fieldVariants} className="flex flex-col">
               <label
                 htmlFor="contactInfo"
                 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
               >
                 Your Email or Mobile
               </label>
-              <input
+              <motion.input
+                whileFocus={{
+                  scale: 1.01,
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  transition: { duration: 0.2 },
+                }}
                 type="text"
                 id="contactInfo"
                 name="contactInfo"
@@ -118,19 +168,24 @@ const Contact = () => {
                 onChange={handleChange}
                 disabled={sending}
                 placeholder="name@example.com or 07xx xxx xxx"
-                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm focus:ring-1 focus:ring-gray-500 focus:outline-none dark:bg-gray-800 dark:text-white"
+                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm transition-shadow focus:ring-2 focus:ring-gray-500 focus:outline-none dark:bg-gray-800 dark:text-white"
               />
             </motion.div>
 
             {/* Message Textarea */}
-            <motion.div variants={fadeIn} className="flex flex-col">
+            <motion.div variants={fieldVariants} className="flex flex-col">
               <label
                 htmlFor="message"
                 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
               >
                 Your Message
               </label>
-              <textarea
+              <motion.textarea
+                whileFocus={{
+                  scale: 1.01,
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  transition: { duration: 0.2 },
+                }}
                 id="message"
                 name="message"
                 rows={5}
@@ -138,25 +193,40 @@ const Contact = () => {
                 onChange={handleChange}
                 disabled={sending}
                 placeholder="Hi Jeff, I'd like to talk about..."
-                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm focus:ring-1 focus:ring-gray-500 focus:outline-none dark:bg-gray-800 dark:text-white"
+                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm transition-shadow focus:ring-2 focus:ring-gray-500 focus:outline-none dark:bg-gray-800 dark:text-white"
               />
             </motion.div>
 
             {/* Submit Button */}
             <motion.button
-              variants={fadeIn}
+              variants={buttonVariants}
+              initial="rest"
+              whileHover="hover"
+              whileTap="tap"
               type="submit"
               disabled={sending}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gray-900 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+              className="relative flex w-full items-center cursor-pointer justify-center gap-2 overflow-hidden rounded-xl bg-gray-900 px-6 py-4 text-base font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
             >
+              {/* Shimmer effect on hover */}
+              <motion.div
+                className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent"
+                whileHover={{
+                  translateX: "200%",
+                  transition: { duration: 0.6 },
+                }}
+              />
+
               {sending ? (
                 <>
-                  Sending...
+                  <span className="relative">Sending...</span>
                   <Loader2 className="h-5 w-5 animate-spin" />
                 </>
               ) : (
                 <>
-                  Send Message <SendHorizonal className="h-5 w-5" />
+                  <span className="relative">Send Message</span>
+                  <motion.div variants={iconVariants} className="relative">
+                    <SendHorizonal className="h-5 w-5" />
+                  </motion.div>
                 </>
               )}
             </motion.button>
