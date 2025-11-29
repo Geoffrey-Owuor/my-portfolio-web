@@ -1,5 +1,5 @@
 import { socials } from "@/assets/assets";
-import { BrainCog } from "lucide-react";
+import { BrainCog, Heart } from "lucide-react";
 import Image from "next/image";
 
 const Footer = () => {
@@ -34,9 +34,9 @@ const Footer = () => {
           </span>
           <span className="flex items-center justify-center space-x-1">
             <span>Made with</span>
-            <BrainCog className="h-4 w-4" />
+            <Heart className="h-4 w-4" />
             <span>and</span>
-            <span className="mb-0 md:mb-[3px]">❤️</span>
+            <BrainCog className="h-4 w-4" />
           </span>
         </div>
 
