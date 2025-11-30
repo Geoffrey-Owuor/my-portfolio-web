@@ -39,18 +39,18 @@ const NavBar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Effect to prevent html scroll when menu is open
-  // useEffect(() => {
-  //   if (isMenuOpen) {
-  //     document.documentElement.style.overflow = "hidden";
-  //   } else {
-  //     document.documentElement.style.overflow = "unset";
-  //   }
+  // Effect to prevent html scroll when menu is open (for screens larger than 640px)
+  useEffect(() => {
+    if (isMenuOpen && window.innerWidth >= 640) {
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "unset";
+    }
 
-  //   return () => {
-  //     document.documentElement.style.overflow = "unset";
-  //   };
-  // }, [isMenuOpen]);
+    return () => {
+      document.documentElement.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
 
   // Function to toggle the mobile menu
   const toggleMenu = () => {
@@ -155,7 +155,7 @@ const NavBar = () => {
 
       {/* Overlay - appears when menu is open */}
       <div
-        className={`fixed inset-0 z-70 bg-white/50 dark:bg-black/50 transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-70 bg-black/50 dark:bg-black/60 transition-opacity duration-300 lg:hidden ${
           isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={closeMenu}
