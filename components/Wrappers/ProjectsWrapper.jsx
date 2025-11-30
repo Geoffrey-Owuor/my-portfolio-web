@@ -112,7 +112,7 @@ const ProjectsWrapper = ({ projects }) => {
                 initial="rest"
                 whileHover="hover"
                 animate="rest"
-                className="group relative flex flex-col overflow-hidden rounded-xl bg-gray-100 shadow-sm transition-all h-80 duration-300 hover:shadow-2xl dark:bg-gray-800/50"
+                className="group relative flex flex-col overflow-hidden rounded-xl bg-gray-100 shadow-sm transition-all h-80 lg:h-88 duration-300 hover:shadow-2xl dark:bg-gray-800/50"
               >
                 {/* Animated border gradient on hover */}
                 <motion.div
@@ -143,25 +143,27 @@ const ProjectsWrapper = ({ projects }) => {
                   <div className="flex h-full flex-col justify-between p-6">
                     <div>
                       {/* Card Header */}
-                      <div className="mb-4 flex items-center justify-between">
-                        <motion.h3
-                          className="text-xl font-semibold text-gray-900 dark:text-white"
-                          whileHover={{
-                            x: 5,
-                            transition: { duration: 0.2 },
-                          }}
-                        >
-                          {project.project_name}
+                      <div className="mb-1 flex items-center justify-between">
+                        <div>
+                          <motion.h3
+                            className="text-xl font-semibold text-gray-900 dark:text-white"
+                            whileHover={{
+                              x: 5,
+                              transition: { duration: 0.2 },
+                            }}
+                          >
+                            {project.project_name}
+                          </motion.h3>
                           <button
                             onClick={(e) => {
                               handleNavigate(e, project.id);
                             }}
                             title="see more"
-                            className="ml-2 text-blue-500  hover:bg-blue-300/50 px-2 pb-1 rounded-full dark:hover:bg-blue-500/50 dark:text-blue-400 text-sm"
+                            className="text-blue-500 mt-1 hover:bg-blue-300/50 rounded-full px-2 pb-1 dark:hover:bg-blue-500/50 dark:text-blue-400 text-sm"
                           >
                             more...
                           </button>
-                        </motion.h3>
+                        </div>
 
                         {/* Animated Link Icon */}
                         <motion.div variants={iconVariants}>
