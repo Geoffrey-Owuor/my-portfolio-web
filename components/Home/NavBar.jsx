@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { tools } from "@/assets/assets";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, ChevronDown } from "lucide-react";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 
 const NavBar = () => {
@@ -95,16 +95,15 @@ const NavBar = () => {
           </div>
 
           {/* Desktop Navigation Links */}
-          <ul
-            className={`hidden items-center gap-6 lg:flex lg:gap-8 ${isScrolled ? "" : "rounded-full border border-gray-200 px-6 py-3 shadow-md dark:border-none dark:bg-gray-900"}`}
-          >
+          <ul className={`hidden items-center gap-6 text-sm lg:flex lg:gap-5`}>
             {navLinks.map((link) => (
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="font-semibold text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="flex items-center gap-1 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                 >
                   {link.label}
+                  <ChevronDown className="h-4 mt-0.5 w-4" />
                 </a>
               </li>
             ))}
@@ -138,14 +137,14 @@ const NavBar = () => {
               aria-label="GitHub Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:flex items-center gap-2 rounded-[10px] bg-gray-950 px-3 py-1.5 text-white  transition-colors hover:bg-gray-900 hover:text-gray-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
+              className="hidden lg:flex items-center text-sm gap-2 rounded-[10px] bg-gray-950 px-3 py-1.5 text-white transition-colors hover:bg-gray-900 hover:text-gray-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
             >
               <Image
                 src={tools.githubLogo}
                 alt="GitHub Logo"
                 width={24}
                 height={24}
-                className="h-6 w-6 invert dark:invert-0"
+                className="h-5 w-5 invert dark:invert-0"
               />
               My portfolio
             </a>
@@ -193,7 +192,7 @@ const NavBar = () => {
               <a
                 href={link.href}
                 onClick={closeMenu} // Close menu on link click
-                className="block w-full rounded-xl px-4 py-3 text-base font-semibold text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="block w-full rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 {link.label}
               </a>
