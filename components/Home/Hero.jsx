@@ -56,7 +56,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="flex min-h-screen containerizing w-full items-center justify-center bg-white px-4 pt-24 pb-12 lg:px-8 dark:bg-gray-950"
+      className="flex min-h-screen containerizing mx-1 md:mx-auto items-center justify-center bg-white px-4 pt-24 pb-12 lg:px-8 dark:bg-gray-950"
     >
       <div className="grid grid-cols-1 gap-12 custom:grid-cols-2 custom:gap-20">
         {/* --- Image (Left Side) --- */}

@@ -3,7 +3,7 @@ import Project from "@/components/Project/Project";
 
 const getProjectInfo = async (id) => {
   try {
-    const selectQuery = `SELECT id, project_name, project_link, longer_description
+    const selectQuery = `SELECT id, project_name, project_link, project_description
       FROM projects WHERE id = $1`;
     const queryParams = [id];
 

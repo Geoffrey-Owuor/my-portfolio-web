@@ -53,7 +53,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
   };
 
   return (
-    <div className="mx-auto">
+    <div className="md:mx-auto mx-1">
       {/* Section Title with floating animation */}
       <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
         <span>My Skills</span>

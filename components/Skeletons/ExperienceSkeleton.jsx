@@ -10,9 +10,9 @@ const ExperienceSkeleton = () => {
   return (
     <section
       id="experience-skeleton"
-      className="w-full bg-white px-4 py-20 md:px-8 md:py-32 dark:bg-gray-950"
+      className="w-full min-h-screen px-4 py-20 md:px-8 md:py-32"
     >
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-5xl">
         {/* Section Title Skeleton */}
         <div className="mx-auto mb-16 h-8 w-64 animate-pulse rounded-md bg-gray-200 dark:bg-gray-700"></div>
 

@@ -85,7 +85,7 @@ const ProjectsWrapper = ({ projects }) => {
     <>
       {/* LoadingLine fixed at the top of the viewport */}
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
-      <div className="mx-auto">
+      <div className="mx-1 md:mx-auto">
         {/* Section Title */}
         <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
           <span>My Projects</span>
@@ -97,7 +97,7 @@ const ProjectsWrapper = ({ projects }) => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.1 }}
-          className="grid grid-cols-1 gap-8 custom:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+          className="custom:grid-cols-2 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
         >
           {projects.map((project, index) => (
             <motion.div
@@ -112,7 +112,7 @@ const ProjectsWrapper = ({ projects }) => {
                 initial="rest"
                 whileHover="hover"
                 animate="rest"
-                className="group relative flex flex-col overflow-hidden rounded-xl bg-gray-100 shadow-sm transition-all h-80 lg:h-88 duration-300 hover:shadow-2xl dark:bg-gray-800/50"
+                className="group relative flex h-88 flex-col overflow-hidden rounded-xl bg-gray-100 shadow-sm transition-all duration-300 hover:shadow-2xl dark:bg-gray-800/50"
               >
                 {/* Animated border gradient on hover */}
                 <motion.div
@@ -159,7 +159,7 @@ const ProjectsWrapper = ({ projects }) => {
                               handleNavigate(e, project.id);
                             }}
                             title="see more"
-                            className="text-blue-500 mt-1 hover:bg-blue-300/50 rounded-full px-2 pb-1 dark:hover:bg-blue-500/50 dark:text-blue-400 text-sm"
+                            className="mt-1 rounded-full px-2 pb-1 text-sm text-blue-500 hover:bg-blue-300/50 dark:text-blue-400 dark:hover:bg-blue-500/50"
                           >
                             more...
                           </button>
@@ -173,7 +173,7 @@ const ProjectsWrapper = ({ projects }) => {
 
                       {/* Card Description with reveal animation */}
                       <motion.p
-                        className="text-gray-600 dark:text-gray-300 line-clamp-9"
+                        className="line-clamp-9 text-gray-600 dark:text-gray-300"
                         initial={{ opacity: 0.8 }}
                         whileHover={{
                           opacity: 1,

@@ -66,14 +66,14 @@ const NavBar = () => {
     <>
       {/* Main Navigation Bar */}
       <nav
-        className={`fixed top-0 right-0 left-0 z-50 h-18 transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out ${
           isScrolled
             ? "bg-white/70 shadow-md custom-blur dark:bg-gray-950/70"
             : "bg-white dark:bg-gray-950"
         }`}
       >
         {/* Centered Content Container */}
-        <div className="mx-auto flex h-full containerizing items-center justify-between px-4">
+        <div className="flex containerizing items-center justify-between py-3 px-4">
           {/* Left Side - Mobile Menu Toggle + Logo */}
           <div className="flex items-center gap-3">
             {/* Mobile Menu Toggle Button */}
@@ -95,12 +95,12 @@ const NavBar = () => {
           </div>
 
           {/* Desktop Navigation Links */}
-          <ul className={`hidden items-center gap-6 text-sm lg:flex lg:gap-5`}>
+          <ul className="hidden items-center space-x-5 text-sm lg:flex">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="flex items-center gap-1 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="flex items-center gap-0.5 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                 >
                   {link.label}
                   <ChevronDown className="h-4 mt-0.5 w-4" />
@@ -154,7 +154,7 @@ const NavBar = () => {
 
       {/* Overlay - appears when menu is open */}
       <div
-        className={`fixed inset-0 z-70 bg-black/50 dark:bg-black/60 transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-80 bg-black/50 dark:bg-black/60 transition-opacity duration-300 lg:hidden ${
           isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={closeMenu}

@@ -9,9 +9,9 @@ const ProjectsSkeleton = () => {
   return (
     <section
       id="projects-skeleton"
-      className="w-full bg-white px-4 py-20 md:px-8 md:py-32 dark:bg-gray-950"
+      className="containerizing min-h-screen w-full px-4 py-20 md:px-8 md:py-32"
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto">
         {/* Section Title Skeleton */}
         <div className="mx-auto mb-16 h-8 w-48 animate-pulse rounded-md bg-gray-200 dark:bg-gray-700"></div>
 
@@ -20,7 +20,7 @@ const ProjectsSkeleton = () => {
           {skeletonCards.map((_, index) => (
             <div
               key={index}
-              className="flex flex-col rounded-xl bg-gray-100 shadow-sm dark:bg-gray-800"
+              className="flex h-88 flex-col rounded-xl bg-gray-100 shadow-sm dark:bg-gray-800"
             >
               <div className="flex h-full flex-col justify-between p-6">
                 <div>

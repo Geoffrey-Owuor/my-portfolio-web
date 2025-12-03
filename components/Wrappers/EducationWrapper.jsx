@@ -47,7 +47,7 @@ const EducationWrapper = ({ educationData }) => {
   };
 
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-1 md:mx-auto max-w-5xl">
       {/* Section Title */}
       <h2 className="mb-16 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
         My Education

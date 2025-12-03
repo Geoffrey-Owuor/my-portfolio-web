@@ -101,7 +101,7 @@ const Project = ({ projectInfo }) => {
             initial="rest"
             whileHover="hover"
             whileTap="tap"
-            className="mb-8 flex items-center gap-2 text-gray-600 cursor-pointer transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+            className="mb-8 flex cursor-pointer items-center gap-2 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
           >
             <motion.div
               variants={{
@@ -169,7 +169,7 @@ const Project = ({ projectInfo }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="mb-6 text-xl md:text-2xl font-semibold text-gray-900 dark:text-white"
+              className="mb-6 text-xl font-semibold text-gray-900 md:text-2xl dark:text-white"
             >
               About This Project
             </motion.h2>
@@ -177,10 +177,10 @@ const Project = ({ projectInfo }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="prose prose-gray max-w-none dark:prose-invert"
+              className="prose prose-gray dark:prose-invert max-w-none"
             >
               <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                {project.longer_description}
+                {project.project_description}
               </p>
             </motion.div>
           </motion.div>

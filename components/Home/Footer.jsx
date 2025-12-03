@@ -14,11 +14,11 @@ const Footer = () => {
     <footer
       id="footer"
       // Use a subtle top border to separate it from the content above
-      className="w-full border-t border-gray-200 dark:border-gray-900 containerizing px-4 py-6 md:px-6 "
+      className="containerizing w-full border-t border-gray-200 px-4 py-6 md:px-6 dark:border-gray-900"
     >
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
-        <div className="text-sm text-gray-600 font-semibold font-mono transition-colors hover:text-gray-500 dark:text-gray-400">
+        <div className="font-mono text-sm font-semibold text-gray-600 transition-colors hover:text-gray-500 dark:text-gray-400">
           <a
             href="mailto:geoffreyowuor22@gmail.com"
             className="hover:underline"
@@ -28,13 +28,13 @@ const Footer = () => {
         </div>
 
         {/* Copyright Notice */}
-        <div className="text-sm flex items-center justify-center space-x-1 text-gray-600 dark:text-gray-400">
+        <div className="flex items-center justify-center space-x-1 text-sm text-gray-600 dark:text-gray-400">
           <span>
-            &copy; <span className="font-semibold">Jeff</span> {currentYear}.
+            &copy; {currentYear} <span className="font-semibold">Jeff</span>.
           </span>
           <span className="flex items-center justify-center space-x-1">
             <span>Made with</span>
-            <Heart className="h-4 w-4" />
+            <Heart className="h-4 w-4 text-red-600 dark:text-red-500" />
             <span>and</span>
             <BrainCog className="h-4 w-4" />
           </span>

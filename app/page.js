@@ -11,11 +11,9 @@ import StackSkeleton from "@/components/Skeletons/StackSkeleton";
 import ProjectsSkeleton from "@/components/Skeletons/ProjectsSkeleton";
 import ExperienceSkeleton from "@/components/Skeletons/ExperienceSkeleton";
 
-export const revalidate = 7200; //Revalidate page after 2 hrs
-
 export default function Home() {
   return (
-    <main>
+    <div className="flex flex-col items-center overflow-x-hidden">
       <Hero />
       <Suspense fallback={<SkillsSkeleton />}>
         <Skills />
@@ -33,6 +31,6 @@ export default function Home() {
         <Education />
       </Suspense>
       <Contact />
-    </main>
+    </div>
   );
 }

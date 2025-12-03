@@ -20,7 +20,7 @@ const Projects = async () => {
   return (
     <section
       id="projects" // For navbar link
-      className="min-h-screen containerizing w-full  px-4 py-20 md:px-8"
+      className="min-h-screen containerizing w-full px-4 py-20 md:px-8"
     >
       <ProjectsWrapper projects={projects} />
     </section>
