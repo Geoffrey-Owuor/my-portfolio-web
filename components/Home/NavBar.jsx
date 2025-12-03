@@ -68,12 +68,12 @@ const NavBar = () => {
       <nav
         className={`fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out ${
           isScrolled
-            ? "bg-white/70 shadow-md custom-blur dark:bg-gray-950/70"
+            ? "custom-blur bg-white/70 shadow-md dark:bg-gray-950/70"
             : "bg-white dark:bg-gray-950"
         }`}
       >
         {/* Centered Content Container */}
-        <div className="flex containerizing items-center justify-between py-3 px-4">
+        <div className="containerizing flex items-center justify-between px-4 py-3">
           {/* Left Side - Mobile Menu Toggle + Logo */}
           <div className="flex items-center gap-3">
             {/* Mobile Menu Toggle Button */}
@@ -88,7 +88,7 @@ const NavBar = () => {
             {/* Logo */}
             <a
               href="/#home"
-              className="text-xl md:text-2xl font-semibold font-mono text-gray-900 dark:text-white"
+              className="font-mono text-xl font-semibold text-gray-900 md:text-2xl dark:text-white"
             >
               <span>{"<Jeff/>"}</span>
             </a>
@@ -103,7 +103,7 @@ const NavBar = () => {
                   className="flex items-center gap-0.5 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                 >
                   {link.label}
-                  <ChevronDown className="h-4 mt-0.5 w-4" />
+                  <ChevronDown className="mt-0.5 h-4 w-4" />
                 </a>
               </li>
             ))}
@@ -120,7 +120,7 @@ const NavBar = () => {
               title="My Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="lg:hidden rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+              className="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
             >
               <Image
                 src={tools.githubLogo}
@@ -137,7 +137,7 @@ const NavBar = () => {
               aria-label="GitHub Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:flex items-center text-sm gap-2 rounded-[10px] bg-gray-950 px-3 py-1.5 text-white transition-colors hover:bg-gray-900 hover:text-gray-200 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
+              className="hidden items-center gap-2 rounded-[10px] bg-gray-950 px-3 py-1.5 text-sm text-white transition-colors hover:bg-gray-900 hover:text-gray-200 lg:flex dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
             >
               <Image
                 src={tools.githubLogo}
@@ -154,8 +154,8 @@ const NavBar = () => {
 
       {/* Overlay - appears when menu is open */}
       <div
-        className={`fixed inset-0 z-80 bg-black/50 dark:bg-black/60 transition-opacity duration-300 lg:hidden ${
-          isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        className={`fixed inset-0 z-80 bg-black/50 transition-all duration-300 lg:hidden dark:bg-black/60 ${
+          isMenuOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
         onClick={closeMenu}
         aria-hidden="true"
@@ -164,14 +164,14 @@ const NavBar = () => {
       {/* Mobile Menu Drawer - slides from left to right */}
       <div
         ref={menuRef}
-        className={`fixed top-0 left-0 bottom-0 z-80 w-72 transform bg-white shadow-2xl dark:border-r dark:border-gray-800 transition-transform duration-300 ease-in-out lg:hidden dark:bg-gray-950 ${
+        className={`fixed top-0 bottom-0 left-0 z-80 w-72 transform bg-white shadow-2xl transition-all duration-300 ease-in-out lg:hidden dark:border-r dark:border-gray-800 dark:bg-gray-950 ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Menu Header */}
         <div className="px-4">
-          <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 p-4">
-            <span className="text-xl font-semibold font-mono  text-gray-900 dark:text-white">
+          <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
+            <span className="font-mono text-xl font-semibold text-gray-900 dark:text-white">
               {"<Menu/>"}
             </span>
 
@@ -201,7 +201,7 @@ const NavBar = () => {
         </ul>
 
         {/* Mobile GitHub Link (In mobile sidebar) */}
-        <div className="absolute bottom-6 left-6 right-6">
+        <div className="absolute right-6 bottom-6 left-6">
           <a
             href="https://github.com/Geoffrey-Owuor"
             target="_blank"
