@@ -117,7 +117,7 @@ const Project = ({ projectInfo }) => {
           {/* Project Header */}
           <motion.div
             variants={contentVariants}
-            className="mb-8 rounded-xl bg-linear-to-br from-blue-50 to-purple-50 p-8 dark:from-gray-800 dark:to-gray-900"
+            className="mb-8 rounded-xl bg-linear-to-br from-purple-50 via-blue-50 to-blue-100 p-8 dark:from-slate-800 dark:via-slate-900 dark:to-slate-950"
           >
             <motion.h1
               className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 md:text-3xl dark:text-white"
@@ -163,7 +163,7 @@ const Project = ({ projectInfo }) => {
           {/* Project Description */}
           <motion.div
             variants={contentVariants}
-            className="rounded-xl bg-white p-8 shadow-sm dark:bg-gray-800"
+            className="bg-gradient-classes rounded-xl p-8 shadow-sm"
           >
             <motion.h2
               initial={{ opacity: 0 }}
@@ -190,7 +190,7 @@ const Project = ({ projectInfo }) => {
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.8, duration: 0.5 }}
-            className="mt-8 flex justify-center"
+            className="mt-16 flex justify-center"
           >
             <div className="h-1 w-32 rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500" />
           </motion.div>

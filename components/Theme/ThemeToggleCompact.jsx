@@ -74,7 +74,7 @@ export default function ThemeToggleCompact() {
     <button
       onClick={toggleTheme}
       aria-label="Toggle theme"
-      className="rounded-full p-2 text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+      className="rounded-full p-2 text-gray-700 transition hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-800"
     >
       {isDark ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
     </button>

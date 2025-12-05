@@ -133,7 +133,7 @@ const Contact = () => {
   return (
     <>
       <section id="contact" className="w-full px-4 py-20 md:px-8">
-        <div className="mx-1 md:mx-auto max-w-2xl">
+        <div className="mx-1 max-w-2xl md:mx-auto">
           {/* Section Title */}
           <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Get in Touch
@@ -205,7 +205,7 @@ const Contact = () => {
               whileTap="tap"
               type="submit"
               disabled={sending}
-              className="relative flex w-full items-center cursor-pointer justify-center gap-2 overflow-hidden rounded-xl bg-gray-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+              className="relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gray-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
             >
               {/* Shimmer effect on hover */}
               <motion.div
@@ -231,6 +231,16 @@ const Contact = () => {
               )}
             </motion.button>
           </motion.form>
+
+          {/* Decorative Element */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+            className="mt-16 flex justify-center"
+          >
+            <div className="h-1 w-32 rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500" />
+          </motion.div>
         </div>
       </section>
       {alertInfo.show && (

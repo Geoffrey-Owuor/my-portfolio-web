@@ -127,7 +127,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
                       delay: index * 0.15,
                     },
                   }}
-                  className="flex h-20 w-20 items-center justify-center rounded-xl bg-gray-100 p-4 shadow-sm cursor-pointer dark:bg-gray-800"
+                  className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-xl bg-slate-100 p-4 shadow-sm dark:bg-gray-800"
                 >
                   <motion.div
                     whileHover={{
@@ -188,7 +188,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
                   x: 10,
                   transition: { duration: 0.2 },
                 }}
-                className="flex items-center gap-3 rounded-xl bg-gray-100/50 hover:bg-gray-200/50 p-4 text-base text-gray-700 cursor-pointer dark:bg-gray-800/50 dark:hover:bg-gray-700/50 dark:text-gray-300"
+                className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 p-4 text-base text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
               >
                 <motion.div
                   animate={{

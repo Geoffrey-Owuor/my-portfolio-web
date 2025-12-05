@@ -46,8 +46,20 @@ const ExperienceWrapper = ({ experiences }) => {
     },
   };
 
+  // Shimmer effect for card background
+  const shimmerVariants = {
+    animate: {
+      backgroundPosition: ["200% 0", "-200% 0"],
+      transition: {
+        duration: 3,
+        repeat: Infinity,
+        ease: "linear",
+      },
+    },
+  };
+
   return (
-    <div className="mx-1 md:mx-auto max-w-5xl">
+    <div className="mx-1 max-w-5xl md:mx-auto">
       {/* Section Title */}
       <h2 className="mb-16 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
         My Work Experience
@@ -94,8 +106,19 @@ const ExperienceWrapper = ({ experiences }) => {
                 x: 5,
                 transition: { duration: 0.2 },
               }}
-              className="flex flex-col rounded-xl bg-gray-100/50 p-6 shadow-sm transition-shadow hover:shadow-md dark:bg-gray-800/50"
+              className="bg-gradient-classes group relative flex flex-col rounded-xl p-6 shadow-sm transition-shadow hover:shadow-md"
             >
+              {/* Animated border gradient on hover */}
+              <motion.div
+                className="absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent)",
+                  backgroundSize: "200% 100%",
+                }}
+                variants={shimmerVariants}
+                animate="animate"
+              />
               <motion.time
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}

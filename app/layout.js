@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-white antialiased dark:bg-gray-950`}
+        className={`${geistSans.variable} ${geistMono.variable} app-background flex min-h-screen flex-col antialiased`}
       >
         <Providers>
           <NavBar />

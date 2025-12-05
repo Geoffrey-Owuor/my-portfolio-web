@@ -68,8 +68,8 @@ const NavBar = () => {
       <nav
         className={`fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out ${
           isScrolled
-            ? "custom-blur bg-white/70 shadow-md dark:bg-gray-950/70"
-            : "bg-white dark:bg-gray-950"
+            ? "custom-blur bg-white/50 shadow-md dark:bg-gray-950/50"
+            : ""
         }`}
       >
         {/* Centered Content Container */}
@@ -111,8 +111,10 @@ const NavBar = () => {
 
           {/* Right Side Icons (Theme Toggle + GitHub) */}
           <div className="flex items-center gap-4">
-            {/* Theme Toggle Button */}
-            <ThemeToggleCompact />
+            {/* Theme Toggle Button - Reserve space for it */}
+            <div className="flex h-10 w-10 items-center justify-center">
+              <ThemeToggleCompact />
+            </div>
 
             {/* GitHub Link Mobile */}
             <a

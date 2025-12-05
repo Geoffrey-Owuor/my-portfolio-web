@@ -56,9 +56,9 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="flex min-h-screen containerizing mx-1 md:mx-auto items-center justify-center bg-white px-4 pt-24 pb-12 lg:px-8 dark:bg-gray-950"
+      className="containerizing mx-1 flex min-h-screen items-center justify-center px-4 pt-24 pb-12 md:mx-auto lg:px-8"
     >
-      <div className="grid grid-cols-1 gap-12 custom:grid-cols-2 custom:gap-20">
+      <div className="custom:grid-cols-2 custom:gap-20 grid grid-cols-1 gap-12">
         {/* --- Image (Left Side) --- */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
@@ -104,7 +104,7 @@ const Hero = () => {
         </motion.div>
 
         {/* --- Text Content (Right Side) --- */}
-        <div className="flex flex-col justify-center text-center custom:text-left">
+        <div className="custom:text-left flex flex-col justify-center text-center">
           <motion.h1
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -150,7 +150,7 @@ const Hero = () => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}
-            className="mt-8 flex flex-col items-center gap-4 custom:flex-row custom:justify-center lg:justify-start"
+            className="custom:flex-row custom:justify-center mt-8 flex flex-col items-center gap-4 lg:justify-start"
           >
             {/* Contact Me Button */}
             <motion.a
@@ -159,7 +159,7 @@ const Hero = () => {
               initial="rest"
               whileHover="hover"
               whileTap="tap"
-              className="relative flex w-full items-center shadow-md justify-center gap-2 overflow-hidden rounded-xl border border-gray-900 px-6 py-3 text-base font-semibold text-gray-900 transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
+              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-gray-900 px-6 py-3 text-base font-semibold text-gray-900 shadow-md transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
             >
               {/* Shimmer effect on hover */}
               <motion.div

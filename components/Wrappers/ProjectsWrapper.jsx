@@ -112,7 +112,7 @@ const ProjectsWrapper = ({ projects }) => {
                 initial="rest"
                 whileHover="hover"
                 animate="rest"
-                className="group relative flex h-88 flex-col overflow-hidden rounded-xl bg-gray-100 shadow-sm transition-all duration-300 hover:shadow-2xl dark:bg-gray-800/50"
+                className="group relative flex h-88 flex-col overflow-hidden rounded-xl bg-slate-100 shadow-sm transition-all duration-300 hover:shadow-2xl dark:bg-gray-800/50"
               >
                 {/* Animated border gradient on hover */}
                 <motion.div

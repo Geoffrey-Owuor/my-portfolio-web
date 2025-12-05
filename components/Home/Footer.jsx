@@ -1,5 +1,5 @@
 import { socials } from "@/assets/assets";
-import { BrainCog, Heart } from "lucide-react";
+import { BrainCog, Coffee } from "lucide-react";
 import Image from "next/image";
 
 const Footer = () => {
@@ -14,7 +14,7 @@ const Footer = () => {
     <footer
       id="footer"
       // Use a subtle top border to separate it from the content above
-      className="containerizing w-full border-t border-gray-200 px-4 py-6 md:px-6 dark:border-gray-900"
+      className="containerizing w-full px-4 py-6 md:px-6"
     >
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
@@ -34,9 +34,9 @@ const Footer = () => {
           </span>
           <span className="flex items-center justify-center space-x-1">
             <span>Made with</span>
-            <Heart className="h-4 w-4 text-red-600 dark:text-red-500" />
-            <span>and</span>
-            <BrainCog className="h-4 w-4" />
+            <BrainCog className="h-4 w-4 cursor-pointer hover:animate-spin" />
+            <span>and a lot of</span>
+            <Coffee className="h-4.5 w-4.5 animate-pulse" />
           </span>
         </div>
 

@@ -53,7 +53,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
   };
 
   return (
-    <div className="md:mx-auto mx-1">
+    <div className="mx-1 md:mx-auto">
       {/* Section Title with floating animation */}
       <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
         <span>My Skills</span>
@@ -92,7 +92,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
                   boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
                   transition: { duration: 0.2 },
                 }}
-                className="flex items-center gap-2 rounded-xl bg-gray-100 p-4 text-gray-700 shadow-sm cursor-pointer dark:bg-gray-800 dark:text-gray-300"
+                className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-100 p-4 text-gray-700 shadow-sm dark:bg-gray-800 dark:text-gray-300"
               >
                 <motion.div
                   animate={{
@@ -151,7 +151,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
                   x: 10,
                   transition: { duration: 0.2 },
                 }}
-                className="flex items-center gap-3 rounded-xl bg-gray-100/50 p-4 text-base text-gray-700 cursor-pointer dark:bg-gray-800/50 dark:text-gray-300"
+                className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 p-4 text-base text-gray-700 dark:bg-gray-800/50 dark:text-gray-300"
               >
                 <motion.div
                   animate={{
