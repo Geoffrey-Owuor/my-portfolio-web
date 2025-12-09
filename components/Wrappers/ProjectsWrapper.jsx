@@ -1,14 +1,43 @@
 "use client";
-import { CircleArrowOutUpRight, Loader2 } from "lucide-react";
+import { BadgeCheck, CircleArrowOutUpRight, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import LoadingLine from "../Modules/LoadingLine";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { SectionAlert } from "../Modules/SectionAlert";
 
 const ProjectsWrapper = ({ projects }) => {
   //initialize router
   const router = useRouter();
   const [isNavigating, setIsNavigating] = useState(false); //To indicate when the loading should start
+
+  const [alertInfo, setAlertInfo] = useState({
+    showAlert: false,
+    alertType: "",
+    alertMessage: "",
+  });
+
+  // Creating a ref for the section
+  const projectsRef = useRef(null);
+
+  // Check if section is in view
+  const isInView = useInView(projectsRef, { once: true, amount: 0.2 });
+
+  // Trigger Alert 2 seconds after the section comes into view
+  useEffect(() => {
+    if (isInView) {
+      const timer = setTimeout(() => {
+        setAlertInfo((prev) => ({
+          ...prev,
+          showAlert: true,
+          alertType: "success",
+          alertMessage: "Thoughtful, well-crafted project solutions 🧩",
+        }));
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isInView]);
 
   // Container variants for staggering children
   const containerVariants = {
@@ -83,9 +112,26 @@ const ProjectsWrapper = ({ projects }) => {
 
   return (
     <>
+      {/* Render the alert component */}
+      {alertInfo.showAlert && (
+        <SectionAlert
+          message={alertInfo.alertMessage}
+          type={alertInfo.alertType}
+          IconComponent={BadgeCheck}
+          onClose={() =>
+            setAlertInfo((prev) => ({
+              ...prev,
+              showAlert: false,
+              alertType: "",
+              alertMessage: "",
+            }))
+          }
+        />
+      )}
+
       {/* LoadingLine fixed at the top of the viewport */}
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
-      <div className="mx-1 md:mx-auto">
+      <div className="mx-1 md:mx-auto" ref={projectsRef}>
         {/* Section Title */}
         <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
           <span>My Projects</span>
