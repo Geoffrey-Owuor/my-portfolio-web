@@ -18,7 +18,7 @@ const Footer = () => {
     >
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
-        <div className="font-mono text-sm font-semibold text-gray-600 transition-colors hover:text-gray-500 dark:text-gray-400">
+        <div className="font-roboto-mono text-sm font-semibold text-gray-600 transition-colors hover:text-gray-500 dark:text-gray-400">
           <a
             href="mailto:geoffreyowuor22@gmail.com"
             className="hover:underline"

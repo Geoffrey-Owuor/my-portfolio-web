@@ -88,7 +88,7 @@ const NavBar = () => {
             {/* Logo */}
             <a
               href="/#home"
-              className="font-mono text-xl font-semibold text-gray-900 md:text-2xl dark:text-white"
+              className="font-roboto-mono text-xl font-semibold text-gray-900 md:text-2xl dark:text-white"
             >
               <span>{"<Jeff/>"}</span>
             </a>
@@ -173,7 +173,7 @@ const NavBar = () => {
         {/* Menu Header */}
         <div className="px-4">
           <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
-            <span className="font-mono text-xl font-semibold text-gray-900 dark:text-white">
+            <span className="font-roboto-mono text-xl font-semibold text-gray-900 dark:text-white">
               {"<Menu/>"}
             </span>
 
