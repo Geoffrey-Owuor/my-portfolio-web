@@ -8,7 +8,7 @@ import {
   Microchip,
   Sparkle,
 } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { SectionAlert } from "../Modules/SectionAlert";
 
@@ -87,21 +87,23 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
   return (
     <>
       {/* Render the alert component */}
-      {alertInfo.showAlert && (
-        <SectionAlert
-          message={alertInfo.alertMessage}
-          type={alertInfo.alertType}
-          IconComponent={Sparkle}
-          onClose={() =>
-            setAlertInfo((prev) => ({
-              ...prev,
-              showAlert: false,
-              alertType: "",
-              alertMessage: "",
-            }))
-          }
-        />
-      )}
+      <AnimatePresence>
+        {alertInfo.showAlert && (
+          <SectionAlert
+            message={alertInfo.alertMessage}
+            type={alertInfo.alertType}
+            IconComponent={Sparkle}
+            onClose={() =>
+              setAlertInfo((prev) => ({
+                ...prev,
+                showAlert: false,
+                alertType: "",
+                alertMessage: "",
+              }))
+            }
+          />
+        )}
+      </AnimatePresence>
       <div ref={skillsRef} className="mx-1 md:mx-auto">
         {/* Section Title with floating animation */}
         <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">

@@ -8,7 +8,7 @@ import {
   RailSymbol,
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { SectionAlert } from "../Modules/SectionAlert";
 
 // Icons we want to invert their colors in dark mode
@@ -110,21 +110,23 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
   return (
     <>
       {/* Render the alert component */}
-      {alertInfo.showAlert && (
-        <SectionAlert
-          message={alertInfo.alertMessage}
-          type={alertInfo.alertType}
-          IconComponent={MessageCircleCode}
-          onClose={() =>
-            setAlertInfo((prev) => ({
-              ...prev,
-              showAlert: false,
-              alertType: "",
-              alertMessage: "",
-            }))
-          }
-        />
-      )}
+      <AnimatePresence>
+        {alertInfo.showAlert && (
+          <SectionAlert
+            message={alertInfo.alertMessage}
+            type={alertInfo.alertType}
+            IconComponent={MessageCircleCode}
+            onClose={() =>
+              setAlertInfo((prev) => ({
+                ...prev,
+                showAlert: false,
+                alertType: "",
+                alertMessage: "",
+              }))
+            }
+          />
+        )}
+      </AnimatePresence>
       <div className="mx-1 md:mx-auto" ref={stackRef}>
         {/* Section Title - No animation */}
         <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">

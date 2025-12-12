@@ -38,38 +38,6 @@
   .animate-slideUp {
     animation: slideUp 0.2s ease-in-out forwards;
   }
-
-  /* Slide in from right animation */
-  @keyframes slideInLeft {
-    from {
-      transform: translateX(100vw);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  /* Slide out to left animation */
-  @keyframes slideOutLeft {
-    from {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateX(100vw);
-      opacity: 0;
-    }
-  }
-
-  .animate-slideInLeft {
-    animation: slideInLeft 0.5s ease-in-out forwards;
-  }
-
-  .animate-slideOutLeft {
-    animation: slideOutLeft 0.5s ease-in-out forwards;
-  }
 }
 
 @layer base {

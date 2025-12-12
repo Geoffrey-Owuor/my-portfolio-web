@@ -1,11 +1,9 @@
 import { X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 export const SectionAlert = ({ message, type, onClose, IconComponent }) => {
-  const [isClosing, setIsClosing] = useState(false);
-
   const handleClose = () => {
-    setIsClosing(true);
     setTimeout(() => onClose(), 300);
   };
 
@@ -25,10 +23,12 @@ export const SectionAlert = ({ message, type, onClose, IconComponent }) => {
       : "text-red-500 dark:text-red-700";
 
   return (
-    <div
-      className={`fixed top-1/2 right-4 z-50 hidden md:flex ${
-        isClosing ? "animate-slideOutLeft" : "animate-slideInLeft"
-      }`}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="fixed top-1/2 right-4 z-50 hidden md:flex"
     >
       <div
         className={`flex w-auto max-w-80 items-center justify-between rounded-2xl bg-black px-4 py-4 text-white dark:bg-white dark:text-black`}
@@ -45,6 +45,6 @@ export const SectionAlert = ({ message, type, onClose, IconComponent }) => {
           <X className="h-5 w-5 shrink-0" />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };

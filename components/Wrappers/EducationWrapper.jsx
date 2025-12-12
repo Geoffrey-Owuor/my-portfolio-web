@@ -1,6 +1,6 @@
 "use client";
 import { GraduationCap, Loader2, School } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { SectionAlert } from "../Modules/SectionAlert";
 
@@ -91,21 +91,23 @@ const EducationWrapper = ({ educationData }) => {
   return (
     <>
       {/* Render the alert component */}
-      {alertInfo.showAlert && (
-        <SectionAlert
-          message={alertInfo.alertMessage}
-          type={alertInfo.alertType}
-          IconComponent={School}
-          onClose={() =>
-            setAlertInfo((prev) => ({
-              ...prev,
-              showAlert: false,
-              alertType: "",
-              alertMessage: "",
-            }))
-          }
-        />
-      )}
+      <AnimatePresence>
+        {alertInfo.showAlert && (
+          <SectionAlert
+            message={alertInfo.alertMessage}
+            type={alertInfo.alertType}
+            IconComponent={School}
+            onClose={() =>
+              setAlertInfo((prev) => ({
+                ...prev,
+                showAlert: false,
+                alertType: "",
+                alertMessage: "",
+              }))
+            }
+          />
+        )}
+      </AnimatePresence>
       <div className="mx-1 max-w-5xl md:mx-auto" ref={educationRef}>
         {/* Section Title */}
         <h2 className="mb-16 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">

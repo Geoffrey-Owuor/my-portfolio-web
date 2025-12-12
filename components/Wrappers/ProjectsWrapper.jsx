@@ -113,22 +113,23 @@ const ProjectsWrapper = ({ projects }) => {
   return (
     <>
       {/* Render the alert component */}
-      {alertInfo.showAlert && (
-        <SectionAlert
-          message={alertInfo.alertMessage}
-          type={alertInfo.alertType}
-          IconComponent={BadgeCheck}
-          onClose={() =>
-            setAlertInfo((prev) => ({
-              ...prev,
-              showAlert: false,
-              alertType: "",
-              alertMessage: "",
-            }))
-          }
-        />
-      )}
-
+      <AnimatePresence>
+        {alertInfo.showAlert && (
+          <SectionAlert
+            message={alertInfo.alertMessage}
+            type={alertInfo.alertType}
+            IconComponent={BadgeCheck}
+            onClose={() =>
+              setAlertInfo((prev) => ({
+                ...prev,
+                showAlert: false,
+                alertType: "",
+                alertMessage: "",
+              }))
+            }
+          />
+        )}
+      </AnimatePresence>
       {/* LoadingLine fixed at the top of the viewport */}
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
       <div className="mx-1 md:mx-auto" ref={projectsRef}>
