@@ -58,7 +58,7 @@ const Hero = () => {
       id="home"
       className="containerizing mx-1 flex min-h-screen items-center justify-center px-4 pt-24 pb-12 md:mx-auto lg:px-8"
     >
-      <div className="custom:grid-cols-2 custom:gap-20 grid grid-cols-1 gap-12">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
         {/* --- Image (Left Side) --- */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
@@ -104,7 +104,7 @@ const Hero = () => {
         </motion.div>
 
         {/* --- Text Content (Right Side) --- */}
-        <div className="custom:text-left flex flex-col justify-center text-center">
+        <div className="flex flex-col justify-center text-center lg:text-left">
           <motion.h1
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -150,7 +150,7 @@ const Hero = () => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}
-            className="custom:flex-row custom:justify-center mt-8 flex flex-col items-center gap-4 lg:justify-start"
+            className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start"
           >
             {/* Contact Me Button */}
             <motion.a
