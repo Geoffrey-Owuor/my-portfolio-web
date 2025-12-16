@@ -100,7 +100,7 @@ const NavBar = () => {
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="flex items-center gap-0.5 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
                 >
                   {link.label}
                   <Orbit className="mt-0.5 h-3.5 w-3.5" />
@@ -110,9 +110,9 @@ const NavBar = () => {
           </ul>
 
           {/* Right Side Icons (Theme Toggle + GitHub) */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             {/* Theme Toggle Button - Reserve space for it */}
-            <div className="flex h-10 w-10 items-center justify-center">
+            <div className="flex h-5 w-10 items-center justify-center border-r border-gray-500 pr-6 dark:border-gray-700">
               <ThemeToggleCompact />
             </div>
 

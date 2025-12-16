@@ -95,6 +95,28 @@ html[data-theme="dark"] {
   scrollbar-color: #4b5563 transparent;
 }
 
+/* Tooltip styles */
+
+.tooltip::before {
+  content: "";
+  position: absolute;
+  top: -6px; /* move arrow above */
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 0;
+  height: 0;
+
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #111827; /* gray-900 */
+}
+
+/* Dark mode */
+[data-theme="dark"] .tooltip::before {
+  border-bottom-color: #ffffff;
+}
+
 /* VIEW TRANSITIONS API CONFIGURATION */
 
 /* Disable the browser's default cross-fade animation */

@@ -2,16 +2,38 @@
 
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggleCompact() {
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [showToolTip, setShowToolTip] = useState(false);
 
   // Ensure this only renders on the client to avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // UseEffect for automatically switching (fast switch) a theme when D key is pressed
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      // Ignore if user is typing in an input, textarea, or contenteditable element
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target.isContentEditable
+      ) {
+        return;
+      }
+      if (e.key === "d" || e.key === "D") {
+        setTheme(resolvedTheme === "dark" ? "light" : "dark");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [setTheme, resolvedTheme]);
 
   if (!mounted) return null;
 
@@ -71,12 +93,38 @@ export default function ThemeToggleCompact() {
   };
 
   return (
-    <button
-      onClick={toggleTheme}
-      aria-label="Toggle theme"
-      className="rounded-full p-2 text-gray-700 transition hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-800"
-    >
-      {isDark ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
-    </button>
+    <div className="relative">
+      <button
+        onClick={toggleTheme}
+        onMouseEnter={() => setShowToolTip(true)}
+        onMouseLeave={() => setShowToolTip(false)}
+        aria-label="Toggle theme"
+        className="rounded-full p-2 text-gray-700 transition hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-800"
+      >
+        {isDark ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
+      </button>
+
+      {/* Tooltip Guide */}
+      <AnimatePresence>
+        {showToolTip && (
+          <motion.div
+            initial={{ opacity: 0, y: -6, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.95 }}
+            transition={{ duration: 0.1 }}
+            className="pointer-events-none absolute top-full left-1/2 mt-2.5 mb-2 -translate-x-1/2"
+          >
+            <div className="relative rounded-lg bg-gray-900 px-3 py-1.5 text-[13px] whitespace-nowrap text-white dark:bg-white dark:text-gray-900">
+              {/* Drawing a rotated square that looks like an arrow */}
+              <div className="absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 rounded-sm bg-gray-900 dark:bg-white"></div>
+              Toggle Mode
+              <kbd className="ml-2 rounded-md bg-gray-700 px-1.5 py-0.5 dark:bg-gray-300">
+                D
+              </kbd>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
