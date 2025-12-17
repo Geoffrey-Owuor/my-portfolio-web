@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
 import NavBar from "@/components/Home/NavBar";
 import Footer from "@/components/Home/Footer";
+import BackToTopButton from "@/components/Modules/BackToTopButton";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
         className={`${roboto.variable} ${robotoMono.variable} ${dmsans.variable} font-dmsans app-background flex min-h-screen flex-col antialiased`}
       >
         <Providers>
+          <BackToTopButton />
           <NavBar />
           <main className="flex-1">{children}</main>
           <Footer />
