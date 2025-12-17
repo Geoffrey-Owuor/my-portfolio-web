@@ -73,7 +73,7 @@ const NavBar = () => {
         }`}
       >
         {/* Centered Content Container */}
-        <div className="containerizing flex items-center justify-between px-4 py-3">
+        <div className="containerizing flex items-center justify-between px-4 py-3 lg:py-4">
           {/* Left Side - Mobile Menu Toggle + Logo */}
           <div className="flex items-center gap-3">
             {/* Mobile Menu Toggle Button */}
@@ -110,9 +110,9 @@ const NavBar = () => {
           </ul>
 
           {/* Right Side Icons (Theme Toggle + GitHub) */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 lg:gap-6">
             {/* Theme Toggle Button - Reserve space for it */}
-            <div className="flex h-5 w-10 items-center justify-center border-r border-gray-500 pr-6 dark:border-gray-700">
+            <div className="flex h-5 w-10 items-center justify-center border-r border-gray-400 pr-6 dark:border-gray-700">
               <ThemeToggleCompact />
             </div>
 

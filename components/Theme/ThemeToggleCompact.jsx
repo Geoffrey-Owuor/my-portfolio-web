@@ -35,7 +35,10 @@ export default function ThemeToggleCompact() {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [setTheme, resolvedTheme]);
 
-  if (!mounted) return null;
+  // Detect if current device supports hovering and has a pointer
+  const canHover =
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover:hover) and (pointer:fine)").matches;
 
   // Check the resolved theme - to show correct theme on initial render
   const isDark = resolvedTheme === "dark";
@@ -45,6 +48,7 @@ export default function ThemeToggleCompact() {
     typeof navigator !== "undefined" &&
     navigator.userAgent.toLowerCase().includes("firefox");
 
+  // Function to toggle the theme using view transitioning
   const toggleTheme = async (e) => {
     // Check if view transitions is supported
     if (
@@ -92,12 +96,14 @@ export default function ThemeToggleCompact() {
     );
   };
 
+  if (!mounted) return null;
+
   return (
     <div className="relative">
       <button
         onClick={toggleTheme}
-        onMouseEnter={() => setShowToolTip(true)}
-        onMouseLeave={() => setShowToolTip(false)}
+        onMouseEnter={() => canHover && setShowToolTip(true)}
+        onMouseLeave={() => canHover && setShowToolTip(false)}
         aria-label="Toggle theme"
         className="rounded-full p-2 text-gray-700 transition hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-800"
       >
@@ -106,7 +112,7 @@ export default function ThemeToggleCompact() {
 
       {/* Tooltip Guide */}
       <AnimatePresence>
-        {showToolTip && (
+        {canHover && showToolTip && (
           <motion.div
             initial={{ opacity: 0, y: -6, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
