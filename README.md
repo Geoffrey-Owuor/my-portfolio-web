@@ -22,6 +22,6 @@ Check out the live site **[Here](https://jeff-portfolio-web.vercel.app)**
 
 - **Framework:** [Next.js](https://nextjs.org/)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **Database:** [Neon Serverless Postgress](https://neon.com)
+- **Database:** [Neon Serverless Postgres](https://neon.com)
 - **Deployment:** [Vercel](https://vercel.com/)
 - **Fonts:** Geist (via `next/font`)

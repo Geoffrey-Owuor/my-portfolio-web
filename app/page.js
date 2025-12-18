@@ -1,3 +1,5 @@
+export const revalidate = 86400; // Revalidate after 24 hrs (Safety measure)
+
 import { Suspense } from "react";
 import Hero from "@/components/Home/Hero";
 import Skills from "@/components/Home/Skills";

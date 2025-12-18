@@ -9,6 +9,7 @@ export default function ThemeToggleCompact() {
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [showToolTip, setShowToolTip] = useState(false);
+  const [suppressHover, setSuppressHover] = useState(false);
 
   // Ensure this only renders on the client to avoid hydration mismatch
   useEffect(() => {
@@ -96,14 +97,33 @@ export default function ThemeToggleCompact() {
     );
   };
 
+  const handleClick = async (e) => {
+    setShowToolTip(false);
+    setSuppressHover(true);
+    await toggleTheme(e);
+  };
+
+  const handleMouseEnter = () => {
+    if (canHover && !suppressHover) {
+      setShowToolTip(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (canHover) {
+      setShowToolTip(false);
+      setSuppressHover(false); //Re-enabling hover say after click
+    }
+  };
+
   if (!mounted) return null;
 
   return (
     <div className="relative">
       <button
-        onClick={toggleTheme}
-        onMouseEnter={() => canHover && setShowToolTip(true)}
-        onMouseLeave={() => canHover && setShowToolTip(false)}
+        onClick={handleClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         aria-label="Toggle theme"
         className="rounded-full p-2 text-gray-700 transition hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-800"
       >
