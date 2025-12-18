@@ -3,9 +3,8 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-
-  const secret = searchParams.get("secret");
+  // Next.js way
+  const secret = request.nextUrl.searchParams.get("secret");
 
   // Security Check
   if (secret !== process.env.REVALIDATE_KEY) {

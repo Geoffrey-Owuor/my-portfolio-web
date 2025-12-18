@@ -137,7 +137,6 @@ export default function ThemeToggleCompact() {
             initial={{ opacity: 0, y: -6, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.95 }}
-            transition={{ duration: 0.1 }}
             className="pointer-events-none absolute top-full left-1/2 mt-2.5 mb-2 -translate-x-1/2"
           >
             <div className="relative rounded-lg bg-gray-900 px-3 py-1.5 text-[13px] whitespace-nowrap text-white dark:bg-white dark:text-gray-900">
