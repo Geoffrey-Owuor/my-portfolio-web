@@ -1,22 +1,8 @@
-import { query } from "@/lib/db";
+import { getCachedEducation } from "@/cache/CachedData";
 import EducationWrapper from "../Wrappers/EducationWrapper";
 
-const getEducation = async () => {
-  try {
-    const selectQuery = `SELECT id, institution, timeline, learning_description, learning_title
-        FROM education
-        ORDER BY id DESC`;
-
-    const educationData = await query(selectQuery);
-    return educationData;
-  } catch (error) {
-    console.error("Failed to fetch experiences:", error);
-    return []; //Return an empty array on error
-  }
-};
-
 const Education = async () => {
-  const educationData = await getEducation();
+  const educationData = await getCachedEducation();
   return (
     <section
       id="education" // For navbar link
