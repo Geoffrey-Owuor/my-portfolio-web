@@ -53,6 +53,8 @@ const Hero = () => {
     },
   };
 
+  const titleTags = ["#Engineer", "#Developer", "#Tech bro"];
+
   return (
     <section
       id="home"
@@ -105,6 +107,21 @@ const Hero = () => {
 
         {/* --- Text Content (Right Side) --- */}
         <div className="flex flex-col justify-center text-center lg:text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-6 flex items-center justify-center gap-3 lg:justify-start"
+          >
+            {titleTags.map((tag, index) => (
+              <span
+                key={index}
+                className="font-roboto-mono rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+              >
+                {tag}
+              </span>
+            ))}
+          </motion.div>
           <motion.h1
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
