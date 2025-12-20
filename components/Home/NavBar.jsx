@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { tools } from "@/assets/assets";
-import { Menu, X, ArrowUpRight, Orbit } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 
 const NavBar = () => {
@@ -103,7 +103,6 @@ const NavBar = () => {
                   className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
                 >
                   {link.label}
-                  <Orbit className="mt-0.5 h-3.5 w-3.5" />
                 </a>
               </li>
             ))}
