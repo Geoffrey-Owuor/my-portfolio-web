@@ -1,5 +1,5 @@
 import { socials } from "@/assets/assets";
-import { Brain, Coffee } from "lucide-react";
+import { Brain, Heart } from "lucide-react";
 import Image from "next/image";
 
 const Footer = () => {
@@ -35,8 +35,8 @@ const Footer = () => {
           <span className="flex items-center justify-center space-x-1">
             <span>Made with</span>
             <Brain className="h-4 w-4 cursor-pointer hover:animate-spin" />
-            <span>and a lot of</span>
-            <Coffee className="h- w-4 animate-pulse" />
+            <span>and</span>
+            <Heart className="h- w-4 animate-pulse" />
           </span>
         </div>
 

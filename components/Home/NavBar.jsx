@@ -95,7 +95,7 @@ const NavBar = () => {
           </div>
 
           {/* Desktop Navigation Links */}
-          <ul className="font-roboto-mono hidden items-center space-x-5 text-sm lg:flex">
+          <ul className="hidden items-center space-x-5 text-sm lg:flex">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <a
@@ -187,7 +187,7 @@ const NavBar = () => {
         </div>
 
         {/* Mobile Navigation Links */}
-        <ul className="font-roboto-mono flex flex-col gap-2 p-6">
+        <ul className="flex flex-col gap-2 p-6">
           {navLinks.map((link) => (
             <li key={link.label}>
               <a
