@@ -133,7 +133,7 @@ const Contact = () => {
   return (
     <>
       <section id="contact" className="w-full px-4 py-20 md:px-8">
-        <div className="mx-1 max-w-2xl md:mx-auto">
+        <div className="mx-1 max-w-2xl sm:mx-auto">
           {/* Section Title */}
           <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
             Get in Touch

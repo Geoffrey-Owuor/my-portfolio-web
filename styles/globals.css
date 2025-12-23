@@ -45,6 +45,16 @@
     @apply bg-linear-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-gray-900 dark:via-gray-950 dark:to-black;
   }
 
+  /* Background for the Login Page */
+  .auth-background {
+    background-image: url(../public/auth_bg_light.svg);
+    background-repeat: repeat; /* Use 'no-repeat' and 'background-size: cover' if it's a single big image */
+    background-position: center;
+  }
+  [data-theme="dark"] .auth-background {
+    background-image: url(../public/auth_bg_dark.svg);
+  }
+
   /* Maintaining a certain length in different screens - Tailwind css configuration */
   .containerizing {
     width: 100%;
@@ -93,28 +103,6 @@ html {
 
 html[data-theme="dark"] {
   scrollbar-color: #4b5563 transparent;
-}
-
-/* Tooltip styles */
-
-.tooltip::before {
-  content: "";
-  position: absolute;
-  top: -6px; /* move arrow above */
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 0;
-  height: 0;
-
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 6px solid #111827; /* gray-900 */
-}
-
-/* Dark mode */
-[data-theme="dark"] .tooltip::before {
-  border-bottom-color: #ffffff;
 }
 
 /* VIEW TRANSITIONS API CONFIGURATION */
