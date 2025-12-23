@@ -11,7 +11,7 @@ import mongodb from "../public/mongodb.svg";
 import mysql from "../public/mysql.svg";
 import nextjs from "../public/nextjs.svg";
 import postgresql from "../public/postgresql.svg";
-import prisma from "../public/prisma.svg";
+import typescript from "../public/typescript.svg";
 import python from "../public/python.svg";
 import react from "../public/react.svg";
 import vercel from "../public/vercel.svg";
@@ -35,7 +35,7 @@ export const tools = {
   mysqlLogo: mysql,
   nextjsLogo: nextjs,
   postgresqlLogo: postgresql,
-  prismaLogo: prisma,
+  typescriptLogo: typescript,
   pythonLogo: python,
   reactLogo: react,
   vercelLogo: vercel,

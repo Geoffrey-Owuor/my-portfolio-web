@@ -30,7 +30,7 @@ export default function LoginPage() {
         </Link>
       </div>
 
-      <div className="fixed top-4 right-4 z-50 py-0.5">
+      <div className="fixed top-3 right-4 z-50 lg:top-4">
         {/* Right Side Icons (Theme Toggle + GitHub) */}
         <div className="flex items-center gap-4 lg:gap-6">
           {/* Theme Toggle Button - Reserve space for it */}
@@ -80,11 +80,11 @@ export default function LoginPage() {
         <div className="auth-background relative hidden overflow-hidden lg:flex lg:w-1/2"></div>
 
         {/* Right side - Login Form */}
-        <div className="flex flex-1 items-center justify-center p-6 sm:p-12">
+        <div className="flex flex-1 items-center justify-center border-l border-gray-300 p-6 sm:p-12 dark:border-gray-800">
           <div className="w-full max-w-md">
             {/* Header */}
             <div className="mb-8">
-              <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="mb-2 text-3xl font-semibold text-gray-900 dark:text-white">
                 Welcome back
               </h1>
               <p className="text-gray-600 dark:text-gray-400">
@@ -111,7 +111,7 @@ export default function LoginPage() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full rounded-lg border border-gray-300 bg-white py-3 pr-3 pl-10 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
+                    className="block w-full rounded-lg border border-gray-400 bg-white py-3 pr-3 pl-10 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -134,7 +134,7 @@ export default function LoginPage() {
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full rounded-lg border border-gray-300 bg-white py-3 pr-10 pl-10 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring-1 focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
+                    className="block w-full rounded-lg border border-gray-400 bg-white py-3 pr-10 pl-10 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring-1 focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
                     placeholder="••••••••"
                   />
                   <button
