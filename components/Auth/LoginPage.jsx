@@ -80,8 +80,8 @@ export default function LoginPage() {
         <div className="auth-background relative hidden overflow-hidden lg:flex lg:w-1/2"></div>
 
         {/* Right side - Login Form */}
-        <div className="mt-6 flex flex-1 flex-col items-center px-6 py-4 pt-20 sm:px-12">
-          <div className="w-full max-w-md flex-1">
+        <div className="flex flex-1 items-center justify-center p-6 sm:p-12">
+          <div className="w-full max-w-md">
             {/* Header */}
             <div className="mb-8">
               <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
@@ -160,13 +160,16 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
-          <span className="flex items-center justify-center gap-1 text-sm">
-            &copy;{" "}
-            <span className="font-roboto-mono">
-              {new Date().getFullYear()} Jeff. All Rights Reserved
-            </span>
-          </span>
         </div>
+      </div>
+
+      <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 sm:bottom-2">
+        <span className="flex items-center gap-1 text-sm whitespace-nowrap">
+          &copy;{" "}
+          <span className="font-roboto-mono">
+            {new Date().getFullYear()} Jeff. All Rights Reserved
+          </span>
+        </span>
       </div>
     </>
   );
