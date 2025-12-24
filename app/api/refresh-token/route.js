@@ -1,6 +1,6 @@
 import { query } from "@/lib/db";
 import {
-  verifyRefreshToken,
+  verifyRefreshTokenJWT,
   signAccessToken,
   signRefreshToken,
   hashRefreshToken,
@@ -19,7 +19,7 @@ export async function POST() {
 
   try {
     // Verify jwt signature of the refresh token
-    const payload = await verifyRefreshToken();
+    const payload = await verifyRefreshTokenJWT(refreshToken);
 
     // If payload is empty or invalid
     if (!payload || !payload.id) {

@@ -1,12 +1,20 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
-import { verifyRefreshToken } from "@/lib/Auth";
+import { verifyRefreshTokenJWT } from "@/lib/Auth";
 
 export async function POST() {
   try {
     const cookieStore = await cookies();
-    const payload = await verifyRefreshToken();
+    const refreshToken = cookieStore.get("refreshToken")?.value;
+
+    if (!refreshToken) {
+      return NextResponse.json(
+        { message: "No refresh token" },
+        { status: 401 }, //we use status of 401 so that axios can intercept it
+      );
+    }
+    const payload = await verifyRefreshTokenJWT(refreshToken);
 
     if (payload?.id) {
       // 2. Invalidate the token in the Database
