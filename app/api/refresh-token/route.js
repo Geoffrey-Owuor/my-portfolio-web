@@ -46,7 +46,8 @@ export async function POST() {
     }
 
     // Compare cookie token with db hash using verifyPassword
-    const isTokenValid = await verifyPassword(refreshToken, hashedToken);
+    const incomingSignature = refreshToken.split(".")[2];
+    const isTokenValid = await verifyPassword(incomingSignature, hashedToken);
 
     if (!isTokenValid) {
       await query(`UPDATE users SET refresh_token = NULL WHERE id = $1`, [
@@ -72,6 +73,7 @@ export async function POST() {
     const newRefreshToken = await signRefreshToken(newPayload);
 
     // Update db with new refresh token hash
+
     const newHashedRT = await hashRefreshToken(newRefreshToken);
 
     const query2 = `UPDATE users 

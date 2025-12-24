@@ -3,13 +3,14 @@ import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import { verifyRefreshTokenJWT } from "@/lib/Auth";
 
+// For logging out everywhere
 export async function POST() {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
   if (refreshToken) {
     try {
-      const { payload } = await verifyRefreshTokenJWT(refreshToken);
+      const payload = await verifyRefreshTokenJWT(refreshToken);
 
       if (payload?.id) {
         await query(
@@ -21,8 +22,7 @@ export async function POST() {
         );
       }
     } catch {
-      // Token expired / invalid → ignore
-      // Client-side logout still proceeds
+      console.error("Logout DB update failed:", error);
     }
   }
 
