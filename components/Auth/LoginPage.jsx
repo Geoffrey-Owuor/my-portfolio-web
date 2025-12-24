@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 import { tools } from "@/assets/assets";
 import Image from "next/image";
@@ -10,11 +11,36 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login attempted with:", { email, password });
-    // Add your login logic here
+    setLoading(true);
+    setError("");
+
+    try {
+      // Standard fetch for login
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      //   Successfull login
+      if (response.ok) {
+        router.push("/createblog");
+        router.refresh(); //Sync server components
+      } else {
+        setError(data.message || "Login Failed");
+        setLoading(false);
+      }
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
   };
 
   return (
@@ -93,7 +119,16 @@ export default function LoginPage() {
             </div>
 
             {/* Login Fields */}
-            <div className="space-y-6">
+            <form
+              onSubmit={handleSubmit}
+              autoComplete="off"
+              className="space-y-6"
+            >
+              {error && (
+                <div className="rounded-lg bg-red-50 p-3 text-sm text-red-500 dark:bg-red-900/20 dark:text-red-400">
+                  {error}
+                </div>
+              )}
               {/* Email Input */}
               <div>
                 <label
@@ -153,12 +188,17 @@ export default function LoginPage() {
 
               {/* Submit Button */}
               <button
-                onClick={handleSubmit}
-                className="w-full rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white ring-offset-2 transition-colors hover:bg-gray-800 focus:ring-1 focus:ring-gray-600 focus:outline-none dark:bg-white dark:text-gray-950 dark:ring-offset-gray-950 dark:hover:bg-gray-200 dark:focus:ring-gray-300"
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white ring-offset-2 transition-colors hover:bg-gray-800 focus:ring-1 focus:ring-gray-600 focus:outline-none disabled:opacity-50 dark:bg-white dark:text-gray-950 dark:ring-offset-gray-950 dark:hover:bg-gray-200 dark:focus:ring-gray-300"
               >
-                Sign in
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  "Sign in"
+                )}
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
