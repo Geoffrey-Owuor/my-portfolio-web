@@ -32,7 +32,7 @@ export default function LoginPage() {
       //   Successfull login
       if (response.ok) {
         router.push("/createblog");
-        router.refresh(); //Sync server components
+        router.refresh(); //refresh server components
       } else {
         setError(data.message || "Login Failed");
         setLoading(false);
@@ -190,10 +190,13 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white ring-offset-2 transition-colors hover:bg-gray-800 focus:ring-1 focus:ring-gray-600 focus:outline-none disabled:opacity-50 dark:bg-white dark:text-gray-950 dark:ring-offset-gray-950 dark:hover:bg-gray-200 dark:focus:ring-gray-300"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white ring-offset-2 transition-colors hover:bg-gray-800 focus:ring-1 focus:ring-gray-600 focus:outline-none disabled:opacity-50 dark:bg-white dark:text-gray-950 dark:ring-offset-gray-950 dark:hover:bg-gray-200 dark:focus:ring-gray-300"
               >
                 {loading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    signing in...
+                  </>
                 ) : (
                   "Sign in"
                 )}

@@ -1,5 +1,13 @@
+"use client";
+import { useUser } from "@/context/UserContext";
+
 const page = () => {
-  return <div>The create blog protected page</div>;
+  const user = useUser();
+  return (
+    <div>
+      Welcome {user.name} <p>This is the create blog page</p>
+    </div>
+  );
 };
 
 export default page;

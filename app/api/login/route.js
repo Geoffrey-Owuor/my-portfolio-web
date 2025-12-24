@@ -15,9 +15,9 @@ export async function POST(request) {
     // Find user by email
     const query1 = `SELECT id, password, user_name 
                     FROM users
-                    WHERE email = $1 LIMIT 1`;
+                    WHERE user_email = $1 LIMIT 1`;
     const params1 = [email];
-    const [result1] = await query(query1, params1);
+    const result1 = await query(query1, params1);
 
     if (!result1.length) {
       return NextResponse.json(
@@ -33,7 +33,7 @@ export async function POST(request) {
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return NextResponse.json(
-        { message: "wrong username or password" },
+        { message: "Wrong username or password" },
         { status: 401 },
       );
     }
@@ -74,7 +74,7 @@ export async function POST(request) {
     cookieStore.set("refreshToken", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60,
     });
 

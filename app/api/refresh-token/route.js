@@ -19,7 +19,7 @@ export async function POST() {
 
   try {
     // Verify jwt signature of the refresh token
-    const payload = await verifyRefreshToken(refreshToken);
+    const payload = await verifyRefreshToken();
 
     // If payload is empty or invalid
     if (!payload || !payload.id) {
@@ -28,7 +28,7 @@ export async function POST() {
 
     //Checked against the database stored token to ensure it has not been revoked/replaced
     const dbQuery = `SELECT id, user_name, user_email, refresh_token FROM users WHERE id = $1`;
-    const [user] = await query(dbQuery, [payload.id]);
+    const user = await query(dbQuery, [payload.id]);
 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 401 });
@@ -73,7 +73,7 @@ export async function POST() {
     cookieStore.set("refreshToken", newRefreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60, // 7 days
     });
 
