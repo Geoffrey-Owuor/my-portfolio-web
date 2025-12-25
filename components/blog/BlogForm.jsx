@@ -1,4 +1,11 @@
-import { FileText, User, Send, Tags, ArrowUpRight } from "lucide-react";
+import {
+  Send,
+  ArrowUpRight,
+  UserRound,
+  Highlighter,
+  Signature,
+  Library,
+} from "lucide-react";
 import Link from "next/link";
 
 const BlogForm = ({
@@ -18,7 +25,7 @@ const BlogForm = ({
             htmlFor="title"
             className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
           >
-            <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+            <Highlighter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
             Blog Title
           </label>
           <input
@@ -39,7 +46,7 @@ const BlogForm = ({
             htmlFor="author"
             className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
           >
-            <User className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+            <UserRound className="h-4 w-4 text-gray-500 dark:text-gray-400" />
             Author Name
           </label>
           <input
@@ -58,7 +65,7 @@ const BlogForm = ({
             htmlFor="tagline"
             className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
           >
-            <Tags className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+            <Signature className="h-4 w-4 text-gray-500 dark:text-gray-400" />
             Tagline
           </label>
           <input
@@ -80,7 +87,7 @@ const BlogForm = ({
               htmlFor="content"
               className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
             >
-              <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <Library className="h-4 w-4 text-gray-500 dark:text-gray-400" />
               Content
             </label>
             <span className="text-xs text-gray-500 dark:text-gray-500">
