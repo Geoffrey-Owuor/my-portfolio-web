@@ -1,15 +1,20 @@
 "use client";
 import { useState } from "react";
-import { FileText, User, Send, Loader2 } from "lucide-react";
+import { FileText, User, Send, Tags } from "lucide-react";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import { AnimatePresence } from "framer-motion";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
+import { useUser } from "@/context/UserContext";
+import BlogAlert from "../Modules/BlogAlert";
+import apiClient from "@/lib/AxiosClient";
 
 const BlogPost = () => {
+  const { name } = useUser();
   const [formData, setFormData] = useState({
     title: "",
-    author: "",
+    author: name,
+    tagline: "",
     content: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,38 +39,36 @@ const BlogPost = () => {
   };
 
   const handleSubmit = async () => {
+    setShowConfirmation(false);
     setIsSubmitting(true);
 
     try {
       // Blog post api endpoint
-      const response = await fetch("/api/blogpost", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          date: new Date().toISOString(),
-          readTime: `${Math.ceil(formData.content.split(" ").length / 200)} min read`,
-        }),
+      const response = await apiClient.post("/blogpost", {
+        ...formData,
+        readTime: `${Math.ceil(formData.content.split(" ").length / 200)} min read`,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.message || "Failed to post blog");
+      // Axios puts the response body in `response.data`
+      const data = response.data;
 
       setAlertInfo({
         showAlert: true,
         type: "success",
         alertMessage: data.message,
       });
-      setFormData({ title: "", author: "", content: "" });
+      setFormData({ title: "", author: "", content: "", tagline: "" });
     } catch (error) {
+      // Axios error handling
+      const message =
+        error.response?.data?.message || error.message || "Failed to post blog";
+
       setAlertInfo({
         showAlert: true,
         type: "error",
-        alertMessage: error.message,
+        alertMessage: message,
       });
+
       console.error("Error posting blog:", error);
     } finally {
       setIsSubmitting(false);
@@ -77,6 +80,14 @@ const BlogPost = () => {
 
   return (
     <>
+      <BlogAlert
+        message={alertInfo.alertMessage}
+        type={alertInfo.type}
+        isVisible={alertInfo.showAlert}
+        hideAlert={() =>
+          setAlertInfo({ type: "", alertMessage: "", showAlert: false })
+        }
+      />
       <AnimatePresence>
         {showConfirmation && (
           <ConfirmationDialog
@@ -149,6 +160,25 @@ const BlogPost = () => {
                   required
                 />
               </div>
+              <div>
+                <label
+                  htmlFor="tagline"
+                  className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
+                >
+                  <Tags className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                  Tagline
+                </label>
+                <input
+                  type="text"
+                  id="tagline"
+                  name="tagline"
+                  value={formData.tagline}
+                  onChange={handleChange}
+                  placeholder="Your hashtag line"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+                  required
+                />
+              </div>
 
               {/* Content Textarea */}
               <div>
@@ -186,17 +216,8 @@ const BlogPost = () => {
                   disabled={!isFormValid || isSubmitting}
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-gray-800 focus:ring-4 focus:ring-gray-200 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 sm:w-auto dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:focus:ring-gray-800 dark:disabled:bg-gray-800 dark:disabled:text-gray-600"
                 >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Publishing...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4" />
-                      Publish Post
-                    </>
-                  )}
+                  <Send className="h-4 w-4" />
+                  Publish Post
                 </button>
               </div>
             </form>
