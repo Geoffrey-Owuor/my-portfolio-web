@@ -1,5 +1,7 @@
+import BlogsWrapper from "@/components/blog/BlogsWrapper";
+
 const page = () => {
-  return <div className="mt-16">Blog Page</div>;
+  return <BlogsWrapper />;
 };
 
 export default page;
