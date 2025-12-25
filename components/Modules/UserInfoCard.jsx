@@ -17,7 +17,7 @@ const UserInfoCard = () => {
     : null;
 
   return (
-    <div className="inline-flex items-center gap-3 rounded-2xl p-3 transition-all hover:bg-gray-100/50 dark:hover:bg-gray-800/50">
+    <div className="hidden items-center gap-3 rounded-2xl p-3 transition-all hover:bg-gray-100/50 sm:inline-flex dark:hover:bg-gray-800/50">
       {/* Avatar Circle */}
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
         {initials ? (

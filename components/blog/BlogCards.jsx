@@ -3,14 +3,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { Calendar, Clock, ArrowRight, UserRound, Plus } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
+import { formatDate } from "@/utils/Helpers";
 
-const formatDate = (dateInput) => {
-  return new Date(dateInput).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-};
 const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
   // Function to remove asterisks and get preview text
