@@ -1,13 +1,15 @@
-"use client";
-import { useUser } from "@/context/UserContext";
-import LogoutButton from "@/components/Modules/LogoutButton";
+import NavBar from "@/components/Home/NavBar";
+import Footer from "@/components/Home/Footer";
+import BlogPost from "@/components/blog/BlogPost";
 
 const page = () => {
-  const user = useUser();
   return (
-    <div>
-      Welcome {user.name} <p>This is the create blog page</p>
-      <LogoutButton />
+    <div className="flex min-h-screen flex-col">
+      <NavBar />
+      <main className="flex-1">
+        <BlogPost />
+      </main>
+      <Footer />
     </div>
   );
 };
