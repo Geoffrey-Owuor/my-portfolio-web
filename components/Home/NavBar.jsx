@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { tools } from "@/assets/assets";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
@@ -16,7 +17,6 @@ const NavBar = () => {
 
   // Array of navigation links for cleaner code
   const navLinks = [
-    { href: "/#home", label: "Home" },
     { href: "/#skills", label: "Skills" },
     { href: "/#stack", label: "Stack" },
     { href: "/#projects", label: "Projects" },
@@ -106,6 +106,15 @@ const NavBar = () => {
                 </a>
               </li>
             ))}
+            <li>
+              <Link
+                href="/blogs"
+                className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+              >
+                Blogs
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </li>
           </ul>
 
           {/* Right Side Icons (Theme Toggle + GitHub) */}
@@ -199,6 +208,15 @@ const NavBar = () => {
               </a>
             </li>
           ))}
+          <li>
+            <Link
+              href="/blogs"
+              className="flex w-full items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+            >
+              Blogs
+              <ArrowUpRight className="h-5 w-5" />
+            </Link>
+          </li>
         </ul>
 
         {/* Mobile GitHub Link (In mobile sidebar) */}
