@@ -3,6 +3,8 @@ import { useState } from "react";
 import { FileText, User, Send, Loader2 } from "lucide-react";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import { AnimatePresence } from "framer-motion";
+import LogoutButton from "../Modules/LogoutButton";
+import UserInfoCard from "../Modules/UserInfoCard";
 
 const BlogPost = () => {
   const [formData, setFormData] = useState({
@@ -88,13 +90,19 @@ const BlogPost = () => {
       <div className="mx-auto mt-12 w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm dark:border-gray-800">
           {/* Header - Neutral & Clean */}
-          <div className="border-b border-gray-200 px-6 py-6 dark:border-gray-800">
-            <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-              Create New Blog Post
-            </h1>
-            <p className="mt-1 text-sm text-gray-500 sm:text-base dark:text-gray-400">
-              Share your thoughts with the world
-            </p>
+          <div className="flex items-center justify-between border-b border-gray-200 px-6 py-6 dark:border-gray-800">
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+                Create New Blog Post
+              </h1>
+              <p className="mt-1 text-sm text-gray-500 sm:text-base dark:text-gray-400">
+                Share your thoughts with the world
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <UserInfoCard />
+              <LogoutButton />
+            </div>
           </div>
 
           {/* Form Content */}
