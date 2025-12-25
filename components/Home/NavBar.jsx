@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { tools } from "@/assets/assets";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import LoadingLine from "../Modules/LoadingLine";
+import { usePathname } from "next/navigation";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 
 const NavBar = () => {
@@ -12,6 +14,9 @@ const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   // State to manage the mobile menu's open/closed status
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoadingLine, setIsLoadingLine] = useState(false);
+  const pathname = usePathname();
+
   // Ref for the mobile menu to detect outside clicks
   const menuRef = useRef(null);
 
@@ -64,6 +69,7 @@ const NavBar = () => {
 
   return (
     <>
+      {isLoadingLine && <LoadingLine />}
       {/* Main Navigation Bar */}
       <nav
         className={`fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out ${
@@ -107,13 +113,21 @@ const NavBar = () => {
               </li>
             ))}
             <li>
-              <Link
-                href="/blogs"
-                className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
-              >
-                Blogs
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
+              {pathname === "/blogs" ? (
+                <span className="flex cursor-default items-center gap-0.5 text-gray-500 dark:text-gray-400">
+                  Blogs
+                  <ArrowUpRight className="h-4 w-4" />
+                </span>
+              ) : (
+                <Link
+                  href="/blogs"
+                  onClick={() => setIsLoadingLine(true)}
+                  className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                >
+                  Blogs
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              )}
             </li>
           </ul>
 
@@ -209,13 +223,21 @@ const NavBar = () => {
             </li>
           ))}
           <li>
-            <Link
-              href="/blogs"
-              className="flex w-full items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-            >
-              Blogs
-              <ArrowUpRight className="h-5 w-5" />
-            </Link>
+            {pathname === "/blogs" ? (
+              <span className="flex w-full cursor-default items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-500 dark:text-gray-400">
+                Blogs
+                <ArrowUpRight className="h-4 w-4" />
+              </span>
+            ) : (
+              <Link
+                href="/blogs"
+                onClick={() => setIsLoadingLine(true)}
+                className="flex w-full items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              >
+                Blogs
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            )}
           </li>
         </ul>
 
