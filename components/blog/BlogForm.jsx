@@ -1,4 +1,5 @@
-import { FileText, User, Send, Tags } from "lucide-react";
+import { FileText, User, Send, Tags, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 const BlogForm = ({
   handleConfirmSubmit,
@@ -102,15 +103,22 @@ const BlogForm = ({
         </div>
 
         {/* Actions */}
-        <div className="pt-2">
+        <div className="flex items-center justify-center gap-3 pt-2">
           <button
             type="submit"
             disabled={!isFormValid || isSubmitting}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-gray-800 focus:ring-4 focus:ring-gray-200 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 sm:w-auto dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 dark:focus:ring-gray-800 dark:disabled:bg-gray-800 dark:disabled:text-gray-600"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-gray-800 focus:ring-4 focus:ring-gray-200 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400 sm:w-auto dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200 dark:focus:ring-gray-800 dark:disabled:bg-gray-800 dark:disabled:text-gray-600"
           >
             <Send className="h-4 w-4" />
             {IsUpdating ? "Update Post" : "Publish Post"}
           </button>
+          <Link
+            href="/blogs"
+            className="flex items-center gap-2 rounded-lg bg-gray-300/50 px-4 py-3 text-sm font-semibold transition-colors duration-200 hover:bg-gray-400/50 dark:bg-gray-700/50 dark:hover:bg-gray-600/50"
+          >
+            View Blogs
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
         </div>
       </form>
     </div>

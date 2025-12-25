@@ -28,7 +28,7 @@ const UserInfoCard = () => {
       </div>
 
       {/* User Details */}
-      <div className="flex flex-col">
+      <div className="hidden flex-col lg:flex">
         <span className="max-w-[150px] truncate text-sm font-semibold text-gray-900 dark:text-white">
           {name || "Guest User"}
         </span>
