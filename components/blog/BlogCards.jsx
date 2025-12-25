@@ -1,12 +1,16 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useUser } from "@/context/UserContext";
 import { Calendar, Clock, ArrowRight, UserRound, Plus } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { formatDate } from "@/utils/Helpers";
 
 const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
+  const { id: userId } = useUser();
+  const router = useRouter();
   // Function to remove asterisks and get preview text
   const getPreviewText = (content, maxLength = 150) => {
     // Remove asterisks (both single and double)
@@ -19,20 +23,25 @@ const BlogCards = ({ blogs }) => {
     return preview.length < cleanedContent.length ? `${preview}...` : preview;
   };
 
+  const handleCreateLink = () => {
+    setIsLoadingLine(true);
+    router.push("/createblog");
+  };
+
   return (
     <>
       {isLoadingLine && <LoadingLine />}
       <div className="mx-auto mt-10 max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-10 flex items-center justify-center gap-6">
           <span className="text-3xl font-semibold">My Blogs</span>
-          <Link
-            href="/createblog"
-            onClick={() => setIsLoadingLine(true)}
-            className="flex items-center gap-1.5 rounded-lg bg-gray-200/50 px-4 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
+          <button
+            onClick={handleCreateLink}
+            disabled={!userId}
+            className="flex items-center gap-1.5 rounded-lg bg-gray-200/50 px-4 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
           >
             <Plus className="h-5 w-5" />
             Create Blog
-          </Link>
+          </button>
         </div>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog) => (

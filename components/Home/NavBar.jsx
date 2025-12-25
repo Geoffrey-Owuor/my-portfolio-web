@@ -30,6 +30,11 @@ const NavBar = () => {
     { href: "/#contact", label: "Contact" },
   ];
 
+  // UseEffect to reset loading when navigation completes
+  useEffect(() => {
+    setIsLoadingLine(false);
+  }, [pathname]);
+
   // Effect to handle scroll detection
   useEffect(() => {
     const handleScroll = () => {

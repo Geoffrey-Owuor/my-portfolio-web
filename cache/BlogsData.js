@@ -1,5 +1,6 @@
 "use server";
 import { query } from "@/lib/db";
+
 export async function BlogsData() {
   const blogsQuery = `
     SELECT id, blog_title, blog_author, blog_date, read_time, blog_content
