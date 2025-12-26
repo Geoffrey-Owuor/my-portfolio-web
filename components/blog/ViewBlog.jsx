@@ -14,6 +14,7 @@ const ViewBlog = ({ blogPost }) => {
 
   // Data needed by the Edit Blog Modal
   const editBlogData = {
+    blog_id: blogPost.id,
     blog_title: blogPost.blog_title,
     blog_author: blogPost.blog_author,
     blog_content: blogPost.blog_content,

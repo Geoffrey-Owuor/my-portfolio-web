@@ -5,11 +5,15 @@ import { LoadingCircle } from "../Modules/LoadingCircle";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import { X } from "lucide-react";
 import BlogForm from "./BlogForm";
+import apiClient from "@/lib/AxiosClient";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
   const { id: userId } = useUser();
+
+  const blogId = blogInfo.blog_id;
+
   const [formData, setFormData] = useState({
     title: blogInfo.blog_title || "",
     author: blogInfo.blog_author || "",
@@ -50,7 +54,45 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
     setShowConfirmDialog(true);
   };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    setShowConfirmDialog(false);
+    setIsSubmitting(true);
+
+    try {
+      // Blog put api endpoint
+      const response = await apiClient.put(`/blogpost/${blogId}`, {
+        ...formData,
+        readTime: `${Math.ceil(formData.content.split(" ").length / 200)} min read`,
+      });
+
+      // Axios puts the response body in `response.data`
+      const data = response.data;
+
+      setAlertInfo({
+        showAlert: true,
+        type: "success",
+        alertMessage: data.message,
+      });
+      setFormData({ title: "", author: "", content: "", tagline: "" });
+
+      //   Timeout to hide modal after 2 seconds
+      setTimeout(() => setShowEditModal(false), 2000);
+    } catch (error) {
+      // Axios error handling
+      const message =
+        error.response?.data?.message || error.message || "Failed to post blog";
+
+      setAlertInfo({
+        showAlert: true,
+        type: "error",
+        alertMessage: message,
+      });
+
+      console.error("Error updating the blog:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const isFormValid =
     formData.title.trim() && formData.author.trim() && formData.content.trim();
@@ -105,7 +147,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
       <AnimatePresence>
         {showConfirmDialog && (
           <ConfirmationDialog
-            title="Post Blog"
+            title="Edit Blog"
             onConfirm={handleSubmit}
             message="Are you sure you want to edit this blog?"
             onCancel={() => setShowConfirmDialog(false)}

@@ -3,7 +3,7 @@ import ViewBlog from "@/components/blog/ViewBlog";
 
 const getBlogInfo = async (id) => {
   try {
-    const blogQuery = `SELECT blog_title, blog_author, blog_date, read_time, blog_content, author_tagline
+    const blogQuery = `SELECT id, blog_title, blog_author, blog_date, read_time, blog_content, author_tagline
                        FROM blogs
                        WHERE id = $1`;
     const blogPost = await query(blogQuery, [id]);
