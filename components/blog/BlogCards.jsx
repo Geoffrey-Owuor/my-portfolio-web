@@ -23,7 +23,7 @@ const BlogCards = ({ blogs }) => {
 
   const handleCreateLink = () => {
     setIsLoadingLine(true);
-    router.push("/blogs/createblog");
+    router.push("/createblog");
   };
 
   return (
