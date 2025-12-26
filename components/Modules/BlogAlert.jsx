@@ -2,6 +2,7 @@
 
 import { XIcon, AlertCircle, CheckCircle } from "lucide-react";
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
@@ -21,7 +22,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
       ? "text-green-500 dark:text-green-700"
       : "text-red-500 dark:text-red-700";
 
-  return (
+  const content = (
     <div className="fixed top-0 left-1/2 z-9999 -translate-x-1/2">
       <AnimatePresence>
         {isVisible && (
@@ -53,6 +54,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
       </AnimatePresence>
     </div>
   );
+  return createPortal(content, document.body);
 };
 
 export default BlogAlert;
