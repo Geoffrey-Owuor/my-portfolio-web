@@ -10,8 +10,6 @@ import { usePathname } from "next/navigation";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 
 const NavBar = () => {
-  // State to track if the page has been scrolled
-  const [isScrolled, setIsScrolled] = useState(false);
   // State to manage the mobile menu's open/closed status
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoadingLine, setIsLoadingLine] = useState(false);
@@ -34,20 +32,6 @@ const NavBar = () => {
   useEffect(() => {
     setIsLoadingLine(false);
   }, [pathname]);
-
-  // Effect to handle scroll detection
-  useEffect(() => {
-    const handleScroll = () => {
-      // Set isScrolled to true if user has scrolled more than 50px
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    // Add scroll event listener
-    window.addEventListener("scroll", handleScroll);
-
-    // Cleanup function to remove the listener
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Effect to prevent html scroll when menu is open (for screens larger than 640px)
   useEffect(() => {
@@ -76,13 +60,7 @@ const NavBar = () => {
     <>
       {isLoadingLine && <LoadingLine />}
       {/* Main Navigation Bar */}
-      <nav
-        className={`fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out ${
-          isScrolled
-            ? "custom-blur bg-white/50 shadow-md dark:bg-gray-950/50"
-            : ""
-        }`}
-      >
+      <nav className="app-background fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out">
         {/* Centered Content Container */}
         <div className="containerizing flex items-center justify-between px-4 py-3 lg:py-4">
           {/* Left Side - Mobile Menu Toggle + Logo */}

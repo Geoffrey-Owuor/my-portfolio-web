@@ -40,7 +40,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="m-18 flex overflow-hidden rounded-2xl transition-colors duration-200">
+    <div className="flex min-h-screen transition-colors duration-200">
       {/* Left side - Image (hidden on mobile) */}
       <div className="auth-background relative hidden overflow-hidden lg:flex lg:w-1/2"></div>
 
@@ -87,6 +87,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="block w-full rounded-lg border border-gray-400 bg-white py-3 pr-3 pl-10 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
                   placeholder="you@example.com"
+                  required
                 />
               </div>
             </div>
@@ -110,6 +111,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="block w-full rounded-lg border border-gray-400 bg-white py-3 pr-10 pl-10 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring-1 focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
                   placeholder="••••••••"
+                  required
                 />
                 <button
                   type="button"
