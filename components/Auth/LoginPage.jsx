@@ -31,7 +31,7 @@ export default function LoginPage() {
       const data = await response.json();
       //   Successfull login
       if (response.ok) {
-        router.push("/createblog");
+        router.push("/blogs/createblog");
         router.refresh(); //refresh server components
       } else {
         setError(data.message || "Login Failed");

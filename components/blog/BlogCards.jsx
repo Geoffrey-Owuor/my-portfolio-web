@@ -2,14 +2,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useUser } from "@/context/UserContext";
 import { Calendar, Clock, ArrowRight, UserRound, Plus } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { formatDate } from "@/utils/Helpers";
 
 const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
-  const { id: userId } = useUser();
   const router = useRouter();
   // Function to remove asterisks and get preview text
   const getPreviewText = (content, maxLength = 150) => {
@@ -25,7 +23,7 @@ const BlogCards = ({ blogs }) => {
 
   const handleCreateLink = () => {
     setIsLoadingLine(true);
-    router.push("/createblog");
+    router.push("/blogs/createblog");
   };
 
   return (
@@ -36,8 +34,7 @@ const BlogCards = ({ blogs }) => {
           <span className="text-3xl font-semibold">My Blogs</span>
           <button
             onClick={handleCreateLink}
-            disabled={!userId}
-            className="flex items-center gap-1.5 rounded-lg bg-gray-200/50 px-4 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
+            className="flex cursor-pointer items-center gap-1.5 rounded-lg bg-gray-200/50 px-4 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
           >
             <Plus className="h-5 w-5" />
             Create Blog

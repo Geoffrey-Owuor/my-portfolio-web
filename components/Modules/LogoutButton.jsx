@@ -15,7 +15,7 @@ export default function LogoutButton() {
     try {
       await apiClient.post("/logout");
       // Redirect to login and refresh the page state
-      router.push("/login");
+      router.push("/blogs/login");
       router.refresh();
     } catch (error) {
       console.error("Logout failed", error);
