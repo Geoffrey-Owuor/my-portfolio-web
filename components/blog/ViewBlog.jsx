@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import { formatDate } from "@/utils/Helpers";
 import EditBlog from "./EditBlog";
+import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 const ViewBlog = ({ blogPost }) => {
@@ -20,9 +21,15 @@ const ViewBlog = ({ blogPost }) => {
   };
   return (
     <>
-      {showEditBlog && (
-        <EditBlog setShowEditModal={setShowEditBlog} blogInfo={editBlogData} />
-      )}
+      <AnimatePresence>
+        {showEditBlog && (
+          <EditBlog
+            showEditModal={showEditBlog}
+            setShowEditModal={setShowEditBlog}
+            blogInfo={editBlogData}
+          />
+        )}
+      </AnimatePresence>
       <article className="mx-auto mt-10 max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Header Section */}
         <header className="mb-8 sm:mb-12">
