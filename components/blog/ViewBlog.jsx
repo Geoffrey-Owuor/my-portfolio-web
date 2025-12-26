@@ -1,8 +1,13 @@
-import { Calendar, UserRound, Clock } from "lucide-react";
+"use client";
+import { Calendar, UserRound, Clock, ArrowLeft, PenLine } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContext";
 import { formatDate } from "@/utils/Helpers";
 const ViewBlog = ({ blogPost }) => {
+  const { id: userId } = useUser();
+  const router = useRouter();
   return (
-    <article className="mx-auto mt-10 w-full max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+    <article className="mx-auto mt-10 max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Header Section */}
       <header className="mb-8 sm:mb-12">
         <h1 className="mb-6 text-3xl leading-tight font-bold text-gray-900 sm:text-4xl dark:text-white">
@@ -25,6 +30,22 @@ const ViewBlog = ({ blogPost }) => {
             <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
             <span>{blogPost.read_time}</span>
           </div>
+
+          <button
+            disabled={!userId}
+            className="flex items-center gap-2 transition-colors duration-200 hover:text-gray-700 disabled:opacity-50 dark:hover:text-gray-500"
+          >
+            <PenLine className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span>Edit</span>
+          </button>
+
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-2 transition-colors duration-200 hover:text-gray-700 dark:hover:text-gray-500"
+          >
+            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span>back to blogs</span>
+          </button>
         </div>
       </header>
 
@@ -62,8 +83,8 @@ const ViewBlog = ({ blogPost }) => {
       <div className="mt-12 h-px bg-linear-to-r from-transparent via-gray-300 to-transparent sm:mt-16 dark:via-gray-700" />
 
       {/* Author Card */}
-      <div className="mt-8 rounded-2xl border border-gray-200 bg-gray-50 p-6 sm:mt-12 sm:p-8 dark:border-gray-800 dark:bg-gray-900">
-        <div className="flex items-start gap-4">
+      <div className="flex justify-center">
+        <div className="inline-flex items-center gap-4 rounded-2xl border border-gray-200 bg-gray-100/50 p-6 sm:mt-12 sm:p-8 dark:border-gray-800 dark:bg-gray-900/50">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 sm:h-16 sm:w-16">
             <span className="text-lg font-bold text-white sm:text-xl">
               {blogPost.blog_author

@@ -1,5 +1,7 @@
+import ViewBlogsSkeleton from "@/components/Skeletons/ViewBlogsSkeleton";
+
 const loading = () => {
-  return <div>loading</div>;
+  return <ViewBlogsSkeleton />;
 };
 
 export default loading;
