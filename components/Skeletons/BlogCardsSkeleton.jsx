@@ -2,8 +2,8 @@ const BlogCardsSkeleton = () => {
   return (
     <div className="mx-auto mt-10 max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-10 flex items-center justify-center gap-6">
-        <div className="h-9 w-32 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
-        <div className="h-11 w-36 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
+        <div className="h-9 w-32 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
+        <div className="h-11 w-36 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
       </div>
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {[...Array(6)].map((_, index) => (

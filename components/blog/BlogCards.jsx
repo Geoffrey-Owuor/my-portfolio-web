@@ -55,7 +55,7 @@ const BlogCards = ({ blogs }) => {
             </button>
             <button
               onClick={() => router.back()}
-              className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 font-medium text-gray-900 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800"
+              className="inline-flex items-center gap-2 rounded-full border border-gray-300 bg-white px-6 py-3 font-medium text-gray-900 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800"
             >
               <ArrowLeft className="h-5 w-5" />
               Go Back
@@ -74,7 +74,7 @@ const BlogCards = ({ blogs }) => {
           <span className="text-3xl font-semibold">My Blogs</span>
           <button
             onClick={handleCreateLink}
-            className="flex cursor-pointer items-center gap-1.5 rounded-lg bg-gray-200/50 px-4 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
+            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200/50 px-4 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
           >
             <Plus className="h-5 w-5" />
             Create Blog

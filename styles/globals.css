@@ -82,16 +82,16 @@
   .app-background {
     background-color: white;
     background-image:
-      linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+      linear-gradient(rgba(0, 0, 0, 0.015) 0.5px, transparent 0.5px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.015) 0.5px, transparent 0.5px);
     background-size: 6px 6px;
   }
 
   [data-theme="dark"] .app-background {
     background-color: #030712;
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      linear-gradient(rgba(255, 255, 255, 0.01) 0.5px, transparent 0.5px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.01) 0.5px, transparent 0.5px);
     background-size: 6px 6px;
   }
 }

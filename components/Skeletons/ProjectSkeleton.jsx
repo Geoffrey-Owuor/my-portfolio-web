@@ -17,7 +17,7 @@ export const ProjectSkeleton = () => {
           </div>
 
           {/* Button Skeleton */}
-          <div className="h-8 w-40 animate-pulse rounded-xl bg-gray-300 dark:bg-gray-700" />
+          <div className="h-8 w-40 animate-pulse rounded-full bg-gray-300 dark:bg-gray-700" />
         </div>
 
         {/* Description Section Skeleton */}

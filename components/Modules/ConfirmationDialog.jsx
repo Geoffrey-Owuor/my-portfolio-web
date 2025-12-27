@@ -45,13 +45,13 @@ const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
           <button
             onClick={onCancel}
             type="button"
-            className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+            className="rounded-full border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="rounded-xl bg-gray-900 px-4 py-2 text-white hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
+            className="rounded-full bg-gray-900 px-4 py-2 text-white hover:bg-gray-700 dark:bg-gray-200 dark:text-gray-900 dark:hover:bg-gray-300"
           >
             Proceed
           </button>

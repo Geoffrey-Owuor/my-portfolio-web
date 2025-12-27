@@ -144,7 +144,7 @@ const NavBar = () => {
               aria-label="GitHub Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center gap-2 rounded-[10px] bg-gray-950 px-3 py-1.5 text-sm text-white transition-colors hover:bg-gray-900 hover:text-gray-200 lg:flex dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
+              className="hidden items-center gap-2 rounded-full bg-gray-950 px-3 py-1.5 text-sm text-white transition-colors hover:bg-gray-900 hover:text-gray-200 lg:flex dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
             >
               <Image
                 src={tools.githubLogo}
@@ -231,7 +231,7 @@ const NavBar = () => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeMenu}
-            className="flex items-center justify-center gap-1.5 rounded-xl bg-gray-950 px-4 py-3 text-white transition-colors hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="flex items-center justify-center gap-1.5 rounded-full bg-gray-950 px-4 py-3 text-white transition-colors hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
             My portfolio
             <ArrowUpRight className="h-4 w-4" />

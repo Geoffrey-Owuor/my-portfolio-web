@@ -77,7 +77,7 @@ export default function LoginPage() {
                 Email address
               </label>
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-6">
                   <Mail className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
@@ -85,7 +85,7 @@ export default function LoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-lg border border-gray-400 bg-white py-3 pr-3 pl-10 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
+                  className="block w-full rounded-full border border-gray-400 bg-white py-3 pr-3 pl-14 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
                   placeholder="you@example.com"
                   required
                 />
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 Password
               </label>
               <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-6">
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
@@ -109,14 +109,14 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-lg border border-gray-400 bg-white py-3 pr-10 pl-10 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring-1 focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
+                  className="block w-full rounded-full border border-gray-400 bg-white py-3 pr-10 pl-14 text-gray-900 placeholder-gray-400 transition-colors focus:border-transparent focus:ring-1 focus:ring-gray-600 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:ring-gray-500"
                   placeholder="••••••••"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-2 flex items-center pr-3"
+                  className="absolute inset-y-0 right-2 flex items-center pr-4"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" />
@@ -131,7 +131,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 font-semibold text-white ring-offset-2 transition-colors hover:bg-gray-800 focus:ring-1 focus:ring-gray-600 focus:outline-none disabled:opacity-50 dark:bg-white dark:text-gray-950 dark:ring-offset-gray-950 dark:hover:bg-gray-200 dark:focus:ring-gray-300"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-gray-900 px-4 py-3 font-semibold text-white ring-offset-2 transition-colors hover:bg-gray-800 focus:ring-1 focus:ring-gray-600 focus:outline-none disabled:opacity-50 dark:bg-white dark:text-gray-950 dark:ring-offset-gray-950 dark:hover:bg-gray-200 dark:focus:ring-gray-300"
             >
               {loading ? (
                 <>

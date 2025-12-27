@@ -176,7 +176,7 @@ const Hero = () => {
               initial="rest"
               whileHover="hover"
               whileTap="tap"
-              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-gray-900 px-6 py-3 text-base font-semibold text-gray-900 shadow-md transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
+              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-gray-900 px-6 py-3 text-base font-semibold text-gray-900 shadow-md transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
             >
               {/* Shimmer effect on hover */}
               <motion.div
@@ -201,7 +201,7 @@ const Hero = () => {
               initial="rest"
               whileHover="hover"
               whileTap="tap"
-              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gray-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-gray-700 sm:w-auto dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gray-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-gray-700 sm:w-auto dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
             >
               {/* Shimmer effect on hover */}
               <motion.div

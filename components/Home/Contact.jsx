@@ -205,7 +205,7 @@ const Contact = () => {
               whileTap="tap"
               type="submit"
               disabled={sending}
-              className="relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gray-900 px-6 py-3 text-base text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+              className="relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-gray-900 px-6 py-3 text-base text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
             >
               {/* Shimmer effect on hover */}
               <motion.div
