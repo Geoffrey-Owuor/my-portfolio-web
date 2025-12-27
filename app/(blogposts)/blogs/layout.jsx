@@ -13,7 +13,7 @@ export const metadata = {
     description:
       "Explore tech blogs with clear explanations on programming, security, cryptocurrency, and modern software technologies.",
     type: "website",
-    url: "'blogs",
+    url: "/blogs",
     siteName: "Tech Blogs",
   },
 };

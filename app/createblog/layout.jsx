@@ -14,7 +14,7 @@ export const metadata = {
     description:
       "Create blogs that explores insights into current technology trends",
     type: "website",
-    url: "/create-blog",
+    url: "/createblog",
     siteName: "Create a blog",
   },
 };
