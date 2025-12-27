@@ -1,6 +1,7 @@
 import { DM_Sans, Roboto, Roboto_Mono } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
+import NetworkStatus from "@/components/Modules/NetworkStatus";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -32,7 +33,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${roboto.variable} ${robotoMono.variable} ${dmsans.variable} font-dmsans app-background antialiased`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <NetworkStatus />
+        </Providers>
       </body>
     </html>
   );
