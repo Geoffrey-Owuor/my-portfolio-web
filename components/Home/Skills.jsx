@@ -7,7 +7,7 @@ const Skills = async () => {
   return (
     <section
       id="skills"
-      className="containerizing min-h-screen w-full px-4 py-20 md:px-8"
+      className="mx-auto min-h-screen w-full max-w-7xl px-4 py-20 md:px-8"
     >
       <SkillsWrapper
         technicalSkills={technicalSkills}
