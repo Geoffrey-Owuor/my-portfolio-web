@@ -12,6 +12,29 @@ const ViewBlog = ({ blogPost }) => {
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
 
+  // Check if blogPost is null, undefined, or empty
+  if (!blogPost || Object.keys(blogPost).length === 0) {
+    return (
+      <div className="mx-auto mt-10 flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+            Blog Not Found
+          </h2>
+          <p className="mb-8 text-gray-600 dark:text-gray-400">
+            The blog post you're looking for doesn't exist or has been removed.
+          </p>
+          <button
+            onClick={() => router.back()}
+            className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+          >
+            <ArrowLeft className="h-5 w-5" />
+            Back to Blogs
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   // Data needed by the Edit Blog Modal
   const editBlogData = {
     blog_id: blogPost.id,

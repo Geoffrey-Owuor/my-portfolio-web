@@ -2,7 +2,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Calendar, Clock, ArrowRight, UserRound, Plus } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  ArrowRight,
+  UserRound,
+  Plus,
+  ArrowLeft,
+  RefreshCcw,
+} from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { formatDate } from "@/utils/Helpers";
 
@@ -25,6 +33,38 @@ const BlogCards = ({ blogs }) => {
     setIsLoadingLine(true);
     router.push("/createblog");
   };
+
+  if (!blogs || blogs.length === 0) {
+    return (
+      <div className="mx-auto mt-10 flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+            No Blogs Available
+          </h2>
+          <p className="mb-8 text-gray-600 dark:text-gray-400">
+            We couldn't load any blogs at the moment. This might be due to a
+            connection issue.
+          </p>
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <button
+              onClick={() => window.location.reload()}
+              className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+            >
+              <RefreshCcw className="h-5 w-5" />
+              Try Again
+            </button>
+            <button
+              onClick={() => router.back()}
+              className="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 font-medium text-gray-900 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800"
+            >
+              <ArrowLeft className="h-5 w-5" />
+              Go Back
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
