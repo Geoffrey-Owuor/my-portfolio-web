@@ -58,7 +58,7 @@ const ViewBlog = ({ blogPost }) => {
             <button
               disabled={!userId}
               onClick={() => setShowEditBlog(true)}
-              className="flex cursor-pointer items-center gap-2 transition-colors duration-200 hover:text-gray-700 disabled:opacity-50 dark:hover:text-gray-500"
+              className="flex cursor-pointer items-center gap-2 transition-colors duration-200 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:text-gray-500"
             >
               <PenLine className="h-4 w-4 sm:h-5 sm:w-5" />
               <span>Edit</span>

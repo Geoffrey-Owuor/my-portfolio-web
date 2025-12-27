@@ -78,7 +78,7 @@ const BlogCards = ({ blogs }) => {
               <Link
                 href={`/blogs/blog/${blog.id}`}
                 onClick={() => setIsLoadingLine(true)}
-                className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-gray-900 underline-offset-4 hover:underline dark:text-white"
+                className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-blue-500 underline-offset-4 hover:underline dark:text-blue-400"
               >
                 Read more
                 <ArrowRight className="h-4 w-4" />
