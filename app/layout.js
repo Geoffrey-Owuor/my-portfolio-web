@@ -20,8 +20,17 @@ const dmsans = DM_Sans({
 });
 
 export const metadata = {
-  title: "Jeff's Portfolio Website",
-  description: "My personal portfolio website",
+  title: "Jeff's Portfolio | Software Engineer",
+  description:
+    "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
+
+  openGraph: {
+    title: "Jeff's Portfolio | Software Engineer",
+    description:
+      "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
+    type: "website",
+    authors: ["Geoffrey Owuor"],
+  },
 };
 
 export default function RootLayout({ children }) {

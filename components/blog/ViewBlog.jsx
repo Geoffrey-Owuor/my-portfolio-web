@@ -25,7 +25,7 @@ const ViewBlog = ({ blogPost }) => {
           </p>
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+            className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Blogs
