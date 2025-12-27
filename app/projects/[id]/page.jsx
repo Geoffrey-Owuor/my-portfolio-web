@@ -36,7 +36,8 @@ export async function generateMetadata({ params }) {
       title: projectInfo.project_name,
       description: projectInfo.project_link,
       type: "article",
-      authors: ["Geoffrey Owuor"],
+      url: `/projects/${id}`,
+      siteName: projectInfo.project_name,
     },
   };
 }

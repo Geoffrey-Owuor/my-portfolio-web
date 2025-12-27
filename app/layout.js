@@ -20,16 +20,55 @@ const dmsans = DM_Sans({
 });
 
 export const metadata = {
-  title: "Jeff's Portfolio | Software Engineer",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://jeff-portfolio-web.vercel.app",
+  ),
+
+  title: {
+    default: "Jeff's Portfolio | Software Engineer",
+    template: "%s | Jeff's Portfolio",
+  },
+
   description:
     "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
 
+  applicationName: "Jeff's Portfolio",
+
   openGraph: {
+    type: "website",
+    siteName: "Jeff's Portfolio",
     title: "Jeff's Portfolio | Software Engineer",
     description:
       "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
-    type: "website",
-    authors: ["Geoffrey Owuor"],
+    url: "/",
+    images: [
+      {
+        url: "/web-app-manifest-512x512.png", // resolved via metadataBase
+        width: 512,
+        height: 512,
+        alt: "Jeff's Portfolio Preview",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Jeff's Portfolio | Software Engineer",
+    description:
+      "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
+    images: ["/web-app-manifest-512x512.png"],
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
+
+  authors: [{ name: "Geoffrey Owuor" }],
+
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

@@ -13,7 +13,8 @@ export const metadata = {
     description:
       "Explore tech blogs with clear explanations on programming, security, cryptocurrency, and modern software technologies.",
     type: "website",
-    authors: ["Geoffrey Owuor"],
+    url: "'blogs",
+    siteName: "Tech Blogs",
   },
 };
 

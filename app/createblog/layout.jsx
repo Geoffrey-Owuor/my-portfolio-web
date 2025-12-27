@@ -14,7 +14,8 @@ export const metadata = {
     description:
       "Create blogs that explores insights into current technology trends",
     type: "website",
-    authors: ["Geoffrey Owuor"],
+    url: "/create-blog",
+    siteName: "Create a blog",
   },
 };
 

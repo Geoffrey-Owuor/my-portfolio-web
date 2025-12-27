@@ -35,8 +35,11 @@ export async function generateMetadata({ params }) {
       title: blogPost.blog_title,
       description: blogPost.author_tagline,
       type: "article",
-      authors: [blogPost.blog_author],
+      url: `/blogs/blog/${id}`,
+      siteName: blogPost.blog_title,
     },
+
+    authors: [{ name: blogPost.blog_author }],
   };
 }
 
