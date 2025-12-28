@@ -58,7 +58,7 @@ export async function PUT(request, { params }) {
     }
 
     return NextResponse.json(
-      { message: "Blog has been updated successfully" },
+      { message: "Your blog has been updated successfully" },
       { status: 200 },
     );
   } catch (error) {

@@ -75,34 +75,34 @@ const BlogCards = ({ blogs }) => {
   return (
     <>
       {isLoadingLine && <LoadingLine />}
-      <div className="mx-auto mt-10 max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mb-10 flex items-center justify-center gap-6">
-          <span className="text-3xl font-semibold">My Blogs</span>
+      <div className="mx-auto mt-10 max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mb-10 flex justify-center">
+          <span className="text-3xl font-semibold">My Blog Space</span>
+        </div>
+        <div className="mb-10 flex flex-col items-center gap-6 md:flex-row md:justify-center">
           <button
             onClick={handleCreateLink}
-            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200/50 px-4 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
+            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200/50 px-6 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
           >
             <Plus className="h-5 w-5" />
             Create Blog
           </button>
 
           {/* The search input field */}
-          <div className="flex justify-center">
-            <div className="relative">
-              <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search for a blog..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-4 pl-10 text-sm text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
-              />
-              <div
-                className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-                onClick={() => setSearchQuery("")}
-              >
-                <X className="h-4 w-4" />
-              </div>
+          <div className="relative">
+            <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search for a blog..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-4 pl-10 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+            />
+            <div
+              className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+              onClick={() => setSearchQuery("")}
+            >
+              <X className="h-4 w-4" />
             </div>
           </div>
         </div>

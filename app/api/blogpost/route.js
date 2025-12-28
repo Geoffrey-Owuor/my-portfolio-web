@@ -30,7 +30,7 @@ export async function POST(request) {
     await query(blogQuery, blogParams);
 
     return NextResponse.json(
-      { message: "Your blog has been posted" },
+      { message: "Your blog has been posted successfully" },
       { status: 201 },
     );
   } catch (error) {

@@ -9,6 +9,7 @@ import BlogAlert from "../Modules/BlogAlert";
 import apiClient from "@/lib/AxiosClient";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import BlogForm from "./BlogForm";
+import revalidateBlogsData from "@/cache/revalidateBlogsData";
 
 const BlogPost = () => {
   const { name } = useUser();
@@ -52,6 +53,9 @@ const BlogPost = () => {
 
       // Axios puts the response body in `response.data`
       const data = response.data;
+
+      // Revalidate blogs data
+      await revalidateBlogsData();
 
       setAlertInfo({
         showAlert: true,

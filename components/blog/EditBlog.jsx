@@ -1,6 +1,5 @@
 "use client";
 import { useUser } from "@/context/UserContext";
-import BlogAlert from "../Modules/BlogAlert";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import { X } from "lucide-react";
@@ -10,7 +9,12 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
 
-const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
+const EditBlog = ({
+  showEditModal,
+  setShowEditModal,
+  setAlertInfo,
+  blogInfo,
+}) => {
   const { id: userId } = useUser();
 
   const blogId = blogInfo.blog_id;
@@ -21,11 +25,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
     tagline: blogInfo.author_tagline || "",
     content: blogInfo.blog_content || "",
   });
-  const [alertInfo, setAlertInfo] = useState({
-    showAlert: false,
-    type: "",
-    alertMessage: "",
-  });
+
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -72,7 +72,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
       // Axios puts the response body in `response.data`
       const data = response.data;
 
-      // Invalidate server components data
+      // Revalidate blogs data
       await revalidateBlogsData();
 
       setAlertInfo({
@@ -83,8 +83,8 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
 
       setFormData({ title: "", author: "", content: "", tagline: "" });
 
-      //   Timeout to hide modal after 4 seconds
-      setTimeout(() => setShowEditModal(false), 4000);
+      // Hide edit modal immediately
+      setShowEditModal(false);
     } catch (error) {
       // Axios error handling
       const message =
@@ -144,14 +144,6 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
 
   return (
     <>
-      <BlogAlert
-        message={alertInfo.alertMessage}
-        type={alertInfo.type}
-        isVisible={alertInfo.showAlert}
-        hideAlert={() =>
-          setAlertInfo({ type: "", alertMessage: "", showAlert: false })
-        }
-      />
       <AnimatePresence>
         {showConfirmDialog && (
           <ConfirmationDialog

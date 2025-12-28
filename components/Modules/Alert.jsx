@@ -36,7 +36,7 @@ const Alert = ({ message, type, onClose }) => {
       }`}
     >
       <div
-        className={`mt-4 flex w-auto items-center justify-between rounded-full border bg-black px-4 py-4.5 text-white shadow-md dark:bg-white dark:text-black`}
+        className={`mt-4 flex w-auto items-center justify-between rounded-full border bg-black px-6 py-4.5 text-white shadow-md dark:bg-white dark:text-black`}
       >
         <div className="flex items-center gap-2">
           {/* Render the appropriate icon */}
