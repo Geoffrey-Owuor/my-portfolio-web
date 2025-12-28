@@ -8,6 +8,7 @@ import BlogForm from "./BlogForm";
 import apiClient from "@/lib/AxiosClient";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import revalidateBlogsData from "@/cache/revalidateBlogsData";
 
 const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
   const { id: userId } = useUser();
@@ -59,24 +60,31 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
     setIsSubmitting(true);
 
     try {
-      // Blog put api endpoint
-      const response = await apiClient.put(`/blogpost/${blogId}`, {
+      // Prepare api payload
+      const readTime = `${Math.ceil(formData.content.split(" ").length / 200)} min read`;
+      const apiPayload = {
         ...formData,
-        readTime: `${Math.ceil(formData.content.split(" ").length / 200)} min read`,
-      });
+        readTime,
+      };
+      // Blog put api endpoint
+      const response = await apiClient.put(`/blogpost/${blogId}`, apiPayload);
 
       // Axios puts the response body in `response.data`
       const data = response.data;
+
+      // Invalidate server components data
+      await revalidateBlogsData();
 
       setAlertInfo({
         showAlert: true,
         type: "success",
         alertMessage: data.message,
       });
+
       setFormData({ title: "", author: "", content: "", tagline: "" });
 
-      //   Timeout to hide modal after 2 seconds
-      setTimeout(() => setShowEditModal(false), 2000);
+      //   Timeout to hide modal after 4 seconds
+      setTimeout(() => setShowEditModal(false), 4000);
     } catch (error) {
       // Axios error handling
       const message =
