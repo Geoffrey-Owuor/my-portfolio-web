@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Calendar,
   Clock,
@@ -24,9 +24,33 @@ const BlogCards = ({ blogs }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Function to filter blogs based on blog title
-  const filteredBlogs = blogs.filter((blog) =>
-    blog.blog_title?.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredBlogs = useMemo(() => {
+    if (!searchQuery) return blogs;
+
+    const lowerQuery = searchQuery.toLowerCase();
+
+    return blogs.filter((blog) =>
+      blog.blog_title?.toLowerCase().includes(lowerQuery),
+    );
+  }, [blogs, searchQuery]);
+
+  // Function to highlight title text that matches search query when a user types in a search query
+  const highlightText = (text, query) => {
+    if (!query) return text;
+
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`(${escapedQuery})`, "gi");
+
+    return text.split(regex).map((part, index) =>
+      regex.test(part) ? (
+        <span key={index} className="text-blue-500 dark:text-blue-400">
+          {part}
+        </span>
+      ) : (
+        part
+      ),
+    );
+  };
 
   // Function to remove asterisks and get preview text
   const getPreviewText = (content, maxLength = 150) => {
@@ -120,24 +144,24 @@ const BlogCards = ({ blogs }) => {
             >
               {/* Title */}
               <h2 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
-                {blog.blog_title}
+                {highlightText(blog.blog_title, searchQuery)}
               </h2>
 
               {/* Meta information */}
               <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                 <span className="flex items-center gap-1.5">
                   <UserRound className="h-4 w-4" />
-                  {blog.blog_author}
+                  <span className="mt-0.5">{blog.blog_author}</span>
                 </span>
                 <span>•</span>
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
-                  {formatDate(blog.blog_date)}
+                  <span className="mt-0.5">{formatDate(blog.blog_date)}</span>
                 </span>
                 <span>•</span>
                 <span className="flex items-center gap-1.5">
                   <Clock className="h-4 w-4" />
-                  {blog.read_time}
+                  <span className="mt-0.5">{blog.read_time}</span>
                 </span>
               </div>
 
