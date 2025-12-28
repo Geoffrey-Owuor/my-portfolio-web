@@ -23,6 +23,11 @@ const BlogCards = ({ blogs }) => {
   // Search query states
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Function to filter blogs based on blog title
+  const filteredBlogs = blogs.filter((blog) =>
+    blog.blog_title?.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   // Function to remove asterisks and get preview text
   const getPreviewText = (content, maxLength = 150) => {
     // Remove asterisks (both single and double)
@@ -108,7 +113,7 @@ const BlogCards = ({ blogs }) => {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {blogs.map((blog) => (
+          {filteredBlogs.map((blog) => (
             <article
               key={blog.id}
               className="flex flex-col rounded-xl border border-gray-200 bg-slate-50 p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900/50"
