@@ -10,6 +10,8 @@ import {
   Plus,
   ArrowLeft,
   RefreshCcw,
+  X,
+  Search,
 } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { formatDate } from "@/utils/Helpers";
@@ -17,6 +19,10 @@ import { formatDate } from "@/utils/Helpers";
 const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
   const router = useRouter();
+
+  // Search query states
+  const [searchQuery, setSearchQuery] = useState("");
+
   // Function to remove asterisks and get preview text
   const getPreviewText = (content, maxLength = 150) => {
     // Remove asterisks (both single and double)
@@ -79,7 +85,28 @@ const BlogCards = ({ blogs }) => {
             <Plus className="h-5 w-5" />
             Create Blog
           </button>
+
+          {/* The search input field */}
+          <div className="flex justify-center">
+            <div className="relative">
+              <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search for a blog..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-4 pl-10 text-sm text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+              />
+              <div
+                className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                onClick={() => setSearchQuery("")}
+              >
+                <X className="h-4 w-4" />
+              </div>
+            </div>
+          </div>
         </div>
+
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {blogs.map((blog) => (
             <article
