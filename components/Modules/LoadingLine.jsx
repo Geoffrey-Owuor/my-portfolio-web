@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
+import { createPortal } from "react-dom";
 
 const LoadingLine = () => {
-  return (
+  const content = (
     <motion.div
-      className="fixed top-0 right-0 left-0 z-50 h-0.5 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500"
+      className="fixed top-0 right-0 left-0 z-9999 h-0.5 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500"
       initial={{ scaleX: 0, transformOrigin: "left" }}
       animate={{
         scaleX: [0, 0.3, 0.6, 0.8, 0.95],
@@ -32,6 +33,7 @@ const LoadingLine = () => {
       />
     </motion.div>
   );
+  return createPortal(content, document.body);
 };
 
 export default LoadingLine;

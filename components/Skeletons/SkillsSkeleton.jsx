@@ -8,7 +8,7 @@ const SkillsSkeleton = () => {
   return (
     <section
       id="skills-skeleton"
-      className="w-full min-h-screen containerizing px-4 py-20 md:px-8 md:py-32"
+      className="mx-auto min-h-screen w-full max-w-7xl px-4 py-20 md:px-8 md:py-32"
     >
       <div className="mx-auto">
         {/* Section Title Skeleton */}

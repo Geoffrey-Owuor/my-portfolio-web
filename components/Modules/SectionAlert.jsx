@@ -31,7 +31,7 @@ export const SectionAlert = ({ message, type, onClose, IconComponent }) => {
       className="fixed top-1/2 right-4 z-50 hidden md:flex"
     >
       <div
-        className={`flex w-auto max-w-80 items-center justify-between rounded-2xl bg-black px-4 py-4 text-white dark:bg-white dark:text-black`}
+        className={`flex w-auto max-w-80 items-center justify-between rounded-full bg-black px-6 py-4 text-white dark:bg-white dark:text-black`}
       >
         <div className="flex items-center gap-3">
           <IconComponent className={`h-6 w-6 shrink-0 ${iconColorClass}`} />

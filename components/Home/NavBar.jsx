@@ -2,21 +2,24 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { tools } from "@/assets/assets";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import LoadingLine from "../Modules/LoadingLine";
+import { usePathname } from "next/navigation";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 
 const NavBar = () => {
-  // State to track if the page has been scrolled
-  const [isScrolled, setIsScrolled] = useState(false);
   // State to manage the mobile menu's open/closed status
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoadingLine, setIsLoadingLine] = useState(false);
+  const pathname = usePathname();
+
   // Ref for the mobile menu to detect outside clicks
   const menuRef = useRef(null);
 
   // Array of navigation links for cleaner code
   const navLinks = [
-    { href: "/#home", label: "Home" },
     { href: "/#skills", label: "Skills" },
     { href: "/#stack", label: "Stack" },
     { href: "/#projects", label: "Projects" },
@@ -25,19 +28,10 @@ const NavBar = () => {
     { href: "/#contact", label: "Contact" },
   ];
 
-  // Effect to handle scroll detection
+  // UseEffect to reset loading when navigation completes
   useEffect(() => {
-    const handleScroll = () => {
-      // Set isScrolled to true if user has scrolled more than 50px
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    // Add scroll event listener
-    window.addEventListener("scroll", handleScroll);
-
-    // Cleanup function to remove the listener
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    setIsLoadingLine(false);
+  }, [pathname]);
 
   // Effect to prevent html scroll when menu is open (for screens larger than 640px)
   useEffect(() => {
@@ -64,16 +58,11 @@ const NavBar = () => {
 
   return (
     <>
+      {isLoadingLine && <LoadingLine />}
       {/* Main Navigation Bar */}
-      <nav
-        className={`fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out ${
-          isScrolled
-            ? "custom-blur bg-white/50 shadow-md dark:bg-gray-950/50"
-            : ""
-        }`}
-      >
+      <nav className="app-background fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out">
         {/* Centered Content Container */}
-        <div className="containerizing flex items-center justify-between px-4 py-3 lg:py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:py-4">
           {/* Left Side - Mobile Menu Toggle + Logo */}
           <div className="flex items-center gap-3">
             {/* Mobile Menu Toggle Button */}
@@ -106,6 +95,23 @@ const NavBar = () => {
                 </a>
               </li>
             ))}
+            <li>
+              {pathname === "/blogs" ? (
+                <span className="flex cursor-default items-center gap-0.5 text-gray-500 dark:text-gray-400">
+                  Blogs
+                  <ArrowUpRight className="h-4 w-4" />
+                </span>
+              ) : (
+                <Link
+                  href="/blogs"
+                  onClick={() => setIsLoadingLine(true)}
+                  className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                >
+                  Blogs
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              )}
+            </li>
           </ul>
 
           {/* Right Side Icons (Theme Toggle + GitHub) */}
@@ -138,7 +144,7 @@ const NavBar = () => {
               aria-label="GitHub Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center gap-2 rounded-[10px] bg-gray-950 px-3 py-1.5 text-sm text-white transition-colors hover:bg-gray-900 hover:text-gray-200 lg:flex dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
+              className="hidden items-center gap-2 rounded-full bg-gray-950 px-3 py-1.5 text-sm text-white transition-colors hover:bg-gray-900 hover:text-gray-200 lg:flex dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
             >
               <Image
                 src={tools.githubLogo}
@@ -199,6 +205,23 @@ const NavBar = () => {
               </a>
             </li>
           ))}
+          <li>
+            {pathname === "/blogs" ? (
+              <span className="flex w-full cursor-default items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-500 dark:text-gray-400">
+                Blogs
+                <ArrowUpRight className="h-4 w-4" />
+              </span>
+            ) : (
+              <Link
+                href="/blogs"
+                onClick={() => setIsLoadingLine(true)}
+                className="flex w-full items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              >
+                Blogs
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            )}
+          </li>
         </ul>
 
         {/* Mobile GitHub Link (In mobile sidebar) */}
@@ -208,7 +231,7 @@ const NavBar = () => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeMenu}
-            className="flex items-center justify-center gap-1.5 rounded-xl bg-gray-950 px-4 py-3 text-white transition-colors hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="flex items-center justify-center gap-1.5 rounded-full bg-gray-950 px-4 py-3 text-white transition-colors hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
             My portfolio
             <ArrowUpRight className="h-4 w-4" />
