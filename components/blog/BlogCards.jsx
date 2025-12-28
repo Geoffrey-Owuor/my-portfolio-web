@@ -42,7 +42,7 @@ const BlogCards = ({ blogs }) => {
     const regex = new RegExp(`(${escapedQuery})`, "gi");
 
     return text.split(regex).map((part, index) =>
-      regex.test(part) ? (
+      part.toLowerCase() === query.toLowerCase() ? (
         <span key={index} className="text-blue-500 dark:text-blue-400">
           {part}
         </span>
