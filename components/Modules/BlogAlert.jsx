@@ -33,7 +33,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="mt-4"
           >
-            <div className="flex w-auto min-w-[300px] items-center justify-between rounded-full bg-black px-3 py-4.5 text-white shadow-md dark:bg-white dark:text-black">
+            <div className="flex w-auto min-w-[300px] items-center justify-between rounded-full bg-black px-6 py-4.5 text-white shadow-md dark:bg-white dark:text-black">
               <div className="flex items-center gap-2">
                 {/* Render the appropriate icon */}
                 <IconComponent
