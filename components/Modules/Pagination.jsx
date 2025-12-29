@@ -33,7 +33,7 @@ const Pagination = ({
           </button>
         </div>
       )}
-      <div className="hidden md:flex md:flex-1 md:items-center md:justify-between">
+      <div className="hidden md:flex md:flex-1 md:items-center md:justify-center lg:justify-between">
         <div className="flex items-center gap-4">
           <div className="hidden pr-3 lg:flex">
             <p className="text-sm text-gray-700 dark:text-gray-400">
@@ -110,7 +110,7 @@ const Pagination = ({
           </nav>
         )}
         {/* An invisible div to push pagination to the center */}
-        <div className="w-40"></div>
+        <div className="hidden lg:inline-flex lg:w-40"></div>
       </div>
     </div>
   );
