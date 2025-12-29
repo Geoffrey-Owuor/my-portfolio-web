@@ -19,7 +19,7 @@ export const SectionAlert = ({ message, type, onClose, IconComponent }) => {
   // Determine icon color
   const iconColorClass =
     type === "success"
-      ? "text-green-500 dark:text-green-700"
+      ? "text-white dark:text-black"
       : "text-red-500 dark:text-red-700";
 
   return (
