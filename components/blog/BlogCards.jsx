@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { formatDate } from "@/utils/Helpers";
+import Pagination from "../Modules/Pagination";
 
 const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
@@ -64,9 +65,25 @@ const BlogCards = ({ blogs }) => {
     return preview.length < cleanedContent.length ? `${preview}...` : preview;
   };
 
+  // Pagination states, values and logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 6;
+  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = filteredBlogs.slice(
+    indexOfFirstBlog,
+    Math.min(indexOfLastBlog, filteredBlogs.length),
+  );
+
   const handleCreateLink = () => {
     setIsLoadingLine(true);
     router.push("/createblog");
+  };
+
+  const handleSearchQuery = (e) => {
+    setCurrentPage(1);
+    setSearchQuery(e.target.value);
   };
 
   if (!blogs || blogs.length === 0) {
@@ -124,7 +141,7 @@ const BlogCards = ({ blogs }) => {
               type="text"
               placeholder="Search for a blog..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchQuery(e)}
               className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-4 pl-10 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
             />
             <div
@@ -137,7 +154,7 @@ const BlogCards = ({ blogs }) => {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredBlogs.map((blog) => (
+          {currentBlogs.map((blog) => (
             <article
               key={blog.id}
               className="flex flex-col rounded-xl border border-gray-200 bg-slate-50 p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900/50"
@@ -182,6 +199,16 @@ const BlogCards = ({ blogs }) => {
             </article>
           ))}
         </div>
+
+        {/* The Pagination UI */}
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+          indexOfFirstBlog={indexOfFirstBlog}
+          indexOfLastBlog={indexOfLastBlog}
+          blogsLength={filteredBlogs.length}
+        />
       </div>
     </>
   );
