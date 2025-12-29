@@ -25,7 +25,7 @@ const ExperienceWrapper = ({ experiences }) => {
           ...prev,
           showAlert: true,
           alertType: "success",
-          alertMessage: "Evolving with challenges, always moving forward 🧠",
+          alertMessage: "Evolving with challenges, always moving forward",
         }));
       }, 1000);
 

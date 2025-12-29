@@ -33,8 +33,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
           ...prev,
           showAlert: true,
           alertType: "success",
-          alertMessage:
-            "Some of the skills that I have picked along the way 🏆",
+          alertMessage: "Some of the skills that I have picked along the way",
         }));
       }, 1000);
 
