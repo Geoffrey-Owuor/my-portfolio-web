@@ -41,7 +41,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
           ...prev,
           showAlert: true,
           alertType: "success",
-          alertMessage: "Innovating with cutting-edge tools and frameworks 💡",
+          alertMessage: "Innovating with cutting-edge tools and frameworks",
         }));
       }, 1000);
 

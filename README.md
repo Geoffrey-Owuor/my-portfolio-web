@@ -16,7 +16,8 @@ Check out the live site **[Here](https://jeff-portfolio-web.vercel.app)**
   from the database - Making it easy to update and add new data e.g., adding a new experience/skill
 - **Performance:** Optimized images and fast page loads using Next.js `App Router`.
 - **Contact Form:** A direct way for recruiters and collaborators to reach out.
-- **Animations:** Animations implemented with framer motion
+- **Animations:** Animations implemented with framer motion.
+- **Blogs:** Blog posting, editing,searching, and viewing of blogs.
 
 ## 🛠️ Tech Stack
 

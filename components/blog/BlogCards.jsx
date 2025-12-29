@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Calendar,
   Clock,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { formatDate } from "@/utils/Helpers";
+import Pagination from "../Modules/Pagination";
 
 const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
@@ -24,9 +25,33 @@ const BlogCards = ({ blogs }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Function to filter blogs based on blog title
-  const filteredBlogs = blogs.filter((blog) =>
-    blog.blog_title?.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredBlogs = useMemo(() => {
+    if (!searchQuery) return blogs;
+
+    const lowerQuery = searchQuery.toLowerCase();
+
+    return blogs.filter((blog) =>
+      blog.blog_title?.toLowerCase().includes(lowerQuery),
+    );
+  }, [blogs, searchQuery]);
+
+  // Function to highlight title text that matches search query when a user types in a search query
+  const highlightText = (text, query) => {
+    if (!query) return text;
+
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`(${escapedQuery})`, "gi");
+
+    return text.split(regex).map((part, index) =>
+      part.toLowerCase() === query.toLowerCase() ? (
+        <span key={index} className="text-blue-500 dark:text-blue-400">
+          {part}
+        </span>
+      ) : (
+        part
+      ),
+    );
+  };
 
   // Function to remove asterisks and get preview text
   const getPreviewText = (content, maxLength = 150) => {
@@ -40,9 +65,25 @@ const BlogCards = ({ blogs }) => {
     return preview.length < cleanedContent.length ? `${preview}...` : preview;
   };
 
+  // Pagination states, values and logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 6;
+  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = filteredBlogs.slice(
+    indexOfFirstBlog,
+    Math.min(indexOfLastBlog, filteredBlogs.length),
+  );
+
   const handleCreateLink = () => {
     setIsLoadingLine(true);
     router.push("/createblog");
+  };
+
+  const handleSearchQuery = (e) => {
+    setCurrentPage(1);
+    setSearchQuery(e.target.value);
   };
 
   if (!blogs || blogs.length === 0) {
@@ -100,8 +141,8 @@ const BlogCards = ({ blogs }) => {
               type="text"
               placeholder="Search for a blog..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-4 pl-10 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+              onChange={(e) => handleSearchQuery(e)}
+              className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-4 pl-11 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
             />
             <div
               className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -113,31 +154,31 @@ const BlogCards = ({ blogs }) => {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredBlogs.map((blog) => (
+          {currentBlogs.map((blog) => (
             <article
               key={blog.id}
               className="flex flex-col rounded-xl border border-gray-200 bg-slate-50 p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900/50"
             >
               {/* Title */}
               <h2 className="mb-3 text-xl font-semibold text-gray-900 dark:text-white">
-                {blog.blog_title}
+                {highlightText(blog.blog_title, searchQuery)}
               </h2>
 
               {/* Meta information */}
               <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                 <span className="flex items-center gap-1.5">
                   <UserRound className="h-4 w-4" />
-                  {blog.blog_author}
+                  <span className="mt-0.5">{blog.blog_author}</span>
                 </span>
                 <span>•</span>
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
-                  {formatDate(blog.blog_date)}
+                  <span className="mt-0.5">{formatDate(blog.blog_date)}</span>
                 </span>
                 <span>•</span>
                 <span className="flex items-center gap-1.5">
                   <Clock className="h-4 w-4" />
-                  {blog.read_time}
+                  <span className="mt-0.5">{blog.read_time}</span>
                 </span>
               </div>
 
@@ -158,6 +199,16 @@ const BlogCards = ({ blogs }) => {
             </article>
           ))}
         </div>
+
+        {/* The Pagination UI */}
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+          indexOfFirstBlog={indexOfFirstBlog}
+          indexOfLastBlog={indexOfLastBlog}
+          blogsLength={filteredBlogs.length}
+        />
       </div>
     </>
   );

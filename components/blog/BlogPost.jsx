@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
-import { AnimatePresence } from "framer-motion";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
 import { useUser } from "@/context/UserContext";
@@ -93,16 +92,16 @@ const BlogPost = () => {
           setAlertInfo({ type: "", alertMessage: "", showAlert: false })
         }
       />
-      <AnimatePresence>
-        {showConfirmation && (
-          <ConfirmationDialog
-            title="Post Blog"
-            onConfirm={handleSubmit}
-            message="Are you sure you want to post this blog?"
-            onCancel={() => setShowConfirmation(false)}
-          />
-        )}
-      </AnimatePresence>
+
+      {showConfirmation && (
+        <ConfirmationDialog
+          title="Post Blog"
+          onConfirm={handleSubmit}
+          message="Are you sure you want to post this blog?"
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
+
       {/* Loading Circle */}
       {isSubmitting && <LoadingCircle />}
 

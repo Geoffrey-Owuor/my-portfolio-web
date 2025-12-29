@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import BlogForm from "./BlogForm";
 import apiClient from "@/lib/AxiosClient";
 import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
 
 const EditBlog = ({
@@ -144,16 +144,15 @@ const EditBlog = ({
 
   return (
     <>
-      <AnimatePresence>
-        {showConfirmDialog && (
-          <ConfirmationDialog
-            title="Edit Blog"
-            onConfirm={handleSubmit}
-            message="Are you sure you want to edit this blog?"
-            onCancel={() => setShowConfirmDialog(false)}
-          />
-        )}
-      </AnimatePresence>
+      {showConfirmDialog && (
+        <ConfirmationDialog
+          title="Edit Blog"
+          onConfirm={handleSubmit}
+          message="Are you sure you want to edit this blog?"
+          onCancel={() => setShowConfirmDialog(false)}
+        />
+      )}
+
       {/* Loading Circle */}
       {isSubmitting && <LoadingCircle />}
 

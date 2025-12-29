@@ -31,7 +31,7 @@ const ProjectsWrapper = ({ projects }) => {
           ...prev,
           showAlert: true,
           alertType: "success",
-          alertMessage: "Thoughtful, well-crafted project solutions 🧩",
+          alertMessage: "Thoughtful, well-crafted project solutions",
         }));
       }, 1000);
 

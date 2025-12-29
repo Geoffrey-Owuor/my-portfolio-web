@@ -25,7 +25,7 @@ const EducationWrapper = ({ educationData }) => {
           ...prev,
           showAlert: true,
           alertType: "success",
-          alertMessage: "Educated enough to pretend I know what I'm doing 📘",
+          alertMessage: "Educated enough to pretend I know what I'm doing",
         }));
       }, 1000);
 
