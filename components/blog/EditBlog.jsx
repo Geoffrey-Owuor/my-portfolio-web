@@ -170,7 +170,7 @@ const EditBlog = ({
           exit={{ scale: 0.95, opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
           onClick={(e) => e.stopPropagation()}
-          className="mx-4 max-h-[calc(100vh-3rem)] w-full max-w-4xl overflow-y-auto rounded-2xl border border-gray-200 bg-white shadow-2xl dark:border-gray-800 dark:bg-slate-950"
+          className="mx-4 max-h-[calc(100vh-5rem)] w-full max-w-4xl overflow-y-auto rounded-2xl border border-gray-200 bg-white shadow-2xl sm:max-h-[calc(100vh-3rem)] dark:border-gray-800 dark:bg-slate-950"
         >
           <div className="sticky top-0 z-10 border-b border-gray-200 bg-white px-6 py-4 dark:border-gray-800 dark:bg-slate-950">
             <div className="flex items-center justify-between">
