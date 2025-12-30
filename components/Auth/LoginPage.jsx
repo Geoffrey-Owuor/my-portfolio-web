@@ -43,15 +43,13 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center p-6 sm:p-12">
       <div className="w-full max-w-sm">
         {/* Header */}
-        <div className="mb-8 flex justify-center">
-          <div>
-            <h1 className="mb-2 text-3xl font-semibold text-gray-900 dark:text-white">
-              Welcome back
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              Please enter your credentials to continue
-            </p>
-          </div>
+        <div className="mb-8">
+          <h1 className="mb-2 text-center text-3xl font-semibold text-gray-900 dark:text-white">
+            Welcome back
+          </h1>
+          <p className="text-center text-gray-600 dark:text-gray-400">
+            Please enter your credentials to continue
+          </p>
         </div>
 
         {/* Login Fields */}
