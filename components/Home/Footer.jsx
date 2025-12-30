@@ -14,7 +14,7 @@ const Footer = () => {
     <footer
       id="footer"
       // Use a subtle top border to separate it from the content above
-      className="w-full max-w-7xl px-4 py-6 md:px-6"
+      className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6"
     >
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">

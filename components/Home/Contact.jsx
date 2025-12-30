@@ -168,7 +168,7 @@ const Contact = () => {
                 onChange={handleChange}
                 disabled={sending}
                 placeholder="name@example.com or 07xx xxx xxx"
-                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm transition-shadow focus:ring-2 focus:ring-gray-500 focus:outline-none dark:bg-gray-800 dark:text-white"
+                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm transition-shadow focus:outline-none dark:bg-gray-800 dark:text-white"
               />
             </motion.div>
 
@@ -193,7 +193,7 @@ const Contact = () => {
                 onChange={handleChange}
                 disabled={sending}
                 placeholder="Hi Jeff, I'd like to talk about..."
-                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm transition-shadow focus:ring-2 focus:ring-gray-500 focus:outline-none dark:bg-gray-800 dark:text-white"
+                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm transition-shadow focus:outline-none dark:bg-gray-800 dark:text-white"
               />
             </motion.div>
 

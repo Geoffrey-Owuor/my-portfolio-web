@@ -45,16 +45,6 @@
     @apply bg-linear-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-gray-900 dark:via-gray-950 dark:to-black;
   }
 
-  /* Background for the Login Page */
-  .auth-background {
-    background-image: url(../public/auth_bg_light.svg);
-    background-repeat: repeat; /* Use 'no-repeat' and 'background-size: cover' if it's a single big image */
-    background-position: center;
-  }
-  [data-theme="dark"] .auth-background {
-    background-image: url(../public/auth_bg_dark.svg);
-  }
-
   /* Maintaining a certain length in different screens - Tailwind css configuration */
   .containerizing {
     width: 100%;
