@@ -24,8 +24,10 @@ const layout = async ({ children }) => {
     <UserProvider user={user}>
       <div className="flex min-h-screen flex-col">
         <NavBar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <div className="fixed top-16 right-0 bottom-0 left-0 overflow-y-auto rounded-2xl">
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
       </div>
     </UserProvider>
   );
