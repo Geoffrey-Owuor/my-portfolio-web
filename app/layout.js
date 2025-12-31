@@ -76,7 +76,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
       </head>
@@ -86,7 +86,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <NetworkStatus />
           <NavBar />
-          <div className="fixed top-16 right-0 bottom-0 left-0 overflow-y-auto scroll-smooth rounded-2xl">
+          <div className="fixed top-16 right-0 bottom-0 left-0 overflow-y-auto rounded-2xl">
             <div className="flex h-full flex-col">
               <main className="flex-1">{children}</main>
               <Footer />
