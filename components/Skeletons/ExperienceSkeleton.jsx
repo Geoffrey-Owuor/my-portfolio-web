@@ -10,7 +10,7 @@ const ExperienceSkeleton = () => {
   return (
     <section
       id="experience-skeleton"
-      className="w-full min-h-screen px-4 py-20 md:px-8 md:py-32"
+      className="min-h-screen w-full px-4 py-20 md:px-8 md:py-32"
     >
       <div className="mx-auto max-w-5xl">
         {/* Section Title Skeleton */}
