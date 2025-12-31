@@ -63,7 +63,6 @@ const ViewBlog = ({ blogPost }) => {
       <AnimatePresence>
         {showEditBlog && (
           <EditBlog
-            showEditModal={showEditBlog}
             setShowEditModal={setShowEditBlog}
             blogInfo={editBlogData}
             setAlertInfo={setAlertInfo}
