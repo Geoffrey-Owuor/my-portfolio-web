@@ -56,6 +56,11 @@ const NavBar = () => {
     setIsMenuOpen(false);
   };
 
+  const handleBlogLinkClick = () => {
+    setIsMenuOpen(false);
+    setIsLoadingLine(true);
+  };
+
   return (
     <>
       {isLoadingLine && <LoadingLine />}
@@ -214,7 +219,7 @@ const NavBar = () => {
             ) : (
               <Link
                 href="/blogs"
-                onClick={() => setIsLoadingLine(true)}
+                onClick={handleBlogLinkClick}
                 className="flex w-full items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 Blogs

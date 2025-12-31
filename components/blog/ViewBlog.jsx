@@ -70,7 +70,7 @@ const ViewBlog = ({ blogPost }) => {
           />
         )}
       </AnimatePresence>
-      <article className="mx-auto mt-10 max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <article className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Header Section */}
         <header className="mb-8 sm:mb-12">
           <h1 className="mb-6 text-3xl leading-tight font-bold text-gray-900 sm:text-4xl dark:text-white">
