@@ -4,7 +4,6 @@ import { Providers } from "@/components/Theme/Providers";
 import NetworkStatus from "@/components/Modules/NetworkStatus";
 import NavBar from "@/components/Home/NavBar";
 import Footer from "@/components/Home/Footer";
-import BackToTopButton from "@/components/Modules/BackToTopButton";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -86,7 +85,6 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <NetworkStatus />
-          <BackToTopButton />
           <NavBar />
           <div className="fixed top-16 right-0 bottom-0 left-0 overflow-y-auto scroll-smooth rounded-2xl">
             <div className="flex h-full flex-col">
