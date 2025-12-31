@@ -189,7 +189,7 @@ const BlogCards = ({ blogs }) => {
 
               {/* Read more button */}
               <Link
-                href={`/blogs/blog/${blog.id}`}
+                href={`/blogs/${blog.id}`}
                 onClick={() => setIsLoadingLine(true)}
                 className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-blue-500 underline-offset-4 hover:underline dark:text-blue-400"
               >
