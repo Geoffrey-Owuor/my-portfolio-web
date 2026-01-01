@@ -57,7 +57,7 @@ const ViewBlog = ({ blogPost }) => {
     author_tagline: blogPost.author_tagline,
   };
   return (
-    <>
+    <div>
       <BlogAlert
         message={alertInfo.alertMessage}
         type={alertInfo.type}
@@ -78,6 +78,7 @@ const ViewBlog = ({ blogPost }) => {
           />
         )}
       </AnimatePresence>
+
       <article className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Header Section */}
         <header className="mb-8 sm:mb-12">
@@ -176,7 +177,7 @@ const ViewBlog = ({ blogPost }) => {
           </div>
         </div>
       </article>
-    </>
+    </div>
   );
 };
 
