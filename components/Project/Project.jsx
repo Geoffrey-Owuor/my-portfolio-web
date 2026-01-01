@@ -101,7 +101,7 @@ const Project = ({ projectInfo }) => {
   return (
     <>
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
-      <section className="w-full px-4 py-20 md:px-8">
+      <section className="w-full px-4 py-10 md:px-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"

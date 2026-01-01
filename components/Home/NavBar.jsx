@@ -20,12 +20,12 @@ const NavBar = () => {
 
   // Array of navigation links for cleaner code
   const navLinks = [
-    { href: "/#skills", label: "Skills" },
-    { href: "/#stack", label: "Stack" },
-    { href: "/#projects", label: "Projects" },
-    { href: "/#experience", label: "Experience" },
-    { href: "/#education", label: "Education" },
-    { href: "/#contact", label: "Contact" },
+    { id: "skills", href: "/#skills", label: "Skills" },
+    { id: "stack", href: "/#stack", label: "Stack" },
+    { id: "projects", href: "/#projects", label: "Projects" },
+    { id: "experience", href: "/#experience", label: "Experience" },
+    { id: "education", href: "/#education", label: "Education" },
+    { id: "contact", href: "/#contact", label: "Contact" },
   ];
 
   // UseEffect to reset loading when navigation completes
@@ -56,6 +56,27 @@ const NavBar = () => {
     setIsMenuOpen(false);
   };
 
+  // Close menu and scroll
+  const handleSidebarClick = (e, id) => {
+    setIsMenuOpen(false);
+    scrollToSection(e, id);
+  };
+
+  const handleBlogLinkClick = () => {
+    setIsMenuOpen(false);
+    setIsLoadingLine(true);
+  };
+
+  const scrollToSection = (e, id) => {
+    if (pathname !== "/") return;
+
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       {isLoadingLine && <LoadingLine />}
@@ -77,6 +98,7 @@ const NavBar = () => {
             {/* Logo */}
             <a
               href="/#home"
+              onClick={(e) => scrollToSection(e, "home")}
               className="font-roboto-mono text-xl font-semibold text-gray-900 dark:text-white"
             >
               <span>{"<Jeff/>"}</span>
@@ -89,6 +111,7 @@ const NavBar = () => {
               <li key={link.label}>
                 <a
                   href={link.href}
+                  onClick={(e) => scrollToSection(e, link.id)}
                   className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
                 >
                   {link.label}
@@ -198,7 +221,7 @@ const NavBar = () => {
             <li key={link.label}>
               <a
                 href={link.href}
-                onClick={closeMenu} // Close menu on link click
+                onClick={(e) => handleSidebarClick(e, link.id)}
                 className="block w-full rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 {link.label}
@@ -214,7 +237,7 @@ const NavBar = () => {
             ) : (
               <Link
                 href="/blogs"
-                onClick={() => setIsLoadingLine(true)}
+                onClick={handleBlogLinkClick}
                 className="flex w-full items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 Blogs

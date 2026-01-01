@@ -2,6 +2,8 @@ import { DM_Sans, Roboto, Roboto_Mono } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
 import NetworkStatus from "@/components/Modules/NetworkStatus";
+import NavBar from "@/components/Home/NavBar";
+import Footer from "@/components/Home/Footer";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -74,7 +76,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
       </head>
@@ -82,8 +84,14 @@ export default function RootLayout({ children }) {
         className={`${roboto.variable} ${robotoMono.variable} ${dmsans.variable} font-dmsans app-background antialiased`}
       >
         <Providers>
-          {children}
           <NetworkStatus />
+          <NavBar />
+          <div className="fixed top-16 right-0 bottom-0 left-0 overflow-y-auto rounded-2xl">
+            <div className="flex h-full flex-col">
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </div>
         </Providers>
       </body>
     </html>

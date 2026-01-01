@@ -121,7 +121,7 @@ const BlogCards = ({ blogs }) => {
   return (
     <>
       {isLoadingLine && <LoadingLine />}
-      <div className="mx-auto mt-10 max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-10 flex justify-center">
           <span className="text-3xl font-semibold">My Blog Space</span>
         </div>
@@ -189,7 +189,7 @@ const BlogCards = ({ blogs }) => {
 
               {/* Read more button */}
               <Link
-                href={`/blogs/blog/${blog.id}`}
+                href={`/blogs/${blog.id}`}
                 onClick={() => setIsLoadingLine(true)}
                 className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-blue-500 underline-offset-4 hover:underline dark:text-blue-400"
               >

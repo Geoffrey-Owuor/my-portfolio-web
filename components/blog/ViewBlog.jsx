@@ -7,16 +7,23 @@ import { formatDate } from "@/utils/Helpers";
 import EditBlog from "./EditBlog";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import LoadingLine from "../Modules/LoadingLine";
 
 const ViewBlog = ({ blogPost }) => {
   const { id: userId } = useUser();
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
+  const [showLoadingLine, setShowLoadingLine] = useState(false);
   const [alertInfo, setAlertInfo] = useState({
     showAlert: false,
     type: "",
     alertMessage: "",
   });
+
+  const handleBlogsRoute = (link) => {
+    setShowLoadingLine(true);
+    router.push(link);
+  };
 
   // Check if blogPost is null, undefined, or empty
   if (!blogPost || Object.keys(blogPost).length === 0) {
@@ -30,7 +37,7 @@ const ViewBlog = ({ blogPost }) => {
             The blog post you're looking for doesn't exist or has been removed.
           </p>
           <button
-            onClick={() => router.push("/blogs")}
+            onClick={() => handleBlogsRoute("/blogs")}
             className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -60,17 +67,18 @@ const ViewBlog = ({ blogPost }) => {
         }
       />
 
+      {showLoadingLine && <LoadingLine />}
+
       <AnimatePresence>
         {showEditBlog && (
           <EditBlog
-            showEditModal={showEditBlog}
             setShowEditModal={setShowEditBlog}
             blogInfo={editBlogData}
             setAlertInfo={setAlertInfo}
           />
         )}
       </AnimatePresence>
-      <article className="mx-auto mt-10 max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <article className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Header Section */}
         <header className="mb-8 sm:mb-12">
           <h1 className="mb-6 text-3xl leading-tight font-bold text-gray-900 sm:text-4xl dark:text-white">
@@ -104,7 +112,7 @@ const ViewBlog = ({ blogPost }) => {
             </button>
 
             <button
-              onClick={() => router.back()}
+              onClick={() => handleBlogsRoute("/blogs")}
               className="flex cursor-pointer items-center gap-2 transition-colors duration-200 hover:text-gray-700 dark:hover:text-gray-500"
             >
               <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />

@@ -105,7 +105,7 @@ const BlogPost = () => {
       {/* Loading Circle */}
       {isSubmitting && <LoadingCircle />}
 
-      <div className="mx-auto mt-12 w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+      <div className="mx-auto w-full max-w-5xl px-2 py-8 sm:px-6 sm:py-12">
         <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm dark:border-gray-800">
           {/* Header - Neutral & Clean */}
           <div className="flex items-center justify-between border-b border-gray-200 px-6 py-6 dark:border-gray-800">
