@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import LoadingLine from "../Modules/LoadingLine";
 import MDEditor from "@uiw/react-md-editor";
-import "@uiw/react-md-editor/markdown-editor.css"; // 2. Import styles
+import "@uiw/react-md-editor/markdown-editor.css"; // 2. Import MD styles
 
 const BlogForm = ({
   handleConfirmSubmit,
@@ -58,7 +58,7 @@ const BlogForm = ({
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter an engaging title..."
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
               required
             />
           </div>
@@ -79,7 +79,7 @@ const BlogForm = ({
               value={formData.author}
               onChange={handleChange}
               placeholder="Your name or pen name"
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
               required
             />
           </div>
@@ -98,7 +98,7 @@ const BlogForm = ({
               value={formData.tagline}
               onChange={handleChange}
               placeholder="Your hashtag line"
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
               required
             />
           </div>
@@ -133,14 +133,13 @@ const BlogForm = ({
               onChange={handleEditorChange}
               height={400}
               preview="edit" // Options: "edit", "live", "preview"
-              className="overflow-hidden rounded-full border border-gray-300 dark:border-gray-700"
               textareaProps={{
                 placeholder:
                   "Write your blog content here... (Markdown supported)",
               }}
             />
             <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-              Markdown formatting is supported. Use **bold** for emphasis.
+              Use the toolbar above for bold, italic, lists, and links.
             </p>
           </div>
 
