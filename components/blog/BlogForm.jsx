@@ -22,16 +22,6 @@ const BlogForm = ({
 }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
 
-  //Handle change wrapper for md editor
-  const handleEditorChange = (value) => {
-    handleChange({
-      target: {
-        name: "content", // This matches the key in your formData state
-        value: value || "", // Ensure we never pass undefined
-      },
-    });
-  };
-
   return (
     <>
       {isLoadingLine && <LoadingLine />}
@@ -119,15 +109,13 @@ const BlogForm = ({
               onChange={handleChange}
               placeholder="Write your blog content here..."
               rows={12}
-              className="w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="w-full resize-y rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
               required
             /> */}
-            <CustomMdEditor
-              value={formData.content}
-              handleMdChange={handleEditorChange}
-            />
+            <CustomMdEditor value={formData.content} onChange={handleChange} />
+
             <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-              Use the toolbar above for bold, italic, lists, and links.
+              Use markdown tools for editing
             </p>
           </div>
 
