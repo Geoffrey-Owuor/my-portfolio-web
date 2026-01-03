@@ -9,10 +9,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import LoadingLine from "../Modules/LoadingLine";
-import MDEditor from "@uiw/react-md-editor";
-import "@uiw/react-md-editor/markdown-editor.css"; // 2. Import MD styles
+import CustomMdEditor from "./CustomMdEditor";
 
 const BlogForm = ({
   handleConfirmSubmit,
@@ -23,9 +21,8 @@ const BlogForm = ({
   IsUpdating,
 }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
-  const { resolvedTheme } = useTheme();
 
-  //Handle change wrapper for md editoe
+  //Handle change wrapper for md editor
   const handleEditorChange = (value) => {
     handleChange({
       target: {
@@ -35,8 +32,6 @@ const BlogForm = ({
     });
   };
 
-  // Getting resolved theme
-  const theme = resolvedTheme === "dark" ? "dark" : "light";
   return (
     <>
       {isLoadingLine && <LoadingLine />}
@@ -104,7 +99,7 @@ const BlogForm = ({
           </div>
 
           {/* Content Textarea */}
-          <div data-color-mode={theme}>
+          <div>
             <div className="mb-2 flex items-center justify-between">
               <label
                 htmlFor="content"
@@ -127,16 +122,9 @@ const BlogForm = ({
               className="w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
               required
             /> */}
-            {/* 4. The MDEditor Component */}
-            <MDEditor
+            <CustomMdEditor
               value={formData.content}
-              onChange={handleEditorChange}
-              height={400}
-              preview="edit" // Options: "edit", "live", "preview"
-              textareaProps={{
-                placeholder:
-                  "Write your blog content here... (Markdown supported)",
-              }}
+              handleMdChange={handleEditorChange}
             />
             <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
               Use the toolbar above for bold, italic, lists, and links.
