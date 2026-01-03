@@ -12,6 +12,7 @@ const CustomMdEditor = ({ value, handleMdChange }) => {
     commands.bold,
     commands.italic,
     commands.hr,
+    commands.code,
     commands.strikethrough,
     commands.divider,
     commands.unorderedListCommand,
