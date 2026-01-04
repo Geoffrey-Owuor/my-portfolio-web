@@ -5,6 +5,8 @@ import BlogAlert from "../Modules/BlogAlert";
 import { useUser } from "@/context/UserContext";
 import { formatDate } from "@/utils/Helpers";
 import EditBlog from "./EditBlog";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import LoadingLine from "../Modules/LoadingLine";
@@ -82,7 +84,7 @@ const ViewBlog = ({ blogPost }) => {
       <article className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Header Section */}
         <header className="mb-8 sm:mb-12">
-          <h1 className="mb-6 text-3xl leading-tight font-bold text-gray-900 sm:text-4xl dark:text-white">
+          <h1 className="mb-6 text-4xl leading-tight font-bold text-gray-900 dark:text-white">
             {blogPost.blog_title}
           </h1>
 
@@ -126,30 +128,10 @@ const ViewBlog = ({ blogPost }) => {
         <div className="mb-8 h-px bg-linear-to-r from-transparent via-gray-300 to-transparent sm:mb-12 dark:via-gray-700" />
 
         {/* Content Section */}
-        <div className="prose prose-lg sm:prose-xl prose-gray dark:prose-invert max-w-none">
-          <div className="space-y-6 leading-relaxed text-gray-700 dark:text-gray-300">
-            {blogPost.blog_content.split("\n\n").map((paragraph, index) => {
-              // Check if paragraph is a heading (starts with **)
-              if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
-                const headingText = paragraph.replace(/\*\*/g, "");
-                return (
-                  <h2
-                    key={index}
-                    className="mt-12 mb-4 text-xl font-bold text-gray-900 first:mt-0 sm:text-2xl dark:text-white"
-                  >
-                    {headingText}
-                  </h2>
-                );
-              }
-
-              // Regular paragraph
-              return (
-                <p key={index} className="text-base leading-relaxed sm:text-lg">
-                  {paragraph}
-                </p>
-              );
-            })}
-          </div>
+        <div className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-semi-bold prose-a:text-blue-600 max-w-none">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {blogPost.blog_content}
+          </ReactMarkdown>
         </div>
 
         {/* Bottom Divider */}

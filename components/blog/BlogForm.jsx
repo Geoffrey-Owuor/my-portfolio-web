@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 import LoadingLine from "../Modules/LoadingLine";
+import CustomMdEditor from "./CustomMdEditor";
 
 const BlogForm = ({
   handleConfirmSubmit,
@@ -20,6 +21,7 @@ const BlogForm = ({
   IsUpdating,
 }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
+
   return (
     <>
       {isLoadingLine && <LoadingLine />}
@@ -41,7 +43,7 @@ const BlogForm = ({
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter an engaging title..."
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
               required
             />
           </div>
@@ -62,7 +64,7 @@ const BlogForm = ({
               value={formData.author}
               onChange={handleChange}
               placeholder="Your name or pen name"
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
               required
             />
           </div>
@@ -81,7 +83,7 @@ const BlogForm = ({
               value={formData.tagline}
               onChange={handleChange}
               placeholder="Your hashtag line"
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
               required
             />
           </div>
@@ -100,18 +102,20 @@ const BlogForm = ({
                 {formData.content.split(/\s+/).filter(Boolean).length} words
               </span>
             </div>
-            <textarea
+            {/* <textarea
               id="content"
               name="content"
               value={formData.content}
               onChange={handleChange}
               placeholder="Write your blog content here..."
               rows={12}
-              className="w-full resize-y rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="w-full resize-y rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
               required
-            />
+            /> */}
+            <CustomMdEditor value={formData.content} onChange={handleChange} />
+
             <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-              Markdown formatting is supported. Use **bold** for emphasis.
+              Use markdown tools for editing
             </p>
           </div>
 

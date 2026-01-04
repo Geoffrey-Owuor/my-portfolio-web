@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   Calendar,
   Clock,
@@ -55,14 +57,11 @@ const BlogCards = ({ blogs }) => {
 
   // Function to remove asterisks and get preview text
   const getPreviewText = (content, maxLength = 150) => {
-    // Remove asterisks (both single and double)
-    const cleanedContent = content.replace(/\*\*/g, "").replace(/\*/g, "");
-
     // Get first part of content
-    const preview = cleanedContent.slice(0, maxLength);
+    const preview = content.slice(0, maxLength);
 
     // Add ellipsis if content was truncated
-    return preview.length < cleanedContent.length ? `${preview}...` : preview;
+    return preview.length < content.length ? `${preview}...` : preview;
   };
 
   // Pagination states, values and logic
@@ -183,9 +182,11 @@ const BlogCards = ({ blogs }) => {
               </div>
 
               {/* Content preview */}
-              <p className="mb-6 grow text-gray-700 dark:text-gray-300">
-                {getPreviewText(blog.blog_content)}
-              </p>
+              <div className="mb-6 grow text-gray-700 dark:text-gray-300">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {getPreviewText(blog.blog_content)}
+                </ReactMarkdown>
+              </div>
 
               {/* Read more button */}
               <Link
