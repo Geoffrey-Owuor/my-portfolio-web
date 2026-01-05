@@ -158,9 +158,9 @@ const ViewBlog = ({ blogPost }) => {
 
           {/* Author Card */}
           <div className="flex justify-center">
-            <div className="inline-flex items-center gap-4 rounded-2xl border border-gray-200 bg-gray-100/50 p-6 sm:mt-12 sm:p-8 dark:border-gray-800 dark:bg-gray-900/50">
+            <div className="inline-flex items-center gap-4 rounded-2xl p-6 sm:mt-12 sm:p-8">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 sm:h-16 sm:w-16">
-                <span className="text-lg font-bold text-white sm:text-xl">
+                <span className="text-base font-bold text-white sm:text-xl">
                   {blogPost.blog_author
                     .split(" ")
                     .map((n) => n[0])

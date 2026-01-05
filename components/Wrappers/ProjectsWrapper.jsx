@@ -193,7 +193,7 @@ const ProjectsWrapper = ({ projects }) => {
                       <div className="mb-1 flex items-center justify-between">
                         <div>
                           <motion.h3
-                            className="text-xl font-semibold text-gray-900 dark:text-white"
+                            className="line-clamp-2 text-xl font-semibold text-gray-900 dark:text-white"
                             whileHover={{
                               x: 5,
                               transition: { duration: 0.2 },
@@ -206,7 +206,7 @@ const ProjectsWrapper = ({ projects }) => {
                               handleNavigate(e, project.id);
                             }}
                             title="see more"
-                            className="mt-1 rounded-full px-2 pb-1 text-sm text-blue-500 hover:bg-blue-300/50 dark:text-blue-400 dark:hover:bg-blue-500/50"
+                            className="mt-1 rounded-full px-2 pb-0.5 text-sm text-blue-500 hover:bg-blue-300/50 dark:text-blue-400 dark:hover:bg-blue-500/50"
                           >
                             more...
                           </button>
