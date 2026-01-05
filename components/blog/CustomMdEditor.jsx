@@ -17,6 +17,7 @@ import {
   Heading2,
   Heading3,
   ListOrdered,
+  Heading4,
 } from "lucide-react";
 
 // --- 1. THE PORTAL PREVIEW MODAL ---
@@ -119,7 +120,7 @@ const CustomMdEditor = ({ value, onChange }) => {
           <ToolbarButton
             icon={<Heading1 size={18} />}
             onClick={() => insertText("# ", "")}
-            label="Heading"
+            label="Heading1"
           />
           <ToolbarButton
             icon={<Heading2 size={18} />}
@@ -130,6 +131,11 @@ const CustomMdEditor = ({ value, onChange }) => {
             icon={<Heading3 size={18} />}
             onClick={() => insertText("### ", "")}
             label="Heading3"
+          />
+          <ToolbarButton
+            icon={<Heading4 size={18} />}
+            onClick={() => insertText("#### ", "")}
+            label="Heading4"
           />
           <div className="mx-2 h-4 w-px bg-gray-300 dark:bg-gray-600" />
           <ToolbarButton
