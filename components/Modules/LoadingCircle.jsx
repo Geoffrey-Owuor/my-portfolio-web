@@ -1,4 +1,4 @@
-import { createPortal } from "react-dom";
+import ClientPortal from "./ClientPortal";
 import { Loader2 } from "lucide-react";
 
 export const LoadingCircle = () => {
@@ -17,5 +17,5 @@ export const LoadingCircle = () => {
       </div>
     </div>
   );
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { createPortal } from "react-dom";
+import ClientPortal from "./ClientPortal";
 import { Loader } from "lucide-react";
 
 const LogoutOverlay = () => {
@@ -21,7 +21,7 @@ const LogoutOverlay = () => {
     </div>
   );
 
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 };
 
 export default LogoutOverlay;

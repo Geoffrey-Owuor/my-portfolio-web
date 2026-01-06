@@ -2,7 +2,7 @@
 
 import { XIcon, AlertCircle, CheckCircle } from "lucide-react";
 import { useEffect } from "react";
-import { createPortal } from "react-dom";
+import ClientPortal from "./ClientPortal";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
@@ -54,7 +54,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
       </AnimatePresence>
     </div>
   );
-  return createPortal(content, document.body);
+  return <ClientPortal>{content}</ClientPortal>;
 };
 
 export default BlogAlert;

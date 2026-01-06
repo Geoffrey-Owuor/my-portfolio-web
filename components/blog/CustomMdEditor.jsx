@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { createPortal } from "react-dom";
+import ClientPortal from "../Modules/ClientPortal";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,11 +17,12 @@ import {
   Heading2,
   Heading3,
   ListOrdered,
+  Heading4,
 } from "lucide-react";
 
 // --- 1. THE PORTAL PREVIEW MODAL ---
 const PreviewModal = ({ isOpen, onClose, content }) => {
-  return createPortal(
+  <ClientPortal>
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
@@ -68,9 +69,8 @@ const PreviewModal = ({ isOpen, onClose, content }) => {
           </motion.div>
         </div>
       )}
-    </AnimatePresence>,
-    document.body,
-  );
+    </AnimatePresence>
+  </ClientPortal>;
 };
 
 // --- 2. THE MAIN EDITOR COMPONENT ---
@@ -119,7 +119,7 @@ const CustomMdEditor = ({ value, onChange }) => {
           <ToolbarButton
             icon={<Heading1 size={18} />}
             onClick={() => insertText("# ", "")}
-            label="Heading"
+            label="Heading1"
           />
           <ToolbarButton
             icon={<Heading2 size={18} />}
@@ -130,6 +130,11 @@ const CustomMdEditor = ({ value, onChange }) => {
             icon={<Heading3 size={18} />}
             onClick={() => insertText("### ", "")}
             label="Heading3"
+          />
+          <ToolbarButton
+            icon={<Heading4 size={18} />}
+            onClick={() => insertText("#### ", "")}
+            label="Heading4"
           />
           <div className="mx-2 h-4 w-px bg-gray-300 dark:bg-gray-600" />
           <ToolbarButton

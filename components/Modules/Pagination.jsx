@@ -34,18 +34,21 @@ const Pagination = ({
         </div>
       )}
       <div className="hidden md:flex md:flex-1 md:items-center md:justify-center lg:justify-between">
-        <div className="flex items-center gap-4">
-          <div className="hidden pr-3 lg:flex">
-            <p className="text-sm text-gray-700 dark:text-gray-400">
-              Showing{" "}
-              <span className="font-semibold">{indexOfFirstBlog + 1}</span> to{" "}
-              <span className="font-semibold">
-                {Math.min(indexOfLastBlog, blogsLength)}
-              </span>{" "}
-              of <span className="font-semibold">{blogsLength}</span> results
-            </p>
+        {totalPages >= 1 && (
+          <div className="flex items-center gap-4">
+            <div className="hidden pr-3 lg:flex">
+              <p className="text-sm text-gray-700 dark:text-gray-400">
+                Showing{" "}
+                <span className="font-semibold">{indexOfFirstBlog + 1}</span> to{" "}
+                <span className="font-semibold">
+                  {Math.min(indexOfLastBlog, blogsLength)}
+                </span>{" "}
+                of <span className="font-semibold">{blogsLength}</span>{" "}
+                {`result${blogsLength > 1 ? "s" : ""}`}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
         {totalPages > 1 && (
           <nav className="flex items-center justify-center gap-1">

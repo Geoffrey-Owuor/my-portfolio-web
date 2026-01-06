@@ -18,6 +18,8 @@ import vercel from "../public/vercel.svg";
 import twitter from "../public/twitter.svg";
 import instagram from "../public/instagram.svg";
 import linkedin from "../public/linkedin.svg";
+import facebook from "../public/facebook.svg";
+import whatsapp from "../public/whatsapp.svg";
 
 export const assets = {
   profile_photo,
@@ -39,6 +41,25 @@ export const tools = {
   pythonLogo: python,
   reactLogo: react,
   vercelLogo: vercel,
+};
+
+export const shareIcons = {
+  twitterLink: {
+    link: "twitter link",
+    logo: twitter,
+  },
+  linkedinLink: {
+    link: "linkedin link",
+    logo: linkedin,
+  },
+  facebookLink: {
+    link: "facebook link",
+    logo: facebook,
+  },
+  whatsappLink: {
+    link: "whatsapp link",
+    logo: whatsapp,
+  },
 };
 
 export const socials = {
