@@ -96,8 +96,8 @@ const ViewBlog = ({ blogPost }) => {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto flex max-w-7xl gap-10">
-        <article className="px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col lg:flex-row">
+        <article className="w-full max-w-none px-4 py-12 sm:px-6 lg:px-16">
           {/* Header Section */}
           <header className="mb-8 sm:mb-12">
             <h1 className="mb-6 text-3xl leading-tight font-bold text-gray-900 sm:text-4xl dark:text-white">
@@ -144,7 +144,7 @@ const ViewBlog = ({ blogPost }) => {
           <div className="mb-8 h-px bg-linear-to-r from-transparent via-gray-300 to-transparent sm:mb-12 dark:via-gray-700" />
 
           {/* Content Section */}
-          <div className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-semi-bold prose-a:text-blue-600 max-w-none">
+          <div className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-semi-bold prose-a:text-blue-600 max-w-none wrap-break-word">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={MarkdownComponents}
