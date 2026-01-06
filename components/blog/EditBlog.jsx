@@ -7,7 +7,7 @@ import BlogForm from "./BlogForm";
 import apiClient from "@/lib/AxiosClient";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { createPortal } from "react-dom";
+import ClientPortal from "../Modules/ClientPortal";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
 
 const EditBlog = ({ setShowEditModal, setAlertInfo, blogInfo }) => {
@@ -123,7 +123,7 @@ const EditBlog = ({ setShowEditModal, setAlertInfo, blogInfo }) => {
         </motion.div>
       </motion.div>
     );
-    return createPortal(content, document.body);
+    return <ClientPortal>{content}</ClientPortal>;
   }
 
   return (
@@ -141,7 +141,7 @@ const EditBlog = ({ setShowEditModal, setAlertInfo, blogInfo }) => {
       {isSubmitting && <LoadingCircle />}
 
       {/* The main content */}
-      {createPortal(
+      <ClientPortal>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -187,9 +187,8 @@ const EditBlog = ({ setShowEditModal, setAlertInfo, blogInfo }) => {
               isSubmitting={isSubmitting}
             />
           </motion.div>
-        </motion.div>,
-        document.body,
-      )}
+        </motion.div>
+      </ClientPortal>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { createPortal } from "react-dom";
+import ClientPortal from "./ClientPortal";
 
 const LoadingLine = () => {
   const content = (
@@ -33,7 +33,8 @@ const LoadingLine = () => {
       />
     </motion.div>
   );
-  return createPortal(content, document.body);
+
+  return <ClientPortal>{content}</ClientPortal>;
 };
 
 export default LoadingLine;

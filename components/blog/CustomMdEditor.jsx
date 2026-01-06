@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { createPortal } from "react-dom";
+import ClientPortal from "../Modules/ClientPortal";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,7 +22,7 @@ import {
 
 // --- 1. THE PORTAL PREVIEW MODAL ---
 const PreviewModal = ({ isOpen, onClose, content }) => {
-  return createPortal(
+  <ClientPortal>
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
@@ -69,9 +69,8 @@ const PreviewModal = ({ isOpen, onClose, content }) => {
           </motion.div>
         </div>
       )}
-    </AnimatePresence>,
-    document.body,
-  );
+    </AnimatePresence>
+  </ClientPortal>;
 };
 
 // --- 2. THE MAIN EDITOR COMPONENT ---
