@@ -1,5 +1,12 @@
 "use client";
-import { Calendar, UserRound, Clock, ArrowLeft, PenLine } from "lucide-react";
+import {
+  Calendar,
+  UserRound,
+  Clock,
+  ArrowLeft,
+  PenLine,
+  Share2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import BlogAlert from "../Modules/BlogAlert";
 import { useUser } from "@/context/UserContext";
@@ -8,9 +15,11 @@ import EditBlog from "./EditBlog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LoadingLine from "../Modules/LoadingLine";
 import TableOfContents from "../Modules/TableOfContents";
+import { shareIcons } from "@/assets/assets";
+import Image from "next/image";
 
 const ViewBlog = ({ blogPost }) => {
   const { id: userId } = useUser();
@@ -22,6 +31,8 @@ const ViewBlog = ({ blogPost }) => {
     type: "",
     alertMessage: "",
   });
+
+  const shareIconEntries = Object.entries(shareIcons);
 
   const handleBlogsRoute = (link) => {
     setShowLoadingLine(true);
@@ -40,6 +51,41 @@ const ViewBlog = ({ blogPost }) => {
         </h3>
       );
     },
+  };
+
+  // 1. State to hold the current URL (avoids hydration mismatch)
+  const [currentUrl, setCurrentUrl] = useState("");
+
+  useEffect(() => {
+    // Determine the URL only after mounting on the client
+    if (typeof window !== "undefined") {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
+
+  // 2. Helper to generate share links based on the platform key
+  const getShareLink = (platformKey, url, title) => {
+    if (!url) return "#"; // Fallback if URL isn't loaded yet
+
+    const encodedUrl = encodeURIComponent(url);
+    const encodedTitle = encodeURIComponent(title);
+
+    switch (platformKey) {
+      case "twitterLink":
+        // X (Twitter) format
+        return `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`;
+      case "linkedinLink":
+        // LinkedIn format
+        return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+      case "facebookLink":
+        // Facebook format
+        return `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+      case "whatsappLink":
+        // WhatsApp format
+        return `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
+      default:
+        return "#";
+    }
   };
 
   // Check if blogPost is null, undefined, or empty
@@ -99,7 +145,7 @@ const ViewBlog = ({ blogPost }) => {
       <div className="mx-auto flex max-w-7xl flex-col lg:flex-row">
         <article className="w-full max-w-none px-4 py-12 sm:px-6 lg:px-16">
           {/* Header Section */}
-          <header className="mb-8 sm:mb-12">
+          <header className="mb-6">
             <h1 className="mb-6 text-3xl leading-tight font-bold text-gray-900 sm:text-4xl dark:text-white">
               {blogPost.blog_title}
             </h1>
@@ -137,6 +183,33 @@ const ViewBlog = ({ blogPost }) => {
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>back to blogs</span>
               </button>
+            </div>
+
+            <div className="mt-6 flex items-center gap-4 text-gray-500 dark:text-gray-400">
+              <span className="inline-flex items-center gap-1">
+                <Share2 className="h-4 w-4" />
+                Share:
+              </span>
+              <div className="flex items-center gap-2">
+                {shareIconEntries.map(([key, shareIcon]) => (
+                  <a
+                    key={key}
+                    href={getShareLink(key, currentUrl, blogPost.blog_title)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Share the blog on ${key.replace("Link", "")}`}
+                    className="rounded-full border border-gray-300 p-2 transition-colors dark:border-gray-600"
+                  >
+                    <Image
+                      src={shareIcon.logo}
+                      alt={shareIcon.link}
+                      width={16}
+                      height={16}
+                      className="h-3 w-3 dark:invert"
+                    />
+                  </a>
+                ))}
+              </div>
             </div>
           </header>
 
