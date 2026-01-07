@@ -22,55 +22,57 @@ import {
 
 // --- 1. THE PORTAL PREVIEW MODAL ---
 const PreviewModal = ({ isOpen, onClose, content }) => {
-  <ClientPortal>
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="custom-blur absolute inset-0 bg-black/50 dark:bg-black/60"
-          />
+  return (
+    <ClientPortal>
+      <AnimatePresence>
+        {isOpen && (
+          <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onClose}
+              className="custom-blur absolute inset-0 bg-black/50 dark:bg-black/60"
+            />
 
-          {/* Modal Content */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className="relative flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl dark:border-gray-800 dark:bg-slate-950"
-          >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-800">
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                <Eye className="h-5 w-5 text-gray-500" />
-                Post Preview
-              </h3>
-              <button
-                onClick={onClose}
-                className="rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-              </button>
-            </div>
+            {/* Modal Content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="relative flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl dark:border-gray-800 dark:bg-slate-950"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+                <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  <Eye className="h-5 w-5 text-gray-500" />
+                  Post Preview
+                </h3>
+                <button
+                  onClick={onClose}
+                  className="rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
+                  <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                </button>
+              </div>
 
-            {/* Modal Body (Scrollable) */}
-            <div className="flex-1 overflow-y-auto p-6 sm:p-8">
-              {/* 'prose' class comes from @tailwindcss/typography */}
-              <article className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-bold prose-a:text-blue-600 max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {content || "*Nothing to preview yet...*"}
-                </ReactMarkdown>
-              </article>
-            </div>
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>
-  </ClientPortal>;
+              {/* Modal Body (Scrollable) */}
+              <div className="flex-1 overflow-y-auto p-6 sm:p-8">
+                {/* 'prose' class comes from @tailwindcss/typography */}
+                <article className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-bold prose-a:text-blue-600 max-w-none">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {content || "*Nothing to preview yet...*"}
+                  </ReactMarkdown>
+                </article>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </ClientPortal>
+  );
 };
 
 // --- 2. THE MAIN EDITOR COMPONENT ---

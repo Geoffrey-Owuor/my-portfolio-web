@@ -88,7 +88,9 @@ export default function RootLayout({ children }) {
           <NavBar />
           <div className="fixed top-16 right-0 bottom-0 left-0 overflow-y-auto rounded-2xl">
             <div className="flex h-full flex-col">
-              <main className="flex-1">{children}</main>
+              <main className="custom-content:px-5 flex-1 px-0">
+                {children}
+              </main>
               <Footer />
             </div>
           </div>
