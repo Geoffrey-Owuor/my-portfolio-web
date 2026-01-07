@@ -1,4 +1,5 @@
 // A reusable createPortal function to solve server side document is not defined errors
+"use client";
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
