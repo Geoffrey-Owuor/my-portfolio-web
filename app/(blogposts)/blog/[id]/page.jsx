@@ -5,21 +5,29 @@ import ViewBlogsSkeleton from "@/components/Skeletons/ViewBlogsSkeleton";
 
 const getBlogInfo = cache(async (id) => {
   try {
-    const blogQuery = `SELECT 
-                       b.id, b.blog_title, b.blog_author, b.blog_date, b.read_time, b.blog_content, b.author_tagline,
-                       
-                       COALESCE(
-                       (SELECT id FROM blogs WHERE id > b.id ORDER BY id ASC LIMIT 1),
-                       (SELECT MIN(id) FROM blogs)
-                       ) AS next_blog_id,
-                       
-                       COALESCE(
-                       (SELECT id FROM blogs WHERE id < b.id ORDER BY id DESC LIMIT 1),
-                       (SELECT MAX(id) FROM blogs)
-                       ) AS previous_blog_id
+    const blogQuery = `
+        WITH bounds AS (
+        SELECT MIN(id) AS min_id, MAX(id) AS max_id FROM blogs
+        )
+        SELECT 
+        b.id, b.blog_title, b.blog_author, b.blog_date, b.read_time, b.blog_content, b.author_tagline,
 
-                       FROM blogs b
-                       WHERE b.id = $1`;
+        (b.id = bounds.min_id) AS is_first_blog,
+        (b.id = bounds.max_id) AS is_last_blog,
+
+        COALESCE(
+        (SELECT id FROM blogs WHERE id > b.id ORDER BY id ASC LIMIT 1),
+        bounds.min_id
+        ) AS next_blog_id,
+        
+        COALESCE(
+        (SELECT id FROM blogs WHERE id < b.id ORDER BY id DESC LIMIT 1),
+        bounds.max_id
+        ) AS previous_blog_id
+
+        FROM blogs b, bounds
+        WHERE b.id = $1
+         `;
 
     const blogPost = await query(blogQuery, [id]);
 
