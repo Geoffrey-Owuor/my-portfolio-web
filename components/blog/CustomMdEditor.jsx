@@ -9,14 +9,12 @@ import {
   Heading1,
   Link as LinkIcon,
   Quote,
-  Eye,
-  X,
-  Maximize2,
   Heading2,
   Heading3,
   ListOrdered,
   Heading4,
   PenLine,
+  Glasses,
 } from "lucide-react";
 
 // --- 2. THE MAIN EDITOR COMPONENT ---
@@ -109,7 +107,7 @@ const CustomMdEditor = ({ value, onChange }) => {
         )}
         {/* Preview Heading */}
         {showPreview && (
-          <div className="px-2 py-[2.8px]">
+          <div className="px-2 py-[3px]">
             <span className="font-semibold">Blog Preview</span>
           </div>
         )}
@@ -128,7 +126,7 @@ const CustomMdEditor = ({ value, onChange }) => {
           onClick={() => setShowPreview(true)}
           className={`mr-2 flex items-center gap-2 rounded-lg ${showPreview ? "bg-gray-950 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"} px-3 py-1.5 text-xs font-semibold transition-colors`}
         >
-          <Maximize2 size={14} />
+          <Glasses size={14} />
           Preview
         </button>
       </div>

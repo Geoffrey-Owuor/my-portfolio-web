@@ -1,5 +1,4 @@
 import { socials } from "@/assets/assets";
-import { Brain, Heart } from "lucide-react";
 import Image from "next/image";
 
 const Footer = () => {
