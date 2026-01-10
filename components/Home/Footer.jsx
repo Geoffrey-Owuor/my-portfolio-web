@@ -33,10 +33,8 @@ const Footer = () => {
             &copy; {currentYear} <span className="font-semibold">Jeff</span>
           </span>
 
-          {/* Separator (Hidden on mobile, visible on desktop) */}
-          <span className="hidden text-gray-400 sm:inline-block dark:text-gray-700">
-            •
-          </span>
+          {/* Dot Separator */}
+          <span className="text-gray-400 dark:text-gray-700">•</span>
 
           {/* Magic Text Section */}
           <span className="animate-magic bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text font-bold text-transparent">
