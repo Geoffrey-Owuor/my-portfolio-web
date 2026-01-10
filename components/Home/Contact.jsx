@@ -231,16 +231,6 @@ const Contact = () => {
               )}
             </motion.button>
           </motion.form>
-
-          {/* Decorative Element */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className="mt-16 flex justify-center"
-          >
-            <div className="h-1 w-32 rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500" />
-          </motion.div>
         </div>
       </section>
       {alertInfo.show && (

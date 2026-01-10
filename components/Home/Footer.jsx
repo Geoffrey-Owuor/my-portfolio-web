@@ -30,13 +30,17 @@ const Footer = () => {
         {/* Copyright Notice */}
         <div className="flex items-center justify-center space-x-1 text-sm text-gray-600 dark:text-gray-400">
           <span>
-            &copy; {currentYear} <span className="font-semibold">Jeff</span>.
+            &copy; {currentYear} <span className="font-semibold">Jeff</span>
           </span>
-          <span className="flex items-center justify-center space-x-1">
-            <span>Made with</span>
-            <Brain className="h-4 w-4 cursor-pointer hover:animate-spin" />
-            <span>and</span>
-            <Heart className="h- w-4 animate-pulse" />
+
+          {/* Separator (Hidden on mobile, visible on desktop) */}
+          <span className="hidden text-gray-400 sm:inline-block dark:text-gray-700">
+            •
+          </span>
+
+          {/* Magic Text Section */}
+          <span className="animate-magic bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text font-bold text-transparent">
+            Make Magic Happen.
           </span>
         </div>
 

@@ -142,7 +142,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
                     boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
                     transition: { duration: 0.2 },
                   }}
-                  className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-100 p-4 text-gray-700 shadow-sm dark:bg-gray-800 dark:text-gray-300"
+                  className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-100/50 p-4 text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
                 >
                   <motion.div
                     animate={{
@@ -201,7 +201,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
                     x: 10,
                     transition: { duration: 0.2 },
                   }}
-                  className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 p-4 text-base text-gray-700 dark:bg-gray-800/50 dark:text-gray-300"
+                  className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 p-4 text-base text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
                 >
                   <motion.div
                     animate={{

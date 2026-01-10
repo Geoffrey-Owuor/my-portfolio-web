@@ -80,7 +80,7 @@ const ProjectsWrapper = ({ projects }) => {
     },
     hover: {
       scale: 1.2,
-      rotate: 45,
+      rotate: 15,
       x: 3,
       y: -3,
       transition: {

@@ -8,6 +8,8 @@ import {
   Share2,
   ChevronRight,
   ChevronLeft,
+  ChevronFirst,
+  ChevronLast,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import BlogAlert from "../Modules/BlogAlert";
@@ -240,10 +242,17 @@ const ViewBlog = ({ blogPost }) => {
           <div className="mt-8 flex items-center justify-between sm:mt-12">
             <button
               onClick={() => handleBlogNavigation(blogPost.previous_blog_id)}
+              title="go to previous blog"
               className="inline-flex items-center gap-1 rounded-full py-2 pr-4 pl-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
             >
-              <ChevronLeft strokeWidth={1} className="h-7 w-7" />
-              <span className="hidden sm:flex">Previous</span>
+              {blogPost.is_first_blog ? (
+                <ChevronFirst strokeWidth={1} className="h-7 w-7" />
+              ) : (
+                <ChevronLeft strokeWidth={1} className="h-7 w-7" />
+              )}
+              <span className="hidden sm:flex">
+                {blogPost.is_first_blog ? "last blog" : "previous"}
+              </span>
             </button>
             <div className="inline-flex items-center gap-4 rounded-2xl p-2">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 sm:h-16 sm:w-16">
@@ -265,10 +274,17 @@ const ViewBlog = ({ blogPost }) => {
             </div>
             <button
               onClick={() => handleBlogNavigation(blogPost.next_blog_id)}
+              title="go to next blog"
               className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-4 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
             >
-              <span className="hidden sm:flex">Next</span>
-              <ChevronRight strokeWidth={1} className="h-7 w-7" />
+              <span className="hidden sm:flex">
+                {blogPost.is_last_blog ? "first blog" : "next"}
+              </span>
+              {blogPost.is_last_blog ? (
+                <ChevronLast strokeWidth={1} className="h-7 w-7" />
+              ) : (
+                <ChevronRight strokeWidth={1} className="h-7 w-7" />
+              )}
             </button>
           </div>
         </article>
