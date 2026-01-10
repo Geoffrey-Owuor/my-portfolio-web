@@ -263,7 +263,15 @@ const ViewBlog = ({ blogPost }) => {
                 </p>
               </div>
             </div>
-            <button className="cursor-pointer rounded-full p-2 hover:bg-gray-200/50 dark:hover:bg-gray-700/50">
+            <button
+              onClick={() =>
+                handleBlogNavigation(
+                  Math.min(blogPost.id + 1, blogPost.total_blogs),
+                )
+              }
+              disabled={blogPost.id === blogPost.total_blogs}
+              className="cursor-pointer rounded-full p-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
+            >
               <ChevronRight className="h-7 w-7" />
             </button>
           </div>
