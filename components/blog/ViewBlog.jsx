@@ -240,7 +240,6 @@ const ViewBlog = ({ blogPost }) => {
           <div className="mt-8 flex items-center justify-between sm:mt-12">
             <button
               onClick={() => handleBlogNavigation(blogPost.previous_blog_id)}
-              disabled={!blogPost.previous_blog_id}
               className="cursor-pointer rounded-full p-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
             >
               <ChevronLeft className="h-7 w-7" />
@@ -265,7 +264,6 @@ const ViewBlog = ({ blogPost }) => {
             </div>
             <button
               onClick={() => handleBlogNavigation(blogPost.next_blog_id)}
-              disabled={!blogPost.next_blog_id}
               className="cursor-pointer rounded-full p-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
             >
               <ChevronRight className="h-7 w-7" />
