@@ -155,7 +155,7 @@ const ExperienceWrapper = ({ experiences }) => {
                   x: 5,
                   transition: { duration: 0.2 },
                 }}
-                className="bg-gradient-classes group relative flex flex-col rounded-xl p-6 shadow-sm transition-shadow hover:shadow-md"
+                className="bg-gradient-classes group relative flex flex-col rounded-xl p-6 transition-shadow hover:shadow-md"
               >
                 {/* Animated border gradient on hover */}
                 <motion.div

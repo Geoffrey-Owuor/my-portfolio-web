@@ -55,22 +55,6 @@ const Project = ({ projectInfo }) => {
     },
   };
 
-  // Icon animation
-  const iconVariants = {
-    rest: {
-      x: 0,
-      rotate: 0,
-    },
-    hover: {
-      x: 5,
-      rotate: -15,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut",
-      },
-    },
-  };
-
   const handleGoBack = () => {
     setIsNavigating(true);
     router.push("/#projects");
@@ -164,12 +148,10 @@ const Project = ({ projectInfo }) => {
                 initial="rest"
                 whileHover="hover"
                 whileTap="tap"
-                className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-gray-700 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+                className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
               >
                 <span>Visit Project</span>
-                <motion.div variants={iconVariants}>
-                  <ExternalLink className="h-5 w-5" />
-                </motion.div>
+                <ExternalLink className="h-5 w-5" />
               </motion.a>
             )}
           </motion.div>
@@ -177,7 +159,7 @@ const Project = ({ projectInfo }) => {
           {/* Project Description */}
           <motion.div
             variants={contentVariants}
-            className="bg-gradient-classes rounded-xl p-8 shadow-sm"
+            className="bg-gradient-classes rounded-xl p-8"
           >
             <motion.h2
               initial={{ opacity: 0 }}
@@ -197,16 +179,6 @@ const Project = ({ projectInfo }) => {
                 {project.project_description}
               </p>
             </motion.div>
-          </motion.div>
-
-          {/* Decorative Element */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
-            className="mt-16 flex justify-center"
-          >
-            <div className="h-1 w-32 rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500" />
           </motion.div>
         </motion.div>
       </section>

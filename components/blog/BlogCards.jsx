@@ -157,7 +157,7 @@ const BlogCards = ({ blogs }) => {
             currentBlogs.map((blog) => (
               <article
                 key={blog.id}
-                className="flex flex-col rounded-xl border border-gray-200 bg-slate-50 p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800 dark:bg-gray-900/50"
+                className="flex flex-col rounded-xl border border-gray-200 bg-slate-50 p-6 transition-shadow hover:shadow-sm dark:border-gray-800 dark:bg-gray-900/50"
               >
                 {/* Title */}
                 <h2 className="mb-3 line-clamp-2 text-xl font-semibold text-gray-900 dark:text-white">

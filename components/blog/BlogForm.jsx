@@ -102,16 +102,6 @@ const BlogForm = ({
                 {formData.content.split(/\s+/).filter(Boolean).length} words
               </span>
             </div>
-            {/* <textarea
-              id="content"
-              name="content"
-              value={formData.content}
-              onChange={handleChange}
-              placeholder="Write your blog content here..."
-              rows={12}
-              className="w-full resize-y rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
-              required
-            /> */}
             <CustomMdEditor value={formData.content} onChange={handleChange} />
 
             <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">

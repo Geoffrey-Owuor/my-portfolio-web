@@ -31,7 +31,7 @@ const Hero = () => {
     },
     hover: {
       x: 5,
-      rotate: -15,
+      rotate: 0,
       transition: {
         duration: 0.3,
         ease: "easeOut",

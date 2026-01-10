@@ -182,7 +182,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
                         delay: index * 0.15,
                       },
                     }}
-                    className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-xl bg-slate-100 p-4 shadow-sm dark:bg-gray-800"
+                    className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-xl bg-slate-100/50 p-4 shadow-sm dark:bg-gray-800/50"
                   >
                     <motion.div
                       whileHover={{

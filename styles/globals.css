@@ -41,6 +41,23 @@
   .animate-slideUp {
     animation: slideUp 0.2s ease-in-out forwards;
   }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-magic {
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
 }
 
 @layer base {

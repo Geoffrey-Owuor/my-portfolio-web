@@ -6,6 +6,10 @@ import {
   ArrowLeft,
   PenLine,
   Share2,
+  ChevronRight,
+  ChevronLeft,
+  ChevronFirst,
+  ChevronLast,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import BlogAlert from "../Modules/BlogAlert";
@@ -39,6 +43,11 @@ const ViewBlog = ({ blogPost }) => {
     router.push(link);
   };
 
+  const handleBlogNavigation = (id) => {
+    setShowLoadingLine(true);
+    router.push(`/blog/${id}`);
+  };
+
   // 1. Define custom renderer for ReactMarkdown to add IDs to h3
   const MarkdownComponents = {
     h3: ({ node, children, ...props }) => {
@@ -56,10 +65,26 @@ const ViewBlog = ({ blogPost }) => {
   // 1. State to hold the current URL (avoids hydration mismatch)
   const [currentUrl, setCurrentUrl] = useState("");
 
+  // UseEffect to run some functionalities on mount
   useEffect(() => {
     // Determine the URL only after mounting on the client
     if (typeof window !== "undefined") {
       setCurrentUrl(window.location.href);
+    }
+
+    if (blogPost.is_first_blog) {
+      setAlertInfo({
+        showAlert: true,
+        type: "success",
+        alertMessage: "Where the magic began. My very first post! 🕰️🚀",
+      });
+    } else if (blogPost.is_last_blog) {
+      setAlertInfo({
+        showAlert: true,
+        type: "success",
+        alertMessage:
+          "You've reached the last blog. More magic coming soon! 🔮",
+      });
     }
   }, []);
 
@@ -229,9 +254,23 @@ const ViewBlog = ({ blogPost }) => {
           {/* Bottom Divider */}
           <div className="mt-12 h-px bg-linear-to-r from-transparent via-gray-300 to-transparent sm:mt-16 dark:via-gray-700" />
 
-          {/* Author Card */}
-          <div className="flex justify-center">
-            <div className="inline-flex items-center gap-4 rounded-2xl p-6 sm:mt-12 sm:p-8">
+          {/* Author Card and Back & Forward Logs */}
+          <div className="mt-8 flex items-center justify-between sm:mt-12">
+            <button
+              onClick={() => handleBlogNavigation(blogPost.previous_blog_id)}
+              title="go to previous blog"
+              className="inline-flex items-center gap-1 rounded-full py-2 pr-4 pl-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
+            >
+              {blogPost.is_first_blog ? (
+                <ChevronFirst strokeWidth={1} className="h-7 w-7" />
+              ) : (
+                <ChevronLeft strokeWidth={1} className="h-7 w-7" />
+              )}
+              <span className="hidden sm:flex">
+                {blogPost.is_first_blog ? "last blog" : "previous"}
+              </span>
+            </button>
+            <div className="inline-flex items-center gap-4 rounded-2xl p-2">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 sm:h-16 sm:w-16">
                 <span className="text-base font-bold text-white sm:text-xl">
                   {blogPost.blog_author
@@ -240,7 +279,7 @@ const ViewBlog = ({ blogPost }) => {
                     .join("")}
                 </span>
               </div>
-              <div>
+              <div className="hidden sm:block">
                 <h3 className="mb-2 text-lg font-semibold text-gray-900 sm:text-xl dark:text-white">
                   {blogPost.blog_author}
                 </h3>
@@ -249,6 +288,20 @@ const ViewBlog = ({ blogPost }) => {
                 </p>
               </div>
             </div>
+            <button
+              onClick={() => handleBlogNavigation(blogPost.next_blog_id)}
+              title="go to next blog"
+              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-4 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
+            >
+              <span className="hidden sm:flex">
+                {blogPost.is_last_blog ? "first blog" : "next"}
+              </span>
+              {blogPost.is_last_blog ? (
+                <ChevronLast strokeWidth={1} className="h-7 w-7" />
+              ) : (
+                <ChevronRight strokeWidth={1} className="h-7 w-7" />
+              )}
+            </button>
           </div>
         </article>
         {/* 3. The Sidebar (Only visible on large screens via CSS in component) */}
