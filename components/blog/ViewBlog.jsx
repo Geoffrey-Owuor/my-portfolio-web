@@ -65,10 +65,26 @@ const ViewBlog = ({ blogPost }) => {
   // 1. State to hold the current URL (avoids hydration mismatch)
   const [currentUrl, setCurrentUrl] = useState("");
 
+  // UseEffect to run some functionalities on mount
   useEffect(() => {
     // Determine the URL only after mounting on the client
     if (typeof window !== "undefined") {
       setCurrentUrl(window.location.href);
+    }
+
+    if (blogPost.is_first_blog) {
+      setAlertInfo({
+        showAlert: true,
+        type: "success",
+        alertMessage: "Where the magic began. My very first post! 🕰️🚀",
+      });
+    } else if (blogPost.is_last_blog) {
+      setAlertInfo({
+        showAlert: true,
+        type: "success",
+        alertMessage:
+          "You've reached the last blog. More magic coming soon! 🔮",
+      });
     }
   }, []);
 
