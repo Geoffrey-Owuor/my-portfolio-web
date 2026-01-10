@@ -7,7 +7,10 @@ const getBlogInfo = cache(async (id) => {
   try {
     const blogQuery = `SELECT 
                        b.id, b.blog_title, b.blog_author, b.blog_date, b.read_time, b.blog_content, b.author_tagline,
-                       (SELECT COUNT(*)::int FROM blogs) AS total_blogs
+                       (SELECT COUNT(*)::int FROM blogs) AS total_blogs,
+
+                       (SELECT id FROM blogs WHERE id > b.id ORDER BY id ASC LIMIT 1) AS next_blog_id,
+                       (SELECT id FROM blogs WHERE id < b.id ORDER BY id DESC LIMIT 1) AS previous_blog_id
                        FROM blogs b
                        WHERE b.id = $1`;
 

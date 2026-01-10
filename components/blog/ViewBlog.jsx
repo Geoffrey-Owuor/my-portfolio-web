@@ -239,8 +239,8 @@ const ViewBlog = ({ blogPost }) => {
           {/* Author Card and Back & Forward Logs */}
           <div className="mt-8 flex items-center justify-between sm:mt-12">
             <button
-              onClick={() => handleBlogNavigation(Math.max(blogPost.id - 1, 1))}
-              disabled={blogPost.id === 1}
+              onClick={() => handleBlogNavigation(blogPost.previous_blog_id)}
+              disabled={!blogPost.previous_blog_id}
               className="cursor-pointer rounded-full p-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
             >
               <ChevronLeft className="h-7 w-7" />
@@ -264,12 +264,8 @@ const ViewBlog = ({ blogPost }) => {
               </div>
             </div>
             <button
-              onClick={() =>
-                handleBlogNavigation(
-                  Math.min(blogPost.id + 1, blogPost.total_blogs),
-                )
-              }
-              disabled={blogPost.id === blogPost.total_blogs}
+              onClick={() => handleBlogNavigation(blogPost.next_blog_id)}
+              disabled={!blogPost.next_blog_id}
               className="cursor-pointer rounded-full p-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
             >
               <ChevronRight className="h-7 w-7" />
