@@ -6,6 +6,8 @@ import {
   ArrowLeft,
   PenLine,
   Share2,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import BlogAlert from "../Modules/BlogAlert";
@@ -37,6 +39,11 @@ const ViewBlog = ({ blogPost }) => {
   const handleBlogsRoute = (link) => {
     setShowLoadingLine(true);
     router.push(link);
+  };
+
+  const handleBlogNavigation = (id) => {
+    setShowLoadingLine(true);
+    router.push(`/blog/${id}`);
   };
 
   // 1. Define custom renderer for ReactMarkdown to add IDs to h3
@@ -229,9 +236,16 @@ const ViewBlog = ({ blogPost }) => {
           {/* Bottom Divider */}
           <div className="mt-12 h-px bg-linear-to-r from-transparent via-gray-300 to-transparent sm:mt-16 dark:via-gray-700" />
 
-          {/* Author Card */}
-          <div className="flex justify-center">
-            <div className="inline-flex items-center gap-4 rounded-2xl p-6 sm:mt-12 sm:p-8">
+          {/* Author Card and Back & Forward Logs */}
+          <div className="mt-8 flex items-center justify-between sm:mt-12">
+            <button
+              onClick={() => handleBlogNavigation(Math.max(blogPost.id - 1, 1))}
+              disabled={blogPost.id === 1}
+              className="cursor-pointer rounded-full p-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
+            >
+              <ChevronLeft className="h-7 w-7" />
+            </button>
+            <div className="inline-flex items-center gap-4 rounded-2xl p-2">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 sm:h-16 sm:w-16">
                 <span className="text-base font-bold text-white sm:text-xl">
                   {blogPost.blog_author
@@ -240,7 +254,7 @@ const ViewBlog = ({ blogPost }) => {
                     .join("")}
                 </span>
               </div>
-              <div>
+              <div className="hidden sm:block">
                 <h3 className="mb-2 text-lg font-semibold text-gray-900 sm:text-xl dark:text-white">
                   {blogPost.blog_author}
                 </h3>
@@ -249,6 +263,9 @@ const ViewBlog = ({ blogPost }) => {
                 </p>
               </div>
             </div>
+            <button className="cursor-pointer rounded-full p-2 hover:bg-gray-200/50 dark:hover:bg-gray-700/50">
+              <ChevronRight className="h-7 w-7" />
+            </button>
           </div>
         </article>
         {/* 3. The Sidebar (Only visible on large screens via CSS in component) */}
