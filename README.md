@@ -12,10 +12,9 @@ Check out the live site **[Here](https://jeff-portfolio-web.vercel.app)**
 
 - **Responsive Design:** Fully optimized for mobile, tablet, and desktop.
 - **Dynamic Projects:** Showcasing my latest work with detailed descriptions and links.
-- **Easy Addition & Updates:** Data like skills, stack, experience, and education are all fetched
-  from the database - Making it easy to update and add new data e.g., adding a new experience/skill
+- **Easy Addition & Updates:** Data like skills, stack, experience, and education are all fetched from the database - Making it easy to update and add new data e.g., adding a new experience/skill
 - **Performance:** Optimized images and fast page loads using Next.js `App Router`.
-- **Contact Form:** A direct way for recruiters and collaborators to reach out.
+- **Contact Form:** A direct way for tech enthusiasts, recruiters, and collaborators to reach out.
 - **Animations:** Animations implemented with framer motion.
 - **Blogs:** Blog posting, editing,searching, and viewing of blogs.
 
@@ -25,4 +24,4 @@ Check out the live site **[Here](https://jeff-portfolio-web.vercel.app)**
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 - **Database:** [Neon Serverless Postgres](https://neon.com)
 - **Deployment:** [Vercel](https://vercel.com/)
-- **Fonts:** Geist (via `next/font`)
+- **Fonts:** DM_Sans, Roboto, Roboto_Mono (via `next/font`)
