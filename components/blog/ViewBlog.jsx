@@ -259,7 +259,7 @@ const ViewBlog = ({ blogPost }) => {
             <button
               onClick={() => handleBlogNavigation(blogPost.previous_blog_id)}
               title="go to previous blog"
-              className="inline-flex items-center gap-1 rounded-full py-2 pr-4 pl-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
+              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 sm:pr-4 dark:hover:bg-gray-700/50"
             >
               {blogPost.is_first_blog ? (
                 <ChevronFirst strokeWidth={1} className="h-7 w-7" />
@@ -291,7 +291,7 @@ const ViewBlog = ({ blogPost }) => {
             <button
               onClick={() => handleBlogNavigation(blogPost.next_blog_id)}
               title="go to next blog"
-              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-4 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-gray-700/50"
+              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 sm:pl-4 dark:hover:bg-gray-700/50"
             >
               <span className="hidden sm:flex">
                 {blogPost.is_last_blog ? "first blog" : "next"}

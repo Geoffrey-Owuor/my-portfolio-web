@@ -222,7 +222,7 @@ const NavBar = () => {
               <a
                 href={link.href}
                 onClick={(e) => handleSidebarClick(e, link.id)}
-                className="block w-full rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="block w-full rounded-2xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 {link.label}
               </a>
@@ -230,7 +230,7 @@ const NavBar = () => {
           ))}
           <li>
             {pathname === "/blogs" ? (
-              <span className="flex w-full cursor-default items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-500 dark:text-gray-400">
+              <span className="flex w-full cursor-default items-center gap-2 rounded-2xl px-4 py-3 text-base text-gray-500 dark:text-gray-400">
                 Blogs
                 <ArrowUpRight className="h-4 w-4" />
               </span>
@@ -238,7 +238,7 @@ const NavBar = () => {
               <Link
                 href="/blogs"
                 onClick={handleBlogLinkClick}
-                className="flex w-full items-center gap-2 rounded-xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="flex w-full items-center gap-2 rounded-2xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 Blogs
                 <ArrowUpRight className="h-4 w-4" />
