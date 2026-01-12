@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PreviewModal from "./PreviewModal";
 
 import {
@@ -16,10 +16,36 @@ import {
   PenLine,
   Glasses,
 } from "lucide-react";
+import TooltipUI from "../Theme/TooltipUI";
 
 // --- 2. THE MAIN EDITOR COMPONENT ---
 const CustomMdEditor = ({ value, onChange }) => {
   const [showPreview, setShowPreview] = useState(false);
+  const [showToolTip, setShowToolTip] = useState(false);
+  const [suppressHover, setSuppressHover] = useState(false);
+
+  // UseEffect which is a shortcut for toggling preview mode (alt + P)
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Check for alt + p
+      if (event.altKey && event.key === "p") {
+        // prevent browsers default action for this particular shortcut
+        event.preventDefault();
+
+        setShowPreview((prev) => !prev);
+      }
+    };
+
+    // Add an avent listener when this component mounts
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [showPreview]); //rerun when showPreview changes
+
+  // Detect if current device supports hovering and has a pointer
+  const canHover =
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover:hover) and (pointer:fine)").matches;
 
   // Helper to insert markdown characters
   const insertText = (before, after) => {
@@ -43,6 +69,25 @@ const CustomMdEditor = ({ value, onChange }) => {
       textarea.focus();
       textarea.setSelectionRange(start + before.length, end + before.length);
     }, 0);
+  };
+
+  const handleClick = () => {
+    setShowToolTip(false);
+    setSuppressHover(true);
+    setShowPreview(true);
+  };
+
+  const handleMouseEnter = () => {
+    if (canHover && !suppressHover) {
+      setShowToolTip(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (canHover) {
+      setSuppressHover(false);
+      setShowToolTip(false);
+    }
   };
 
   return (
@@ -121,14 +166,24 @@ const CustomMdEditor = ({ value, onChange }) => {
           <PenLine size={14} />
           Write
         </button>
-        <button
-          type="button"
-          onClick={() => setShowPreview(true)}
-          className={`mr-2 flex items-center gap-2 rounded-lg ${showPreview ? "bg-gray-950 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"} px-3 py-1.5 text-xs font-semibold transition-colors`}
-        >
-          <Glasses size={14} />
-          Preview
-        </button>
+        <div className="relative">
+          <button
+            type="button"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
+            className={`mr-2 flex items-center gap-2 rounded-lg ${showPreview ? "bg-gray-950 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+          >
+            <Glasses size={14} />
+            Preview
+          </button>
+          {/* Tooltip div */}
+          <TooltipUI
+            canHover={canHover}
+            shortcut="alt + P"
+            showToolTip={showToolTip}
+          />
+        </div>
       </div>
 
       {/* Text Area */}
