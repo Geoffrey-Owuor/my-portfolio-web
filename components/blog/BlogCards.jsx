@@ -75,11 +75,6 @@ const BlogCards = ({ blogs }) => {
     Math.min(indexOfLastBlog, filteredBlogs.length),
   );
 
-  const handleCreateLink = () => {
-    setIsLoadingLine(true);
-    router.push("/createblog");
-  };
-
   const handleSearchQuery = (e) => {
     setCurrentPage(1);
     setSearchQuery(e.target.value);
@@ -125,13 +120,14 @@ const BlogCards = ({ blogs }) => {
           <span className="text-3xl font-semibold">My Blog Space</span>
         </div>
         <div className="mb-10 flex flex-col items-center gap-6 md:flex-row md:justify-center">
-          <button
-            onClick={handleCreateLink}
+          <Link
+            href="/createblog"
+            onClick={() => setIsLoadingLine(true)}
             className="flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200/50 px-6 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
           >
             <Plus className="h-5 w-5" />
             Create Blog
-          </button>
+          </Link>
 
           {/* The search input field */}
           <div className="relative">
