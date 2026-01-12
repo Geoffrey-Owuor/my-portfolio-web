@@ -8,6 +8,7 @@ export async function POST() {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
+  // Clearing refresh token reference from the database
   if (refreshToken) {
     try {
       const payload = await verifyRefreshTokenJWT(refreshToken);
@@ -27,7 +28,7 @@ export async function POST() {
   }
 
   /**
-   * CLIENT LOGOUT (AUTHORITATIVE)
+   * CLIENT LOGOUT (AUTHORITATIVE) - Runs even if the above db query fails for some reason
    */
   cookieStore.delete("accessToken");
   cookieStore.delete("refreshToken");
