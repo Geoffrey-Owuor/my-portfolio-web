@@ -165,7 +165,7 @@ const Project = ({ projectInfo }) => {
           {projectImage && (
             <div
               key={projectImage.id}
-              className="mb-8 w-full rounded-2xl border border-gray-200 p-1 dark:border-gray-700"
+              className="mb-8 w-full rounded-2xl border border-gray-200 p-2 dark:border-gray-700"
             >
               <Image
                 src={projectImage.image}
