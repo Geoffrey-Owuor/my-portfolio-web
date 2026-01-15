@@ -20,10 +20,21 @@ import instagram from "../public/instagram.svg";
 import linkedin from "../public/linkedin.svg";
 import facebook from "../public/facebook.svg";
 import whatsapp from "../public/whatsapp.svg";
+import app_script_image from "../public/project_images/app_script_image.png";
+import garbage_collection_image from "../public/project_images/garbage_collection_image.png";
+import google_sheet_image from "../public/project_images/google_sheet_image.png";
+import staffproductpurchase_image from "../public/project_images/staffproductpurchase_image.png";
 
 export const assets = {
   profile_photo,
 };
+
+export const project_images = [
+  { id: 4, image: app_script_image },
+  { id: 1, image: garbage_collection_image },
+  { id: 3, image: staffproductpurchase_image },
+  { id: 5, image: google_sheet_image },
+];
 
 export const tools = {
   awsLogo: aws,

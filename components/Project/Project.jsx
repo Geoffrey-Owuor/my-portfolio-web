@@ -3,6 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import LoadingLine from "../Modules/LoadingLine";
 import { useState } from "react";
+import { project_images } from "@/assets/assets";
+import Image from "next/image";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -10,6 +12,9 @@ const Project = ({ projectInfo }) => {
   const router = useRouter();
   const project = projectInfo[0];
   const [isNavigating, setIsNavigating] = useState(false);
+
+  // Find the project image that matches our current project by comparing their ids
+  const projectImage = project_images.find((image) => image.id === project.id);
 
   // Container variants
   const containerVariants = {
@@ -155,6 +160,21 @@ const Project = ({ projectInfo }) => {
               </motion.a>
             )}
           </motion.div>
+
+          {/* Displaying the project image only when there is an available */}
+          {projectImage && (
+            <div
+              key={projectImage.id}
+              className="mb-8 w-full rounded-2xl border border-gray-200 p-2 dark:border-gray-700"
+            >
+              <Image
+                src={projectImage.image}
+                alt="Project Image"
+                className="rounded-xl"
+                priority
+              />
+            </div>
+          )}
 
           {/* Project Description */}
           <motion.div
