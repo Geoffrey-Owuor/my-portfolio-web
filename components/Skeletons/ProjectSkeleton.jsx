@@ -20,6 +20,12 @@ export const ProjectSkeleton = () => {
           <div className="h-8 w-40 animate-pulse rounded-full bg-gray-300 dark:bg-gray-700" />
         </div>
 
+        {/* --- NEW ADDITION: Project Image Skeleton --- */}
+        <div className="mb-8 w-full rounded-2xl border border-gray-200 p-2 dark:border-gray-700">
+          <div className="h-64 w-full animate-pulse rounded-xl bg-gray-200 sm:h-80 md:h-96 dark:bg-gray-800" />
+        </div>
+        {/* -------------------------------------------- */}
+
         {/* Description Section Skeleton */}
         <div className="rounded-xl bg-white p-8 shadow-sm dark:bg-gray-800">
           {/* Section Title Skeleton */}

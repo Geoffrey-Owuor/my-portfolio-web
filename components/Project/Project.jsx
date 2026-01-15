@@ -163,7 +163,8 @@ const Project = ({ projectInfo }) => {
 
           {/* Displaying the project image only when there is an available */}
           {projectImage && (
-            <div
+            <motion.div
+              variants={containerVariants}
               key={projectImage.id}
               className="mb-8 w-full rounded-2xl border border-gray-200 p-2 dark:border-gray-700"
             >
@@ -173,7 +174,7 @@ const Project = ({ projectInfo }) => {
                 className="rounded-xl"
                 priority
               />
-            </div>
+            </motion.div>
           )}
 
           {/* Project Description */}
