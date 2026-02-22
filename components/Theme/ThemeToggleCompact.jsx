@@ -62,31 +62,32 @@ export default function ThemeToggleCompact() {
       return;
     }
 
+    // Determine animation origin based on TARGET theme
+    // isDark === true means target is Light -> Bottom Left
+    // isDark === false means target is Dark -> Top Right
+    const x = isDark ? 0 : window.innerWidth;
+    const y = isDark ? window.innerHeight : 0;
+
+    // Since we are starting from the extreme corners, the furthest point
+    // is always the opposite corner, making maxRadius the full screen diagonal.
+    const maxRadius = Math.hypot(window.innerWidth, window.innerHeight);
+
     // Start the view transition
-    const transition = document.startViewTransition(async () => {
+    const transition = document.startViewTransition(() => {
       // This callback changes the actual theme state
       setTheme(isDark ? "light" : "dark");
     });
 
-    //Wait for the ready promise
+    // Wait for the ready promise
     // The browser has captured the "old" view and is ready to show the "new" view
     await transition.ready;
-
-    // Calculate geometry for the clip path
-    const x = e.clientX;
-    const y = e.clientY;
-
-    // Math logic: Find distance to the furthest corner of the screen
-    const right = window.innerWidth - x;
-    const bottom = window.innerHeight - y;
-    const maxRadius = Math.hypot(Math.max(x, right), Math.max(y, bottom));
 
     // Animate the circular clip-path
     document.documentElement.animate(
       {
         clipPath: [
-          `circle(0px at ${x}px ${y}px)`, //Start: 0px at click
-          `circle(${maxRadius}px at ${x}px ${y}px)`, //End: fullscreen circle
+          `circle(0px at ${x}px ${y}px)`, // Start: 0px at origin
+          `circle(${maxRadius}px at ${x}px ${y}px)`, // End: fullscreen circle
         ],
       },
       {

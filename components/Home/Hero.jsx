@@ -53,7 +53,7 @@ const Hero = () => {
     },
   };
 
-  const titleTags = ["#Engineer", "#Developer", "#Singer"];
+  const titleTags = ["#Engineer", "#Developer", "#Singer😅"];
 
   return (
     <section
