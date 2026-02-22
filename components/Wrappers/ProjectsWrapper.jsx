@@ -5,6 +5,7 @@ import LoadingLine from "../Modules/LoadingLine";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { SectionAlert } from "../Modules/SectionAlert";
+import ProjectStack from "./ProjectStack";
 
 const ProjectsWrapper = ({ projects }) => {
   //initialize router
@@ -159,7 +160,7 @@ const ProjectsWrapper = ({ projects }) => {
                 initial="rest"
                 whileHover="hover"
                 animate="rest"
-                className="group relative flex h-88 flex-col overflow-hidden rounded-xl bg-slate-100 shadow-sm transition-all duration-300 hover:shadow-2xl dark:bg-gray-800/50"
+                className="group relative flex h-full flex-col overflow-hidden rounded-xl bg-slate-100 p-6 shadow-sm transition-all duration-300 hover:shadow-2xl dark:bg-gray-800/50"
               >
                 {/* Animated border gradient on hover */}
                 <motion.div
@@ -187,73 +188,51 @@ const ProjectsWrapper = ({ projects }) => {
                   className="relative"
                 >
                   {/* Card Content */}
-                  <div className="flex h-full flex-col justify-between p-6">
+
+                  {/* Card Header */}
+                  <div className="mb-1 flex items-center justify-between">
                     <div>
-                      {/* Card Header */}
-                      <div className="mb-1 flex items-center justify-between">
-                        <div>
-                          <motion.h3
-                            className="line-clamp-2 text-xl font-semibold text-gray-900 dark:text-white"
-                            whileHover={{
-                              x: 5,
-                              transition: { duration: 0.2 },
-                            }}
-                          >
-                            {project.project_name}
-                          </motion.h3>
-                          <button
-                            onClick={(e) => {
-                              handleNavigate(e, project.id);
-                            }}
-                            title="see more"
-                            className="mt-1 rounded-full px-2 pb-0.5 text-sm text-blue-500 hover:bg-blue-300/50 dark:text-blue-400 dark:hover:bg-blue-500/50"
-                          >
-                            more...
-                          </button>
-                        </div>
-
-                        {/* Animated Link Icon */}
-                        <motion.div variants={iconVariants}>
-                          <CircleArrowOutUpRight className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                        </motion.div>
-                      </div>
-
-                      {/* Card Description with reveal animation */}
-                      <motion.p
-                        className="line-clamp-9 text-gray-600 dark:text-gray-300"
-                        initial={{ opacity: 0.8 }}
+                      <motion.h3
+                        className="line-clamp-2 text-xl font-semibold text-gray-900 dark:text-white"
                         whileHover={{
-                          opacity: 1,
+                          x: 5,
                           transition: { duration: 0.2 },
                         }}
                       >
-                        {project.project_description}
-                      </motion.p>
+                        {project.project_name}
+                      </motion.h3>
+                      <button
+                        onClick={(e) => {
+                          handleNavigate(e, project.id);
+                        }}
+                        title="see more"
+                        className="mt-1 rounded-full px-2 pb-0.5 text-sm text-blue-500 hover:bg-blue-300/50 dark:text-blue-400 dark:hover:bg-blue-500/50"
+                      >
+                        more...
+                      </button>
                     </div>
 
-                    {/* Hover indicator line */}
-                    <motion.div
-                      className="mt-4 h-1 rounded-full bg-linear-to-r from-blue-500 to-purple-500"
-                      initial={{ width: 0 }}
-                      whileHover={{
-                        width: "100%",
-                        transition: { duration: 0.3 },
-                      }}
-                    />
+                    {/* Animated Link Icon */}
+                    <motion.div variants={iconVariants}>
+                      <CircleArrowOutUpRight className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    </motion.div>
                   </div>
-                </motion.div>
 
-                {/* Corner accent that appears on hover */}
-                <motion.div
-                  className="absolute top-0 right-0 h-20 w-20 bg-linear-to-br from-blue-500/20 to-transparent"
-                  initial={{ scale: 0, rotate: -45 }}
-                  whileHover={{
-                    scale: 1,
-                    rotate: 0,
-                    transition: { duration: 0.3 },
-                  }}
-                  style={{ transformOrigin: "top right" }}
-                />
+                  {/* Card Description with reveal animation */}
+                  <motion.p
+                    className="line-clamp-6 text-gray-600 dark:text-gray-300"
+                    initial={{ opacity: 0.8 }}
+                    whileHover={{
+                      opacity: 1,
+                      transition: { duration: 0.2 },
+                    }}
+                  >
+                    {project.project_description}
+                  </motion.p>
+
+                  {/* Project stack area */}
+                  <ProjectStack projectStack={project.project_stack} />
+                </motion.div>
               </motion.a>
             </motion.div>
           ))}
