@@ -115,38 +115,40 @@ const BlogCards = ({ blogs }) => {
         </div>
 
         {/* Toolbar: Create + Search + View Toggle */}
-        <div className="mb-10 flex flex-col items-center gap-4 md:flex-row md:justify-center">
-          {/* Create blog */}
-          <Link
-            href="/createblog"
-            onClick={() => setIsLoadingLine(true)}
-            className="flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200/50 px-6 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
-          >
-            <Plus className="h-5 w-5" />
-            Create Blog
-          </Link>
-
-          {/* Search input */}
-          <div className="relative">
-            <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search for a blog..."
-              value={searchQuery}
-              onChange={handleSearchQuery}
-              className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-10 pl-11 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
-            />
-            <button
-              className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-              onClick={() => setSearchQuery("")}
-              aria-label="Clear search"
+        <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
+          <div className="flex flex-col items-center gap-4 md:flex-row">
+            {/* Create blog */}
+            <Link
+              href="/createblog"
+              onClick={() => setIsLoadingLine(true)}
+              className="flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200/50 px-6 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
             >
-              <X className="h-4 w-4" />
-            </button>
+              <Plus className="h-5 w-5" />
+              Create Blog
+            </Link>
+
+            {/* Search input */}
+            <div className="relative">
+              <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search for a blog..."
+                value={searchQuery}
+                onChange={handleSearchQuery}
+                className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-10 pl-11 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+              />
+              <button
+                className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                onClick={() => setSearchQuery("")}
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
           </div>
 
           {/* View toggle pill */}
-          <div className="flex items-center gap-0.5 rounded-full border border-gray-200 bg-gray-100/80 p-1 dark:border-gray-700 dark:bg-gray-800/60">
+          <div className="flex items-center gap-0.5 rounded-full border border-gray-200 bg-gray-100/50 p-1 dark:border-gray-700 dark:bg-gray-800/50">
             <button
               onClick={() => setViewMode("card")}
               aria-label="Card view"
