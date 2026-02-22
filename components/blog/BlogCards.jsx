@@ -2,26 +2,26 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import {
-  Calendar,
-  Clock,
-  ArrowRight,
-  UserRound,
-  Plus,
   ArrowLeft,
   RefreshCcw,
-  X,
+  Plus,
   Search,
+  X,
+  LayoutGrid,
+  List,
 } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
-import { formatDate } from "@/utils/Helpers";
 import Pagination from "../Modules/Pagination";
+import BlogCardView from "./BlogCardView";
+import BlogTableView from "./BlogTableView";
 
 const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
   const router = useRouter();
+
+  // View toggle: "card" | "table"
+  const [viewMode, setViewMode] = useState("card");
 
   // Search query states
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,21 +29,17 @@ const BlogCards = ({ blogs }) => {
   // Function to filter blogs based on blog title
   const filteredBlogs = useMemo(() => {
     if (!searchQuery) return blogs;
-
     const lowerQuery = searchQuery.toLowerCase();
-
     return blogs.filter((blog) =>
       blog.blog_title?.toLowerCase().includes(lowerQuery),
     );
   }, [blogs, searchQuery]);
 
-  // Function to highlight title text that matches search query when a user types in a search query
+  // Highlight matching text in titles
   const highlightText = (text, query) => {
     if (!query) return text;
-
     const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const regex = new RegExp(`(${escapedQuery})`, "gi");
-
     return text.split(regex).map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
         <span key={index} className="text-blue-500 dark:text-blue-400">
@@ -55,16 +51,13 @@ const BlogCards = ({ blogs }) => {
     );
   };
 
-  // Function to remove asterisks and get preview text
+  // Truncate content for card preview
   const getPreviewText = (content, maxLength = 150) => {
-    // Get first part of content
     const preview = content.slice(0, maxLength);
-
-    // Add ellipsis if content was truncated
     return preview.length < content.length ? `${preview}...` : preview;
   };
 
-  // Pagination states, values and logic
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 6;
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
@@ -116,10 +109,14 @@ const BlogCards = ({ blogs }) => {
     <>
       {isLoadingLine && <LoadingLine />}
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        {/* Header */}
         <div className="mb-10 flex justify-center">
           <span className="text-3xl font-semibold">My Blog Space</span>
         </div>
-        <div className="mb-10 flex flex-col items-center gap-6 md:flex-row md:justify-center">
+
+        {/* Toolbar: Create + Search + View Toggle */}
+        <div className="mb-10 flex flex-col items-center gap-4 md:flex-row md:justify-center">
+          {/* Create blog */}
           <Link
             href="/createblog"
             onClick={() => setIsLoadingLine(true)}
@@ -129,87 +126,73 @@ const BlogCards = ({ blogs }) => {
             Create Blog
           </Link>
 
-          {/* The search input field */}
+          {/* Search input */}
           <div className="relative">
             <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Search for a blog..."
               value={searchQuery}
-              onChange={(e) => handleSearchQuery(e)}
-              className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-4 pl-11 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+              onChange={handleSearchQuery}
+              className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-10 pl-11 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
             />
-            <div
+            <button
               className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
               onClick={() => setSearchQuery("")}
+              aria-label="Clear search"
             >
               <X className="h-4 w-4" />
-            </div>
+            </button>
+          </div>
+
+          {/* View toggle pill */}
+          <div className="flex items-center gap-0.5 rounded-full border border-gray-200 bg-gray-100/80 p-1 dark:border-gray-700 dark:bg-gray-800/60">
+            <button
+              onClick={() => setViewMode("card")}
+              aria-label="Card view"
+              className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                viewMode === "card"
+                  ? "bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white"
+                  : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              }`}
+            >
+              <LayoutGrid className="h-4 w-4" />
+              <span className="hidden sm:inline">Cards</span>
+            </button>
+            <button
+              onClick={() => setViewMode("table")}
+              aria-label="Table view"
+              className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                viewMode === "table"
+                  ? "bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white"
+                  : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              }`}
+            >
+              <List className="h-4 w-4" />
+              <span className="hidden sm:inline">Table</span>
+            </button>
           </div>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {currentBlogs.length > 0 ? (
-            currentBlogs.map((blog) => (
-              <article
-                key={blog.id}
-                className="flex flex-col rounded-xl border border-gray-200 bg-slate-50 p-6 transition-shadow hover:shadow-sm dark:border-gray-800 dark:bg-gray-900/50"
-              >
-                {/* Title */}
-                <h2 className="mb-3 line-clamp-2 text-xl font-semibold text-gray-900 dark:text-white">
-                  {highlightText(blog.blog_title, searchQuery)}
-                </h2>
+        {/* View */}
+        {viewMode === "card" ? (
+          <BlogCardView
+            currentBlogs={currentBlogs}
+            searchQuery={searchQuery}
+            highlightText={highlightText}
+            getPreviewText={getPreviewText}
+            setIsLoadingLine={setIsLoadingLine}
+          />
+        ) : (
+          <BlogTableView
+            currentBlogs={currentBlogs}
+            searchQuery={searchQuery}
+            highlightText={highlightText}
+            setIsLoadingLine={setIsLoadingLine}
+          />
+        )}
 
-                {/* Meta information */}
-                <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-                  <span className="flex items-center gap-1.5">
-                    <UserRound className="h-4 w-4" />
-                    <span className="mt-0.5">{blog.blog_author}</span>
-                  </span>
-                  <span>•</span>
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="h-4 w-4" />
-                    <span className="mt-0.5">{formatDate(blog.blog_date)}</span>
-                  </span>
-                  <span>•</span>
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="h-4 w-4" />
-                    <span className="mt-0.5">{blog.read_time}</span>
-                  </span>
-                </div>
-
-                {/* Content preview */}
-                <div className="mb-6 grow text-gray-700 dark:text-gray-300">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {getPreviewText(blog.blog_content)}
-                  </ReactMarkdown>
-                </div>
-
-                {/* Read more button */}
-                <Link
-                  href={`/blog/${blog.id}`}
-                  onClick={() => setIsLoadingLine(true)}
-                  className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-blue-500 underline-offset-4 hover:underline dark:text-blue-400"
-                >
-                  Read more
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </article>
-            ))
-          ) : (
-            // THE FIX: Added 'col-span-full'
-            <div className="col-span-full flex min-h-[50vh] flex-col items-center justify-center text-center">
-              <div className="max-w-md px-4 text-gray-500 dark:text-gray-400">
-                <p className="text-lg font-semibold">
-                  No blog titles matching your search, try searching something
-                  else.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* The Pagination UI */}
+        {/* Pagination */}
         <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
