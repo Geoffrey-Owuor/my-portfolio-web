@@ -68,7 +68,7 @@ const Project = ({ projectInfo }) => {
 
   if (!project || Object.keys(project).length === 0) {
     return (
-      <div className="mx-auto mt-10 flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-24 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
             Project Not Found
@@ -91,7 +91,7 @@ const Project = ({ projectInfo }) => {
   return (
     <>
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
-      <section className="w-full px-4 py-10 md:px-8">
+      <section className="w-full px-4 py-24 md:px-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"

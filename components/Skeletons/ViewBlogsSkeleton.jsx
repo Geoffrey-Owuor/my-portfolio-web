@@ -1,7 +1,7 @@
 const ViewBlogsSkeleton = () => {
   return (
     // Updated container to match ViewBlog: flex-col on mobile, row on large screens
-    <div className="mx-auto flex max-w-7xl flex-col lg:flex-row">
+    <div className="mx-auto flex max-w-7xl flex-col py-24 lg:flex-row">
       {/* LEFT COLUMN: Main Blog Content Skeleton */}
       {/* Added w-full, min-w-0 to match real article constraints */}
       <article className="w-full min-w-0 flex-1 px-4 py-12 sm:px-6 lg:px-16">

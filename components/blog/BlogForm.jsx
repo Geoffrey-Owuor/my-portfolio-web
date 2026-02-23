@@ -105,7 +105,7 @@ const BlogForm = ({
             <CustomMdEditor value={formData.content} onChange={handleChange} />
 
             <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-              Use markdown tools for editing
+              **Use markdown tools for editing**
             </p>
           </div>
 

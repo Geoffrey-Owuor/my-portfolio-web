@@ -6,7 +6,7 @@ const Experience = async () => {
   return (
     <section
       id="experience" // For navbar link
-      className="min-h-screen w-full px-4 py-12 md:px-8"
+      className="min-h-screen w-full px-4 py-24 md:px-8"
     >
       <ExperienceWrapper experiences={experiences} />
     </section>
