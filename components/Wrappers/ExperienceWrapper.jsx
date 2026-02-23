@@ -124,7 +124,7 @@ const ExperienceWrapper = ({ experiences }) => {
           />
         )}
       </AnimatePresence>
-      <div className="mx-1 max-w-5xl md:mx-auto" ref={experienceRef}>
+      <div className="mx-1 max-w-5xl flex-1 md:mx-auto" ref={experienceRef}>
         {/* Section Title */}
         <h2 className="mb-16 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
           My Work Experience

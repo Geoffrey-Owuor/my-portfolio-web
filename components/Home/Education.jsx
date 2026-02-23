@@ -6,7 +6,7 @@ const Education = async () => {
   return (
     <section
       id="education" // For navbar link
-      className="w-full px-4 py-24 md:px-8"
+      className="flex min-h-screen w-full items-center justify-center px-4 py-24 md:px-8"
     >
       <EducationWrapper educationData={educationData} />
     </section>

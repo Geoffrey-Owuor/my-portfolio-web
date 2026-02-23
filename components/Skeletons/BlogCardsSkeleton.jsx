@@ -1,10 +1,26 @@
 const BlogCardsSkeleton = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mb-10 flex items-center justify-center gap-6">
-        <div className="h-9 w-32 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
-        <div className="h-11 w-36 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
+      {/* Header */}
+      <div className="mb-10 flex justify-center">
+        <div className="h-9 w-48 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
       </div>
+
+      {/* Toolbar: Create + Search + View Toggle */}
+      <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
+        <div className="flex flex-col items-center gap-4 md:flex-row">
+          {/* Create blog button skeleton */}
+          <div className="h-10 w-36 animate-pulse rounded-full bg-gray-200/50 dark:bg-gray-800/50" />
+
+          {/* Search input skeleton */}
+          <div className="h-11 w-80 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
+        </div>
+
+        {/* View toggle pill skeleton */}
+        <div className="h-10 w-36 animate-pulse rounded-full bg-gray-100/50 dark:bg-gray-800/50" />
+      </div>
+
+      {/* Card Grid */}
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {[...Array(6)].map((_, index) => (
           <article
@@ -34,6 +50,18 @@ const BlogCardsSkeleton = () => {
             <div className="h-5 w-24 animate-pulse rounded-xl bg-gray-200 dark:bg-gray-800" />
           </article>
         ))}
+      </div>
+
+      {/* Pagination skeleton */}
+      <div className="mt-10 flex items-center justify-center gap-2">
+        <div className="h-9 w-9 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="h-9 w-9 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800"
+          />
+        ))}
+        <div className="h-9 w-9 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
       </div>
     </div>
   );

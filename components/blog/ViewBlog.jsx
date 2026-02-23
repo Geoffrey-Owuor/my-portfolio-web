@@ -55,7 +55,7 @@ const ViewBlog = ({ blogPost }) => {
       const text = children?.toString() || "";
       const id = generateSlug(text);
       return (
-        <h3 id={id} {...props}>
+        <h3 id={id} style={{ scrollMarginTop: "6rem" }} {...props}>
           {children}
         </h3>
       );
