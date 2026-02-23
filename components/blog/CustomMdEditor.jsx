@@ -161,7 +161,7 @@ const CustomMdEditor = ({ value, onChange }) => {
         <button
           type="button"
           onClick={() => setShowPreview(false)}
-          className={`flex items-center gap-2 rounded-lg ${!showPreview ? "bg-gray-950 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+          className={`flex items-center gap-2 rounded-full ${!showPreview ? "bg-gray-950 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"} px-3 py-1.5 text-xs font-semibold transition-colors`}
         >
           <PenLine size={14} />
           Write
@@ -172,7 +172,7 @@ const CustomMdEditor = ({ value, onChange }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleClick}
-            className={`mr-2 flex items-center gap-2 rounded-lg ${showPreview ? "bg-gray-950 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+            className={`mr-2 flex items-center gap-2 rounded-full ${showPreview ? "bg-gray-950 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"} px-3 py-1.5 text-xs font-semibold transition-colors`}
           >
             <Glasses size={14} />
             Preview

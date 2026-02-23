@@ -38,7 +38,7 @@ const getSkills = async () => {
 // Getting projects data
 const getProjects = async () => {
   try {
-    const selectQuery = `SELECT id, project_name, project_link, project_description
+    const selectQuery = `SELECT id, project_name, project_link, project_description, project_stack
         FROM projects
         ORDER BY id DESC`;
 
@@ -55,7 +55,7 @@ const getExperience = async () => {
   try {
     const selectQuery = `SELECT id, work_timeline, company_name, work_description, work_title
         FROM workexperience
-        ORDER BY id ASC`;
+        ORDER BY id DESC`;
 
     const experiences = await query(selectQuery);
     return experiences;

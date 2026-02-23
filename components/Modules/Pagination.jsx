@@ -11,6 +11,7 @@ const Pagination = ({
 }) => {
   return (
     <div className="mt-6 flex items-center justify-between py-3">
+      {/* Mobile Pagination */}
       {totalPages > 1 && (
         <div className="flex flex-1 justify-between md:hidden">
           <button
@@ -33,8 +34,10 @@ const Pagination = ({
           </button>
         </div>
       )}
+
+      {/* Desktop Navigation */}
       <div className="hidden md:flex md:flex-1 md:items-center md:justify-center lg:justify-between">
-        {totalPages >= 1 && (
+        {totalPages > 1 && (
           <div className="flex items-center gap-4">
             <div className="hidden pr-3 lg:flex">
               <p className="text-sm text-gray-700 dark:text-gray-400">
@@ -55,7 +58,7 @@ const Pagination = ({
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="inline-flex items-center justify-center rounded-lg p-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="inline-flex items-center justify-center rounded-full p-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-800"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -75,7 +78,7 @@ const Pagination = ({
                     <button
                       key={pageNumber}
                       onClick={() => setCurrentPage(pageNumber)}
-                      className={`inline-flex h-8 min-w-8 items-center justify-center rounded-lg text-sm font-semibold ${
+                      className={`inline-flex h-8 w-8 items-center justify-center truncate rounded-full text-sm font-semibold ${
                         currentPage === pageNumber
                           ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
                           : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
@@ -106,7 +109,7 @@ const Pagination = ({
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className="inline-flex items-center justify-center rounded-lg p-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="inline-flex items-center justify-center rounded-full p-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-800"
             >
               <ChevronLeft className="h-4 w-4 rotate-180" />
             </button>

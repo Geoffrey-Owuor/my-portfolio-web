@@ -42,7 +42,7 @@ const TableOfContents = ({ content }) => {
 
   if (headings.length === 0) return null;
   return (
-    <nav className="custom-content:flex sticky top-12 mr-6 hidden max-h-[calc(100vh-5rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4">
+    <nav className="custom-content:flex sticky top-49 mr-6 hidden max-h-[calc(100vh-15rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4">
       <h4 className="mb-4 border-b-2 border-gray-400 pb-2 text-sm font-bold tracking-wider text-gray-500 uppercase dark:border-gray-500 dark:text-gray-400">
         On this page
       </h4>

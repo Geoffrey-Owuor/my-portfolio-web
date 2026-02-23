@@ -3,6 +3,9 @@ import { GraduationCap, Loader2, School } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { SectionAlert } from "../Modules/SectionAlert";
+import remarkGfm from "remark-gfm";
+import ReactMarkDown from "react-markdown";
+import ShowMoreButtons from "./ShowMoreButtons";
 
 const EducationWrapper = ({ educationData }) => {
   const [alertInfo, setAlertInfo] = useState({
@@ -10,6 +13,19 @@ const EducationWrapper = ({ educationData }) => {
     alertType: "",
     alertMessage: "",
   });
+
+  // Number of experiences we see on mount
+  const [visibleCount, setVisibleCount] = useState(1);
+
+  // Derived states for button visibility logic
+  const visibleEducationData = educationData.slice(0, visibleCount);
+  const canShowMore = visibleCount < educationData.length;
+  const canShowLess = visibleCount > 1;
+
+  // Handle show more and show less
+  const handleShowMore = () =>
+    setVisibleCount((prev) => Math.min(prev + 1, educationData.length));
+  const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 1, 1));
 
   // Creating a ref for the section
   const educationRef = useRef(null);
@@ -108,7 +124,7 @@ const EducationWrapper = ({ educationData }) => {
           />
         )}
       </AnimatePresence>
-      <div className="mx-1 max-w-5xl md:mx-auto" ref={educationRef}>
+      <div className="mx-1 max-w-5xl flex-1 md:mx-auto" ref={educationRef}>
         {/* Section Title */}
         <h2 className="mb-16 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
           My Education
@@ -117,12 +133,9 @@ const EducationWrapper = ({ educationData }) => {
         {/* Vertical Timeline */}
         <motion.ol
           variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.1 }}
           className="relative border-l border-gray-200 dark:border-gray-700"
         >
-          {educationData.map((education, index) => (
+          {visibleEducationData.map((education, index) => (
             <motion.li
               key={education.id}
               variants={itemVariants}
@@ -171,7 +184,7 @@ const EducationWrapper = ({ educationData }) => {
                 <motion.time
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
                   className="mb-2 block text-sm leading-none font-normal text-gray-500 dark:text-gray-400"
                 >
@@ -181,7 +194,7 @@ const EducationWrapper = ({ educationData }) => {
                 <motion.h3
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.3 }}
                   className="text-xl font-semibold text-gray-900 dark:text-white"
                 >
@@ -191,22 +204,24 @@ const EducationWrapper = ({ educationData }) => {
                 <motion.p
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.4 }}
                   className="mb-3 text-base text-gray-700 italic dark:text-gray-300"
                 >
                   {education.institution}
                 </motion.p>
 
-                <motion.p
+                <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.5 }}
-                  className="text-base font-normal text-gray-600 dark:text-gray-400"
+                  className="prose prose-gray dark:prose-invert max-w-none text-base font-normal text-gray-600 dark:text-gray-400"
                 >
-                  {education.learning_description}
-                </motion.p>
+                  <ReactMarkDown remarkPlugins={[remarkGfm]}>
+                    {education.learning_description}
+                  </ReactMarkDown>
+                </motion.div>
               </motion.div>
             </motion.li>
           ))}
@@ -218,6 +233,14 @@ const EducationWrapper = ({ educationData }) => {
             <span>Waiting for connection...</span>
           </div>
         )}
+
+        {/* Show more buttons*/}
+        <ShowMoreButtons
+          canShowMore={canShowMore}
+          canShowLess={canShowLess}
+          handleShowMore={handleShowMore}
+          handleShowLess={handleShowLess}
+        />
       </div>
     </>
   );

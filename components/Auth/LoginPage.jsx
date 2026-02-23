@@ -40,7 +40,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center px-6 py-12 sm:mt-0">
+    <div className="flex min-h-screen items-center justify-center px-6 py-24 sm:mt-0">
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="mb-8">
@@ -55,7 +55,7 @@ export default function LoginPage() {
         {/* Login Fields */}
         <form onSubmit={handleSubmit} autoComplete="off" className="space-y-6">
           {error && (
-            <div className="rounded-lg bg-red-50 p-3 text-sm text-red-500 dark:bg-red-900/20 dark:text-red-400">
+            <div className="rounded-full bg-red-50 px-4 py-3 text-sm text-red-500 dark:bg-red-900/20 dark:text-red-400">
               {error}
             </div>
           )}

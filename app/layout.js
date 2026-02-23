@@ -81,18 +81,15 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
       </head>
       <body
-        className={`${roboto.variable} ${robotoMono.variable} ${dmsans.variable} font-dmsans app-background antialiased`}
+        className={`${roboto.variable} ${robotoMono.variable} ${dmsans.variable} font-dmsans app-background h-full antialiased`}
       >
         <Providers>
           <NetworkStatus />
-          <NavBar />
-          <div className="fixed top-16 right-0 bottom-0 left-0 overflow-y-auto rounded-2xl">
-            <div className="flex h-full flex-col">
-              <main className="custom-content:px-5 flex-1 px-0">
-                {children}
-              </main>
-              <Footer />
-            </div>
+          <div className="flex min-h-full flex-col">
+            <NavBar />
+
+            <main className="flex-1">{children}</main>
+            <Footer />
           </div>
         </Providers>
       </body>

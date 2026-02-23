@@ -19,6 +19,7 @@
 
 html[data-theme="dark"] {
   --scrollbar-thumb: #4b5563;
+  height: 100%;
 }
 
 @layer utilities {

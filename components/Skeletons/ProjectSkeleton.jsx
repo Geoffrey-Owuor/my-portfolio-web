@@ -1,6 +1,6 @@
 export const ProjectSkeleton = () => {
   return (
-    <section className="w-full px-4 py-20 md:px-8">
+    <section className="w-full px-4 py-24 md:px-8">
       <div className="mx-auto max-w-5xl">
         {/* Back Button Skeleton */}
         <div className="mb-8 flex items-center gap-2">

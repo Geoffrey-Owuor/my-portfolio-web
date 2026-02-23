@@ -5,7 +5,7 @@ import { ProjectSkeleton } from "@/components/Skeletons/ProjectSkeleton";
 
 const getProjectInfo = cache(async (id) => {
   try {
-    const selectQuery = `SELECT id, project_name, project_link, project_description
+    const selectQuery = `SELECT id, project_name, project_link, project_description, project_stack
       FROM projects WHERE id = $1`;
     const queryParams = [id];
 

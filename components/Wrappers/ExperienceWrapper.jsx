@@ -3,6 +3,9 @@ import { Briefcase, BriefcaseBusiness, Loader2 } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { SectionAlert } from "../Modules/SectionAlert";
+import remarkGfm from "remark-gfm";
+import ReactMarkDown from "react-markdown";
+import ShowMoreButtons from "./ShowMoreButtons";
 
 const ExperienceWrapper = ({ experiences }) => {
   const [alertInfo, setAlertInfo] = useState({
@@ -10,6 +13,19 @@ const ExperienceWrapper = ({ experiences }) => {
     alertType: "",
     alertMessage: "",
   });
+
+  // Number of experiences we see on mount
+  const [visibleCount, setVisibleCount] = useState(1);
+
+  // Derived states for button visibility logic
+  const visibleExperiences = experiences.slice(0, visibleCount);
+  const canShowMore = visibleCount < experiences.length;
+  const canShowLess = visibleCount > 1;
+
+  // Handle show more and show less
+  const handleShowMore = () =>
+    setVisibleCount((prev) => Math.min(prev + 1, experiences.length));
+  const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 1, 1));
 
   // Creating a ref for the section
   const experienceRef = useRef(null);
@@ -108,7 +124,7 @@ const ExperienceWrapper = ({ experiences }) => {
           />
         )}
       </AnimatePresence>
-      <div className="mx-1 max-w-5xl md:mx-auto" ref={experienceRef}>
+      <div className="mx-1 max-w-5xl flex-1 md:mx-auto" ref={experienceRef}>
         {/* Section Title */}
         <h2 className="mb-16 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
           My Work Experience
@@ -117,12 +133,9 @@ const ExperienceWrapper = ({ experiences }) => {
         {/* Vertical Timeline */}
         <motion.ol
           variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.1 }}
           className="relative border-l border-gray-200 dark:border-gray-700"
         >
-          {experiences.map((exp, index) => (
+          {visibleExperiences.map((exp, index) => (
             <motion.li
               key={exp.id}
               variants={itemVariants}
@@ -171,7 +184,7 @@ const ExperienceWrapper = ({ experiences }) => {
                 <motion.time
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
                   className="mb-2 block text-sm leading-none font-normal text-gray-500 dark:text-gray-400"
                 >
@@ -181,7 +194,7 @@ const ExperienceWrapper = ({ experiences }) => {
                 <motion.h3
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.3 }}
                   className="text-xl font-semibold text-gray-900 dark:text-white"
                 >
@@ -191,22 +204,24 @@ const ExperienceWrapper = ({ experiences }) => {
                 <motion.p
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.4 }}
                   className="mb-3 text-base text-gray-700 italic dark:text-gray-300"
                 >
                   {exp.company_name}
                 </motion.p>
 
-                <motion.p
+                <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.5 }}
-                  className="text-base font-normal text-gray-600 dark:text-gray-400"
+                  className="prose prose-gray dark:prose-invert max-w-none text-base font-normal text-gray-600 dark:text-gray-400"
                 >
-                  {exp.work_description}
-                </motion.p>
+                  <ReactMarkDown remarkPlugins={[remarkGfm]}>
+                    {exp.work_description}
+                  </ReactMarkDown>
+                </motion.div>
               </motion.div>
             </motion.li>
           ))}
@@ -218,6 +233,14 @@ const ExperienceWrapper = ({ experiences }) => {
             <span>Waiting for connection...</span>
           </div>
         )}
+
+        {/* Show more buttons */}
+        <ShowMoreButtons
+          canShowLess={canShowLess}
+          canShowMore={canShowMore}
+          handleShowMore={handleShowMore}
+          handleShowLess={handleShowLess}
+        />
       </div>
     </>
   );

@@ -55,7 +55,7 @@ const ViewBlog = ({ blogPost }) => {
       const text = children?.toString() || "";
       const id = generateSlug(text);
       return (
-        <h3 id={id} {...props}>
+        <h3 id={id} style={{ scrollMarginTop: "6rem" }} {...props}>
           {children}
         </h3>
       );
@@ -116,7 +116,7 @@ const ViewBlog = ({ blogPost }) => {
   // Check if blogPost is null, undefined, or empty
   if (!blogPost || Object.keys(blogPost).length === 0) {
     return (
-      <div className="mx-auto mt-10 flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-24 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
             Blog Not Found
@@ -167,8 +167,8 @@ const ViewBlog = ({ blogPost }) => {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto flex max-w-7xl flex-col lg:flex-row">
-        <article className="w-full max-w-none px-4 py-12 sm:px-6 lg:px-16">
+      <div className="mx-auto flex max-w-7xl flex-col px-4 py-24 sm:px-6 lg:flex-row lg:px-16">
+        <article className="w-full max-w-none">
           {/* Header Section */}
           <header className="mb-6">
             <h1 className="mb-6 text-3xl leading-tight font-bold text-gray-900 sm:text-4xl dark:text-white">

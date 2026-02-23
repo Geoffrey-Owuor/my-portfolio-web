@@ -58,7 +58,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="mx-1 flex min-h-screen max-w-7xl items-center justify-center px-4 pb-12 md:mx-auto lg:px-8"
+      className="mx-1 flex min-h-screen max-w-7xl items-center justify-center px-4 py-24 md:mx-auto lg:px-8"
     >
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
         {/* --- Image (Left Side) --- */}

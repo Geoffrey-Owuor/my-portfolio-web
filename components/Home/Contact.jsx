@@ -132,7 +132,7 @@ const Contact = () => {
 
   return (
     <>
-      <section id="contact" className="w-full px-4 py-12 md:px-8">
+      <section id="contact" className="w-full px-4 py-24 md:px-8">
         <div className="mx-1 max-w-2xl sm:mx-auto">
           {/* Section Title */}
           <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
@@ -144,7 +144,7 @@ const Contact = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
             className="flex flex-col gap-6"
           >
             {/* Email/Phone Input */}
