@@ -116,7 +116,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
               className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
             >
@@ -130,7 +130,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.2 }}
               className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2"
             >
               {technicalSkills.map((skill, index) => (
@@ -175,7 +175,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
               className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
             >
@@ -189,7 +189,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.2 }}
               className="flex flex-col gap-3"
             >
               {softSkills.map((skill, index) => (

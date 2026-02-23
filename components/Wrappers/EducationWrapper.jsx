@@ -184,7 +184,7 @@ const EducationWrapper = ({ educationData }) => {
                 <motion.time
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
                   className="mb-2 block text-sm leading-none font-normal text-gray-500 dark:text-gray-400"
                 >
@@ -194,7 +194,7 @@ const EducationWrapper = ({ educationData }) => {
                 <motion.h3
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.3 }}
                   className="text-xl font-semibold text-gray-900 dark:text-white"
                 >
@@ -204,7 +204,7 @@ const EducationWrapper = ({ educationData }) => {
                 <motion.p
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.4 }}
                   className="mb-3 text-base text-gray-700 italic dark:text-gray-300"
                 >
@@ -214,7 +214,7 @@ const EducationWrapper = ({ educationData }) => {
                 <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.5 }}
                   className="prose prose-gray dark:prose-invert max-w-none text-base font-normal text-gray-600 dark:text-gray-400"
                 >

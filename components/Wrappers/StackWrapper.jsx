@@ -140,7 +140,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
               className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
             >
@@ -155,7 +155,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.2 }}
               className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5 lg:gap-6"
             >
               {toolIcons.map(([name, iconSrc], index) => (
@@ -216,7 +216,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
               className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
             >
@@ -231,7 +231,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.2 }}
               className="grid grid-cols-1 gap-6 sm:grid-cols-2"
             >
               {toolNames.map((tool, index) => (

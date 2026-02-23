@@ -55,7 +55,7 @@ const getExperience = async () => {
   try {
     const selectQuery = `SELECT id, work_timeline, company_name, work_description, work_title
         FROM workexperience
-        ORDER BY id ASC`;
+        ORDER BY id DESC`;
 
     const experiences = await query(selectQuery);
     return experiences;
