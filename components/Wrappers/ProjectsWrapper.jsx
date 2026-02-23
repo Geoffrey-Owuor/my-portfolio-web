@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { SectionAlert } from "../Modules/SectionAlert";
 import ProjectStack from "./ProjectStack";
+import ShowMoreButtons from "./ShowMoreButtons";
 
 const ProjectsWrapper = ({ projects }) => {
   //initialize router
@@ -17,6 +18,19 @@ const ProjectsWrapper = ({ projects }) => {
     alertType: "",
     alertMessage: "",
   });
+
+  // The number of projects we see on mount
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  // Derived states for button visibility logic
+  const visibleProjects = projects.slice(0, visibleCount);
+  const canShowMore = visibleCount < projects.length;
+  const canShowLess = visibleCount > 3;
+
+  // Handle show more and show less
+  const handleShowMore = () =>
+    setVisibleCount((prev) => Math.min(prev + 3, projects.length));
+  const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 3, 3));
 
   // Creating a ref for the section
   const projectsRef = useRef(null);
@@ -142,12 +156,9 @@ const ProjectsWrapper = ({ projects }) => {
         {/* Responsive Projects Grid */}
         <motion.div
           variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.1 }}
           className="custom:grid-cols-2 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {projects.map((project, index) => (
+          {visibleProjects.map((project, index) => (
             <motion.div
               key={project.id}
               variants={cardVariants}
@@ -237,6 +248,14 @@ const ProjectsWrapper = ({ projects }) => {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Show more buttons */}
+        <ShowMoreButtons
+          canShowMore={canShowMore}
+          canShowLess={canShowLess}
+          handleShowLess={handleShowLess}
+          handleShowMore={handleShowMore}
+        />
 
         {projects.length === 0 && (
           <div className="flex items-center justify-center gap-4">

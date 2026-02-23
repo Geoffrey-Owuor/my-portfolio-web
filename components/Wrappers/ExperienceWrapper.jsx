@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { SectionAlert } from "../Modules/SectionAlert";
 import remarkGfm from "remark-gfm";
 import ReactMarkDown from "react-markdown";
+import ShowMoreButtons from "./ShowMoreButtons";
 
 const ExperienceWrapper = ({ experiences }) => {
   const [alertInfo, setAlertInfo] = useState({
@@ -12,6 +13,19 @@ const ExperienceWrapper = ({ experiences }) => {
     alertType: "",
     alertMessage: "",
   });
+
+  // Number of experiences we see on mount
+  const [visibleCount, setVisibleCount] = useState(1);
+
+  // Derived states for button visibility logic
+  const visibleExperiences = experiences.slice(0, visibleCount);
+  const canShowMore = visibleCount < experiences.length;
+  const canShowLess = visibleCount > 1;
+
+  // Handle show more and show less
+  const handleShowMore = () =>
+    setVisibleCount((prev) => Math.min(prev + 1, experiences.length));
+  const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 1, 1));
 
   // Creating a ref for the section
   const experienceRef = useRef(null);
@@ -119,12 +133,9 @@ const ExperienceWrapper = ({ experiences }) => {
         {/* Vertical Timeline */}
         <motion.ol
           variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.1 }}
           className="relative border-l border-gray-200 dark:border-gray-700"
         >
-          {experiences.map((exp, index) => (
+          {visibleExperiences.map((exp, index) => (
             <motion.li
               key={exp.id}
               variants={itemVariants}
@@ -222,6 +233,14 @@ const ExperienceWrapper = ({ experiences }) => {
             <span>Waiting for connection...</span>
           </div>
         )}
+
+        {/* Show more buttons */}
+        <ShowMoreButtons
+          canShowLess={canShowLess}
+          canShowMore={canShowMore}
+          handleShowMore={handleShowMore}
+          handleShowLess={handleShowLess}
+        />
       </div>
     </>
   );
