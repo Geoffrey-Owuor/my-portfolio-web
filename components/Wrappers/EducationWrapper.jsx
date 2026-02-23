@@ -3,6 +3,8 @@ import { GraduationCap, Loader2, School } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { SectionAlert } from "../Modules/SectionAlert";
+import remarkGfm from "remark-gfm";
+import ReactMarkDown from "react-markdown";
 
 const EducationWrapper = ({ educationData }) => {
   const [alertInfo, setAlertInfo] = useState({
@@ -198,15 +200,17 @@ const EducationWrapper = ({ educationData }) => {
                   {education.institution}
                 </motion.p>
 
-                <motion.p
+                <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: false }}
                   transition={{ delay: 0.5 }}
-                  className="text-base font-normal text-gray-600 dark:text-gray-400"
+                  className="prose prose-gray dark:prose-invert max-w-none text-base font-normal text-gray-600 dark:text-gray-400"
                 >
-                  {education.learning_description}
-                </motion.p>
+                  <ReactMarkDown remarkPlugins={[remarkGfm]}>
+                    {education.learning_description}
+                  </ReactMarkDown>
+                </motion.div>
               </motion.div>
             </motion.li>
           ))}

@@ -7,6 +7,7 @@ import { project_images } from "@/assets/assets";
 import Image from "next/image";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import ProjectStack from "../Wrappers/ProjectStack";
 
 const Project = ({ projectInfo }) => {
   const router = useRouter();
@@ -186,7 +187,7 @@ const Project = ({ projectInfo }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="mb-6 text-xl font-semibold text-gray-900 md:text-2xl dark:text-white"
+              className="mb-4 text-xl font-semibold text-gray-900 md:text-2xl dark:text-white"
             >
               About This Project
             </motion.h2>
@@ -194,12 +195,14 @@ const Project = ({ projectInfo }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="prose prose-gray dark:prose-invert max-w-none"
+              className="prose prose-gray dark:prose-invert mb-4 max-w-none"
             >
               <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
                 {project.project_description}
               </p>
             </motion.div>
+            {/* Project Stack */}
+            <ProjectStack projectStack={project.project_stack} />
           </motion.div>
         </motion.div>
       </section>

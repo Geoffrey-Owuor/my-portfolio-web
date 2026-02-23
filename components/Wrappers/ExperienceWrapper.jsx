@@ -3,6 +3,8 @@ import { Briefcase, BriefcaseBusiness, Loader2 } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { SectionAlert } from "../Modules/SectionAlert";
+import remarkGfm from "remark-gfm";
+import ReactMarkDown from "react-markdown";
 
 const ExperienceWrapper = ({ experiences }) => {
   const [alertInfo, setAlertInfo] = useState({
@@ -198,15 +200,17 @@ const ExperienceWrapper = ({ experiences }) => {
                   {exp.company_name}
                 </motion.p>
 
-                <motion.p
+                <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: false }}
                   transition={{ delay: 0.5 }}
-                  className="text-base font-normal text-gray-600 dark:text-gray-400"
+                  className="prose prose-gray dark:prose-invert max-w-none text-base font-normal text-gray-600 dark:text-gray-400"
                 >
-                  {exp.work_description}
-                </motion.p>
+                  <ReactMarkDown remarkPlugins={[remarkGfm]}>
+                    {exp.work_description}
+                  </ReactMarkDown>
+                </motion.div>
               </motion.div>
             </motion.li>
           ))}
