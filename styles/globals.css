@@ -6,7 +6,7 @@
 
 @theme {
   --breakpoint-custom: 1000px;
-  --breakpoint-custom-content: 1100px;
+  --breakpoint-custom-content: 1200px;
   --font-roboto: var(--font-roboto);
   --font-roboto-mono: var(--font-roboto-mono);
   --font-dmsans: var(--font-dmsans);

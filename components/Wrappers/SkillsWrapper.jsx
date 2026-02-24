@@ -103,7 +103,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
           />
         )}
       </AnimatePresence>
-      <div ref={skillsRef} className="mx-1 md:mx-auto">
+      <div ref={skillsRef} className="mx-1 flex-1 md:mx-auto">
         {/* Section Title with floating animation */}
         <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
           <span>My Skills</span>

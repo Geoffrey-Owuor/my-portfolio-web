@@ -75,7 +75,7 @@ const BlogCards = ({ blogs }) => {
 
   if (!blogs || blogs.length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-24 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
             No Blogs Available
@@ -108,7 +108,7 @@ const BlogCards = ({ blogs }) => {
   return (
     <>
       {isLoadingLine && <LoadingLine />}
-      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-10 flex justify-center">
           <span className="text-3xl font-semibold">My Blog Space</span>
