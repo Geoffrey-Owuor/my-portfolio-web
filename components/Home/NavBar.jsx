@@ -81,9 +81,9 @@ const NavBar = () => {
     <>
       {isLoadingLine && <LoadingLine />}
       {/* Main Navigation Bar */}
-      <nav className="app-background custom-content:px-5 fixed top-0 right-0 left-0 z-50 w-full px-0 transition-all duration-300 ease-in-out">
+      <nav className="app-background fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out">
         {/* Centered Content Container */}
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
           {/* Left Side - Mobile Menu Toggle + Logo */}
           <div className="flex items-center gap-3">
             {/* Mobile Menu Toggle Button */}

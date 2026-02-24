@@ -116,7 +116,7 @@ const ViewBlog = ({ blogPost }) => {
   // Check if blogPost is null, undefined, or empty
   if (!blogPost || Object.keys(blogPost).length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-24 sm:px-6 lg:px-16">
         <div className="text-center">
           <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
             Blog Not Found
@@ -167,7 +167,7 @@ const ViewBlog = ({ blogPost }) => {
         )}
       </AnimatePresence>
 
-      <div className="mx-auto flex max-w-7xl flex-col px-4 py-24 sm:px-6 lg:flex-row lg:px-16">
+      <div className="mx-auto flex max-w-7xl flex-col px-5 py-24 sm:px-6 lg:flex-row lg:px-16">
         <article className="w-full max-w-none">
           {/* Header Section */}
           <header className="mb-6">
