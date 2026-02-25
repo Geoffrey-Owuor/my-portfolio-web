@@ -1,6 +1,6 @@
 const ViewBlogsSkeleton = () => {
   return (
-    <div className="mx-auto flex max-w-7xl flex-col px-5 py-24 sm:px-6 lg:flex-row lg:px-16">
+    <div className="mx-auto flex max-w-7xl flex-col px-5 py-24 sm:px-6 lg:flex-row lg:gap-6 lg:px-8">
       {/* LEFT COLUMN: Main Blog Content Skeleton */}
       <article className="w-full max-w-none">
         {/* Header Section */}
@@ -111,7 +111,7 @@ const ViewBlogsSkeleton = () => {
       </article>
 
       {/* RIGHT COLUMN: Table of Contents Skeleton */}
-      <nav className="custom-content:flex sticky top-49 mr-6 hidden max-h-[calc(100vh-5rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4">
+      <nav className="sticky top-49 hidden max-h-[calc(100vh-5rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4 lg:flex">
         {/* "On this page" heading */}
         <div className="mb-4 border-b-2 border-gray-200 pb-2 dark:border-gray-800">
           <div className="h-3.5 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
