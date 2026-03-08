@@ -1,4 +1,5 @@
 import { socials } from "@/assets/assets";
+import { Sparkles } from "lucide-react";
 import Image from "next/image";
 
 const Footer = () => {
@@ -27,7 +28,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright Notice */}
-        <div className="flex items-center justify-center space-x-1 text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex items-center justify-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
           <span>
             &copy; {currentYear} <span className="font-semibold">Jeff</span>
           </span>
@@ -36,7 +37,8 @@ const Footer = () => {
           <span className="text-gray-400 dark:text-gray-700">•</span>
 
           {/* Magic Text Section */}
-          <span className="animate-magic bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text font-bold text-transparent">
+          <span className="animate-magic inline-flex items-center gap-1 bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text font-bold text-transparent">
+            <Sparkles className="h-4 w-4 text-indigo-500" />
             Make Magic Happen.
           </span>
         </div>
