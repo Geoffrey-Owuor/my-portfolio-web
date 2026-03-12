@@ -99,7 +99,7 @@ const NavBar = () => {
             <a
               href="/#home"
               onClick={(e) => scrollToSection(e, "home")}
-              className="font-dm-mono text-xl font-semibold text-gray-900 dark:text-white"
+              className="font-dm-mono text-xl font-medium text-gray-900 dark:text-white"
             >
               <span>{"<Jeff/>"}</span>
             </a>
