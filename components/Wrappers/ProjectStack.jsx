@@ -6,7 +6,7 @@ const ProjectStack = ({ projectStack }) => {
       {stackArray.map((stack, index) => (
         <div
           key={index}
-          className="font-roboto-mono rounded-full bg-blue-100 px-3 py-1 text-sm text-nowrap text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+          className="font-dm-mono rounded-full bg-blue-100 px-3 py-1 text-sm text-nowrap text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
         >
           {stack}
         </div>

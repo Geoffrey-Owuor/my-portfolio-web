@@ -99,7 +99,7 @@ const NavBar = () => {
             <a
               href="/#home"
               onClick={(e) => scrollToSection(e, "home")}
-              className="font-roboto-mono text-xl font-semibold text-gray-900 dark:text-white"
+              className="font-dm-mono text-xl font-medium text-gray-900 dark:text-white"
             >
               <span>{"<Jeff/>"}</span>
             </a>
@@ -176,7 +176,7 @@ const NavBar = () => {
                 height={24}
                 className="h-5 w-5 invert dark:invert-0"
               />
-              My portfolio
+              Portfolio
             </a>
           </div>
         </div>
@@ -201,7 +201,7 @@ const NavBar = () => {
         {/* Menu Header */}
         <div className="px-4">
           <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
-            <span className="font-roboto-mono text-xl font-semibold text-gray-900 dark:text-white">
+            <span className="font-dm-mono text-xl font-semibold text-gray-900 dark:text-white">
               {"<Menu/>"}
             </span>
 
@@ -256,7 +256,7 @@ const NavBar = () => {
             onClick={closeMenu}
             className="flex items-center justify-center gap-1.5 rounded-full bg-gray-950 px-4 py-3 text-white transition-colors hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
           >
-            My portfolio
+            GitHub Portfolio
             <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>

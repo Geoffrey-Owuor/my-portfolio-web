@@ -18,7 +18,7 @@ const Footer = () => {
     >
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
-        <div className="font-roboto-mono text-sm font-semibold text-gray-600 transition-colors hover:text-gray-500 dark:text-gray-400">
+        <div className="font-dm-mono text-sm font-medium text-gray-600 transition-colors hover:text-gray-500 dark:text-gray-400">
           <a
             href="mailto:geoffreyowuor22@gmail.com"
             className="hover:underline"
@@ -30,14 +30,15 @@ const Footer = () => {
         {/* Copyright Notice */}
         <div className="flex items-center justify-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
           <span>
-            &copy; {currentYear} <span className="font-semibold">Jeff</span>
+            &copy; <span className="font-dm-mono">{currentYear}</span>{" "}
+            <span className="font-dm-mono">Jeff</span>
           </span>
 
           {/* Dot Separator */}
           <span className="text-gray-400 dark:text-gray-700">•</span>
 
           {/* Magic Text Section */}
-          <span className="animate-magic inline-flex items-center gap-1 bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text font-bold text-transparent">
+          <span className="animate-magic font-dm-mono inline-flex items-center gap-1.5 bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text font-medium text-transparent">
             <Sparkles className="h-4 w-4 text-indigo-500" />
             Make Magic Happen.
           </span>
