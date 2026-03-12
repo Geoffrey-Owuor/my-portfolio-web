@@ -1,18 +1,14 @@
-import { DM_Sans, Roboto, Roboto_Mono } from "next/font/google";
+import { DM_Sans, DM_Mono } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
 import NetworkStatus from "@/components/Modules/NetworkStatus";
 import NavBar from "@/components/Home/NavBar";
 import Footer from "@/components/Home/Footer";
 
-const roboto = Roboto({
-  variable: "--font-roboto",
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
   subsets: ["latin"],
-});
-
-const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 const dmsans = DM_Sans({
@@ -81,7 +77,7 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
       </head>
       <body
-        className={`${roboto.variable} ${robotoMono.variable} ${dmsans.variable} font-dmsans app-background h-full antialiased`}
+        className={` ${dmMono.variable} ${dmsans.variable} font-dmsans app-background h-full antialiased`}
       >
         <Providers>
           <NetworkStatus />
