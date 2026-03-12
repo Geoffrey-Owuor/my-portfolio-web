@@ -111,7 +111,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-6 flex items-center justify-center gap-3 lg:justify-start"
+            className="mb-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
           >
             {titleTags.map((tag, index) => (
               <span
