@@ -111,7 +111,7 @@ const ViewBlogsSkeleton = () => {
       </article>
 
       {/* RIGHT COLUMN: Table of Contents Skeleton */}
-      <nav className="sticky top-49 hidden max-h-[calc(100vh-5rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4 lg:flex">
+      <nav className="sticky top-12 hidden max-h-[calc(100vh-5rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4 lg:flex">
         {/* "On this page" heading */}
         <div className="mb-4 border-b-2 border-gray-200 pb-2 dark:border-gray-800">
           <div className="h-3.5 w-24 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
