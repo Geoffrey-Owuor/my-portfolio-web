@@ -60,7 +60,7 @@ const Hero = () => {
       id="home"
       className="mx-1 flex min-h-screen max-w-7xl items-center justify-center px-4 py-24 md:mx-auto lg:px-8"
     >
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20">
         {/* --- Image (Left Side) --- */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
@@ -74,35 +74,22 @@ const Hero = () => {
           }}
           className="order-first flex justify-center"
         >
-          <div className="relative">
-            {/* Outer spinning gradient ring with blur */}
-            <div className="absolute inset-0 -m-1 animate-spin rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5 blur-sm" />
-
-            {/* Main spinning gradient ring */}
-            <div
-              className="absolute inset-0 -m-1 animate-spin rounded-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 p-0.5"
-              style={{ animationDuration: "3s" }}
+          <motion.div
+            whileHover={{
+              scale: 1.05,
+              transition: { duration: 0.3 },
+            }}
+            className="relative"
+          >
+            <Image
+              src={assets.profile_photo}
+              alt="profile-image"
+              className="h-60 w-60 rounded-full object-cover shadow-xl shadow-violet-500 md:h-80 md:w-80 dark:shadow-violet-500/50"
+              priority
+              width={300}
+              height={300}
             />
-
-            {/* Inner white/dark circle to create ring effect */}
-            <div className="relative rounded-full bg-white p-2 dark:bg-gray-950">
-              <motion.div
-                whileHover={{
-                  scale: 1.05,
-                  transition: { duration: 0.3 },
-                }}
-              >
-                <Image
-                  src={assets.profile_photo}
-                  alt="profile-image"
-                  className="h-60 w-60 rounded-full object-cover shadow-xl md:h-80 md:w-80 dark:shadow-gray-800/40"
-                  priority
-                  width={300}
-                  height={300}
-                />
-              </motion.div>
-            </div>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* --- Text Content (Right Side) --- */}
@@ -127,7 +114,7 @@ const Hero = () => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
-            className="text-3xl font-semibold tracking-tight text-gray-900 md:text-5xl dark:text-white"
+            className="text-3xl font-medium tracking-tight text-gray-900 md:text-5xl dark:text-white"
           >
             <motion.span
               animate={{
@@ -146,7 +133,7 @@ const Hero = () => {
                 backgroundClip: "text",
               }}
             >
-              Software Engineer
+              Code, Design, & Everything In-Between
             </motion.span>
           </motion.h1>
 
@@ -157,9 +144,9 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
             className="mt-6 text-lg leading-relaxed text-gray-600 dark:text-gray-300"
           >
-            I am a software engineer based in Nairobi with 3 years of experience
-            in software development. I specialize in building (and occasionally
-            designing) exceptional digital experiences.
+            I'm Jeff, a Nairobi-based developer with over three years of
+            experience in building and occasionally designing exceptional
+            digital experiences.
           </motion.p>
 
           <motion.div
@@ -176,7 +163,7 @@ const Hero = () => {
               initial="rest"
               whileHover="hover"
               whileTap="tap"
-              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-gray-900 px-6 py-3 text-base font-semibold text-gray-900 shadow-md transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
+              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-gray-900 px-6 py-3 text-base font-medium text-gray-900 shadow-md transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
             >
               {/* Shimmer effect on hover */}
               <motion.div
@@ -201,7 +188,7 @@ const Hero = () => {
               initial="rest"
               whileHover="hover"
               whileTap="tap"
-              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gray-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-gray-700 sm:w-auto dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gray-900 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-gray-700 sm:w-auto dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
             >
               {/* Shimmer effect on hover */}
               <motion.div
