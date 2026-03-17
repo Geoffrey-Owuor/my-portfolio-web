@@ -2,16 +2,25 @@ import { X } from "lucide-react";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 
-export const SectionAlert = ({ message, type, onClose, IconComponent }) => {
+export const SectionAlert = ({
+  stackIndex,
+  message,
+  type,
+  onClose,
+  IconComponent,
+}) => {
+  // Each alert is offset by 80px per stack position (alert height ~72px + 8px gap)
+  const bottomOffset = 16 + stackIndex * 80;
+
   const handleClose = () => {
     setTimeout(() => onClose(), 300);
   };
 
-  // Auto close after 4 seconds
+  // Auto close after 6 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       handleClose();
-    }, 4000);
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -24,11 +33,12 @@ export const SectionAlert = ({ message, type, onClose, IconComponent }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0, bottom: bottomOffset }}
+      exit={{ opacity: 0, x: 40 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="fixed top-1/2 right-4 z-50 hidden md:flex"
+      style={{ bottom: bottomOffset }}
+      className="fixed right-4 z-50 hidden md:flex"
     >
       <div
         className={`flex w-auto max-w-80 items-center justify-between rounded-full bg-black px-6 py-4 text-white dark:bg-white dark:text-black`}

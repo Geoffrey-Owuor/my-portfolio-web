@@ -12,10 +12,12 @@ import SkillsSkeleton from "@/components/Skeletons/SkillsSkeleton";
 import StackSkeleton from "@/components/Skeletons/StackSkeleton";
 import ProjectsSkeleton from "@/components/Skeletons/ProjectsSkeleton";
 import ExperienceSkeleton from "@/components/Skeletons/ExperienceSkeleton";
+import { AlertStack } from "@/components/Modules/AlertStack";
 
 export default function Home() {
   return (
     <div className="overflow-x-hidden">
+      <AlertStack />
       <Hero />
       <Suspense fallback={<SkillsSkeleton />}>
         <Skills />
