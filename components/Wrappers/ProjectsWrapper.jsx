@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import LoadingLine from "../Modules/LoadingLine";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import { SectionAlert } from "../Modules/SectionAlert";
+import { useAlertStore } from "@/store/useAlertStore";
 import ProjectStack from "./ProjectStack";
 import ShowMoreButtons from "./ShowMoreButtons";
 
@@ -12,12 +12,6 @@ const ProjectsWrapper = ({ projects }) => {
   //initialize router
   const router = useRouter();
   const [isNavigating, setIsNavigating] = useState(false); //To indicate when the loading should start
-
-  const [alertInfo, setAlertInfo] = useState({
-    showAlert: false,
-    alertType: "",
-    alertMessage: "",
-  });
 
   // The number of projects we see on mount
   const [visibleCount, setVisibleCount] = useState(3);
@@ -38,16 +32,18 @@ const ProjectsWrapper = ({ projects }) => {
   // Check if section is in view
   const isInView = useInView(projectsRef, { once: true, amount: 0.2 });
 
+  // Our add alert function
+  const addAlert = useAlertStore((state) => state.addAlert);
+
   // Trigger Alert 2 seconds after the section comes into view
   useEffect(() => {
     if (isInView) {
       const timer = setTimeout(() => {
-        setAlertInfo((prev) => ({
-          ...prev,
-          showAlert: true,
-          alertType: "success",
-          alertMessage: "Thoughtful, well-crafted project solutions",
-        }));
+        addAlert({
+          message: "Thoughtful, well-crafted project solutions",
+          type: "success",
+          iconComponent: BadgeCheck,
+        });
       }, 1000);
 
       return () => clearTimeout(timer);
@@ -127,24 +123,6 @@ const ProjectsWrapper = ({ projects }) => {
 
   return (
     <>
-      {/* Render the alert component */}
-      <AnimatePresence>
-        {alertInfo.showAlert && (
-          <SectionAlert
-            message={alertInfo.alertMessage}
-            type={alertInfo.alertType}
-            IconComponent={BadgeCheck}
-            onClose={() =>
-              setAlertInfo((prev) => ({
-                ...prev,
-                showAlert: false,
-                alertType: "",
-                alertMessage: "",
-              }))
-            }
-          />
-        )}
-      </AnimatePresence>
       {/* LoadingLine fixed at the top of the viewport */}
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
       <div className="mx-1 md:mx-auto" ref={projectsRef}>
