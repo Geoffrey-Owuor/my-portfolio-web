@@ -1,11 +1,9 @@
 "use client";
 
 import { UserRound } from "lucide-react";
-import { useUserStore } from "@/store/useUserStore";
 
-const UserInfoCard = () => {
-  const name = useUserStore((state) => state.name);
-  const email = useUserStore((state) => state.email);
+const UserInfoCard = ({ user }) => {
+  const { name, email } = user;
 
   // Generate initials from user_name if available
   const initials = name

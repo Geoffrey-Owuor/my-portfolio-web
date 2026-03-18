@@ -15,10 +15,13 @@ import LoadingLine from "../Modules/LoadingLine";
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
 import BlogTableView from "./BlogTableView";
+import { useUserStore } from "@/store/useUserStore";
 
 const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
   const router = useRouter();
+
+  const email = useUserStore((state) => state.email);
 
   // View toggle: "card" | "table"
   const [viewMode, setViewMode] = useState("card");
@@ -111,21 +114,24 @@ const BlogCards = ({ blogs }) => {
       <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-10 flex justify-center">
-          <span className="text-3xl font-semibold">My Blog Space</span>
+          <span className="text-3xl font-semibold">Blog Space</span>
         </div>
 
         {/* Toolbar: Create + Search + View Toggle */}
         <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
           <div className="flex flex-col items-center gap-4 md:flex-row">
             {/* Create blog */}
-            <Link
-              href="/createblog"
-              onClick={() => setIsLoadingLine(true)}
-              className="flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200/50 px-6 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
-            >
-              <Plus className="h-5 w-5" />
-              Create Blog
-            </Link>
+
+            {email && (
+              <Link
+                href="/createblog"
+                onClick={() => setIsLoadingLine(true)}
+                className="flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200/50 px-6 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
+              >
+                <Plus className="h-5 w-5" />
+                Create Blog
+              </Link>
+            )}
 
             {/* Search input */}
             <div className="relative">

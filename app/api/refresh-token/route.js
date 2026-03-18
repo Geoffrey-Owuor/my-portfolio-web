@@ -8,8 +8,11 @@ import {
 } from "@/lib/Auth";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { useUserStore } from "@/store/useUserStore";
 
 export async function POST() {
+  const resetUser = useUserStore.getState().resetUser;
+
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
@@ -25,6 +28,7 @@ export async function POST() {
     if (!payload || !payload.id) {
       cookieStore.delete("accessToken");
       cookieStore.delete("refreshToken");
+      resetUser();
 
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
@@ -34,6 +38,9 @@ export async function POST() {
     const rows = await query(dbQuery, [payload.id]);
 
     if (rows.length === 0) {
+      cookieStore.delete("accessToken");
+      cookieStore.delete("refreshToken");
+      resetUser();
       return NextResponse.json({ message: "User not found" }, { status: 401 });
     }
     const hashedToken = rows[0].refresh_token;
@@ -42,6 +49,9 @@ export async function POST() {
     const userEmail = rows[0].user_email;
 
     if (!hashedToken) {
+      cookieStore.delete("accessToken");
+      cookieStore.delete("refreshToken");
+      resetUser();
       return NextResponse.json({ message: "Token not found" }, { status: 401 });
     }
 
@@ -56,6 +66,7 @@ export async function POST() {
 
       cookieStore.delete("accessToken");
       cookieStore.delete("refreshToken");
+      resetUser();
 
       return NextResponse.json(
         { message: "Session invalidated" },

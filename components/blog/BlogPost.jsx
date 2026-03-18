@@ -8,10 +8,14 @@ import apiClient from "@/lib/AxiosClient";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import BlogForm from "./BlogForm";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
-import { useUserStore } from "@/store/useUserStore";
+import { initializeUserStore } from "@/store/useUserStore";
 
-const BlogPost = () => {
-  const name = useUserStore((state) => state.name);
+const BlogPost = ({ user }) => {
+  const name = user.name;
+
+  //Initialize user object
+  initializeUserStore(user);
+
   const [formData, setFormData] = useState({
     title: "",
     author: name ?? "",
@@ -118,7 +122,7 @@ const BlogPost = () => {
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <UserInfoCard />
+              <UserInfoCard user={user} />
               <LogoutButton />
             </div>
           </div>
