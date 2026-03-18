@@ -14,6 +14,7 @@ import LoadingLine from "../Modules/LoadingLine";
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
 import BlogTableView from "./BlogTableView";
+import BlogAvatar from "./BlogAvatar";
 
 const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
@@ -109,10 +110,12 @@ const BlogCards = ({ blogs }) => {
       {isLoadingLine && <LoadingLine />}
       <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-10 flex justify-center">
+        <div className="relative mb-10 flex items-center justify-center">
           <span className="text-3xl font-semibold">Blog Space</span>
+          <div className="absolute right-0">
+            <BlogAvatar />
+          </div>
         </div>
-
         {/* Toolbar: Create + Search + View Toggle */}
         <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
           {/* Search input */}
