@@ -1,7 +1,6 @@
 import { getSession } from "@/cache/getSession";
 import { redirect } from "next/navigation";
-
-import { UserProvider } from "@/context/UserContext";
+import UserInitializer from "@/components/Auth/UserInitializer";
 
 export const metadata = {
   title: "Create a blog | Engage your audience with tech",
@@ -21,7 +20,12 @@ export const metadata = {
 const layout = async ({ children }) => {
   const user = await getSession();
   if (!user) redirect("/login");
-  return <UserProvider user={user}>{children}</UserProvider>;
+  return (
+    <>
+      <UserInitializer user={user} />
+      {children}
+    </>
+  );
 };
 
 export default layout;

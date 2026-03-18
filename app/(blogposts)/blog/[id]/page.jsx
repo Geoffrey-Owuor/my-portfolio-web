@@ -56,7 +56,7 @@ export async function generateMetadata({ params }) {
       title: blogPost.blog_title,
       description: blogPost.author_tagline,
       type: "article",
-      url: `/blogs/blog/${id}`,
+      url: `/blog/${id}`,
       siteName: blogPost.blog_title,
     },
 

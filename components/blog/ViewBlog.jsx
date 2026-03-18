@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import BlogAlert from "../Modules/BlogAlert";
-import { useUser } from "@/context/UserContext";
 import { formatDate, generateSlug } from "@/utils/Helpers";
 import EditBlog from "./EditBlog";
 import ReactMarkdown from "react-markdown";
@@ -23,10 +22,11 @@ import { useState, useEffect } from "react";
 import LoadingLine from "../Modules/LoadingLine";
 import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
+import { useUserStore } from "@/store/useUserStore";
 import Image from "next/image";
 
 const ViewBlog = ({ blogPost }) => {
-  const { id: userId } = useUser();
+  const userId = useUserStore((state) => state.id);
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
   const [showLoadingLine, setShowLoadingLine] = useState(false);
@@ -192,14 +192,15 @@ const ViewBlog = ({ blogPost }) => {
                 <span>{blogPost.read_time}</span>
               </div>
 
-              <button
-                disabled={!userId}
-                onClick={() => setShowEditBlog(true)}
-                className="flex cursor-pointer items-center gap-2 transition-colors duration-200 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:text-gray-500"
-              >
-                <PenLine className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span>Edit</span>
-              </button>
+              {userId && (
+                <button
+                  onClick={() => setShowEditBlog(true)}
+                  className="flex cursor-pointer items-center gap-2 transition-colors duration-200 hover:text-gray-700 dark:hover:text-gray-500"
+                >
+                  <PenLine className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span>Edit</span>
+                </button>
+              )}
 
               <button
                 onClick={() => handleBlogsRoute("/blogs")}

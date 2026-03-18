@@ -3,15 +3,15 @@ import { useState } from "react";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
-import { useUser } from "@/context/UserContext";
 import BlogAlert from "../Modules/BlogAlert";
 import apiClient from "@/lib/AxiosClient";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import BlogForm from "./BlogForm";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
+import { useUserStore } from "@/store/useUserStore";
 
 const BlogPost = () => {
-  const { name } = useUser();
+  const name = useUserStore((state) => state.name);
   const [formData, setFormData] = useState({
     title: "",
     author: name ?? "",
