@@ -201,7 +201,7 @@ const NavBar = () => {
         {/* Menu Header */}
         <div className="px-4">
           <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
-            <span className="font-dm-mono text-xl font-semibold text-gray-900 dark:text-white">
+            <span className="font-dm-mono text-xl font-medium text-gray-900 dark:text-white">
               {"<Menu/>"}
             </span>
 

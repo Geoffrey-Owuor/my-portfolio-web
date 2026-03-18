@@ -9,6 +9,7 @@ import {
   ChevronLeft,
   ChevronFirst,
   ChevronLast,
+  PenLine,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import BlogAlert from "../Modules/BlogAlert";
@@ -21,10 +22,9 @@ import { useState, useEffect } from "react";
 import LoadingLine from "../Modules/LoadingLine";
 import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
-import EditButton from "./EditButton";
 import Image from "next/image";
 
-const ViewBlog = ({ blogPost }) => {
+const ViewBlog = ({ blogPost, userId }) => {
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
   const [showLoadingLine, setShowLoadingLine] = useState(false);
@@ -191,7 +191,15 @@ const ViewBlog = ({ blogPost }) => {
               </div>
 
               {/* The edit button */}
-              <EditButton setShowEditBlog={setShowEditBlog} />
+              {userId && (
+                <button
+                  onClick={() => setShowEditBlog(true)}
+                  className="flex cursor-pointer items-center gap-2 transition-colors duration-200 hover:text-gray-700 dark:hover:text-gray-500"
+                >
+                  <PenLine className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span>Edit</span>
+                </button>
+              )}
 
               <button
                 onClick={() => handleBlogsRoute("/blogs")}

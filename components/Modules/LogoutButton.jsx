@@ -5,11 +5,10 @@ import apiClient from "@/lib/AxiosClient";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import LogoutOverlay from "./LogoutOverlay";
-import { useUserStore } from "@/store/useUserStore";
 
 export default function LogoutButton() {
   const router = useRouter();
-  const resetUser = useUserStore((state) => state.resetUser);
+
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
@@ -17,7 +16,6 @@ export default function LogoutButton() {
     try {
       await apiClient.post("/logout");
       // Redirect to login and refresh the page state
-      resetUser();
       router.push("/login");
       router.refresh();
     } catch (error) {

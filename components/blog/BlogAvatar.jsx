@@ -1,6 +1,5 @@
 "use client";
-import { useUserStore } from "@/store/useUserStore";
-import { useHydration } from "@/hooks/useHydration";
+
 import {
   LogOut,
   PenLine,
@@ -16,19 +15,12 @@ import apiClient from "@/lib/AxiosClient";
 import LoadingLine from "../Modules/LoadingLine";
 import LogoutOverlay from "../Modules/LogoutOverlay";
 
-const BlogAvatar = () => {
-  const name = useUserStore((state) => state.name);
-  const email = useUserStore((state) => state.email);
-  const resetUser = useUserStore((state) => state.resetUser);
-  const hydrated = useHydration();
-
+const BlogAvatar = ({ user }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loadingLine, setLoadingLine] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const dropdownRef = useRef(null);
-
-  const hasUser = hydrated && !!name;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -42,8 +34,8 @@ const BlogAvatar = () => {
   }, []);
 
   // Derive initials from name
-  const initials = hasUser
-    ? name
+  const initials = user.name
+    ? user.name
         .split(" ")
         .map((n) => n[0])
         .join("")
@@ -56,12 +48,11 @@ const BlogAvatar = () => {
     setIsLoggingOut(true);
     try {
       await apiClient.post("/logout");
-      // Redirect to login and refresh the page state
-      resetUser();
-      router.push("/login");
+      // Refresh the page state
       router.refresh();
     } catch (error) {
       console.error("Logout failed", error);
+    } finally {
       setIsLoggingOut(false);
     }
   };
@@ -72,17 +63,6 @@ const BlogAvatar = () => {
     router.push(route);
   };
 
-  // Skeleton while zustand is rehydrating
-  if (!hydrated) {
-    return (
-      <motion.div
-        className="h-10 w-16 rounded-full bg-gray-200 dark:bg-gray-800"
-        animate={{ opacity: [1, 0.4, 1] }}
-        transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-      />
-    );
-  }
-
   return (
     <>
       {loadingLine && <LoadingLine />}
@@ -91,10 +71,10 @@ const BlogAvatar = () => {
         {/* ── Avatar trigger button ── */}
         <button
           onClick={() => setOpen((prev) => !prev)}
-          aria-label={hasUser ? "Open user menu" : "Go to login"}
+          aria-label={user.id ? "Open user menu" : "Go to login"}
           aria-expanded={open}
           className={`group flex cursor-pointer items-center gap-1.5 rounded-full p-0.5 ring-2 transition-all duration-200 focus:outline-none ${
-            hasUser
+            user.id
               ? "ring-blue-500/60 hover:ring-blue-500 dark:ring-blue-400/60 dark:hover:ring-blue-400"
               : "ring-gray-300/60 hover:ring-gray-400 dark:ring-gray-600/60 dark:hover:ring-gray-500"
           }`}
@@ -102,12 +82,12 @@ const BlogAvatar = () => {
           {/* Avatar circle */}
           <span
             className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold tracking-wide text-white sm:h-9 sm:w-9 sm:text-sm ${
-              hasUser
+              user.id
                 ? "bg-linear-to-br from-blue-500 to-purple-600"
                 : "bg-linear-to-br from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700"
             }`}
           >
-            {hasUser ? (
+            {user.id ? (
               initials
             ) : (
               <UserRound className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={1.8} />
@@ -118,7 +98,7 @@ const BlogAvatar = () => {
           <motion.span
             animate={{ rotate: open ? 180 : 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className={`mr-1 flex items-center ${hasUser ? "" : "opacity-60"}`}
+            className={`mr-1 flex items-center ${user.id ? "" : "opacity-60"}`}
           >
             <ChevronDown
               className="h-3.5 w-3.5 text-gray-500 dark:text-gray-400"
@@ -137,7 +117,7 @@ const BlogAvatar = () => {
               transition={{ duration: 0.15, ease: "easeOut" }}
               className="absolute right-0 z-50 mt-2.5 w-60 origin-top-right overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700/60 dark:bg-gray-900 dark:shadow-black/40"
             >
-              {hasUser ? (
+              {user.id ? (
                 <>
                   {/* User info */}
                   <motion.div
@@ -152,7 +132,7 @@ const BlogAvatar = () => {
                       </div>
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
-                          {name}
+                          {user.name}
                         </p>
                       </div>
                     </div>
@@ -162,7 +142,7 @@ const BlogAvatar = () => {
                         className="h-3.5 w-3.5 shrink-0"
                         strokeWidth={1.8}
                       />
-                      <span className="truncate">{email}</span>
+                      <span className="truncate">{user.email}</span>
                     </div>
                   </motion.div>
 
@@ -214,7 +194,7 @@ const BlogAvatar = () => {
                     initial={{ opacity: 0, x: -6 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1, duration: 0.15 }}
-                    onClick={() => handleRouteChange("/login")}
+                    onClick={() => handleRouteChange("/login?blogs=true")}
                     className="flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-800 transition-colors hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800/60"
                   >
                     <LogIn

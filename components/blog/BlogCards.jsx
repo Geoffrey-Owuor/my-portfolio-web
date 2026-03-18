@@ -16,7 +16,7 @@ import BlogCardView from "./BlogCardView";
 import BlogTableView from "./BlogTableView";
 import BlogAvatar from "./BlogAvatar";
 
-const BlogCards = ({ blogs }) => {
+const BlogCards = ({ blogs, user }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
   const router = useRouter();
 
@@ -113,7 +113,7 @@ const BlogCards = ({ blogs }) => {
         <div className="relative mb-10 flex items-center justify-center">
           <span className="text-3xl font-semibold">Blog Space</span>
           <div className="absolute right-0">
-            <BlogAvatar />
+            <BlogAvatar user={user} />
           </div>
         </div>
         {/* Toolbar: Create + Search + View Toggle */}
