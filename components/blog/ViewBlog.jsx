@@ -4,7 +4,6 @@ import {
   UserRound,
   Clock,
   ArrowLeft,
-  PenLine,
   Share2,
   ChevronRight,
   ChevronLeft,
@@ -22,11 +21,10 @@ import { useState, useEffect } from "react";
 import LoadingLine from "../Modules/LoadingLine";
 import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
-import { useUserStore } from "@/store/useUserStore";
+import EditButton from "./EditButton";
 import Image from "next/image";
 
 const ViewBlog = ({ blogPost }) => {
-  const userId = useUserStore((state) => state.id);
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
   const [showLoadingLine, setShowLoadingLine] = useState(false);
@@ -192,15 +190,8 @@ const ViewBlog = ({ blogPost }) => {
                 <span>{blogPost.read_time}</span>
               </div>
 
-              {userId && (
-                <button
-                  onClick={() => setShowEditBlog(true)}
-                  className="flex cursor-pointer items-center gap-2 transition-colors duration-200 hover:text-gray-700 dark:hover:text-gray-500"
-                >
-                  <PenLine className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span>Edit</span>
-                </button>
-              )}
+              {/* The edit button */}
+              <EditButton setShowEditBlog={setShowEditBlog} />
 
               <button
                 onClick={() => handleBlogsRoute("/blogs")}
