@@ -1,6 +1,7 @@
 "use client";
 import { generateSlug } from "@/utils/Helpers";
 import { useEffect, useState } from "react";
+import TOCSkeleton from "../Skeletons/TOCSkeleton";
 
 const TableOfContents = ({ content }) => {
   const [headings, setHeadings] = useState([]);
@@ -82,7 +83,9 @@ const TableOfContents = ({ content }) => {
     };
   }, [headings]);
 
-  if (headings.length === 0) return null;
+  if (!content) return null;
+
+  if (headings.length === 0) return <TOCSkeleton />;
 
   return (
     <nav className="sticky top-12 hidden max-h-[calc(100vh-2rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4 lg:flex">

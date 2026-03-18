@@ -8,13 +8,8 @@ const BlogCardsSkeleton = () => {
 
       {/* Toolbar: Create + Search + View Toggle */}
       <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
-        <div className="flex flex-col items-center gap-4 md:flex-row">
-          {/* Create blog button skeleton */}
-          <div className="h-10 w-36 animate-pulse rounded-full bg-gray-200/50 dark:bg-gray-800/50" />
-
-          {/* Search input skeleton */}
-          <div className="h-11 w-80 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
-        </div>
+        {/* Search input skeleton */}
+        <div className="h-11 w-80 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
 
         {/* View toggle pill skeleton */}
         <div className="h-10 w-36 animate-pulse rounded-full bg-gray-100/50 dark:bg-gray-800/50" />
