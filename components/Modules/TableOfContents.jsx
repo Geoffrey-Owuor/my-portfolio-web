@@ -5,24 +5,40 @@ import TOCSkeleton from "../Skeletons/TOCSkeleton";
 
 const TableOfContents = ({ content }) => {
   const [headings, setHeadings] = useState([]);
+  const [headingsLoading, setHeadingsLoading] = useState(true);
   const [activeId, setActiveId] = useState("");
 
   // 1. Extract headings from the markdown content
   useEffect(() => {
-    if (!content) return;
+    const handleHeadingsPopulation = () => {
+      if (!content) {
+        setHeadingsLoading(false);
+        return;
+      }
 
-    const regex = /^###\s+(.+)$/gm;
-    const matches = [];
-    let match;
+      setHeadingsLoading(true);
 
-    while ((match = regex.exec(content)) !== null) {
-      matches.push({
-        text: match[1],
-        id: generateSlug(match[1]),
-      });
-    }
+      try {
+        const regex = /^###\s+(.+)$/gm;
+        const matches = [];
+        let match;
 
-    setHeadings(matches);
+        while ((match = regex.exec(content)) !== null) {
+          matches.push({
+            text: match[1],
+            id: generateSlug(match[1]),
+          });
+        }
+
+        setHeadings(matches);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setHeadingsLoading(false);
+      }
+    };
+
+    handleHeadingsPopulation();
   }, [content]);
 
   // 2. Track scroll position to update active heading
@@ -83,9 +99,7 @@ const TableOfContents = ({ content }) => {
     };
   }, [headings]);
 
-  if (!content) return null;
-
-  if (headings.length === 0) return <TOCSkeleton />;
+  if (headingsLoading) return <TOCSkeleton />;
 
   return (
     <nav className="sticky top-12 hidden max-h-[calc(100vh-2rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4 lg:flex">
@@ -93,20 +107,30 @@ const TableOfContents = ({ content }) => {
         On this page
       </h4>
       <ul className="space-y-3 border-gray-300 dark:border-gray-700">
-        {headings.map((heading, index) => (
-          <li key={index}>
-            <a
-              href={`#${heading.id}`}
-              className={`block rounded-xl px-3 py-2 text-sm text-wrap transition-colors ${
-                activeId === heading.id
-                  ? "bg-indigo-100/50 font-medium text-blue-600 dark:bg-slate-700/50 dark:text-white"
-                  : "text-gray-600 hover:text-blue-500 hover:underline dark:text-gray-400"
-              }`}
-            >
-              {heading.text}
-            </a>
+        {headings.length === 0 ? (
+          <li>
+            <p className="px-3 py-2 text-sm text-gray-400 italic dark:text-gray-500">
+              No headings found
+            </p>
           </li>
-        ))}
+        ) : (
+          <>
+            {headings.map((heading, index) => (
+              <li key={index}>
+                <a
+                  href={`#${heading.id}`}
+                  className={`block rounded-xl px-3 py-2 text-sm text-wrap transition-colors ${
+                    activeId === heading.id
+                      ? "bg-indigo-100/50 font-medium text-blue-600 dark:bg-slate-700/50 dark:text-white"
+                      : "text-gray-600 hover:text-blue-500 hover:underline dark:text-gray-400"
+                  }`}
+                >
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </>
+        )}
       </ul>
     </nav>
   );
