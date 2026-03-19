@@ -127,7 +127,7 @@ const NavBar = () => {
                 ) : (
                   <button
                     onClick={() => handleNavbarRouting(link.href)}
-                    className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                    className="flex cursor-pointer items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
                   >
                     {link.label}
                   </button>
