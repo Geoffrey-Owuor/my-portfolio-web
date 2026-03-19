@@ -50,7 +50,7 @@ export default function ThemeToggleCompact() {
     navigator.userAgent.toLowerCase().includes("firefox");
 
   // Function to toggle the theme using view transitioning
-  const toggleTheme = async (e) => {
+  const toggleTheme = async () => {
     // Check if view transitions is supported
     if (
       !document.startViewTransition ||
@@ -98,10 +98,10 @@ export default function ThemeToggleCompact() {
     );
   };
 
-  const handleClick = async (e) => {
+  const handleClick = async () => {
     setShowToolTip(false);
     setSuppressHover(true);
-    await toggleTheme(e);
+    await toggleTheme();
 
     // A timeout to reset suppress hover after 600 milliseconds
     setTimeout(() => setSuppressHover(false), 600);
@@ -119,8 +119,6 @@ export default function ThemeToggleCompact() {
     }
   };
 
-  if (!mounted) return null;
-
   return (
     <div className="relative">
       <button
@@ -130,11 +128,16 @@ export default function ThemeToggleCompact() {
         aria-label="Toggle theme"
         className="rounded-full p-2 text-gray-700 transition hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-800"
       >
-        {isDark ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
+        {/* Render BOTH icons. Use Tailwind's dark: modifier to let CSS handle visibility instantly */}
+        <Sun className="block h-6 w-6 dark:hidden" />
+        <Moon className="hidden h-6 w-6 dark:block" />
       </button>
 
-      {/* Tooltip Guide */}
-      <TooltipUI canHover={canHover} shortcut="D" showToolTip={showToolTip} />
+      {/* Keep the mounted check ONLY for the Tooltip to avoid hydration mismatches 
+          caused by window.matchMedia resolving differently on server vs client */}
+      {mounted && (
+        <TooltipUI canHover={canHover} shortcut="D" showToolTip={showToolTip} />
+      )}
     </div>
   );
 }

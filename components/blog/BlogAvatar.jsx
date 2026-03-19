@@ -50,9 +50,10 @@ const BlogAvatar = ({ user }) => {
       await apiClient.post("/logout");
       // Refresh the page state
       router.refresh();
+      // set logging out to false
+      setIsLoggingOut(false);
     } catch (error) {
       console.error("Logout failed", error);
-    } finally {
       setIsLoggingOut(false);
     }
   };
@@ -73,7 +74,7 @@ const BlogAvatar = ({ user }) => {
           onClick={() => setOpen((prev) => !prev)}
           aria-label={user.id ? "Open user menu" : "Go to login"}
           aria-expanded={open}
-          className={`group flex cursor-pointer items-center gap-1.5 rounded-full p-0.5 ring-2 transition-all duration-200 focus:outline-none ${
+          className={`group flex cursor-pointer items-center gap-1.5 rounded-full p-0.5 ring-1 transition-all duration-200 focus:outline-none ${
             user.id
               ? "ring-blue-500/60 hover:ring-blue-500 dark:ring-blue-400/60 dark:hover:ring-blue-400"
               : "ring-gray-300/60 hover:ring-gray-400 dark:ring-gray-600/60 dark:hover:ring-gray-500"
@@ -81,7 +82,7 @@ const BlogAvatar = ({ user }) => {
         >
           {/* Avatar circle */}
           <span
-            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold tracking-wide text-white sm:h-9 sm:w-9 sm:text-sm ${
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-medium tracking-wide text-white sm:h-9 sm:w-9 sm:text-sm ${
               user.id
                 ? "bg-linear-to-br from-blue-500 to-purple-600"
                 : "bg-linear-to-br from-gray-400 to-gray-500 dark:from-gray-600 dark:to-gray-700"
@@ -127,11 +128,11 @@ const BlogAvatar = ({ user }) => {
                     className="px-4 py-3.5"
                   >
                     <div className="mb-0.5 flex items-center gap-2">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 text-xs font-bold text-white">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 text-xs font-medium text-white">
                         {initials}
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+                        <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
                           {user.name}
                         </p>
                       </div>
