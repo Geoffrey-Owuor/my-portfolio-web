@@ -6,7 +6,7 @@ import Link from "next/link";
 import { tools } from "@/assets/assets";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 
 const NavBar = () => {
@@ -14,6 +14,15 @@ const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoadingLine, setIsLoadingLine] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  // derived state to check if we are in the homepage
+  const isInHome = pathname === "/";
+
+  const handleNavbarRouting = (route) => {
+    setIsLoadingLine(true);
+    router.push(route);
+  };
 
   // Ref for the mobile menu to detect outside clicks
   const menuRef = useRef(null);
@@ -57,24 +66,15 @@ const NavBar = () => {
   };
 
   // Close menu and scroll
-  const handleSidebarClick = (e, id) => {
+  const handleSidebarClick = (route) => {
     setIsMenuOpen(false);
-    scrollToSection(e, id);
+    setIsLoadingLine(true);
+    router.push(route);
   };
 
   const handleBlogLinkClick = () => {
     setIsMenuOpen(false);
     setIsLoadingLine(true);
-  };
-
-  const scrollToSection = (e, id) => {
-    if (pathname !== "/") return;
-
-    e.preventDefault();
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    el.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -96,26 +96,42 @@ const NavBar = () => {
             </button>
 
             {/* Logo */}
-            <a
-              href="/#home"
-              onClick={(e) => scrollToSection(e, "home")}
-              className="font-dm-mono text-xl font-medium text-gray-900 dark:text-white"
-            >
-              <span>{"<Jeff/>"}</span>
-            </a>
+            {isInHome ? (
+              <a
+                href="/#home"
+                className="font-dm-mono text-xl font-medium text-gray-900 dark:text-white"
+              >
+                <span>{"<Jeff/>"}</span>
+              </a>
+            ) : (
+              <button
+                onClick={() => handleNavbarRouting("/#home")}
+                className="font-dm-mono cursor-pointer text-xl font-medium text-gray-900 dark:text-white"
+              >
+                <span>{"<Jeff/>"}</span>
+              </button>
+            )}
           </div>
 
           {/* Desktop Navigation Links */}
           <ul className="hidden items-center space-x-5 text-sm lg:flex">
             {navLinks.map((link) => (
               <li key={link.label}>
-                <a
-                  href={link.href}
-                  onClick={(e) => scrollToSection(e, link.id)}
-                  className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
-                >
-                  {link.label}
-                </a>
+                {isInHome ? (
+                  <a
+                    href={link.href}
+                    className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => handleNavbarRouting(link.href)}
+                    className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                  >
+                    {link.label}
+                  </button>
+                )}
               </li>
             ))}
             <li>
@@ -219,13 +235,22 @@ const NavBar = () => {
         <ul className="flex flex-col gap-2 p-6">
           {navLinks.map((link) => (
             <li key={link.label}>
-              <a
-                href={link.href}
-                onClick={(e) => handleSidebarClick(e, link.id)}
-                className="block w-full rounded-2xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-              >
-                {link.label}
-              </a>
+              {isInHome ? (
+                <a
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block w-full rounded-2xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <button
+                  onClick={() => handleSidebarClick(link.href)}
+                  className="block w-full rounded-2xl px-4 py-3 text-left text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                >
+                  {link.label}
+                </button>
+              )}
             </li>
           ))}
           <li>
