@@ -3,15 +3,15 @@ import { useState } from "react";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
-import { useUser } from "@/context/UserContext";
 import BlogAlert from "../Modules/BlogAlert";
 import apiClient from "@/lib/AxiosClient";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import BlogForm from "./BlogForm";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
 
-const BlogPost = () => {
-  const { name } = useUser();
+const BlogPost = ({ user }) => {
+  const name = user.name;
+
   const [formData, setFormData] = useState({
     title: "",
     author: name ?? "",
@@ -118,7 +118,7 @@ const BlogPost = () => {
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <UserInfoCard />
+              <UserInfoCard user={user} />
               <LogoutButton />
             </div>
           </div>

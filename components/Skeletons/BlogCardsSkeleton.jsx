@@ -2,19 +2,15 @@ const BlogCardsSkeleton = () => {
   return (
     <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="mb-10 flex justify-center">
+      <div className="relative mb-10 flex items-center justify-center">
         <div className="h-9 w-48 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
+        <div className="absolute right-0 h-10 w-16 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
       </div>
 
       {/* Toolbar: Create + Search + View Toggle */}
       <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
-        <div className="flex flex-col items-center gap-4 md:flex-row">
-          {/* Create blog button skeleton */}
-          <div className="h-10 w-36 animate-pulse rounded-full bg-gray-200/50 dark:bg-gray-800/50" />
-
-          {/* Search input skeleton */}
-          <div className="h-11 w-80 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
-        </div>
+        {/* Search input skeleton */}
+        <div className="h-11 w-80 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
 
         {/* View toggle pill skeleton */}
         <div className="h-10 w-36 animate-pulse rounded-full bg-gray-100/50 dark:bg-gray-800/50" />

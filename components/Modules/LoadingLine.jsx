@@ -1,37 +1,35 @@
-import { motion } from "framer-motion";
+"use client";
+
+import { useEffect, useState } from "react";
 import ClientPortal from "./ClientPortal";
 
 const LoadingLine = () => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    // Jump start to 10% immediately
+    Promise.resolve().then(() => setProgress(10));
+
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 95) return 95;
+
+        const remaining = 95 - prev;
+        const jump = Math.max(0.5, remaining * 0.05);
+        return prev + jump;
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const content = (
-    <motion.div
-      className="fixed top-0 right-0 left-0 z-9999 h-0.5 bg-linear-to-r from-blue-500 via-purple-500 to-pink-500"
-      initial={{ scaleX: 0, transformOrigin: "left" }}
-      animate={{
-        scaleX: [0, 0.3, 0.6, 0.8, 0.95],
-        transition: {
-          duration: 2,
-          times: [0, 0.3, 0.6, 0.8, 1],
-          ease: "easeOut",
-        },
-      }}
-      exit={{
-        scaleX: 1,
-        transition: { duration: 0.2 },
-      }}
-    >
-      {/* Glowing effect */}
-      <motion.div
-        className="absolute inset-0 bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 blur-sm"
-        animate={{
-          opacity: [0.5, 1, 0.5],
-        }}
-        transition={{
-          duration: 1,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-    </motion.div>
+    <div className="fixed top-0 right-0 left-0 z-9999 h-0.5 bg-transparent">
+      <div
+        className="h-full bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-300 ease-out"
+        style={{ width: `${progress}%` }}
+      ></div>
+    </div>
   );
 
   return <ClientPortal>{content}</ClientPortal>;

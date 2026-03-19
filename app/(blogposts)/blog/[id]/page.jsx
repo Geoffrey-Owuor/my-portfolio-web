@@ -1,7 +1,7 @@
 import { query } from "@/lib/db";
 import ViewBlog from "@/components/blog/ViewBlog";
-import { cache, Suspense } from "react";
-import ViewBlogsSkeleton from "@/components/Skeletons/ViewBlogsSkeleton";
+import { cache } from "react";
+import { headers } from "next/headers";
 
 const getBlogInfo = cache(async (id) => {
   try {
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }) {
       title: blogPost.blog_title,
       description: blogPost.author_tagline,
       type: "article",
-      url: `/blogs/blog/${id}`,
+      url: `/blog/${id}`,
       siteName: blogPost.blog_title,
     },
 
@@ -67,11 +67,11 @@ export async function generateMetadata({ params }) {
 const page = async ({ params }) => {
   const { id } = await params;
   const blogPost = await getBlogInfo(id);
-  return (
-    <Suspense fallback={<ViewBlogsSkeleton />}>
-      <ViewBlog blogPost={blogPost} />
-    </Suspense>
-  );
+
+  const headerList = await headers();
+  const userId = headerList.get("x-user-id");
+
+  return <ViewBlog blogPost={blogPost} userId={userId} />;
 };
 
 export default page;

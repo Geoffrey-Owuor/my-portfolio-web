@@ -72,16 +72,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
       </head>
       <body
-        className={` ${dmMono.variable} ${dmsans.variable} font-dmsans app-background h-full antialiased`}
+        className={` ${dmMono.variable} ${dmsans.variable} font-dmsans app-background antialiased`}
       >
         <Providers>
           <NetworkStatus />
-          <div className="flex min-h-full flex-col">
+          <div className="flex h-screen flex-col">
             <NavBar />
 
             <main className="flex-1">{children}</main>

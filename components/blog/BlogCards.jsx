@@ -1,11 +1,10 @@
 "use client";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
 import {
   ArrowLeft,
   RefreshCcw,
-  Plus,
   Search,
   X,
   LayoutGrid,
@@ -15,8 +14,9 @@ import LoadingLine from "../Modules/LoadingLine";
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
 import BlogTableView from "./BlogTableView";
+import BlogAvatar from "./BlogAvatar";
 
-const BlogCards = ({ blogs }) => {
+const BlogCards = ({ blogs, user }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
   const router = useRouter();
 
@@ -110,41 +110,31 @@ const BlogCards = ({ blogs }) => {
       {isLoadingLine && <LoadingLine />}
       <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-10 flex justify-center">
-          <span className="text-3xl font-semibold">My Blog Space</span>
+        <div className="relative mb-10 flex items-center justify-center">
+          <span className="text-3xl font-semibold">Blog Space</span>
+          <div className="absolute right-0">
+            <BlogAvatar user={user} />
+          </div>
         </div>
-
         {/* Toolbar: Create + Search + View Toggle */}
         <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
-          <div className="flex flex-col items-center gap-4 md:flex-row">
-            {/* Create blog */}
-            <Link
-              href="/createblog"
-              onClick={() => setIsLoadingLine(true)}
-              className="flex cursor-pointer items-center gap-1.5 rounded-full bg-gray-200/50 px-6 py-2.5 transition-colors duration-200 hover:bg-gray-300/50 dark:bg-gray-800/50 dark:hover:bg-gray-700/50"
+          {/* Search input */}
+          <div className="relative">
+            <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search for a blog..."
+              value={searchQuery}
+              onChange={handleSearchQuery}
+              className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-10 pl-11 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+            />
+            <button
+              className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+              onClick={() => setSearchQuery("")}
+              aria-label="Clear search"
             >
-              <Plus className="h-5 w-5" />
-              Create Blog
-            </Link>
-
-            {/* Search input */}
-            <div className="relative">
-              <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search for a blog..."
-                value={searchQuery}
-                onChange={handleSearchQuery}
-                className="w-80 rounded-full border border-gray-300 bg-white py-3 pr-10 pl-11 text-sm text-gray-900 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-gray-100 dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
-              />
-              <button
-                className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-                onClick={() => setSearchQuery("")}
-                aria-label="Clear search"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
+              <X className="h-4 w-4" />
+            </button>
           </div>
 
           {/* View toggle pill */}

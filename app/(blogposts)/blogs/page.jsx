@@ -1,7 +1,6 @@
 import BlogCards from "@/components/blog/BlogCards";
 import { BlogsData } from "@/cache/BlogsData";
-import { Suspense } from "react";
-import BlogCardsSkeleton from "@/components/Skeletons/BlogCardsSkeleton";
+import { headers } from "next/headers";
 
 export const metadata = {
   title: "Tech Blogs | Insights on Software, Security & Emerging Technologies",
@@ -20,11 +19,19 @@ export const metadata = {
 
 const page = async () => {
   const blogs = await BlogsData();
-  return (
-    <Suspense fallback={<BlogCardsSkeleton />}>
-      <BlogCards blogs={blogs} />
-    </Suspense>
-  );
+
+  const headerList = await headers();
+  const userId = headerList.get("x-user-id");
+  const userName = headerList.get("x-user-name");
+  const userEmail = headerList.get("x-user-email");
+
+  const userObject = {
+    id: userId,
+    name: userName,
+    email: userEmail,
+  };
+
+  return <BlogCards blogs={blogs} user={userObject} />;
 };
 
 export default page;

@@ -1,7 +1,6 @@
 import { query } from "@/lib/db";
 import Project from "@/components/Project/Project";
-import { cache, Suspense } from "react";
-import { ProjectSkeleton } from "@/components/Skeletons/ProjectSkeleton";
+import { cache } from "react";
 
 const getProjectInfo = cache(async (id) => {
   try {
@@ -46,11 +45,7 @@ const page = async ({ params }) => {
   const { id } = await params;
   const projectInfo = await getProjectInfo(id);
 
-  return (
-    <Suspense fallback={<ProjectSkeleton />}>
-      <Project projectInfo={projectInfo} />
-    </Suspense>
-  );
+  return <Project projectInfo={projectInfo} />;
 };
 
 export default page;

@@ -117,6 +117,7 @@ html[data-theme="dark"] {
 
 html {
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scroll-behavior: smooth;
 }
 
 /* VIEW TRANSITIONS API CONFIGURATION */

@@ -34,6 +34,9 @@ export async function POST() {
     const rows = await query(dbQuery, [payload.id]);
 
     if (rows.length === 0) {
+      cookieStore.delete("accessToken");
+      cookieStore.delete("refreshToken");
+
       return NextResponse.json({ message: "User not found" }, { status: 401 });
     }
     const hashedToken = rows[0].refresh_token;
@@ -42,6 +45,8 @@ export async function POST() {
     const userEmail = rows[0].user_email;
 
     if (!hashedToken) {
+      cookieStore.delete("accessToken");
+      cookieStore.delete("refreshToken");
       return NextResponse.json({ message: "Token not found" }, { status: 401 });
     }
 

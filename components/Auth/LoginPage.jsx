@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
 
@@ -10,6 +11,9 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const blogs = searchParams.get("blogs");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +31,9 @@ export default function LoginPage() {
       const data = await response.json();
       //   Successfull login
       if (response.ok) {
-        router.push("/createblog");
+        blogs && blogs === "true"
+          ? router.push("/blogs")
+          : router.push("/createblog");
         router.refresh(); //refresh server components
       } else {
         setError(data.message || "Login Failed");
@@ -40,7 +46,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6 py-24 sm:mt-0">
+    <div className="flex h-full items-center justify-center">
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="mb-8">

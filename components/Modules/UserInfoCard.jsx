@@ -1,10 +1,9 @@
 "use client";
 
 import { UserRound } from "lucide-react";
-import { useUser } from "@/context/UserContext";
 
-const UserInfoCard = () => {
-  const { email, name } = useUser();
+const UserInfoCard = ({ user }) => {
+  const { name, email } = user;
 
   // Generate initials from user_name if available
   const initials = name

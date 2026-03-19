@@ -1,5 +1,4 @@
 "use client";
-import { useUser } from "@/context/UserContext";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import { X } from "lucide-react";
@@ -11,8 +10,6 @@ import ClientPortal from "../Modules/ClientPortal";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
 
 const EditBlog = ({ setShowEditModal, setAlertInfo, blogInfo }) => {
-  const { id: userId } = useUser();
-
   const blogId = blogInfo.blog_id;
 
   const [formData, setFormData] = useState({
@@ -87,44 +84,6 @@ const EditBlog = ({ setShowEditModal, setAlertInfo, blogInfo }) => {
 
   const isFormValid =
     formData.title.trim() && formData.author.trim() && formData.content.trim();
-
-  if (!userId) {
-    const content = (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        onClick={() => setShowEditModal(false)}
-        className="custom-blur custom-blur fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-gray-950/50"
-      >
-        <motion.div
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.95, opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          onClick={(e) => e.stopPropagation()}
-          className="mx-4 w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-xl dark:border-gray-800 dark:bg-slate-950"
-        >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-              Edit Unauthorized
-            </h2>
-            <button
-              onClick={() => setShowEditModal(false)}
-              className="rounded-xl p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-          <p className="text-gray-600 dark:text-gray-400">
-            You are not authorized to edit this blog
-          </p>
-        </motion.div>
-      </motion.div>
-    );
-    return <ClientPortal>{content}</ClientPortal>;
-  }
 
   return (
     <>

@@ -8,6 +8,7 @@ import LogoutOverlay from "./LogoutOverlay";
 
 export default function LogoutButton() {
   const router = useRouter();
+
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
