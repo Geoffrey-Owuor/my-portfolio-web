@@ -1,8 +1,6 @@
 import { query } from "@/lib/db";
 import ViewBlog from "@/components/blog/ViewBlog";
 import { cache } from "react";
-import { Suspense } from "react";
-import ViewBlogsSkeleton from "@/components/Skeletons/ViewBlogsSkeleton";
 
 import { headers } from "next/headers";
 
@@ -74,11 +72,7 @@ const page = async ({ params }) => {
   const headerList = await headers();
   const userId = headerList.get("x-user-id");
 
-  return (
-    <Suspense fallback={<ViewBlogsSkeleton />}>
-      <ViewBlog blogPost={blogPost} userId={userId} />
-    </Suspense>
-  );
+  return <ViewBlog blogPost={blogPost} userId={userId} />;
 };
 
 export default page;
