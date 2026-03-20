@@ -2,7 +2,7 @@
 import Image from "next/image";
 import {
   Blocks,
-  Code,
+  CodeXml,
   Layers2,
   Loader2,
   MessageCircleCode,
@@ -94,10 +94,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
   return (
     <div className="mx-1 flex-1 md:mx-auto" ref={stackRef}>
       {/* Section Title  */}
-      <SectionTitle
-        label="Tools & technologies I work with"
-        title="My Tech Stack"
-      />
+      <SectionTitle label="Tools & tech I work with" title="My Tech Stack" />
 
       {/* Two-Column Grid Layout */}
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
@@ -110,7 +107,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             transition={{ duration: 0.6 }}
             className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
           >
-            <Code />
+            <CodeXml />
 
             <span>Core Technologies</span>
           </motion.div>
@@ -121,7 +118,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5 lg:gap-6"
+            className="flex flex-wrap items-center gap-4"
           >
             {toolIcons.map(([name, iconSrc], _index) => (
               <motion.div
@@ -185,9 +182,9 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-wrap items-center gap-4"
+            className="flex flex-wrap items-center gap-4 rounded-xl border-2 border-dashed border-gray-300 p-4 dark:border-gray-700"
           >
-            {toolNames.map((tool, index) => (
+            {toolNames.map((tool, _index) => (
               <motion.li
                 key={tool.id}
                 variants={listItemVariants}

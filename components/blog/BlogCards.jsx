@@ -111,8 +111,17 @@ const BlogCards = ({ blogs, user }) => {
       <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="relative mb-10 flex items-center justify-center">
-          <span className="text-3xl font-semibold">Blog Space</span>
-          <div className="absolute right-0">
+          <div className="flex flex-col items-center justify-center gap-3">
+            {/* Heading */}
+            <span className="font-dm-mono text-sm font-medium tracking-[0.2em] text-gray-400 uppercase dark:text-gray-500">
+              Thoughts & Writings
+            </span>
+            <h2 className="text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
+              Blog Space
+            </h2>
+            <div className="mt-1 h-px w-12 bg-gray-300 dark:bg-gray-700" />
+          </div>
+          <div className="absolute top-18 right-6 sm:top-0 sm:right-0">
             <BlogAvatar user={user} />
           </div>
         </div>

@@ -96,7 +96,7 @@ const ExperienceWrapper = ({ experiences }) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="mb-2 block text-sm leading-none font-normal text-gray-500 dark:text-gray-400"
+                className="font-dm-mono mb-2 block text-sm leading-none text-gray-500 dark:text-gray-400"
               >
                 {exp.work_timeline}
               </motion.time>
@@ -116,7 +116,7 @@ const ExperienceWrapper = ({ experiences }) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                className="mb-3 text-base text-gray-700 italic dark:text-gray-300"
+                className="font-dm-mono mb-3 text-base text-gray-700 italic dark:text-gray-300"
               >
                 {exp.company_name}
               </motion.p>
