@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import { useAlertStore } from "@/store/useAlertStore";
 import ProjectStack from "./ProjectStack";
 import ShowMoreButtons from "./ShowMoreButtons";
+import SectionTitle from "./SectionTitle";
 
 const ProjectsWrapper = ({ projects }) => {
   //initialize router
@@ -96,10 +97,7 @@ const ProjectsWrapper = ({ projects }) => {
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
       <div className="mx-1 md:mx-auto" ref={projectsRef}>
         {/* Section Title */}
-        <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
-          <span>My Projects</span>
-        </div>
-
+        <SectionTitle label="Things i've built" title="My Projects" />
         {/* Responsive Projects Grid */}
         <div className="custom:grid-cols-2 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {visibleProjects.map((project, _index) => (

@@ -6,6 +6,7 @@ import { useAlertStore } from "@/store/useAlertStore";
 import remarkGfm from "remark-gfm";
 import ReactMarkDown from "react-markdown";
 import ShowMoreButtons from "./ShowMoreButtons";
+import SectionTitle from "./SectionTitle";
 
 const ExperienceWrapper = ({ experiences }) => {
   // Number of experiences we see on mount
@@ -60,9 +61,7 @@ const ExperienceWrapper = ({ experiences }) => {
   return (
     <div className="mx-1 max-w-5xl flex-1 md:mx-auto" ref={experienceRef}>
       {/* Section Title */}
-      <h2 className="mb-16 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
-        My Work Experience
-      </h2>
+      <SectionTitle label="Where i've been" title="My Experience" />
 
       {/* Vertical Timeline */}
       <ol className="relative border-l border-gray-200 dark:border-gray-700">

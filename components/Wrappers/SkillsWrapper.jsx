@@ -2,7 +2,6 @@
 
 import {
   BadgeCheck,
-  Check,
   HeartHandshake,
   Loader2,
   Sparkle,
@@ -11,6 +10,7 @@ import {
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useAlertStore } from "@/store/useAlertStore";
+import SectionTitle from "./SectionTitle";
 
 const SkillsWrapper = ({ technicalSkills, softSkills }) => {
   // Creating a ref for the section
@@ -68,10 +68,8 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
 
   return (
     <div ref={skillsRef} className="mx-1 flex-1 md:mx-auto">
-      {/* Section Title with floating animation */}
-      <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
-        <span>My Skills</span>
-      </div>
+      {/* Section Title */}
+      <SectionTitle label="What I bring to the table" title="My Skills" />
 
       {/* Two-Column Grid Layout */}
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
@@ -154,7 +152,9 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
                 }}
                 className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 px-4 py-3 text-base text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
               >
-                <Check className="h-5 w-5 shrink-0 text-gray-500" />
+                <span className="font-dm-mono inline-block w-8 text-right text-gray-500">
+                  {String(index + 1).padStart(2, "0")}.
+                </span>
                 <span>{skill.skill_description}</span>
               </motion.li>
             ))}

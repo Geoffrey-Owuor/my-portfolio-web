@@ -10,6 +10,7 @@ import {
 import { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useAlertStore } from "@/store/useAlertStore";
+import SectionTitle from "./SectionTitle";
 
 // Icons we want to invert their colors in dark mode
 const iconsToInvert = [
@@ -92,10 +93,11 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
 
   return (
     <div className="mx-1 flex-1 md:mx-auto" ref={stackRef}>
-      {/* Section Title - No animation */}
-      <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
-        <span>My Tech Stack</span>
-      </div>
+      {/* Section Title  */}
+      <SectionTitle
+        label="Tools & technologies I work with"
+        title="My Tech Stack"
+      />
 
       {/* Two-Column Grid Layout */}
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
