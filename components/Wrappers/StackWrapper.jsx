@@ -118,7 +118,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-wrap items-center gap-4"
+            className="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-5 lg:gap-6"
           >
             {toolIcons.map(([name, iconSrc], _index) => (
               <motion.div
