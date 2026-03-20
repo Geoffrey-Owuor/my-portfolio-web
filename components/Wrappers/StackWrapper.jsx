@@ -1,15 +1,16 @@
 "use client";
 import Image from "next/image";
 import {
-  Cpu,
-  ListChecks,
+  Blocks,
+  CodeXml,
+  Layers2,
   Loader2,
   MessageCircleCode,
-  RailSymbol,
 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useAlertStore } from "@/store/useAlertStore";
+import SectionTitle from "./SectionTitle";
 
 // Icons we want to invert their colors in dark mode
 const iconsToInvert = [
@@ -90,25 +91,10 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
     },
   };
 
-  // Icon pulse animation
-  const iconVariants = {
-    animate: {
-      scale: [1, 1.2, 1],
-      rotate: [0, 5, -5, 0],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    },
-  };
-
   return (
     <div className="mx-1 flex-1 md:mx-auto" ref={stackRef}>
-      {/* Section Title - No animation */}
-      <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
-        <span>My Tech Stack</span>
-      </div>
+      {/* Section Title  */}
+      <SectionTitle label="Tools & tech I work with" title="My Tech Stack" />
 
       {/* Two-Column Grid Layout */}
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
@@ -121,9 +107,8 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             transition={{ duration: 0.6 }}
             className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
           >
-            <motion.div variants={iconVariants} animate="animate">
-              <Cpu />
-            </motion.div>
+            <CodeXml />
+
             <span>Core Technologies</span>
           </motion.div>
 
@@ -133,9 +118,9 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5 lg:gap-6"
+            className="flex flex-wrap items-center gap-4"
           >
-            {toolIcons.map(([name, iconSrc], index) => (
+            {toolIcons.map(([name, iconSrc], _index) => (
               <motion.div
                 key={name}
                 variants={logoVariants}
@@ -147,17 +132,6 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
                     rotate: 5,
                     boxShadow: "0 15px 30px rgba(0, 0, 0, 0.15)",
                     transition: { duration: 0.3 },
-                  }}
-                  animate={{
-                    y: [0, -8, 0],
-                  }}
-                  transition={{
-                    y: {
-                      duration: 2.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: index * 0.15,
-                    },
                   }}
                   className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-xl bg-slate-100/50 p-4 shadow-sm dark:bg-gray-800/50"
                 >
@@ -197,9 +171,8 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             transition={{ duration: 0.6 }}
             className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
           >
-            <motion.div variants={iconVariants} animate="animate">
-              <ListChecks />
-            </motion.div>
+            <Blocks />
+
             <span>Other Tools & Skills</span>
           </motion.div>
 
@@ -209,32 +182,21 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2"
+            className="flex flex-wrap items-center gap-4 rounded-xl border-2 border-dashed border-gray-300 p-4 dark:border-gray-700"
           >
-            {toolNames.map((tool, index) => (
+            {toolNames.map((tool, _index) => (
               <motion.li
                 key={tool.id}
                 variants={listItemVariants}
                 whileHover={{
-                  scale: 1.05,
-                  x: 10,
+                  scale: 1.03,
+                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
                   transition: { duration: 0.2 },
                 }}
-                className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 p-4 text-base text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
+                className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 px-4 py-3 text-base text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
               >
-                <motion.div
-                  animate={{
-                    rotate: [0, 360],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "linear",
-                    delay: index * 0.2,
-                  }}
-                >
-                  <RailSymbol className="h-5 w-5 shrink-0 text-gray-500" />
-                </motion.div>
+                <Layers2 className="h-5 w-5 shrink-0 text-gray-500" />
+
                 <span>{tool.tool_name}</span>
               </motion.li>
             ))}

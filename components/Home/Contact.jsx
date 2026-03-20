@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Loader2, SendHorizonal } from "lucide-react";
 import Alert from "../Modules/Alert";
+import SectionTitle from "../Wrappers/SectionTitle";
 
 const Contact = () => {
   // Set for form inputs
@@ -135,9 +136,7 @@ const Contact = () => {
       <section id="contact" className="w-full px-4 py-24 md:px-8">
         <div className="mx-1 max-w-2xl sm:mx-auto">
           {/* Section Title */}
-          <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
-            Get in Touch
-          </h2>
+          <SectionTitle label="Don't be a stranger" title="Get in Touch" />
 
           <motion.form
             onSubmit={handleSubmit}

@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import { useAlertStore } from "@/store/useAlertStore";
 import ProjectStack from "./ProjectStack";
 import ShowMoreButtons from "./ShowMoreButtons";
+import SectionTitle from "./SectionTitle";
 
 const ProjectsWrapper = ({ projects }) => {
   //initialize router
@@ -49,37 +50,6 @@ const ProjectsWrapper = ({ projects }) => {
       return () => clearTimeout(timer);
     }
   }, [isInView]);
-
-  // Container variants for staggering children
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  // Enhanced card variants with scale and rotation
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.9,
-      rotateX: -15,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94], // Custom easing curve
-      },
-    },
-  };
 
   // Icon animation variants
   const iconVariants = {
@@ -127,21 +97,11 @@ const ProjectsWrapper = ({ projects }) => {
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
       <div className="mx-1 md:mx-auto" ref={projectsRef}>
         {/* Section Title */}
-        <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
-          <span>My Projects</span>
-        </div>
-
+        <SectionTitle label="Things i've built" title="My Projects" />
         {/* Responsive Projects Grid */}
-        <motion.div
-          variants={containerVariants}
-          className="custom:grid-cols-2 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {visibleProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              variants={cardVariants}
-              style={{ perspective: "1000px" }}
-            >
+        <div className="custom:grid-cols-2 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {visibleProjects.map((project, _index) => (
+            <div key={project.id}>
               <motion.a
                 href={project.project_link}
                 target="_blank"
@@ -163,19 +123,7 @@ const ProjectsWrapper = ({ projects }) => {
                   animate="animate"
                 />
 
-                {/* Floating animation for each card */}
-                <motion.div
-                  animate={{
-                    y: [0, -8, 0],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: index * 0.2,
-                  }}
-                  className="relative"
-                >
+                <div className="relative">
                   {/* Card Content */}
 
                   {/* Card Header */}
@@ -221,11 +169,11 @@ const ProjectsWrapper = ({ projects }) => {
 
                   {/* Project stack area */}
                   <ProjectStack projectStack={project.project_stack} />
-                </motion.div>
+                </div>
               </motion.a>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Show more buttons */}
         <ShowMoreButtons

@@ -74,22 +74,31 @@ const Hero = () => {
           }}
           className="order-first flex justify-center"
         >
-          <motion.div
-            whileHover={{
-              scale: 1.05,
-              transition: { duration: 0.3 },
-            }}
-            className="relative"
-          >
-            <Image
-              src={assets.profile_photo}
-              alt="profile-image"
-              className="h-60 w-60 rounded-full object-cover shadow-xl shadow-violet-500 md:h-80 md:w-80 dark:shadow-violet-500/50"
-              priority
-              width={300}
-              height={300}
+          <div className="relative flex items-center justify-center">
+            {/* Spinning gradient ring */}
+            <div
+              className="absolute h-64 w-64 animate-spin rounded-full bg-linear-to-br from-gray-300 via-gray-100 to-gray-400 blur-xs md:h-84 md:w-84 dark:from-gray-600 dark:via-gray-800 dark:to-gray-500"
+              style={{ animationDuration: "4s" }}
             />
-          </motion.div>
+            {/* Slightly smaller white buffer ring to separate image from gradient */}
+            <div className="absolute h-62 w-62 rounded-full bg-white md:h-82 md:w-82 dark:bg-gray-950" />
+
+            <motion.div
+              whileHover={{
+                scale: 1.02,
+                transition: { duration: 0.3 },
+              }}
+            >
+              <Image
+                src={assets.profile_photo}
+                alt="profile-image"
+                className="relative h-60 w-60 rounded-full object-cover md:h-80 md:w-80"
+                priority
+                width={300}
+                height={300}
+              />
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* --- Text Content (Right Side) --- */}
@@ -116,25 +125,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
             className="text-3xl font-medium tracking-tight text-gray-900 md:text-5xl dark:text-white"
           >
-            <motion.span
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, currentColor 0%, #3b82f6 25%, #8b5cf6 50%, #ec4899 75%, currentColor 100%)",
-                backgroundSize: "200% auto",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-              }}
-            >
-              Code, Design, & Everything In-Between
-            </motion.span>
+            <span>Code, Design, & Everything In-Between</span>
           </motion.h1>
 
           <motion.p
@@ -163,7 +154,7 @@ const Hero = () => {
               initial="rest"
               whileHover="hover"
               whileTap="tap"
-              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-gray-900 px-6 py-3 text-base font-medium text-gray-900 shadow-md transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
+              className="font-dm-mono relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-gray-900 px-6 py-3 text-base font-medium text-gray-900 shadow-md transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
             >
               {/* Shimmer effect on hover */}
               <motion.div
@@ -188,7 +179,7 @@ const Hero = () => {
               initial="rest"
               whileHover="hover"
               whileTap="tap"
-              className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gray-900 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-gray-700 sm:w-auto dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+              className="font-dm-mono relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gray-900 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-gray-700 sm:w-auto dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
             >
               {/* Shimmer effect on hover */}
               <motion.div

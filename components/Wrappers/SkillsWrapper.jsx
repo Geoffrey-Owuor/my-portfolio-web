@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  Activity,
-  Check,
+  BadgeCheck,
   HeartHandshake,
   Loader2,
-  Microchip,
   Sparkle,
+  Terminal,
 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useAlertStore } from "@/store/useAlertStore";
+import SectionTitle from "./SectionTitle";
 
 const SkillsWrapper = ({ technicalSkills, softSkills }) => {
   // Creating a ref for the section
@@ -66,25 +66,10 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
     },
   };
 
-  // Icon pulse animation
-  const iconVariants = {
-    animate: {
-      scale: [1, 1.2, 1],
-      rotate: [0, 5, -5, 0],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    },
-  };
-
   return (
     <div ref={skillsRef} className="mx-1 flex-1 md:mx-auto">
-      {/* Section Title with floating animation */}
-      <div className="mb-16 flex items-center justify-center gap-2 text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
-        <span>My Skills</span>
-      </div>
+      {/* Section Title */}
+      <SectionTitle label="What I bring to the table" title="My Skills" />
 
       {/* Two-Column Grid Layout */}
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
@@ -97,9 +82,8 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             transition={{ duration: 0.6 }}
             className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
           >
-            <motion.div variants={iconVariants} animate="animate">
-              <Microchip />
-            </motion.div>
+            <Terminal />
+
             <span>Technical Skills</span>
           </motion.div>
 
@@ -108,32 +92,21 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2"
+            className="flex flex-wrap items-center gap-4 rounded-xl border-2 border-dashed border-gray-300 p-4 dark:border-gray-700"
           >
-            {technicalSkills.map((skill, index) => (
+            {technicalSkills.map((skill, _index) => (
               <motion.div
                 key={skill.id}
                 variants={cardVariants}
                 whileHover={{
-                  scale: 1.05,
+                  scale: 1.03,
                   boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
                   transition: { duration: 0.2 },
                 }}
-                className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-100/50 p-4 text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
+                className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-100/50 px-4 py-3 text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
               >
-                <motion.div
-                  animate={{
-                    rotate: [0, 360],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "linear",
-                    delay: index * 0.2,
-                  }}
-                >
-                  <Activity className="h-4 w-4 shrink-0 text-gray-500" />
-                </motion.div>
+                <BadgeCheck className="h-4 w-4 shrink-0 text-gray-500" />
+
                 <span>{skill.skill_description}</span>
               </motion.div>
             ))}
@@ -156,9 +129,8 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             transition={{ duration: 0.6 }}
             className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
           >
-            <motion.div variants={iconVariants} animate="animate">
-              <HeartHandshake />
-            </motion.div>
+            <HeartHandshake />
+
             <span>Soft Skills</span>
           </motion.div>
 
@@ -167,7 +139,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-col gap-3"
+            className="flex flex-col gap-4"
           >
             {softSkills.map((skill, index) => (
               <motion.li
@@ -175,24 +147,14 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
                 variants={cardVariants}
                 whileHover={{
                   scale: 1.03,
-                  x: 10,
+                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
                   transition: { duration: 0.2 },
                 }}
-                className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 p-4 text-base text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
+                className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 px-4 py-3 text-base text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
               >
-                <motion.div
-                  animate={{
-                    scale: [1, 1.3, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: index * 0.3,
-                  }}
-                >
-                  <Check className="h-5 w-5 shrink-0 text-gray-500" />
-                </motion.div>
+                <span className="font-dm-mono inline-block w-8 text-right text-gray-500">
+                  {String(index + 1).padStart(2, "0")}.
+                </span>
                 <span>{skill.skill_description}</span>
               </motion.li>
             ))}

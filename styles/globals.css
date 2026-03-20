@@ -71,7 +71,7 @@ html[data-theme="dark"] {
 
 @layer base {
   .bg-gradient-classes {
-    @apply bg-linear-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-gray-900 dark:via-gray-950 dark:to-black;
+    @apply bg-linear-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-gray-800/50 dark:via-gray-900 dark:to-gray-950;
   }
 
   /* Maintaining a certain length in different screens - Tailwind css configuration */
