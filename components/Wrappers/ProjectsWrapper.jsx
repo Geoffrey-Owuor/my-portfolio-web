@@ -129,15 +129,9 @@ const ProjectsWrapper = ({ projects }) => {
                   {/* Card Header */}
                   <div className="mb-1 flex items-center justify-between">
                     <div>
-                      <motion.h3
-                        className="line-clamp-2 text-xl font-semibold text-gray-900 dark:text-white"
-                        whileHover={{
-                          x: 5,
-                          transition: { duration: 0.2 },
-                        }}
-                      >
+                      <h3 className="line-clamp-2 text-xl font-semibold text-gray-900 dark:text-white">
                         {project.project_name}
-                      </motion.h3>
+                      </h3>
                       <button
                         onClick={(e) => {
                           handleNavigate(e, project.id);

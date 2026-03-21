@@ -21,6 +21,9 @@ export async function middleware(request) {
   const response = NextResponse.next();
 
   if (refreshToken) {
+    if (pathname.startsWith("/login")) {
+      return NextResponse.redirect(new URL("/createblog", request.url));
+    }
     try {
       // Use jwtVerify (Edge-compatible) with your Refresh Secret
       const { payload } = await jwtVerify(refreshToken, REFRESH_SECRET);
@@ -42,5 +45,5 @@ export async function middleware(request) {
 
 export const config = {
   // This ensures the middleware ONLY runs on these paths
-  matcher: ["/createblog", "/blogs", "/blog/:path*"],
+  matcher: ["/createblog", "/login", "/blogs", "/blog/:path*"],
 };

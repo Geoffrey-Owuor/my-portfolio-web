@@ -8,6 +8,8 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { usePathname, useRouter } from "next/navigation";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
+import { useHideScrollbar } from "@/hooks/useHideScrollbar";
+import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
 const NavBar = () => {
   // State to manage the mobile menu's open/closed status
@@ -24,7 +26,12 @@ const NavBar = () => {
     router.push(route);
   };
 
-  // Ref for the mobile menu to detect outside clicks
+  // Function to explicitly close the mobile menu (used for link clicks)
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Ref for the sidebar menu
   const menuRef = useRef(null);
 
   // Array of navigation links for cleaner code
@@ -42,27 +49,15 @@ const NavBar = () => {
     setIsLoadingLine(false);
   }, [pathname]);
 
-  // Effect to prevent html scroll when menu is open (for screens larger than 640px)
-  useEffect(() => {
-    if (isMenuOpen && window.innerWidth >= 640) {
-      document.documentElement.style.overflow = "hidden";
-    } else {
-      document.documentElement.style.overflow = "unset";
-    }
+  // Run scrollbar hook to hide scrollbar when sidebar is open
+  useHideScrollbar(isMenuOpen);
 
-    return () => {
-      document.documentElement.style.overflow = "unset";
-    };
-  }, [isMenuOpen]);
+  // Hook to handle Focus Trapping inside the mobile menu
+  useFocusTrapping(menuRef, isMenuOpen, closeMenu);
 
   // Function to toggle the mobile menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  // Function to explicitly close the mobile menu (used for link clicks)
-  const closeMenu = () => {
-    setIsMenuOpen(false);
   };
 
   // Close menu and scroll
@@ -81,7 +76,7 @@ const NavBar = () => {
     <>
       {isLoadingLine && <LoadingLine />}
       {/* Main Navigation Bar */}
-      <nav className="app-background fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out">
+      <nav className="app-background adjust-padding fixed top-0 right-0 left-0 z-50 w-full transition-colors duration-300 ease-in-out">
         {/* Centered Content Container */}
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
           {/* Left Side - Mobile Menu Toggle + Logo */}
@@ -200,7 +195,7 @@ const NavBar = () => {
 
       {/* Overlay - appears when menu is open */}
       <div
-        className={`fixed inset-0 z-80 bg-black/50 transition-all duration-300 lg:hidden dark:bg-black/60 ${
+        className={`fixed inset-0 z-80 bg-black/50 transition-all duration-200 lg:hidden dark:bg-black/60 ${
           isMenuOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
         onClick={closeMenu}
@@ -210,7 +205,7 @@ const NavBar = () => {
       {/* Mobile Menu Drawer - slides from left to right */}
       <div
         ref={menuRef}
-        className={`fixed top-0 bottom-0 left-0 z-80 w-72 transform bg-white shadow-2xl transition-all duration-300 ease-in-out lg:hidden dark:border-r dark:border-gray-800 dark:bg-gray-950 ${
+        className={`fixed top-0 bottom-0 left-0 z-80 w-72 transform bg-white shadow-2xl transition-all duration-200 ease-in-out lg:hidden dark:border-r dark:border-gray-800 dark:bg-gray-950 ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

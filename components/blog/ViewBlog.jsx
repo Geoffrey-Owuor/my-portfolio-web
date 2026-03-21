@@ -159,6 +159,7 @@ const ViewBlog = ({ blogPost, userId }) => {
         {showEditBlog && (
           <EditBlog
             setShowEditModal={setShowEditBlog}
+            showEditModal={showEditBlog}
             blogInfo={editBlogData}
             setAlertInfo={setAlertInfo}
           />

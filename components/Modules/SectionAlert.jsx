@@ -38,7 +38,7 @@ export const SectionAlert = ({
       exit={{ opacity: 0, x: 40 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       style={{ bottom: bottomOffset }}
-      className="fixed right-4 z-50 hidden md:flex"
+      className="adjust-padding fixed right-4 z-50 hidden md:flex"
     >
       <div
         className={`flex w-auto max-w-80 items-center justify-between rounded-full bg-black px-6 py-4 text-white dark:bg-white dark:text-black`}
