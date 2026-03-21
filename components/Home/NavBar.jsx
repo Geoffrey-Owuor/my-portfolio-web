@@ -42,16 +42,35 @@ const NavBar = () => {
     setIsLoadingLine(false);
   }, [pathname]);
 
-  // Effect to prevent html scroll when menu is open (for screens larger than 640px)
+  // Effect to prevent html scroll when menu is open
   useEffect(() => {
-    if (isMenuOpen && window.innerWidth >= 640) {
-      document.documentElement.style.overflow = "hidden";
-    } else {
-      document.documentElement.style.overflow = "unset";
+    if (!isMenuOpen) return;
+
+    // Calculate the width of the scrollbar
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    const scrollbarNavWidth =
+      window.innerWidth - document.documentElement.clientWidth + 0.3;
+
+    // Prevent scrolling
+    document.documentElement.style.overflow = "hidden";
+
+    // Add padding to compensate for the missing scrollbar to prevent layout shift
+    document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
+
+    const navbar = document.getElementById("my-navbar");
+    if (navbar) {
+      navbar.style.paddingRight = `${scrollbarNavWidth}px`;
     }
 
     return () => {
-      document.documentElement.style.overflow = "unset";
+      // Cleanup
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.paddingRight = "";
+      if (navbar) {
+        navbar.style.paddingRight = "";
+      }
     };
   }, [isMenuOpen]);
 
@@ -81,7 +100,10 @@ const NavBar = () => {
     <>
       {isLoadingLine && <LoadingLine />}
       {/* Main Navigation Bar */}
-      <nav className="app-background fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out">
+      <nav
+        id="my-navbar"
+        className="app-background fixed top-0 right-0 left-0 z-50 w-full transition-colors duration-300 ease-in-out"
+      >
         {/* Centered Content Container */}
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
           {/* Left Side - Mobile Menu Toggle + Logo */}
