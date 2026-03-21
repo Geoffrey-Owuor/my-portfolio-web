@@ -8,9 +8,18 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import ClientPortal from "../Modules/ClientPortal";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
+import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 
-const EditBlog = ({ setShowEditModal, setAlertInfo, blogInfo }) => {
+const EditBlog = ({
+  showEditModal,
+  setShowEditModal,
+  setAlertInfo,
+  blogInfo,
+}) => {
   const blogId = blogInfo.blog_id;
+
+  // Calling our layout hooks
+  useHideScrollbar(showEditModal);
 
   const [formData, setFormData] = useState({
     title: blogInfo.blog_title || "",
@@ -107,7 +116,7 @@ const EditBlog = ({ setShowEditModal, setAlertInfo, blogInfo }) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={() => setShowEditModal(false)}
-          className="custom-blur adjust-padding fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-gray-950/50"
+          className="custom-blur adjust-padding fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/60"
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0, y: 20 }}

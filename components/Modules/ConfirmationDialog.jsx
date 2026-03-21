@@ -2,7 +2,6 @@
 
 import { X } from "lucide-react";
 import ClientPortal from "./ClientPortal";
-
 import { motion } from "framer-motion";
 
 const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
