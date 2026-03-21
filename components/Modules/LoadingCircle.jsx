@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 export const LoadingCircle = () => {
   const content = (
     <div
-      className={`fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 transition-all duration-200 dark:bg-black/60`}
+      className={`adjust-padding fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white/50 transition-all duration-200 dark:bg-black/60`}
     >
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">

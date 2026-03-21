@@ -33,7 +33,7 @@ const Alert = ({ message, type, onClose }) => {
   return (
     <ClientPortal>
       <div
-        className={`fixed right-2 bottom-8 left-2 z-50 md:right-auto md:left-4 ${
+        className={`adjust-padding fixed right-2 bottom-8 left-2 z-50 md:right-auto md:left-4 ${
           isClosing ? "animate-slideDown" : "animate-slideUp"
         }`}
       >

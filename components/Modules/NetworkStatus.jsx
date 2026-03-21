@@ -51,7 +51,7 @@ const NetworkStatus = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="pointer-events-none fixed right-0 bottom-6 left-0 z-100 flex justify-center"
+          className="adjust-padding pointer-events-none fixed right-0 bottom-6 left-0 z-100 flex justify-center"
         >
           <div
             className={`custom-blur pointer-events-auto flex items-center gap-3 rounded-full px-6 py-3 shadow-lg transition-colors duration-300 ${

@@ -8,6 +8,8 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { usePathname, useRouter } from "next/navigation";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
+import { useHideScrollbar } from "@/hooks/useHideScrollbar";
+import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
 const NavBar = () => {
   // State to manage the mobile menu's open/closed status
@@ -24,8 +26,12 @@ const NavBar = () => {
     router.push(route);
   };
 
-  // Ref for the toggle button to restore focus when menu closes
-  const toggleBtnRef = useRef(null);
+  // Function to explicitly close the mobile menu (used for link clicks)
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Ref for the sidebar menu
   const menuRef = useRef(null);
 
   // Array of navigation links for cleaner code
@@ -43,98 +49,15 @@ const NavBar = () => {
     setIsLoadingLine(false);
   }, [pathname]);
 
-  // Effect to prevent html scroll when menu is open
-  useEffect(() => {
-    if (!isMenuOpen) return;
+  // Run scrollbar hook to hide scrollbar when sidebar is open
+  useHideScrollbar(isMenuOpen);
 
-    // Calculate the width of the scrollbar
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
-
-    const scrollbarNavWidth =
-      window.innerWidth - document.documentElement.clientWidth + 0.3;
-
-    // Prevent scrolling
-    document.documentElement.style.overflow = "hidden";
-
-    // Add padding to compensate for the missing scrollbar to prevent layout shift
-    document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
-
-    const navbar = document.getElementById("my-navbar");
-    if (navbar) {
-      navbar.style.paddingRight = `${scrollbarNavWidth}px`;
-    }
-
-    return () => {
-      // Cleanup
-      document.documentElement.style.overflow = "";
-      document.documentElement.style.paddingRight = "";
-      if (navbar) {
-        navbar.style.paddingRight = "";
-      }
-    };
-  }, [isMenuOpen]);
-
-  // Effect to handle Focus Trapping inside the mobile menu
-  useEffect(() => {
-    if (!isMenuOpen) return;
-
-    const menuElement = menuRef.current;
-    if (!menuElement) return;
-
-    // Find all focusable elements inside the mobile menu
-    const focusableElements = menuElement.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    );
-
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    // Automatically focus the first element (Close button) when menu opens
-    if (firstElement) firstElement.focus();
-
-    const handleKeyDown = (e) => {
-      // Close menu on Escape key
-      if (e.key === "Escape") {
-        closeMenu();
-        return;
-      }
-
-      // Handle Tab key focus trapping
-      if (e.key === "Tab") {
-        if (e.shiftKey) {
-          // Shift + Tab (going backwards)
-          if (document.activeElement === firstElement) {
-            lastElement.focus();
-            e.preventDefault();
-          }
-        } else {
-          // Tab (going forwards)
-          if (document.activeElement === lastElement) {
-            firstElement.focus();
-            e.preventDefault();
-          }
-        }
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      // Restore focus to the hamburger button when the menu closes
-      if (toggleBtnRef.current) toggleBtnRef.current.focus();
-    };
-  }, [isMenuOpen]);
+  // Hook to handle Focus Trapping inside the mobile menu
+  useFocusTrapping(menuRef, isMenuOpen, closeMenu);
 
   // Function to toggle the mobile menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  // Function to explicitly close the mobile menu (used for link clicks)
-  const closeMenu = () => {
-    setIsMenuOpen(false);
   };
 
   // Close menu and scroll
@@ -153,10 +76,7 @@ const NavBar = () => {
     <>
       {isLoadingLine && <LoadingLine />}
       {/* Main Navigation Bar */}
-      <nav
-        id="my-navbar"
-        className="app-background fixed top-0 right-0 left-0 z-50 w-full transition-colors duration-300 ease-in-out"
-      >
+      <nav className="app-background adjust-padding fixed top-0 right-0 left-0 z-50 w-full transition-colors duration-300 ease-in-out">
         {/* Centered Content Container */}
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
           {/* Left Side - Mobile Menu Toggle + Logo */}
@@ -164,7 +84,6 @@ const NavBar = () => {
             {/* Mobile Menu Toggle Button */}
             <button
               onClick={toggleMenu}
-              ref={toggleBtnRef}
               className="rounded-full p-2 text-gray-700 transition hover:bg-gray-100 lg:hidden dark:text-gray-300 dark:hover:bg-gray-800"
               title="Toggle menu"
             >
@@ -276,7 +195,7 @@ const NavBar = () => {
 
       {/* Overlay - appears when menu is open */}
       <div
-        className={`fixed inset-0 z-80 bg-black/50 transition-all duration-300 lg:hidden dark:bg-black/60 ${
+        className={`fixed inset-0 z-80 bg-black/50 transition-all duration-200 lg:hidden dark:bg-black/60 ${
           isMenuOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
         onClick={closeMenu}
@@ -286,7 +205,7 @@ const NavBar = () => {
       {/* Mobile Menu Drawer - slides from left to right */}
       <div
         ref={menuRef}
-        className={`fixed top-0 bottom-0 left-0 z-80 w-72 transform bg-white shadow-2xl transition-all duration-300 ease-in-out lg:hidden dark:border-r dark:border-gray-800 dark:bg-gray-950 ${
+        className={`fixed top-0 bottom-0 left-0 z-80 w-72 transform bg-white shadow-2xl transition-all duration-200 ease-in-out lg:hidden dark:border-r dark:border-gray-800 dark:bg-gray-950 ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

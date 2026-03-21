@@ -107,7 +107,7 @@ const EditBlog = ({ setShowEditModal, setAlertInfo, blogInfo }) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={() => setShowEditModal(false)}
-          className="custom-blur fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-gray-950/50"
+          className="custom-blur adjust-padding fixed inset-0 z-50 flex items-center justify-center bg-white/50 dark:bg-gray-950/50"
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
