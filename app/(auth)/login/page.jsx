@@ -1,6 +1,6 @@
 import LoginPage from "@/components/Auth/LoginPage";
-import { redirect } from "next/navigation";
-import { getSession } from "@/cache/getSession";
+import ParamsSuspense from "@/components/Skeletons/ParamsSuspense";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "Login Page",
@@ -16,9 +16,11 @@ export const metadata = {
 };
 
 const page = async () => {
-  const user = await getSession();
-  if (user) redirect("/createblog");
-  return <LoginPage />;
+  return (
+    <Suspense fallback={<ParamsSuspense />}>
+      <LoginPage />
+    </Suspense>
+  );
 };
 
 export default page;
