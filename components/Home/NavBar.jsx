@@ -24,7 +24,8 @@ const NavBar = () => {
     router.push(route);
   };
 
-  // Ref for the mobile menu to detect outside clicks
+  // Ref for the toggle button to restore focus when menu closes
+  const toggleBtnRef = useRef(null);
   const menuRef = useRef(null);
 
   // Array of navigation links for cleaner code
@@ -74,6 +75,58 @@ const NavBar = () => {
     };
   }, [isMenuOpen]);
 
+  // Effect to handle Focus Trapping inside the mobile menu
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const menuElement = menuRef.current;
+    if (!menuElement) return;
+
+    // Find all focusable elements inside the mobile menu
+    const focusableElements = menuElement.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    // Automatically focus the first element (Close button) when menu opens
+    if (firstElement) firstElement.focus();
+
+    const handleKeyDown = (e) => {
+      // Close menu on Escape key
+      if (e.key === "Escape") {
+        closeMenu();
+        return;
+      }
+
+      // Handle Tab key focus trapping
+      if (e.key === "Tab") {
+        if (e.shiftKey) {
+          // Shift + Tab (going backwards)
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          // Tab (going forwards)
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      // Restore focus to the hamburger button when the menu closes
+      if (toggleBtnRef.current) toggleBtnRef.current.focus();
+    };
+  }, [isMenuOpen]);
+
   // Function to toggle the mobile menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -111,6 +164,7 @@ const NavBar = () => {
             {/* Mobile Menu Toggle Button */}
             <button
               onClick={toggleMenu}
+              ref={toggleBtnRef}
               className="rounded-full p-2 text-gray-700 transition hover:bg-gray-100 lg:hidden dark:text-gray-300 dark:hover:bg-gray-800"
               title="Toggle menu"
             >
