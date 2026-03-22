@@ -156,14 +156,12 @@ const ViewBlog = ({ blogPost, userId }) => {
       {showLoadingLine && <LoadingLine />}
 
       <AnimatePresence>
-        {showEditBlog && (
-          <EditBlog
-            setShowEditModal={setShowEditBlog}
-            showEditModal={showEditBlog}
-            blogInfo={editBlogData}
-            setAlertInfo={setAlertInfo}
-          />
-        )}
+        <EditBlog
+          setShowEditModal={setShowEditBlog}
+          showEditModal={showEditBlog}
+          blogInfo={editBlogData}
+          setAlertInfo={setAlertInfo}
+        />
       </AnimatePresence>
 
       <div className="mx-auto flex max-w-7xl flex-col px-5 py-24 sm:px-6 lg:flex-row lg:gap-6 lg:px-8">

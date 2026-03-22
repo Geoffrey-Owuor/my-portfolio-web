@@ -94,6 +94,8 @@ const EditBlog = ({
   const isFormValid =
     formData.title.trim() && formData.author.trim() && formData.content.trim();
 
+  if (!showEditModal) return null;
+
   return (
     <>
       {showConfirmDialog && (
@@ -109,6 +111,7 @@ const EditBlog = ({
       {isSubmitting && <LoadingCircle />}
 
       {/* The main content */}
+
       <ClientPortal>
         <motion.div
           initial={{ opacity: 0 }}
