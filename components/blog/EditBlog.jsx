@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 import BlogForm from "./BlogForm";
 import apiClient from "@/lib/AxiosClient";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import ClientPortal from "../Modules/ClientPortal";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
@@ -97,7 +97,7 @@ const EditBlog = ({
   if (!showEditModal) return null;
 
   return (
-    <>
+    <AnimatePresence>
       {showConfirmDialog && (
         <ConfirmationDialog
           title="Edit Blog"
@@ -160,7 +160,7 @@ const EditBlog = ({
           </motion.div>
         </motion.div>
       </ClientPortal>
-    </>
+    </AnimatePresence>
   );
 };
 
