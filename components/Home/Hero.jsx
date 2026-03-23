@@ -4,53 +4,23 @@ import { assets } from "@/assets/assets";
 import { ArrowRight, DownloadIcon } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import SphereBg from "../Modules/SphereBg";
 
 const Hero = () => {
-  // Button hover animations
   const buttonVariants = {
-    rest: {
-      scale: 1,
-    },
-    hover: {
-      scale: 1.05,
-      transition: {
-        duration: 0.2,
-        ease: "easeOut",
-      },
-    },
-    tap: {
-      scale: 0.95,
-    },
+    rest: { scale: 1 },
+    hover: { scale: 1.05, transition: { duration: 0.2, ease: "easeOut" } },
+    tap: { scale: 0.95 },
   };
 
-  // Icon animation on button hover
   const iconVariants = {
-    rest: {
-      x: 0,
-      rotate: 0,
-    },
-    hover: {
-      x: 5,
-      rotate: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut",
-      },
-    },
+    rest: { x: 0 },
+    hover: { x: 5, transition: { duration: 0.3, ease: "easeOut" } },
   };
 
-  // Download icon bounce
   const downloadIconVariants = {
-    rest: {
-      y: 0,
-    },
-    hover: {
-      y: [0, -5, 0],
-      transition: {
-        duration: 0.6,
-        repeat: Infinity,
-      },
-    },
+    rest: { y: 0 },
+    hover: { y: [0, -5, 0], transition: { duration: 0.6, repeat: Infinity } },
   };
 
   const titleTags = ["#Engineer", "#Developer", "#Singer😅"];
@@ -58,9 +28,10 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="mx-1 flex min-h-screen max-w-7xl items-center justify-center px-4 py-28 md:mx-auto lg:px-8"
+      className="relative mx-1 flex min-h-screen max-w-7xl items-center justify-center overflow-hidden px-4 py-28 md:mx-auto lg:px-8"
     >
-      <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20">
+      {/* ── Main grid ── */}
+      <div className="relative z-10 grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20">
         {/* --- Image (Left Side) --- */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
@@ -75,20 +46,13 @@ const Hero = () => {
           className="order-first flex justify-center"
         >
           <div className="relative flex items-center justify-center">
-            {/* Spinning gradient ring */}
-            <div
-              className="absolute h-64 w-64 animate-spin rounded-full bg-linear-to-br from-gray-300 via-gray-100 to-gray-400 blur-xs md:h-84 md:w-84 dark:from-gray-600 dark:via-gray-800 dark:to-gray-500"
-              style={{ animationDuration: "4s" }}
-            />
-            {/* Slightly smaller white buffer ring to separate image from gradient */}
-            <div className="absolute h-62 w-62 rounded-full bg-white md:h-82 md:w-82 dark:bg-gray-950" />
+            {/* ── Sphere background ── */}
+            <SphereBg />
 
-            <motion.div
-              whileHover={{
-                scale: 1.02,
-                transition: { duration: 0.3 },
-              }}
-            >
+            {/* White buffer ring - some bit of transparency */}
+            <div className="absolute h-62 w-62 rounded-full bg-linear-to-br from-gray-200/40 via-gray-300/30 to-gray-400/30 md:h-82 md:w-82 dark:from-gray-800/60 dark:via-gray-900/60 dark:to-gray-950/60" />
+
+            <div>
               <Image
                 src={assets.profile_photo}
                 alt="profile-image"
@@ -97,7 +61,7 @@ const Hero = () => {
                 width={300}
                 height={300}
               />
-            </motion.div>
+            </div>
           </div>
         </motion.div>
 
@@ -118,6 +82,7 @@ const Hero = () => {
               </span>
             ))}
           </motion.div>
+
           <motion.h1
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -125,7 +90,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
             className="text-3xl font-medium tracking-tight text-gray-900 md:text-5xl dark:text-white"
           >
-            <span>Code, Design, & Everything In-Between</span>
+            Code, Design, & Everything In-Between
           </motion.h1>
 
           <motion.p
@@ -156,7 +121,6 @@ const Hero = () => {
               whileTap="tap"
               className="font-dm-mono relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-gray-900 px-6 py-3 text-base font-medium text-gray-900 shadow-md transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
             >
-              {/* Shimmer effect on hover */}
               <motion.div
                 className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent"
                 whileHover={{
@@ -181,7 +145,6 @@ const Hero = () => {
               whileTap="tap"
               className="font-dm-mono relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gray-900 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-gray-700 sm:w-auto dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
             >
-              {/* Shimmer effect on hover */}
               <motion.div
                 className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent"
                 whileHover={{
