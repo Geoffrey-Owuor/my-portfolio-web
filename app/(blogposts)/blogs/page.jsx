@@ -1,6 +1,8 @@
 import BlogCards from "@/components/blog/BlogCards";
 import { BlogsData } from "@/cache/BlogsData";
 import { headers } from "next/headers";
+import { Suspense } from "react";
+import BlogCardsSkeleton from "@/components/Skeletons/BlogCardsSkeleton";
 
 export const metadata = {
   title: "Tech Blogs | Insights on Software, Security & Emerging Technologies",
@@ -31,7 +33,11 @@ const page = async () => {
     email: userEmail,
   };
 
-  return <BlogCards blogs={blogs} user={userObject} />;
+  return (
+    <Suspense fallback={<BlogCardsSkeleton />}>
+      <BlogCards blogs={blogs} user={userObject} />
+    </Suspense>
+  );
 };
 
 export default page;
