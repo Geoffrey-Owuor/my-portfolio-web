@@ -17,7 +17,6 @@ import { formatDate, generateSlug } from "@/utils/Helpers";
 import EditBlog from "./EditBlog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import LoadingLine from "../Modules/LoadingLine";
 import TableOfContents from "../Modules/TableOfContents";
@@ -155,16 +154,12 @@ const ViewBlog = ({ blogPost, userId }) => {
 
       {showLoadingLine && <LoadingLine />}
 
-      <AnimatePresence>
-        {showEditBlog && (
-          <EditBlog
-            setShowEditModal={setShowEditBlog}
-            showEditModal={showEditBlog}
-            blogInfo={editBlogData}
-            setAlertInfo={setAlertInfo}
-          />
-        )}
-      </AnimatePresence>
+      <EditBlog
+        setShowEditModal={setShowEditBlog}
+        showEditModal={showEditBlog}
+        blogInfo={editBlogData}
+        setAlertInfo={setAlertInfo}
+      />
 
       <div className="mx-auto flex max-w-7xl flex-col px-5 py-24 sm:px-6 lg:flex-row lg:gap-6 lg:px-8">
         <article className="w-full max-w-none">
