@@ -97,6 +97,7 @@ const BlogPost = ({ user }) => {
         <ConfirmationDialog
           title="Post Blog"
           onConfirm={handleSubmit}
+          showConfirmation={showConfirmation}
           message="Are you sure you want to post this blog?"
           onCancel={() => setShowConfirmation(false)}
         />
