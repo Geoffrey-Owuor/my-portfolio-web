@@ -107,6 +107,7 @@ const EditBlog = ({
         <ConfirmationDialog
           title="Edit Blog"
           onConfirm={handleSubmit}
+          showConfirmation={showConfirmDialog}
           message="Are you sure you want to edit this blog?"
           onCancel={() => setShowConfirmDialog(false)}
         />

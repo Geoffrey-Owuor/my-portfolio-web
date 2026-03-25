@@ -3,8 +3,19 @@
 import { X } from "lucide-react";
 import ClientPortal from "./ClientPortal";
 import { motion } from "framer-motion";
+import { useRef } from "react";
+import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
-const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
+const ConfirmationDialog = ({
+  message,
+  onConfirm,
+  showConfirmation,
+  onCancel,
+  title,
+}) => {
+  const modalRef = useRef(null);
+  useFocusTrapping(modalRef, showConfirmation, onCancel);
+
   const content = (
     <motion.div
       initial={{ opacity: 0 }}
@@ -14,6 +25,7 @@ const ConfirmationDialog = ({ message, onConfirm, onCancel, title }) => {
       className={`adjust-padding fixed inset-0 z-9999 flex items-center justify-center bg-black/50 dark:bg-black/60`}
     >
       <motion.div
+        ref={modalRef}
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
