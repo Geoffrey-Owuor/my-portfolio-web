@@ -47,7 +47,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex h-full items-center justify-center">
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-[345px]">
         {/* Header */}
         <div className="mb-8">
           <h1 className="mb-2 text-center text-3xl font-semibold text-gray-900 dark:text-white">

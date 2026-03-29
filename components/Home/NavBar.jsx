@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { tools } from "@/assets/assets";
-import { Menu, X, ArrowUpRight, ScrollText } from "lucide-react";
+import { Menu, X, ArrowUpRight, PenLine } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { usePathname, useRouter } from "next/navigation";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
@@ -147,18 +147,18 @@ const NavBar = () => {
             ))}
             <li>
               {pathname === "/blogs" ? (
-                <span className="flex cursor-default items-center gap-0.5 text-gray-500 dark:text-gray-400">
-                  <ScrollText className="h-4 w-4" />
+                <span className="flex cursor-default items-center gap-1 text-gray-500 dark:text-gray-400">
                   Blogs
+                  <PenLine className="h-3.5 w-3.5" />
                 </span>
               ) : (
                 <Link
                   href="/blogs"
                   onClick={() => setIsLoadingLine(true)}
-                  className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                  className="flex items-center gap-1 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
                 >
-                  <ScrollText className="h-4 w-4" />
                   Blogs
+                  <PenLine className="h-3.5 w-3.5" />
                 </Link>
               )}
             </li>
@@ -267,8 +267,8 @@ const NavBar = () => {
           <li>
             {pathname === "/blogs" ? (
               <span className="flex w-full cursor-default items-center gap-2 rounded-2xl px-4 py-3 text-base text-gray-500 dark:text-gray-400">
-                <ScrollText className="h-4 w-4" />
                 Blogs
+                <PenLine className="h-3.5 w-3.5" />
               </span>
             ) : (
               <Link
@@ -276,8 +276,8 @@ const NavBar = () => {
                 onClick={handleBlogLinkClick}
                 className="flex w-full items-center gap-2 rounded-2xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
-                <ScrollText className="h-4 w-4" />
                 Blogs
+                <PenLine className="h-3.5 w-3.5" />
               </Link>
             )}
           </li>
