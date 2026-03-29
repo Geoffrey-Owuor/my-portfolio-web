@@ -96,6 +96,11 @@ html[data-theme="dark"] {
     backdrop-filter: blur(6px);
     will-change: backdrop-filter;
   }
+  .navbar-blur {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    will-change: backdrop-filter;
+  }
 
   /* APP BACKGROUND WITH GRIDS */
   .app-background {
