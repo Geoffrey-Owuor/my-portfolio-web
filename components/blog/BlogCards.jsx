@@ -121,7 +121,7 @@ const BlogCards = ({ blogs, user }) => {
             </h2>
             <div className="mt-1 h-px w-12 bg-gray-300 dark:bg-gray-700" />
           </div>
-          <div className="absolute top-18 right-6 sm:top-0 sm:right-0">
+          <div className="absolute top-18 right-0 sm:top-0">
             <BlogAvatar user={user} />
           </div>
         </div>
