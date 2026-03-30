@@ -87,14 +87,14 @@ const NavBar = () => {
       {isLoadingLine && <LoadingLine />}
       {/* Main Navigation Bar */}
       <nav
-        className={`fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 ease-in-out ${
+        className={`adjust-padding fixed top-0 right-0 left-0 z-50 w-full transition-colors duration-300 ease-in-out ${
           isScrolled
             ? "navbar-blur bg-white/70 dark:bg-gray-950/70"
             : "app-background"
         }`}
       >
         {/* Centered Content Container */}
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 lg:px-8 2xl:max-w-7xl">
           {/* Left Side - Mobile Menu Toggle + Logo */}
           <div className="flex items-center gap-3">
             {/* Mobile Menu Toggle Button */}

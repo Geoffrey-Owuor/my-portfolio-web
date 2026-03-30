@@ -8,7 +8,7 @@ const StackSkeleton = () => {
   return (
     <section
       id="stack-skeleton"
-      className="mx-auto min-h-screen w-full max-w-7xl px-4 py-24 md:px-8"
+      className="mx-auto min-h-screen w-full max-w-6xl px-4 py-24 md:px-8 2xl:max-w-7xl"
     >
       <div className="mx-auto">
         {/* Section Title Skeleton */}

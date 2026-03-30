@@ -129,7 +129,7 @@ export default function SphereBg() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="absolute hidden h-130 w-130 lg:inline-flex"
+      className="absolute inline-flex h-90 w-90 md:h-115 md:w-115 lg:h-130 lg:w-130"
     />
   );
 }
