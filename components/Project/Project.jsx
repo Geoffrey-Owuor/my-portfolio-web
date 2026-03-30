@@ -14,51 +14,15 @@ const Project = ({ projectInfo }) => {
   const project = projectInfo[0];
   const [isNavigating, setIsNavigating] = useState(false);
 
-  // Find the project image that matches our current project by comparing their ids
   const projectImage = project_images.find((image) => image.id === project.id);
 
-  // Container variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  // Content animation variants
-  const contentVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-    },
-    visible: {
+  const fadeUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i = 0) => ({
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  // Button variants
-  const buttonVariants = {
-    rest: {
-      scale: 1,
-    },
-    hover: {
-      scale: 1.05,
-      transition: {
-        duration: 0.2,
-        ease: "easeOut",
-      },
-    },
-    tap: {
-      scale: 0.95,
-    },
+      transition: { duration: 0.55, ease: "easeOut", delay: i * 0.1 },
+    }),
   };
 
   const handleGoBack = () => {
@@ -91,120 +55,118 @@ const Project = ({ projectInfo }) => {
   return (
     <>
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
-      <section className="w-full px-4 py-24 md:px-8">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="mx-auto max-w-5xl"
-        >
+
+      <section className="w-full px-4 py-20 md:px-8">
+        <div className="mx-auto max-w-4xl">
           {/* Back Button */}
           <motion.button
-            variants={contentVariants}
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0}
             onClick={handleGoBack}
-            initial="rest"
-            whileHover="hover"
-            whileTap="tap"
-            className="mb-8 flex cursor-pointer items-center gap-2 text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+            className="group mb-12 flex cursor-pointer items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"
           >
-            <motion.div
-              variants={{
-                rest: { x: 0 },
-                hover: { x: -5, transition: { duration: 0.3 } },
-              }}
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </motion.div>
-            <span className="font-medium">Go Back</span>
+            <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
+            Go Back
           </motion.button>
 
-          {/* Project Header */}
+          {/* Title + CTA — inline, no card */}
           <motion.div
-            variants={contentVariants}
-            className="mb-8 rounded-xl bg-linear-to-br from-purple-50 via-blue-50 to-blue-100 p-8 dark:from-slate-800 dark:via-slate-900 dark:to-slate-950"
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={1}
+            className="mb-3 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
           >
-            <motion.h1
-              className="mb-4 text-2xl font-semibold tracking-tight text-gray-900 md:text-3xl dark:text-white"
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, currentColor 0%, #3b82f6 25%, #8b5cf6 50%, #ec4899 75%, currentColor 100%)",
-                backgroundSize: "200% auto",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-              }}
-            >
+            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
               {project.project_name}
-            </motion.h1>
+            </h1>
 
-            {/* Project Link */}
             {project.project_link && (
-              <motion.a
+              <a
                 href={project.project_link}
                 target="_blank"
                 rel="noopener noreferrer"
-                variants={buttonVariants}
-                initial="rest"
-                whileHover="hover"
-                whileTap="tap"
-                className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+                className="inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gray-700 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
               >
-                <span>Visit Project</span>
-                <ExternalLink className="h-5 w-5" />
-              </motion.a>
+                Visit Project
+                <ExternalLink className="h-4 w-4" />
+              </a>
             )}
           </motion.div>
 
-          {/* Displaying the project image only when there is an available */}
+          {/* Thin divider */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            className="mb-10 h-px w-full bg-gray-200 dark:bg-gray-800"
+          />
+
+          {/* Project Image — full-width, borderless */}
           {projectImage && (
             <motion.div
-              variants={containerVariants}
-              key={projectImage.id}
-              className="mb-8 w-full rounded-2xl border border-gray-200 p-2 dark:border-gray-700"
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={3}
+              className="mb-12 w-full overflow-hidden rounded-2xl"
             >
               <Image
                 src={projectImage.image}
                 alt="Project Image"
-                className="rounded-xl"
+                className="w-full object-cover"
                 priority
               />
             </motion.div>
           )}
 
-          {/* Project Description */}
+          {/* About section — no card, just typography */}
           <motion.div
-            variants={contentVariants}
-            className="bg-gradient-classes rounded-xl p-8"
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={4}
+            className="mb-10"
           >
-            <motion.h2
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="mb-4 text-xl font-semibold text-gray-900 md:text-2xl dark:text-white"
-            >
-              About This Project
-            </motion.h2>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="prose prose-gray dark:prose-invert mb-4 max-w-none"
-            >
-              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                {project.project_description}
-              </p>
-            </motion.div>
-            {/* Project Stack */}
+            <p className="mb-1 text-xs font-semibold tracking-widest text-blue-500 uppercase dark:text-blue-400">
+              About
+            </p>
+            <h2 className="mb-5 text-xl font-semibold text-gray-900 dark:text-white">
+              Overview
+            </h2>
+            <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
+              {project.project_description}
+            </p>
+          </motion.div>
+
+          {/* Thin divider */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={5}
+            className="mb-10 h-px w-full bg-gray-200 dark:bg-gray-800"
+          />
+
+          {/* Stack section */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={6}
+          >
+            <p className="mb-1 text-xs font-semibold tracking-widest text-blue-500 uppercase dark:text-blue-400">
+              Stack
+            </p>
+            <h2 className="mb-5 text-xl font-semibold text-gray-900 dark:text-white">
+              Built With
+            </h2>
             <ProjectStack projectStack={project.project_stack} />
           </motion.div>
-        </motion.div>
+        </div>
       </section>
     </>
   );

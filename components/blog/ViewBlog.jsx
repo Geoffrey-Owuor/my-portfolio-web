@@ -64,6 +64,9 @@ const ViewBlog = ({ blogPost, userId }) => {
 
   // UseEffect to run some functionalities on mount
   useEffect(() => {
+    // Disable smooth scrolling on mount
+    document.documentElement.style.scrollBehavior = "auto";
+
     // Determine the URL only after mounting on the client
     if (typeof window !== "undefined") {
       setCurrentUrl(window.location.href);
@@ -83,6 +86,10 @@ const ViewBlog = ({ blogPost, userId }) => {
           "You've reached the last blog. More magic coming soon! 🔮",
       });
     }
+
+    return () => {
+      document.documentElement.style.scrollBehavior = ""; // restore on unmount
+    };
   }, []);
 
   // 2. Helper to generate share links based on the platform key
