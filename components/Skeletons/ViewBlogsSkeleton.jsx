@@ -2,7 +2,7 @@ import TOCSkeleton from "./TOCSkeleton";
 
 const ViewBlogsSkeleton = () => {
   return (
-    <div className="mx-auto flex max-w-7xl flex-col px-5 py-24 sm:px-6 lg:flex-row lg:gap-6 lg:px-8">
+    <div className="mx-auto flex max-w-6xl flex-col px-5 py-24 sm:px-6 lg:flex-row lg:gap-6 lg:px-8 2xl:max-w-7xl">
       {/* LEFT COLUMN: Main Blog Content Skeleton */}
       <article className="w-full max-w-none">
         {/* Header Section */}

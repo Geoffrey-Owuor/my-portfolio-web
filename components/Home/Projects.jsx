@@ -6,7 +6,7 @@ const Projects = async () => {
   return (
     <section
       id="projects" // For navbar link
-      className="mx-auto flex min-h-screen w-full max-w-7xl items-center justify-center px-4 py-24 md:px-8"
+      className="mx-auto flex min-h-screen w-full max-w-6xl items-center justify-center px-4 py-24 md:px-8 2xl:max-w-7xl"
     >
       <ProjectsWrapper projects={projects} />
     </section>

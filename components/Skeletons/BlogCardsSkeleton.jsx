@@ -1,6 +1,6 @@
 const BlogCardsSkeleton = () => {
   return (
-    <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-6xl px-5 py-24 sm:px-6 lg:px-8 2xl:max-w-7xl">
       {/* Header */}
       <div className="relative mb-10 flex items-center justify-center">
         <div className="h-9 w-48 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
