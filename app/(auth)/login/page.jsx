@@ -1,6 +1,4 @@
 import LoginPage from "@/components/Auth/LoginPage";
-import ParamsSuspense from "@/components/Skeletons/ParamsSuspense";
-import { Suspense } from "react";
 
 export const metadata = {
   title: "Login Page",
@@ -16,11 +14,7 @@ export const metadata = {
 };
 
 const page = async () => {
-  return (
-    <Suspense fallback={<ParamsSuspense />}>
-      <LoginPage />
-    </Suspense>
-  );
+  return <LoginPage />;
 };
 
 export default page;

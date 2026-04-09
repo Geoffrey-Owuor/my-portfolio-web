@@ -2,22 +2,18 @@
 
 import { useState } from "react";
 import apiClient from "@/lib/AxiosClient";
-import { useRouter } from "next/navigation";
+
 import { LogOut } from "lucide-react";
 import LogoutOverlay from "./LogoutOverlay";
 
 export default function LogoutButton() {
-  const router = useRouter();
-
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
       await apiClient.post("/logout");
-      // Redirect to login and refresh the page state
-      router.push("/login");
-      router.refresh();
+      window.location.href = "/login";
     } catch (error) {
       console.error("Logout failed", error);
       setIsLoggingOut(false);
