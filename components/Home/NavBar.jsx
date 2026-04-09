@@ -147,18 +147,16 @@ const NavBar = () => {
             ))}
             <li>
               {pathname === "/blogs" ? (
-                <span className="flex cursor-default items-center gap-1 text-gray-500 dark:text-gray-400">
+                <span className="cursor-default text-gray-500 dark:text-gray-400">
                   Blogs
-                  <PenLine className="h-3.5 w-3.5" />
                 </span>
               ) : (
                 <Link
                   href="/blogs"
                   onClick={() => setIsLoadingLine(true)}
-                  className="flex items-center gap-1 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                  className="text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
                 >
                   Blogs
-                  <PenLine className="h-3.5 w-3.5" />
                 </Link>
               )}
             </li>
@@ -266,18 +264,16 @@ const NavBar = () => {
           ))}
           <li>
             {pathname === "/blogs" ? (
-              <span className="flex w-full cursor-default items-center gap-2 rounded-2xl px-4 py-3 text-base text-gray-500 dark:text-gray-400">
+              <span className="w-full cursor-default rounded-2xl px-4 py-3 text-base text-gray-500 dark:text-gray-400">
                 Blogs
-                <PenLine className="h-3.5 w-3.5" />
               </span>
             ) : (
               <Link
                 href="/blogs"
                 onClick={handleBlogLinkClick}
-                className="flex w-full items-center gap-2 rounded-2xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="w-full rounded-2xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 Blogs
-                <PenLine className="h-3.5 w-3.5" />
               </Link>
             )}
           </li>
