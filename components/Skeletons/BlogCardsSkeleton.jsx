@@ -4,7 +4,6 @@ const BlogCardsSkeleton = () => {
       {/* Header */}
       <div className="relative mb-10 flex items-center justify-center">
         <div className="h-9 w-48 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
-        <div className="absolute right-0 h-10 w-16 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
       </div>
 
       {/* Toolbar: Create + Search + View Toggle */}

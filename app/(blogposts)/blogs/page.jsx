@@ -1,6 +1,5 @@
 import BlogCards from "@/components/blog/BlogCards";
 import { BlogsData } from "@/cache/BlogsData";
-import { headers } from "next/headers";
 import { Suspense } from "react";
 import BlogCardsSkeleton from "@/components/Skeletons/BlogCardsSkeleton";
 
@@ -22,20 +21,9 @@ export const metadata = {
 const page = async () => {
   const blogs = await BlogsData();
 
-  const headerList = await headers();
-  const userId = headerList.get("x-user-id");
-  const userName = headerList.get("x-user-name");
-  const userEmail = headerList.get("x-user-email");
-
-  const userObject = {
-    id: userId,
-    name: userName,
-    email: userEmail,
-  };
-
   return (
     <Suspense fallback={<BlogCardsSkeleton />}>
-      <BlogCards blogs={blogs} user={userObject} />
+      <BlogCards blogs={blogs} />
     </Suspense>
   );
 };

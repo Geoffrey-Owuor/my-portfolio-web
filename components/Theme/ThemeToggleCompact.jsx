@@ -129,8 +129,8 @@ export default function ThemeToggleCompact() {
         className="rounded-full p-2 text-gray-700 transition hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-800"
       >
         {/* Render BOTH icons. Use Tailwind's dark: modifier to let CSS handle visibility instantly */}
-        <Sun className="block h-5 w-5 dark:hidden" />
-        <Moon className="hidden h-5 w-5 dark:block" />
+        <Sun className="block h-5.5 w-5.5 dark:hidden" />
+        <Moon className="hidden h-5.5 w-5.5 dark:block" />
       </button>
 
       {/* Keep the mounted check ONLY for the Tooltip to avoid hydration mismatches 

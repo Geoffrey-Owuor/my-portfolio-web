@@ -79,7 +79,7 @@ const Project = ({ projectInfo }) => {
             custom={1}
             className="mb-3 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
           >
-            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl dark:text-white">
+            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
               {project.project_name}
             </h1>
 

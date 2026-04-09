@@ -31,8 +31,6 @@ export async function middleware(request) {
       if (payload) {
         // Inject metadata into headers for Server Components to read
         response.headers.set("x-user-id", String(payload.id || ""));
-        response.headers.set("x-user-name", String(payload.name || ""));
-        response.headers.set("x-user-email", String(payload.email || ""));
       }
     } catch (error) {
       // If refresh token is expired/invalid, we just let them browse as a guest
@@ -45,5 +43,5 @@ export async function middleware(request) {
 
 export const config = {
   // This ensures the middleware ONLY runs on these paths
-  matcher: ["/createblog", "/login", "/blogs", "/blog/:path*"],
+  matcher: ["/createblog", "/login", "/blog/:path*"],
 };

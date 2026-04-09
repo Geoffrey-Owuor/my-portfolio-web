@@ -13,10 +13,10 @@ import {
 import LoadingLine from "../Modules/LoadingLine";
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
+import Link from "next/link";
 import BlogTableView from "./BlogTableView";
-import BlogAvatar from "./BlogAvatar";
 
-const BlogCards = ({ blogs, user }) => {
+const BlogCards = ({ blogs }) => {
   const [isLoadingLine, setIsLoadingLine] = useState(false);
   const router = useRouter();
 
@@ -121,9 +121,6 @@ const BlogCards = ({ blogs, user }) => {
             </h2>
             <div className="mt-1 h-px w-12 bg-gray-300 dark:bg-gray-700" />
           </div>
-          <div className="absolute top-18 right-0 sm:top-0">
-            <BlogAvatar user={user} />
-          </div>
         </div>
         {/* Toolbar: Create + Search + View Toggle */}
         <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
@@ -146,32 +143,53 @@ const BlogCards = ({ blogs, user }) => {
             </button>
           </div>
 
-          {/* View toggle pill */}
-          <div className="flex items-center gap-0.5 rounded-full border border-gray-200 bg-gray-100/50 p-1 dark:border-gray-700 dark:bg-gray-800/50">
-            <button
-              onClick={() => setViewMode("card")}
-              aria-label="Card view"
-              className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                viewMode === "card"
-                  ? "bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white"
-                  : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              }`}
-            >
-              <LayoutGrid className="h-4 w-4" />
-              <span className="hidden sm:inline">Cards</span>
-            </button>
-            <button
-              onClick={() => setViewMode("table")}
-              aria-label="Table view"
-              className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                viewMode === "table"
-                  ? "bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white"
-                  : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              }`}
-            >
-              <List className="h-4 w-4" />
-              <span className="hidden sm:inline">Table</span>
-            </button>
+          {/* View toggle pill, Login & Create Blog */}
+          <div className="flex flex-col items-center gap-4 md:flex-row">
+            {/* Login & Create Blog links */}
+            <div className="inline-flex items-center gap-4">
+              <Link
+                href="/login"
+                onClick={() => setIsLoadingLine(true)}
+                className="text-sm text-gray-600 underline underline-offset-2 transition-colors duration-150 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+              >
+                Login
+              </Link>
+              <Link
+                href="/createblog"
+                onClick={() => setIsLoadingLine(true)}
+                className="text-sm text-gray-600 underline underline-offset-2 transition-colors duration-150 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+              >
+                Create Blog
+              </Link>
+            </div>
+
+            {/* Toggle pill */}
+            <div className="flex items-center gap-0.5 rounded-full border border-gray-200 bg-gray-100/50 p-1 dark:border-gray-700 dark:bg-gray-800/50">
+              <button
+                onClick={() => setViewMode("card")}
+                aria-label="Card view"
+                className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                  viewMode === "card"
+                    ? "bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white"
+                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                }`}
+              >
+                <LayoutGrid className="h-4 w-4" />
+                <span className="hidden sm:inline">Cards</span>
+              </button>
+              <button
+                onClick={() => setViewMode("table")}
+                aria-label="Table view"
+                className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                  viewMode === "table"
+                    ? "bg-white text-gray-900 shadow-sm dark:bg-gray-700 dark:text-white"
+                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                }`}
+              >
+                <List className="h-4 w-4" />
+                <span className="hidden sm:inline">Table</span>
+              </button>
+            </div>
           </div>
         </div>
 
