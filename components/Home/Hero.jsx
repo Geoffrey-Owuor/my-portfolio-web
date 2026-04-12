@@ -4,10 +4,7 @@ import { assets } from "@/assets/assets";
 import { ArrowRight, DownloadIcon } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-
-// Dynamically import the sphere and completely disable Server side rendering for it
-const SphereBg = dynamic(() => import("../Modules/SphereBg"), { ssr: false });
+import SphereBg from "../Modules/SphereBg";
 
 const Hero = () => {
   const buttonVariants = {

@@ -7,6 +7,7 @@ export function Providers({ children }) {
       enableSystem={true}
       defaultTheme="system"
       disableTransitionOnChange={true}
+      attribute="data-theme"
     >
       {children}
     </ThemeProvider>
