@@ -16,6 +16,9 @@ const Footer = () => {
       // Use a subtle top border to separate it from the content above
       className="mx-auto w-full max-w-6xl px-4 py-6 lg:px-8 2xl:max-w-7xl"
     >
+      {/* Divider */}
+      <div className="mb-8 h-[0.5px] bg-linear-to-r from-transparent via-gray-300 to-transparent sm:mb-12 dark:via-gray-700" />
+
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
         <div className="font-dm-mono text-sm font-medium text-gray-600 transition-colors hover:text-gray-500 dark:text-gray-400">
@@ -66,6 +69,12 @@ const Footer = () => {
             </a>
           ))}
         </div>
+      </div>
+      {/* Large display name */}
+      <div className="mt-6 overflow-hidden">
+        <p className="font-dm-mono text-center text-6xl leading-none font-black tracking-wide text-gray-200 select-none md:text-9xl dark:text-gray-900">
+          OWUOR
+        </p>
       </div>
     </footer>
   );
