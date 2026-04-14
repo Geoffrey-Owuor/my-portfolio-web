@@ -46,9 +46,7 @@ const Hero = () => {
           className="order-first flex justify-center"
         >
           <div className="relative flex items-center justify-center">
-            {/* ── Sphere background ── */}
             <SphereBg />
-
             {/* White buffer ring - some bit of transparency */}
             <div className="absolute h-62 w-62 rounded-full bg-linear-to-br from-gray-200/40 via-gray-300/30 to-gray-400/30 md:h-82 md:w-82 dark:from-gray-800/60 dark:via-gray-900/60 dark:to-gray-950/60" />
 

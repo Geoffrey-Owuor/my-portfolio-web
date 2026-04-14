@@ -182,7 +182,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-wrap items-center gap-4 rounded-xl border-2 border-dashed border-gray-300 p-4 dark:border-gray-700"
+            className="flex flex-wrap items-center gap-4 rounded-xl border-[1.5px] border-dashed border-gray-300 p-4 dark:border-gray-700"
           >
             {toolNames.map((tool, _index) => (
               <motion.li
