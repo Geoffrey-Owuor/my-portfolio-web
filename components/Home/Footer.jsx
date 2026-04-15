@@ -14,11 +14,8 @@ const Footer = () => {
     <footer
       id="footer"
       // Use a subtle top border to separate it from the content above
-      className="mx-auto w-full max-w-6xl px-4 py-6 lg:px-8 2xl:max-w-7xl"
+      className="mx-auto w-full max-w-6xl border-t border-gray-200 px-4 py-6 lg:px-8 2xl:max-w-7xl dark:border-gray-900"
     >
-      {/* Divider */}
-      <div className="mb-8 h-[0.5px] bg-linear-to-r from-transparent via-gray-300 to-transparent sm:mb-12 dark:via-gray-700" />
-
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
         <div className="font-dm-mono text-sm font-medium text-gray-600 transition-colors hover:text-gray-500 dark:text-gray-400">
