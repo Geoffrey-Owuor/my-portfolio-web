@@ -3,13 +3,7 @@ import { ThemeProvider } from "next-themes";
 
 export function Providers({ children }) {
   return (
-    <ThemeProvider
-      enableSystem={true}
-      defaultTheme="system"
-      disableTransitionOnChange={true}
-      enableColorScheme={true}
-      attribute="data-theme"
-    >
+    <ThemeProvider enableSystem defaultTheme="system" disableTransitionOnChange>
       {children}
     </ThemeProvider>
   );
