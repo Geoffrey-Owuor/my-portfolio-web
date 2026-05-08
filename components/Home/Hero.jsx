@@ -23,7 +23,7 @@ const Hero = () => {
     hover: { y: [0, -5, 0], transition: { duration: 0.6, repeat: Infinity } },
   };
 
-  const titleTags = ["#Engineer", "#Developer", "#Singer😅"];
+  const titleTags = ["#Researcher", "#Developer", "#Singer😅"];
 
   return (
     <section

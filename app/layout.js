@@ -23,7 +23,7 @@ export const metadata = {
   ),
 
   title: {
-    default: "Jeff's Portfolio | Software Engineer",
+    default: "Jeff's Portfolio | Software Developer",
     template: "%s | Jeff's Portfolio",
   },
 
@@ -35,7 +35,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     siteName: "Jeff's Portfolio",
-    title: "Jeff's Portfolio | Software Engineer",
+    title: "Jeff's Portfolio | Software Developer",
     description:
       "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
     url: "/",
@@ -51,7 +51,7 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Jeff's Portfolio | Software Engineer",
+    title: "Jeff's Portfolio | Software Developer",
     description:
       "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
     images: ["/web-app-manifest-512x512.png"],
