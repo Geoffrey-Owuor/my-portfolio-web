@@ -135,7 +135,7 @@ const Hero = () => {
 
             {/* Resume Button */}
             <motion.a
-              href="https://drive.google.com/uc?export=download&id=1RNr5qJmUh4JW8W_6LqVmjMiTweHP6Ne8"
+              href="https://drive.google.com/uc?export=download&id=1ZZzEsXGEL9zd7oNUYMCe8yQfXAAHuSpc"
               target="_blank"
               rel="noopener noreferrer"
               variants={buttonVariants}
