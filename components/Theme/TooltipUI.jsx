@@ -10,11 +10,11 @@ const TooltipUI = ({ canHover, shortcut, showToolTip }) => {
           exit={{ opacity: 0, y: -6, scale: 0.95 }}
           className="pointer-events-none absolute top-full left-1/2 mt-2.5 mb-2 -translate-x-1/2"
         >
-          <div className="relative rounded-full bg-gray-900 px-3 py-1.5 text-[13px] whitespace-nowrap text-white dark:bg-white dark:text-gray-900">
+          <div className="bg-text-primary text-surface relative rounded-full px-3 py-1.5 text-[13px] whitespace-nowrap">
             {/* Drawing a rotated square that looks like an arrow */}
-            <div className="absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 rounded-sm bg-gray-900 dark:bg-white"></div>
+            <div className="bg-text-primary absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 rounded-sm"></div>
             Toggle Mode
-            <kbd className="ml-2 rounded-full bg-gray-700 px-1.5 py-0.5 dark:bg-gray-300">
+            <kbd className="bg-surface/20 ml-2 rounded-full px-1.5 py-0.5">
               {shortcut}
             </kbd>
           </div>

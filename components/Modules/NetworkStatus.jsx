@@ -54,10 +54,8 @@ const NetworkStatus = () => {
           className="adjust-padding pointer-events-none fixed right-0 bottom-6 left-0 z-100 flex justify-center"
         >
           <div
-            className={`custom-blur pointer-events-auto flex items-center gap-3 rounded-full px-6 py-3 shadow-lg transition-colors duration-300 ${
-              status === "offline"
-                ? "bg-red-500/90 text-white dark:bg-red-900/90"
-                : "bg-green-500/90 text-white dark:bg-green-900/90"
+            className={`custom-blur text-surface pointer-events-auto flex items-center gap-3 rounded-full px-6 py-3 shadow-lg transition-colors duration-300 ${
+              status === "offline" ? "bg-danger" : "bg-success"
             }`}
           >
             {/* Icon Switching */}
@@ -77,7 +75,7 @@ const NetworkStatus = () => {
             {/* Optional Close Button (mostly for offline state if it persists) */}
             <button
               onClick={() => setStatus("hidden")}
-              className="ml-2 rounded-full p-1 hover:bg-white/20"
+              className="hover:bg-surface/20 ml-2 rounded-full p-1"
             >
               <X className="h-4 w-4" />
             </button>

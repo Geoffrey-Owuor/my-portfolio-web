@@ -46,57 +46,28 @@ const EducationWrapper = ({ educationData }) => {
     }
   }, [isInView]);
 
-  // Shimmer effect for card background
-  const shimmerVariants = {
-    animate: {
-      backgroundPosition: ["200% 0", "-200% 0"],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "linear",
-      },
-    },
-  };
-
   return (
     <div className="mx-1 max-w-5xl flex-1 md:mx-auto" ref={educationRef}>
       {/* Section Title */}
       <SectionTitle label="How I got here" title="My Education" />
 
       {/* Vertical Timeline */}
-      <ol className="relative border-l border-gray-200 dark:border-gray-700">
+      <ol className="border-border-subtle relative border-l">
         {visibleEducationData.map((education, _index) => (
           <li key={education.id} className="mb-10 ml-6">
             {/* The "dot" breakpoint with animation */}
-            <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 ring-8 ring-white dark:bg-gray-800 dark:ring-gray-950">
-              <GraduationCap className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+            <span className="bg-surface-raised ring-surface absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full ring-8">
+              <GraduationCap className="text-text-muted h-4 w-4" />
             </span>
 
             {/* Timeline Content with hover effect */}
-            <motion.div
-              whileHover={{
-                scale: 1.01,
-                transition: { duration: 0.2 },
-              }}
-              className="group bg-gradient-classes relative flex flex-col rounded-xl p-6 transition-shadow hover:shadow-md"
-            >
-              {/* Animated border gradient on hover */}
-              <motion.div
-                className="absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                style={{
-                  background:
-                    "linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent)",
-                  backgroundSize: "200% 100%",
-                }}
-                variants={shimmerVariants}
-                animate="animate"
-              />
+            <div className="border-border-subtle hover:border-accent group relative flex flex-col rounded-xl border p-6 transition-colors duration-150">
               <motion.time
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="font-dm-mono mb-2 block text-sm leading-none text-gray-500 dark:text-gray-400"
+                className="font-dm-mono text-text-muted mb-2 block text-sm leading-none"
               >
                 {education.timeline}
               </motion.time>
@@ -106,7 +77,7 @@ const EducationWrapper = ({ educationData }) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="text-xl font-semibold text-gray-900 dark:text-white"
+                className="text-text-primary text-xl font-semibold"
               >
                 {education.learning_title}
               </motion.h3>
@@ -116,7 +87,7 @@ const EducationWrapper = ({ educationData }) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                className="font-dm-mono mb-3 text-base text-gray-700 italic dark:text-gray-300"
+                className="font-dm-mono text-text-muted mb-3 text-base italic"
               >
                 {education.institution}
               </motion.p>
@@ -126,13 +97,13 @@ const EducationWrapper = ({ educationData }) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.5 }}
-                className="prose prose-gray dark:prose-invert max-w-none text-base font-normal text-gray-600 dark:text-gray-400"
+                className="prose prose-gray dark:prose-invert text-text-muted max-w-none text-base font-normal"
               >
                 <ReactMarkDown remarkPlugins={[remarkGfm]}>
                   {education.learning_description}
                 </ReactMarkDown>
               </motion.div>
-            </motion.div>
+            </div>
           </li>
         ))}
       </ol>

@@ -126,7 +126,7 @@ export default function ThemeToggleCompact() {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         aria-label="Toggle theme"
-        className="rounded-full p-2 text-gray-700 transition hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-800"
+        className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
       >
         {/* Render BOTH icons. Use Tailwind's dark: modifier to let CSS handle visibility instantly */}
         <Sun className="block h-5.5 w-5.5 dark:hidden" />

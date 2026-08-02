@@ -31,9 +31,9 @@ const BlogForm = ({
           <div>
             <label
               htmlFor="title"
-              className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
+              className="text-text-muted mb-2 flex items-center gap-2 text-sm font-semibold"
             >
-              <Highlighter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <Highlighter className="text-text-muted h-4 w-4" />
               Blog Title
             </label>
             <input
@@ -43,7 +43,7 @@ const BlogForm = ({
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter an engaging title..."
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent w-full rounded-lg border px-4 py-3 text-base transition-colors focus:outline-none"
               required
             />
           </div>
@@ -52,9 +52,9 @@ const BlogForm = ({
           <div>
             <label
               htmlFor="author"
-              className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
+              className="text-text-muted mb-2 flex items-center gap-2 text-sm font-semibold"
             >
-              <UserRound className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <UserRound className="text-text-muted h-4 w-4" />
               Author Name
             </label>
             <input
@@ -64,16 +64,16 @@ const BlogForm = ({
               value={formData.author}
               onChange={handleChange}
               placeholder="Your name or pen name"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent w-full rounded-lg border px-4 py-3 text-base transition-colors focus:outline-none"
               required
             />
           </div>
           <div>
             <label
               htmlFor="tagline"
-              className="mb-2 flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
+              className="text-text-muted mb-2 flex items-center gap-2 text-sm font-semibold"
             >
-              <Signature className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <Signature className="text-text-muted h-4 w-4" />
               Tagline
             </label>
             <input
@@ -83,7 +83,7 @@ const BlogForm = ({
               value={formData.tagline}
               onChange={handleChange}
               placeholder="Your hashtag line"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 ring-offset-2 transition-colors placeholder:text-gray-400 focus:border-gray-600 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:border-gray-700 dark:text-white dark:ring-offset-gray-950 dark:placeholder:text-gray-600 dark:focus:ring-gray-500"
+              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent w-full rounded-lg border px-4 py-3 text-base transition-colors focus:outline-none"
               required
             />
           </div>
@@ -93,18 +93,18 @@ const BlogForm = ({
             <div className="mb-2 flex items-center justify-between">
               <label
                 htmlFor="content"
-                className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
+                className="text-text-muted flex items-center gap-2 text-sm font-semibold"
               >
-                <Library className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                <Library className="text-text-muted h-4 w-4" />
                 Content
               </label>
-              <span className="text-xs text-gray-500 dark:text-gray-500">
+              <span className="text-text-muted text-xs">
                 {formData.content.split(/\s+/).filter(Boolean).length} words
               </span>
             </div>
             <CustomMdEditor value={formData.content} onChange={handleChange} />
 
-            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-text-muted mt-2 text-xs">
               **Use markdown tools for editing**
             </p>
           </div>
@@ -114,7 +114,7 @@ const BlogForm = ({
             <button
               type="submit"
               disabled={!isFormValid || isSubmitting}
-              className="flex items-center justify-center gap-2 rounded-full bg-gray-950 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-gray-800 focus:ring-4 focus:ring-gray-200 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200 dark:focus:ring-gray-800"
+              className="bg-text-primary text-surface flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               <Send className="h-4 w-4" />
               {IsUpdating ? (
@@ -130,7 +130,7 @@ const BlogForm = ({
             <Link
               href="/blogs"
               onClick={() => setIsLoadingLine(true)}
-              className="flex items-center gap-2 rounded-full bg-gray-300/50 px-6 py-3 text-sm font-semibold transition-colors duration-200 hover:bg-gray-400/50 dark:bg-gray-700/50 dark:hover:bg-gray-600/50"
+              className="bg-surface-raised text-text-primary hover:bg-border-subtle/50 flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors duration-150"
             >
               View <span className="hidden sm:block">Blogs</span>
               <ArrowUpRight className="h-4 w-4" />

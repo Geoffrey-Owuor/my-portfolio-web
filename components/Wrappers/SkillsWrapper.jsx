@@ -80,7 +80,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6 }}
-            className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
+            className="text-text-primary mb-6 flex items-center justify-center gap-2 text-2xl font-semibold md:justify-start"
           >
             <Terminal />
 
@@ -92,20 +92,15 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-wrap items-center gap-4 rounded-xl border-[1.5px] border-dashed border-gray-300 p-4 dark:border-gray-700"
+            className="border-border-subtle flex flex-wrap items-center gap-4 rounded-xl border p-4"
           >
             {technicalSkills.map((skill, _index) => (
               <motion.div
                 key={skill.id}
                 variants={cardVariants}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
-                  transition: { duration: 0.2 },
-                }}
-                className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-100/50 px-4 py-3 text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
+                className="bg-surface-raised text-text-primary hover:border-accent flex cursor-pointer items-center gap-2 rounded-xl border border-transparent px-4 py-3 transition-colors duration-150"
               >
-                <BadgeCheck className="h-4 w-4 shrink-0 text-gray-500" />
+                <BadgeCheck className="text-text-muted h-4 w-4 shrink-0" />
 
                 <span>{skill.skill_description}</span>
               </motion.div>
@@ -127,7 +122,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6 }}
-            className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
+            className="text-text-primary mb-6 flex items-center justify-center gap-2 text-2xl font-semibold md:justify-start"
           >
             <HeartHandshake />
 
@@ -145,14 +140,9 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
               <motion.li
                 key={skill.id}
                 variants={cardVariants}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
-                  transition: { duration: 0.2 },
-                }}
-                className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 px-4 py-3 text-base text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
+                className="bg-surface-raised text-text-primary hover:border-accent flex cursor-pointer items-center gap-3 rounded-xl border border-transparent px-4 py-3 text-base transition-colors duration-150"
               >
-                <span className="font-dm-mono inline-block w-8 text-right text-gray-500">
+                <span className="font-dm-mono text-text-muted inline-block w-8 text-right">
                   {String(index + 1).padStart(2, "0")}.
                 </span>
                 <span>{skill.skill_description}</span>

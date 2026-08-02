@@ -150,16 +150,11 @@ const Contact = () => {
             <motion.div variants={fieldVariants} className="flex flex-col">
               <label
                 htmlFor="contactInfo"
-                className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
+                className="text-text-muted mb-2 text-sm font-semibold"
               >
                 Your Email or Mobile
               </label>
-              <motion.input
-                whileFocus={{
-                  scale: 1.01,
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  transition: { duration: 0.2 },
-                }}
+              <input
                 type="text"
                 id="contactInfo"
                 name="contactInfo"
@@ -167,7 +162,7 @@ const Contact = () => {
                 onChange={handleChange}
                 disabled={sending}
                 placeholder="name@example.com or 07xx xxx xxx"
-                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm transition-shadow focus:outline-none dark:bg-gray-800 dark:text-white"
+                className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-xl border p-4 transition-colors focus:outline-none"
               />
             </motion.div>
 
@@ -175,16 +170,11 @@ const Contact = () => {
             <motion.div variants={fieldVariants} className="flex flex-col">
               <label
                 htmlFor="message"
-                className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
+                className="text-text-muted mb-2 text-sm font-semibold"
               >
                 Your Message
               </label>
-              <motion.textarea
-                whileFocus={{
-                  scale: 1.01,
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-                  transition: { duration: 0.2 },
-                }}
+              <textarea
                 id="message"
                 name="message"
                 rows={5}
@@ -192,7 +182,7 @@ const Contact = () => {
                 onChange={handleChange}
                 disabled={sending}
                 placeholder="Hi Jeff, I'd like to talk about..."
-                className="rounded-xl bg-gray-100 p-4 text-gray-900 shadow-sm transition-shadow focus:outline-none dark:bg-gray-800 dark:text-white"
+                className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-xl border p-4 transition-colors focus:outline-none"
               />
             </motion.div>
 
@@ -204,26 +194,17 @@ const Contact = () => {
               whileTap="tap"
               type="submit"
               disabled={sending}
-              className="relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-gray-900 px-6 py-3 text-base text-white transition-colors hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+              className="bg-text-primary text-surface hover:opacity-90 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3 text-base transition-opacity disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center"
             >
-              {/* Shimmer effect on hover */}
-              <motion.div
-                className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent"
-                whileHover={{
-                  translateX: "200%",
-                  transition: { duration: 0.6 },
-                }}
-              />
-
               {sending ? (
                 <>
-                  <span className="relative">Sending...</span>
+                  <span>Sending...</span>
                   <Loader2 className="h-5 w-5 animate-spin" />
                 </>
               ) : (
                 <>
-                  <span className="relative">Send Message</span>
-                  <motion.div variants={iconVariants} className="relative">
+                  <span>Send Message</span>
+                  <motion.div variants={iconVariants}>
                     <SendHorizonal className="h-5 w-5" />
                   </motion.div>
                 </>

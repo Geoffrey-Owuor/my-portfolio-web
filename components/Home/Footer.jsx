@@ -1,5 +1,5 @@
 import { socials } from "@/assets/assets";
-import { Sparkles } from "lucide-react";
+import { Terminal } from "lucide-react";
 import Image from "next/image";
 
 const Footer = () => {
@@ -14,11 +14,11 @@ const Footer = () => {
     <footer
       id="footer"
       // Use a subtle top border to separate it from the content above
-      className="mx-auto w-full max-w-6xl border-t border-gray-200 px-4 py-6 lg:px-8 2xl:max-w-7xl dark:border-gray-900"
+      className="border-border-subtle mx-auto w-full max-w-6xl border-t px-4 py-6 lg:px-8 2xl:max-w-7xl"
     >
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
-        <div className="font-dm-mono text-sm font-medium text-gray-600 transition-colors hover:text-gray-500 dark:text-gray-400">
+        <div className="font-dm-mono text-text-muted hover:text-text-primary text-sm font-medium transition-colors">
           <a
             href="mailto:geoffreyowuor22@gmail.com"
             className="hover:underline"
@@ -28,19 +28,19 @@ const Footer = () => {
         </div>
 
         {/* Copyright Notice */}
-        <div className="flex items-center justify-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+        <div className="text-text-muted flex items-center justify-center space-x-2 text-sm">
           <span>
             &copy; <span className="font-dm-mono">{currentYear}</span>{" "}
             <span className="font-dm-mono">Jeff</span>
           </span>
 
           {/* Dot Separator */}
-          <span className="text-gray-400 dark:text-gray-700">•</span>
+          <span>•</span>
 
-          {/* Magic Text Section */}
-          <span className="animate-magic font-dm-mono inline-flex items-center gap-1.5 bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text font-medium text-transparent">
-            <Sparkles className="h-4 w-4 text-indigo-500" />
-            Make Magic Happen.
+          {/* Status line */}
+          <span className="font-dm-mono text-accent inline-flex items-center gap-1.5 font-medium">
+            <Terminal className="h-4 w-4" />
+            status: shipping
           </span>
         </div>
 
@@ -53,7 +53,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Follow me on ${key.replace("Logo", "")}`} // for accessibility
-              className="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+              className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
             >
               <Image
                 src={social.icon}
@@ -69,7 +69,15 @@ const Footer = () => {
       </div>
       {/* Large display name */}
       <div className="mt-6 overflow-hidden">
-        <p className="font-dm-mono text-center text-6xl leading-none font-black tracking-wide text-gray-200 select-none md:text-9xl dark:text-gray-900">
+        <p
+          className="font-dm-mono text-center text-6xl leading-none font-black tracking-wide text-gray-200 select-none md:text-9xl dark:text-gray-900"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, black 0%, transparent 90%)",
+            maskImage:
+              "linear-gradient(to bottom, black 0%, transparent 90%)",
+          }}
+        >
           OWUOR
         </p>
       </div>

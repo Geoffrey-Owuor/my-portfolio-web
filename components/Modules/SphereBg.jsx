@@ -50,9 +50,9 @@ export default function SphereBg() {
 
     // Colour palette — adjust these stops to match your brand
     const STOPS = [
-      [147, 197, 253], // blue-300
-      [196, 181, 253], // violet-300
-      [167, 243, 208], // emerald-300
+      [191, 219, 254], // blue-200
+      [96, 165, 250], // blue-400
+      [29, 78, 216], // blue-700
     ];
 
     function dotColor(nx, ny, nz, alpha) {

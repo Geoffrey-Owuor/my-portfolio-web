@@ -107,14 +107,14 @@ const BlogPost = ({ user }) => {
       {isSubmitting && <LoadingCircle />}
 
       <div className="mx-auto w-full max-w-5xl px-2 py-24 sm:px-6">
-        <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm dark:border-gray-800">
+        <div className="border-border-subtle overflow-hidden rounded-2xl border">
           {/* Header - Neutral & Clean */}
-          <div className="flex items-center justify-between border-b border-gray-200 px-6 py-6 dark:border-gray-800">
+          <div className="border-border-subtle flex items-center justify-between border-b px-6 py-6">
             <div>
-              <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+              <h1 className="font-dm-mono text-text-primary text-xl font-semibold sm:text-2xl">
                 Create New Blog Post
               </h1>
-              <p className="mt-1 text-sm text-gray-500 sm:text-base dark:text-gray-400">
+              <p className="text-text-muted mt-1 text-sm sm:text-base">
                 Share your thoughts with the world
               </p>
             </div>

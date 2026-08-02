@@ -16,9 +16,9 @@ const UserInfoCard = ({ user }) => {
     : null;
 
   return (
-    <div className="hidden items-center gap-3 rounded-2xl p-3 transition-all hover:bg-gray-100/50 sm:inline-flex dark:hover:bg-gray-800/50">
+    <div className="hover:bg-surface-raised hidden items-center gap-3 rounded-2xl p-3 transition-colors sm:inline-flex">
       {/* Avatar Circle */}
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+      <div className="bg-surface-raised text-text-muted flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
         {initials ? (
           <span className="text-sm font-bold tracking-tight">{initials}</span>
         ) : (
@@ -28,10 +28,10 @@ const UserInfoCard = ({ user }) => {
 
       {/* User Details */}
       <div className="hidden flex-col lg:flex">
-        <span className="max-w-[150px] truncate text-sm font-semibold text-gray-900 dark:text-white">
+        <span className="text-text-primary max-w-[150px] truncate text-sm font-semibold">
           {name || "Guest User"}
         </span>
-        <span className="max-w-[150px] truncate text-xs text-gray-500 dark:text-gray-400">
+        <span className="text-text-muted max-w-[150px] truncate text-xs">
           {email || "No email connected"}
         </span>
       </div>

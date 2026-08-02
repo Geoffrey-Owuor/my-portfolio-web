@@ -34,15 +34,15 @@ const Project = ({ projectInfo }) => {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-24 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-text-primary mb-4 text-3xl font-bold">
             Project Not Found
           </h2>
-          <p className="mb-8 text-gray-600 dark:text-gray-400">
+          <p className="text-text-muted mb-8">
             The project you're looking for doesn't exist or has been removed.
           </p>
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+            className="bg-text-primary text-surface hover:opacity-90 inline-flex items-center gap-2 rounded-full px-6 py-3 font-medium transition-opacity"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Projects
@@ -65,7 +65,7 @@ const Project = ({ projectInfo }) => {
             animate="visible"
             custom={0}
             onClick={handleGoBack}
-            className="group mb-12 flex cursor-pointer items-center gap-2 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-500 dark:hover:text-white"
+            className="group text-text-muted hover:text-text-primary mb-12 flex cursor-pointer items-center gap-2 text-sm font-medium transition-colors"
           >
             <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
             Go Back
@@ -79,7 +79,7 @@ const Project = ({ projectInfo }) => {
             custom={1}
             className="mb-3 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
           >
-            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+            <h1 className="font-dm-mono text-text-primary text-3xl font-semibold tracking-tight">
               {project.project_name}
             </h1>
 
@@ -88,7 +88,7 @@ const Project = ({ projectInfo }) => {
                 href={project.project_link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gray-700 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
+                className="bg-text-primary text-surface hover:opacity-90 inline-flex shrink-0 items-center gap-2 self-start rounded-full px-5 py-2.5 text-sm font-semibold transition-opacity"
               >
                 Visit Project
                 <ExternalLink className="h-4 w-4" />
@@ -102,7 +102,7 @@ const Project = ({ projectInfo }) => {
             initial="hidden"
             animate="visible"
             custom={2}
-            className="mb-10 h-px w-full bg-gray-200 dark:bg-gray-800"
+            className="bg-border-subtle mb-10 h-px w-full"
           />
 
           {/* Project Image — full-width, borderless */}
@@ -131,13 +131,13 @@ const Project = ({ projectInfo }) => {
             custom={4}
             className="mb-10"
           >
-            <p className="mb-1 text-xs font-semibold tracking-widest text-blue-500 uppercase dark:text-blue-400">
+            <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
               About
             </p>
-            <h2 className="mb-5 text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-text-primary mb-5 text-xl font-semibold">
               Overview
             </h2>
-            <p className="text-base leading-relaxed text-gray-600 dark:text-gray-400">
+            <p className="text-text-muted text-base leading-relaxed">
               {project.project_description}
             </p>
           </motion.div>
@@ -148,7 +148,7 @@ const Project = ({ projectInfo }) => {
             initial="hidden"
             animate="visible"
             custom={5}
-            className="mb-10 h-px w-full bg-gray-200 dark:bg-gray-800"
+            className="bg-border-subtle mb-10 h-px w-full"
           />
 
           {/* Stack section */}
@@ -158,10 +158,10 @@ const Project = ({ projectInfo }) => {
             animate="visible"
             custom={6}
           >
-            <p className="mb-1 text-xs font-semibold tracking-widest text-blue-500 uppercase dark:text-blue-400">
+            <p className="text-accent mb-1 text-xs font-semibold tracking-widest uppercase">
               Stack
             </p>
-            <h2 className="mb-5 text-xl font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-text-primary mb-5 text-xl font-semibold">
               Built With
             </h2>
             <ProjectStack projectStack={project.project_stack} />

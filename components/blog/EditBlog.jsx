@@ -132,21 +132,21 @@ const EditBlog = ({
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
-              className="mx-4 max-h-[calc(100vh-5rem)] w-full max-w-4xl overflow-y-auto rounded-2xl border border-gray-200 bg-white shadow-2xl sm:max-h-[calc(100vh-3rem)] dark:border-gray-800 dark:bg-slate-950"
+              className="border-border-subtle bg-surface mx-4 max-h-[calc(100vh-5rem)] w-full max-w-4xl overflow-y-auto rounded-2xl border shadow-2xl sm:max-h-[calc(100vh-3rem)]"
             >
-              <div className="sticky top-0 z-10 border-b border-gray-200 bg-white px-6 py-4 dark:border-gray-800 dark:bg-slate-950">
+              <div className="border-border-subtle bg-surface sticky top-0 z-10 border-b px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
-                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <h2 className="text-text-primary text-2xl font-semibold">
                       Edit the blog
                     </h2>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-text-muted mt-1 text-sm">
                       Update your blog content and details
                     </p>
                   </div>
                   <button
                     onClick={() => setShowEditModal(false)}
-                    className="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                    className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
                   >
                     <X className="h-5 w-5" />
                   </button>
