@@ -71,18 +71,6 @@ const ProjectsWrapper = ({ projects }) => {
     },
   };
 
-  // Shimmer effect for card background
-  const shimmerVariants = {
-    animate: {
-      backgroundPosition: ["200% 0", "-200% 0"],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "linear",
-      },
-    },
-  };
-
   // Handle navigatiion to a particular project
   const handleNavigate = (e, projectId) => {
     e.preventDefault();
@@ -109,61 +97,45 @@ const ProjectsWrapper = ({ projects }) => {
                 initial="rest"
                 whileHover="hover"
                 animate="rest"
-                className="group relative flex h-full flex-col overflow-hidden rounded-xl bg-slate-100 p-6 shadow-sm transition-all duration-300 hover:shadow-2xl dark:bg-gray-800/50"
+                className="group border-border-subtle hover:border-accent flex h-full flex-col overflow-hidden rounded-xl border p-6 transition-colors duration-150"
               >
-                {/* Animated border gradient on hover */}
-                <motion.div
-                  className="absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent)",
-                    backgroundSize: "200% 100%",
-                  }}
-                  variants={shimmerVariants}
-                  animate="animate"
-                />
-
-                <div className="relative">
-                  {/* Card Content */}
-
-                  {/* Card Header */}
-                  <div className="mb-1 flex items-center justify-between">
-                    <div>
-                      <h3 className="line-clamp-2 text-xl font-semibold text-gray-900 dark:text-white">
-                        {project.project_name}
-                      </h3>
-                      <button
-                        onClick={(e) => {
-                          handleNavigate(e, project.id);
-                        }}
-                        title="see more"
-                        className="mt-1 rounded-full px-2 pb-0.5 text-sm text-blue-500 hover:bg-blue-300/50 dark:text-blue-400 dark:hover:bg-blue-500/50"
-                      >
-                        more...
-                      </button>
-                    </div>
-
-                    {/* Animated Link Icon */}
-                    <motion.div variants={iconVariants}>
-                      <CircleArrowOutUpRight className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                    </motion.div>
+                {/* Card Header */}
+                <div className="mb-1 flex items-center justify-between">
+                  <div>
+                    <h3 className="text-text-primary line-clamp-2 text-xl font-semibold">
+                      {project.project_name}
+                    </h3>
+                    <button
+                      onClick={(e) => {
+                        handleNavigate(e, project.id);
+                      }}
+                      title="see more"
+                      className="text-accent hover:bg-accent/10 mt-1 rounded-full px-2 pb-0.5 text-sm"
+                    >
+                      more...
+                    </button>
                   </div>
 
-                  {/* Card Description with reveal animation */}
-                  <motion.p
-                    className="line-clamp-6 text-gray-600 dark:text-gray-300"
-                    initial={{ opacity: 0.8 }}
-                    whileHover={{
-                      opacity: 1,
-                      transition: { duration: 0.2 },
-                    }}
-                  >
-                    {project.project_description}
-                  </motion.p>
-
-                  {/* Project stack area */}
-                  <ProjectStack projectStack={project.project_stack} />
+                  {/* Animated Link Icon */}
+                  <motion.div variants={iconVariants}>
+                    <CircleArrowOutUpRight className="text-text-muted h-5 w-5" />
+                  </motion.div>
                 </div>
+
+                {/* Card Description with reveal animation */}
+                <motion.p
+                  className="text-text-muted line-clamp-6"
+                  initial={{ opacity: 0.8 }}
+                  whileHover={{
+                    opacity: 1,
+                    transition: { duration: 0.2 },
+                  }}
+                >
+                  {project.project_description}
+                </motion.p>
+
+                {/* Project stack area */}
+                <ProjectStack projectStack={project.project_stack} />
               </motion.a>
             </div>
           ))}

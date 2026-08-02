@@ -25,10 +25,7 @@ const Alert = ({ message, type, onClose }) => {
   const IconComponent = type === "success" ? CheckCircle : AlertCircle;
 
   // Determine icon color
-  const iconColorClass =
-    type === "success"
-      ? "text-green-500 dark:text-green-700"
-      : "text-red-500 dark:text-red-700";
+  const iconColorClass = type === "success" ? "text-success" : "text-danger";
 
   return (
     <ClientPortal>
@@ -38,7 +35,7 @@ const Alert = ({ message, type, onClose }) => {
         }`}
       >
         <div
-          className={`mt-4 flex w-auto items-center justify-between rounded-full border bg-black px-6 py-4.5 text-white shadow-md dark:bg-white dark:text-black`}
+          className={`bg-text-primary text-surface mt-4 flex w-auto items-center justify-between rounded-full px-6 py-4.5 shadow-md`}
         >
           <div className="flex items-center gap-2">
             {/* Render the appropriate icon */}
@@ -47,7 +44,7 @@ const Alert = ({ message, type, onClose }) => {
           </div>
           <button
             onClick={handleClose}
-            className="ml-4 cursor-pointer text-gray-200 hover:text-gray-300 dark:text-gray-600 dark:hover:text-gray-700"
+            className="text-surface/70 hover:text-surface ml-4 cursor-pointer"
             aria-label="Close alert"
           >
             <XIcon className="h-5 w-5 shrink-0" />

@@ -91,9 +91,9 @@ const CustomMdEditor = ({ value, onChange }) => {
   };
 
   return (
-    <div className="w-full rounded-xl border border-gray-300 shadow-sm transition-all focus:outline-none dark:border-gray-700">
+    <div className="border-border-subtle w-full rounded-xl border transition-colors focus:outline-none">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2 rounded-t-xl border-b border-gray-200 bg-gray-50/50 p-2 dark:border-gray-700 dark:bg-gray-900/50">
+      <div className="border-border-subtle bg-surface-raised flex flex-wrap items-center gap-2 rounded-t-xl border-b p-2">
         {/* Toolbar buttons */}
         {!showPreview && (
           <div className="flex flex-wrap items-center gap-1">
@@ -127,7 +127,7 @@ const CustomMdEditor = ({ value, onChange }) => {
               onClick={() => insertText("#### ", "")}
               label="Heading4"
             />
-            <div className="mx-2 h-4 w-px bg-gray-300 dark:bg-gray-600" />
+            <div className="bg-border-subtle mx-2 h-4 w-px" />
             <ToolbarButton
               icon={<List size={18} />}
               onClick={() => insertText("- ", "")}
@@ -161,7 +161,7 @@ const CustomMdEditor = ({ value, onChange }) => {
         <button
           type="button"
           onClick={() => setShowPreview(false)}
-          className={`flex items-center gap-2 rounded-full ${!showPreview ? "bg-gray-950 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+          className={`flex items-center gap-2 rounded-full ${!showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
         >
           <PenLine size={14} />
           Write
@@ -172,7 +172,7 @@ const CustomMdEditor = ({ value, onChange }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleClick}
-            className={`mr-2 flex items-center gap-2 rounded-full ${showPreview ? "bg-gray-950 text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+            className={`mr-2 flex items-center gap-2 rounded-full ${showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
           >
             <Glasses size={14} />
             Preview
@@ -194,7 +194,7 @@ const CustomMdEditor = ({ value, onChange }) => {
           value={value}
           onChange={onChange}
           rows={16}
-          className="w-full resize-none p-4 text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-gray-100 dark:placeholder:text-gray-500"
+          className="text-text-primary placeholder:text-text-muted w-full resize-none p-4 text-sm leading-relaxed focus:outline-none"
           placeholder="Start writing your masterpiece... (Markdown supported)"
         />
       )}
@@ -211,7 +211,7 @@ const ToolbarButton = ({ icon, onClick, label }) => (
     type="button"
     onClick={onClick}
     title={label}
-    className="cursor-pointer rounded-md p-1.5 text-gray-700 transition-all hover:bg-gray-200 hover:text-black hover:shadow-sm dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+    className="text-text-muted hover:bg-surface hover:text-text-primary cursor-pointer rounded-md p-1.5 transition-colors"
   >
     {icon}
   </button>

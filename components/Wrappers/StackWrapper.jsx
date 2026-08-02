@@ -105,7 +105,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6 }}
-            className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
+            className="text-text-primary mb-6 flex items-center justify-center gap-2 text-2xl font-semibold md:justify-start"
           >
             <CodeXml />
 
@@ -126,30 +126,15 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
                 variants={logoVariants}
                 className="flex flex-col items-center justify-center gap-2"
               >
-                <motion.div
-                  whileHover={{
-                    scale: 1.15,
-                    rotate: 5,
-                    boxShadow: "0 15px 30px rgba(0, 0, 0, 0.15)",
-                    transition: { duration: 0.3 },
-                  }}
-                  className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-xl bg-slate-100/50 p-4 shadow-sm dark:bg-gray-800/50"
-                >
-                  <motion.div
-                    whileHover={{
-                      rotate: [0, -10, 10, -10, 0],
-                      transition: { duration: 0.5 },
-                    }}
-                  >
-                    <Image
-                      src={iconSrc}
-                      alt={name}
-                      width={48}
-                      height={48}
-                      className={`h-12 w-12 object-contain ${iconsToInvert.includes(name) ? "dark:invert" : ""}`}
-                    />
-                  </motion.div>
-                </motion.div>
+                <div className="bg-surface-raised hover:border-accent flex h-20 w-20 cursor-pointer items-center justify-center rounded-xl border border-transparent p-4 transition-colors duration-150">
+                  <Image
+                    src={iconSrc}
+                    alt={name}
+                    width={48}
+                    height={48}
+                    className={`h-12 w-12 object-contain ${iconsToInvert.includes(name) ? "dark:invert" : ""}`}
+                  />
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -169,7 +154,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6 }}
-            className="mb-6 flex items-center justify-center gap-2 text-2xl font-semibold text-gray-800 md:justify-start dark:text-gray-200"
+            className="text-text-primary mb-6 flex items-center justify-center gap-2 text-2xl font-semibold md:justify-start"
           >
             <Blocks />
 
@@ -182,20 +167,15 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="flex flex-wrap items-center gap-4 rounded-xl border-[1.5px] border-dashed border-gray-300 p-4 dark:border-gray-700"
+            className="border-border-subtle flex flex-wrap items-center gap-4 rounded-xl border-[1.5px] border-dashed p-4"
           >
             {toolNames.map((tool, _index) => (
               <motion.li
                 key={tool.id}
                 variants={listItemVariants}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
-                  transition: { duration: 0.2 },
-                }}
-                className="flex cursor-pointer items-center gap-3 rounded-xl bg-slate-100/50 px-4 py-3 text-base text-gray-700 hover:bg-slate-200/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:bg-gray-700/50"
+                className="bg-surface-raised text-text-primary hover:border-accent flex cursor-pointer items-center gap-3 rounded-xl border border-transparent px-4 py-3 text-base transition-colors duration-150"
               >
-                <Layers2 className="h-5 w-5 shrink-0 text-gray-500" />
+                <Layers2 className="text-text-muted h-5 w-5 shrink-0" />
 
                 <span>{tool.tool_name}</span>
               </motion.li>

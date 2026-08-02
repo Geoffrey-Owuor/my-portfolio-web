@@ -17,10 +17,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
   const IconComponent = type === "success" ? CheckCircle : AlertCircle;
 
   // Determine icon color
-  const iconColorClass =
-    type === "success"
-      ? "text-green-500 dark:text-green-700"
-      : "text-red-500 dark:text-red-700";
+  const iconColorClass = type === "success" ? "text-success" : "text-danger";
 
   const content = (
     <div className="fixed top-0 left-1/2 z-9999 -translate-x-1/2">
@@ -33,7 +30,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="adjust-padding mt-4"
           >
-            <div className="flex w-auto min-w-[300px] items-center justify-between rounded-full bg-black px-6 py-4.5 text-white shadow-md dark:bg-white dark:text-black">
+            <div className="bg-text-primary text-surface flex w-auto min-w-[300px] items-center justify-between rounded-full px-6 py-4.5 shadow-md">
               <div className="flex items-center gap-2">
                 {/* Render the appropriate icon */}
                 <IconComponent
@@ -43,7 +40,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
               </div>
               <button
                 onClick={hideAlert}
-                className="ml-4 cursor-pointer text-gray-200 hover:text-gray-300 dark:text-gray-600 dark:hover:text-gray-700"
+                className="text-surface/70 hover:text-surface ml-4 cursor-pointer"
                 aria-label="Close alert"
               >
                 <XIcon className="h-5 w-5 shrink-0" />

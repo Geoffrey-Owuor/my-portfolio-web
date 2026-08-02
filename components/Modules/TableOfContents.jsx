@@ -103,13 +103,13 @@ const TableOfContents = ({ content }) => {
 
   return (
     <nav className="sticky top-12 hidden max-h-[calc(100vh-2rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4 lg:flex">
-      <h4 className="mb-4 border-b-2 border-gray-400 pb-2 text-sm font-bold tracking-wider text-gray-500 uppercase dark:border-gray-500 dark:text-gray-400">
+      <h4 className="text-text-muted border-border-subtle mb-4 border-b-2 pb-2 text-sm font-bold tracking-wider uppercase">
         On this page
       </h4>
-      <ul className="space-y-3 border-gray-300 dark:border-gray-700">
+      <ul className="border-border-subtle space-y-3">
         {headings.length === 0 ? (
           <li>
-            <p className="px-3 py-2 text-sm text-gray-400 italic dark:text-gray-500">
+            <p className="text-text-muted px-3 py-2 text-sm italic">
               No headings found
             </p>
           </li>
@@ -121,8 +121,8 @@ const TableOfContents = ({ content }) => {
                   href={`#${heading.id}`}
                   className={`block rounded-xl px-3 py-2 text-sm text-wrap transition-colors ${
                     activeId === heading.id
-                      ? "bg-indigo-100/50 font-medium text-blue-600 dark:bg-slate-700/50 dark:text-white"
-                      : "text-gray-600 hover:text-blue-500 hover:underline dark:text-gray-400"
+                      ? "bg-accent/10 text-accent font-medium"
+                      : "text-text-muted hover:text-accent hover:underline"
                   }`}
                 >
                   {heading.text}

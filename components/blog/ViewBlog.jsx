@@ -122,15 +122,15 @@ const ViewBlog = ({ blogPost, userId }) => {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-24 sm:px-6 lg:px-16">
         <div className="text-center">
-          <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-text-primary mb-4 text-3xl font-bold">
             Blog Not Found
           </h2>
-          <p className="mb-8 text-gray-600 dark:text-gray-400">
+          <p className="text-text-muted mb-8">
             The blog post you're looking for doesn't exist or has been removed.
           </p>
           <button
             onClick={() => handleBlogsRoute("/blogs")}
-            className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+            className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-full px-6 py-3 font-medium transition-opacity hover:opacity-90"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Blogs
@@ -172,12 +172,12 @@ const ViewBlog = ({ blogPost, userId }) => {
         <article className="w-full max-w-none">
           {/* Header Section */}
           <header className="mb-6">
-            <h1 className="mb-6 text-3xl leading-tight font-bold text-gray-900 sm:text-4xl dark:text-white">
+            <h1 className="font-dm-mono text-text-primary mb-6 text-3xl leading-tight font-bold sm:text-4xl">
               {blogPost.blog_title}
             </h1>
 
             {/* Meta Information */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 sm:gap-6 sm:text-base dark:text-gray-400">
+            <div className="text-text-muted flex flex-wrap items-center gap-4 text-sm sm:gap-6 sm:text-base">
               <div className="flex items-center gap-2">
                 <UserRound className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="font-medium">{blogPost.blog_author}</span>
@@ -197,7 +197,7 @@ const ViewBlog = ({ blogPost, userId }) => {
               {userId && (
                 <button
                   onClick={() => setShowEditBlog(true)}
-                  className="flex cursor-pointer items-center gap-2 transition-colors duration-200 hover:text-gray-700 dark:hover:text-gray-500"
+                  className="hover:text-text-primary flex cursor-pointer items-center gap-2 transition-colors duration-150"
                 >
                   <PenLine className="h-4 w-4 sm:h-5 sm:w-5" />
                   <span>Edit</span>
@@ -206,14 +206,14 @@ const ViewBlog = ({ blogPost, userId }) => {
 
               <button
                 onClick={() => handleBlogsRoute("/blogs")}
-                className="flex cursor-pointer items-center gap-2 transition-colors duration-200 hover:text-gray-700 dark:hover:text-gray-500"
+                className="hover:text-text-primary flex cursor-pointer items-center gap-2 transition-colors duration-150"
               >
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>back to blogs</span>
               </button>
             </div>
 
-            <div className="mt-6 flex items-center gap-4 text-gray-500 dark:text-gray-400">
+            <div className="text-text-muted mt-6 flex items-center gap-4">
               <span className="inline-flex items-center gap-1">
                 <Share2 className="h-4 w-4" />
                 Share:
@@ -226,7 +226,7 @@ const ViewBlog = ({ blogPost, userId }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Share the blog on ${key.replace("Link", "")}`}
-                    className="rounded-full border border-gray-300 p-2 transition-colors dark:border-gray-600"
+                    className="border-border-subtle hover:border-accent rounded-full border p-2 transition-colors"
                   >
                     <Image
                       src={shareIcon.logo}
@@ -242,10 +242,10 @@ const ViewBlog = ({ blogPost, userId }) => {
           </header>
 
           {/* Divider */}
-          <div className="mb-8 h-px bg-linear-to-r from-transparent via-gray-300 to-transparent sm:mb-12 dark:via-gray-700" />
+          <div className="mb-8 h-px bg-border-subtle sm:mb-12" />
 
           {/* Content Section */}
-          <div className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-semi-bold prose-a:text-blue-600 max-w-none wrap-break-word">
+          <div className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-semi-bold prose-a:text-accent max-w-none wrap-break-word">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={MarkdownComponents}
@@ -255,14 +255,14 @@ const ViewBlog = ({ blogPost, userId }) => {
           </div>
 
           {/* Bottom Divider */}
-          <div className="mt-12 h-px bg-linear-to-r from-transparent via-gray-300 to-transparent sm:mt-16 dark:via-gray-700" />
+          <div className="mt-12 h-px bg-border-subtle sm:mt-16" />
 
           {/* Author Card and Back & Forward Logs */}
           <div className="mt-8 flex items-center justify-between sm:mt-12">
             <button
               onClick={() => handleBlogNavigation(blogPost.previous_blog_id)}
               title="go to previous blog"
-              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 sm:pr-4 dark:hover:bg-gray-700/50"
+              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-50 sm:pr-4"
             >
               {blogPost.is_first_blog ? (
                 <ChevronFirst strokeWidth={1} className="h-7 w-7" />
@@ -274,8 +274,8 @@ const ViewBlog = ({ blogPost, userId }) => {
               </span>
             </button>
             <div className="inline-flex items-center gap-4 rounded-2xl p-2">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-purple-600 sm:h-16 sm:w-16">
-                <span className="text-base font-bold text-white sm:text-xl">
+              <div className="bg-accent flex h-12 w-12 shrink-0 items-center justify-center rounded-full sm:h-16 sm:w-16">
+                <span className="text-surface text-base font-bold sm:text-xl">
                   {blogPost.blog_author
                     .split(" ")
                     .map((n) => n[0])
@@ -283,10 +283,10 @@ const ViewBlog = ({ blogPost, userId }) => {
                 </span>
               </div>
               <div className="hidden sm:block">
-                <h3 className="mb-2 text-lg font-semibold text-gray-900 sm:text-xl dark:text-white">
+                <h3 className="text-text-primary mb-2 text-lg font-semibold sm:text-xl">
                   {blogPost.blog_author}
                 </h3>
-                <p className="text-sm text-gray-600 sm:text-base dark:text-gray-400">
+                <p className="text-text-muted text-sm sm:text-base">
                   {blogPost.author_tagline}
                 </p>
               </div>
@@ -294,7 +294,7 @@ const ViewBlog = ({ blogPost, userId }) => {
             <button
               onClick={() => handleBlogNavigation(blogPost.next_blog_id)}
               title="go to next blog"
-              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-gray-200/50 disabled:cursor-not-allowed disabled:opacity-50 sm:pl-4 dark:hover:bg-gray-700/50"
+              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-50 sm:pl-4"
             >
               <span className="hidden sm:flex">
                 {blogPost.is_last_blog ? "first blog" : "next"}

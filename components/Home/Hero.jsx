@@ -1,29 +1,13 @@
 "use client";
 
 import { assets } from "@/assets/assets";
-import { ArrowRight, DownloadIcon } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import SphereBg from "../Modules/SphereBg";
+import HeroTerminal from "./HeroTerminal";
 
 const Hero = () => {
-  const buttonVariants = {
-    rest: { scale: 1 },
-    hover: { scale: 1.05, transition: { duration: 0.2, ease: "easeOut" } },
-    tap: { scale: 0.95 },
-  };
-
-  const iconVariants = {
-    rest: { x: 0 },
-    hover: { x: 5, transition: { duration: 0.3, ease: "easeOut" } },
-  };
-
-  const downloadIconVariants = {
-    rest: { y: 0 },
-    hover: { y: [0, -5, 0], transition: { duration: 0.6, repeat: Infinity } },
-  };
-
-  const titleTags = ["#Researcher", "#Developer", "#Singer😅"];
+  const titleTags = ["#Researcher", "#Developer", "#Builder"];
 
   return (
     <section
@@ -75,7 +59,7 @@ const Hero = () => {
             {titleTags.map((tag, index) => (
               <span
                 key={index}
-                className="font-dm-mono rounded-full bg-blue-100 px-3 py-1.5 text-sm text-nowrap text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                className="font-dm-mono bg-accent/10 text-accent rounded-full px-3 py-1.5 text-sm text-nowrap"
               >
                 {tag}
               </span>
@@ -87,7 +71,7 @@ const Hero = () => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
-            className="text-3xl font-medium tracking-tight text-gray-900 md:text-5xl dark:text-white"
+            className="font-dm-mono text-text-primary text-3xl font-medium tracking-tight md:text-5xl"
           >
             Code, Design, & Everything In-Between
           </motion.h1>
@@ -97,11 +81,11 @@ const Hero = () => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
-            className="mt-6 text-lg leading-relaxed text-gray-600 dark:text-gray-300"
+            className="text-text-muted mt-6 text-lg leading-relaxed"
           >
-            I'm Jeff, a Nairobi-based developer with over three years of
-            experience in building and occasionally designing exceptional
-            digital experiences.
+            I'm Jeff, a Nairobi-based full-stack developer with over three years
+            of experience shipping products end-to-end -&gt; database schema,
+            API, and the interface on top.
           </motion.p>
 
           <motion.div
@@ -109,53 +93,9 @@ const Hero = () => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}
-            className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start"
+            className="mt-8 flex justify-center lg:justify-start"
           >
-            {/* Contact Me Button */}
-            <motion.a
-              href="#contact"
-              variants={buttonVariants}
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
-              className="font-dm-mono relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-gray-900 px-6 py-3 text-base font-medium text-gray-900 shadow-md transition-colors hover:bg-gray-100 sm:w-auto dark:border-gray-600 dark:text-white dark:hover:bg-gray-800"
-            >
-              <motion.div
-                className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent"
-                whileHover={{
-                  translateX: "200%",
-                  transition: { duration: 0.6 },
-                }}
-              />
-              <span className="relative">Contact Me</span>
-              <motion.div variants={iconVariants} className="relative">
-                <ArrowRight className="h-5 w-5" />
-              </motion.div>
-            </motion.a>
-
-            {/* Resume Button */}
-            <motion.a
-              href="https://drive.google.com/uc?export=download&id=1ZZzEsXGEL9zd7oNUYMCe8yQfXAAHuSpc"
-              target="_blank"
-              rel="noopener noreferrer"
-              variants={buttonVariants}
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
-              className="font-dm-mono relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gray-900 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-gray-700 sm:w-auto dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
-            >
-              <motion.div
-                className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent"
-                whileHover={{
-                  translateX: "200%",
-                  transition: { duration: 0.6 },
-                }}
-              />
-              <span className="relative">My Resume</span>
-              <motion.div variants={downloadIconVariants} className="relative">
-                <DownloadIcon className="h-5 w-5" />
-              </motion.div>
-            </motion.a>
+            <HeroTerminal />
           </motion.div>
         </div>
       </div>

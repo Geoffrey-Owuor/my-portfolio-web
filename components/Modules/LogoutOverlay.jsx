@@ -4,19 +4,17 @@ import { Loader } from "lucide-react";
 
 const LogoutOverlay = () => {
   const content = (
-    <div className="fixed inset-0 z-9999 flex h-screen items-center justify-center bg-white dark:bg-gray-950">
+    <div className="bg-surface fixed inset-0 z-9999 flex h-screen items-center justify-center">
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}
         <Loader
-          className="h-9 w-9 animate-spin text-gray-900 dark:text-white"
+          className="text-text-primary h-9 w-9 animate-spin"
           aria-label="loading"
         />
 
-        {/* The text, styled for dark and light modes */}
-        <span className="text-xl text-gray-900 dark:text-white">
-          Logging out...
-        </span>
+        {/* The text */}
+        <span className="text-text-primary text-xl">Logging out...</span>
       </div>
     </div>
   );

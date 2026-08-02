@@ -26,10 +26,7 @@ export const SectionAlert = ({
   }, []);
 
   // Determine icon color
-  const iconColorClass =
-    type === "success"
-      ? "text-white dark:text-black"
-      : "text-red-500 dark:text-red-700";
+  const iconColorClass = type === "success" ? "text-surface" : "text-danger";
 
   return (
     <motion.div
@@ -41,7 +38,7 @@ export const SectionAlert = ({
       className="adjust-padding fixed right-4 z-50 hidden md:flex"
     >
       <div
-        className={`flex w-auto max-w-80 items-center justify-between rounded-full bg-black px-6 py-4 text-white dark:bg-white dark:text-black`}
+        className={`bg-text-primary text-surface flex w-auto max-w-80 items-center justify-between rounded-full px-6 py-4`}
       >
         <div className="flex items-center gap-3">
           <IconComponent className={`h-6 w-6 shrink-0 ${iconColorClass}`} />
@@ -49,7 +46,7 @@ export const SectionAlert = ({
         </div>
         <button
           onClick={handleClose}
-          className="ml-4 cursor-pointer text-gray-200 hover:text-gray-300 dark:text-gray-600 dark:hover:text-gray-700"
+          className="text-surface/70 hover:text-surface ml-4 cursor-pointer"
           aria-label="Close alert"
         >
           <X className="h-5 w-5 shrink-0" />

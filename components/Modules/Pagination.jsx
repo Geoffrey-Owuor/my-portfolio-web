@@ -17,7 +17,7 @@ const Pagination = ({
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="relative inline-flex items-center gap-1 rounded-full border border-gray-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-gray-300 dark:hover:bg-slate-800"
+            className="border-border-subtle bg-surface-raised text-text-primary hover:bg-border-subtle/50 relative inline-flex items-center gap-1 rounded-full border px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ArrowLeft className="h-4 w-4" />
             Previous
@@ -27,7 +27,7 @@ const Pagination = ({
               setCurrentPage((prev) => Math.min(prev + 1, totalPages))
             }
             disabled={currentPage === totalPages}
-            className="relative ml-3 inline-flex items-center gap-1 rounded-full border border-gray-300 bg-slate-50 px-6 py-2 text-sm font-semibold text-gray-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-gray-300 dark:hover:bg-slate-800"
+            className="border-border-subtle bg-surface-raised text-text-primary hover:bg-border-subtle/50 relative ml-3 inline-flex items-center gap-1 rounded-full border px-6 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50"
           >
             Next
             <ArrowRight className="h-4 w-4" />
@@ -40,7 +40,7 @@ const Pagination = ({
         {totalPages > 1 && (
           <div className="flex items-center gap-4">
             <div className="hidden pr-3 lg:flex">
-              <p className="text-sm text-gray-700 dark:text-gray-400">
+              <p className="text-text-muted text-sm">
                 Showing{" "}
                 <span className="font-semibold">{indexOfFirstBlog + 1}</span> to{" "}
                 <span className="font-semibold">
@@ -58,7 +58,7 @@ const Pagination = ({
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="inline-flex items-center justify-center rounded-full p-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="text-text-muted hover:bg-surface-raised hover:text-text-primary inline-flex items-center justify-center rounded-full p-2 text-sm font-semibold transition-colors disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -78,10 +78,10 @@ const Pagination = ({
                     <button
                       key={pageNumber}
                       onClick={() => setCurrentPage(pageNumber)}
-                      className={`inline-flex h-8 w-8 items-center justify-center truncate rounded-full text-sm font-semibold ${
+                      className={`inline-flex h-8 w-8 items-center justify-center truncate rounded-full text-sm font-semibold transition-colors ${
                         currentPage === pageNumber
-                          ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
-                          : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                          ? "bg-text-primary text-surface"
+                          : "text-text-muted hover:bg-surface-raised hover:text-text-primary"
                       }`}
                     >
                       {pageNumber}
@@ -94,7 +94,7 @@ const Pagination = ({
                   return (
                     <span
                       key={pageNumber}
-                      className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-slate-400 dark:text-slate-500"
+                      className="text-text-muted inline-flex items-center justify-center px-4 py-2 text-sm font-semibold"
                     >
                       ...
                     </span>
@@ -109,7 +109,7 @@ const Pagination = ({
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className="inline-flex items-center justify-center rounded-full p-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-50 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="text-text-muted hover:bg-surface-raised hover:text-text-primary inline-flex items-center justify-center rounded-full p-2 text-sm font-semibold transition-colors disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4 rotate-180" />
             </button>

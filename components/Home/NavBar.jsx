@@ -88,9 +88,7 @@ const NavBar = () => {
       {/* Main Navigation Bar */}
       <nav
         className={`adjust-padding fixed top-0 right-0 left-0 z-50 w-full transition-colors duration-300 ease-in-out ${
-          isScrolled
-            ? "navbar-blur bg-white/70 dark:bg-gray-950/70"
-            : "app-background"
+          isScrolled ? "navbar-blur bg-surface/70" : "app-background"
         }`}
       >
         {/* Centered Content Container */}
@@ -100,7 +98,7 @@ const NavBar = () => {
             {/* Mobile Menu Toggle Button */}
             <button
               onClick={toggleMenu}
-              className="rounded-full p-2 text-gray-700 transition hover:bg-gray-100 lg:hidden dark:text-gray-300 dark:hover:bg-gray-800"
+              className="text-text-muted hover:bg-surface-raised rounded-full p-2 transition lg:hidden"
               title="Toggle menu"
             >
               <Menu className="h-6 w-6" />
@@ -110,16 +108,16 @@ const NavBar = () => {
             {isInHome ? (
               <a
                 href="/#home"
-                className="font-dm-mono text-xl font-medium text-gray-900 dark:text-white"
+                className="font-dm-mono text-text-primary text-xl font-medium"
               >
-                <span>{"<Jeff/>"}</span>
+                <span>Jeff</span>
               </a>
             ) : (
               <button
                 onClick={() => handleNavbarRouting("/#home")}
-                className="font-dm-mono cursor-pointer text-xl font-medium text-gray-900 dark:text-white"
+                className="font-dm-mono text-text-primary cursor-pointer text-xl font-medium"
               >
-                <span>{"<Jeff/>"}</span>
+                <span>Jeff</span>
               </button>
             )}
           </div>
@@ -131,14 +129,14 @@ const NavBar = () => {
                 {isInHome ? (
                   <a
                     href={link.href}
-                    className="flex items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                    className="text-text-primary hover:text-accent flex items-center gap-0.5 transition-colors"
                   >
                     {link.label}
                   </a>
                 ) : (
                   <button
                     onClick={() => handleNavbarRouting(link.href)}
-                    className="flex cursor-pointer items-center gap-0.5 text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                    className="text-text-primary hover:text-accent flex cursor-pointer items-center gap-0.5 transition-colors"
                   >
                     {link.label}
                   </button>
@@ -147,14 +145,12 @@ const NavBar = () => {
             ))}
             <li>
               {pathname === "/blogs" ? (
-                <span className="cursor-default text-gray-500 dark:text-gray-400">
-                  Blogs
-                </span>
+                <span className="text-text-muted cursor-default">Blogs</span>
               ) : (
                 <Link
                   href="/blogs"
                   onClick={() => setIsLoadingLine(true)}
-                  className="text-black transition-colors hover:text-gray-700 dark:text-white dark:hover:text-gray-300"
+                  className="text-text-primary hover:text-accent transition-colors"
                 >
                   Blogs
                 </Link>
@@ -165,7 +161,7 @@ const NavBar = () => {
           {/* Right Side Icons (Theme Toggle + GitHub) */}
           <div className="flex items-center gap-4 lg:gap-6">
             {/* Theme Toggle Button - Reserve space for it */}
-            <div className="flex h-5 w-10 items-center justify-center border-r border-gray-400 pr-6 dark:border-gray-700">
+            <div className="border-border-subtle flex h-5 w-10 items-center justify-center border-r pr-6">
               <ThemeToggleCompact />
             </div>
 
@@ -175,7 +171,7 @@ const NavBar = () => {
               title="My Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+              className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors lg:hidden"
             >
               <Image
                 src={tools.githubLogo}
@@ -192,7 +188,7 @@ const NavBar = () => {
               aria-label="GitHub Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center gap-2 rounded-full bg-gray-950 px-3 py-1.5 text-sm text-white transition-colors hover:bg-gray-900 hover:text-gray-200 lg:flex dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:hover:text-gray-900"
+              className="bg-text-primary text-surface hidden items-center gap-2 rounded-full px-3 py-1.5 text-sm transition-opacity hover:opacity-90 lg:flex"
             >
               <Image
                 src={tools.githubLogo}
@@ -219,20 +215,20 @@ const NavBar = () => {
       {/* Mobile Menu Drawer - slides from left to right */}
       <div
         ref={menuRef}
-        className={`fixed top-0 bottom-0 left-0 z-80 w-72 transform bg-white shadow-2xl transition-all duration-200 ease-in-out lg:hidden dark:border-r dark:border-gray-800 dark:bg-gray-950 ${
+        className={`bg-surface border-border-subtle fixed top-0 bottom-0 left-0 z-80 w-72 transform shadow-2xl transition-all duration-200 ease-in-out lg:hidden dark:border-r ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Menu Header */}
         <div className="px-4">
-          <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
-            <span className="font-dm-mono text-xl font-medium text-gray-900 dark:text-white">
-              {"<Menu/>"}
+          <div className="border-border-subtle flex items-center justify-between border-b p-4">
+            <span className="font-dm-mono text-text-primary text-xl font-medium">
+              Menu
             </span>
 
             <button
               onClick={closeMenu}
-              className="rounded-full p-2 text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              className="text-text-muted hover:bg-surface-raised rounded-full p-2 transition"
               aria-label="Close menu"
             >
               <X className="h-5 w-5" />
@@ -248,14 +244,14 @@ const NavBar = () => {
                 <a
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block w-full rounded-2xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                  className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-2xl px-4 py-3 text-base transition-colors"
                 >
                   {link.label}
                 </a>
               ) : (
                 <button
                   onClick={() => handleSidebarClick(link.href)}
-                  className="block w-full rounded-2xl px-4 py-3 text-left text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                  className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-2xl px-4 py-3 text-left text-base transition-colors"
                 >
                   {link.label}
                 </button>
@@ -264,14 +260,14 @@ const NavBar = () => {
           ))}
           <li>
             {pathname === "/blogs" ? (
-              <span className="w-full cursor-default rounded-2xl px-4 py-3 text-base text-gray-500 dark:text-gray-400">
+              <span className="text-text-muted w-full cursor-default rounded-2xl px-4 py-3 text-base">
                 Blogs
               </span>
             ) : (
               <Link
                 href="/blogs"
                 onClick={handleBlogLinkClick}
-                className="w-full rounded-2xl px-4 py-3 text-base text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="text-text-muted hover:bg-surface-raised hover:text-text-primary w-full rounded-2xl px-4 py-3 text-base transition-colors"
               >
                 Blogs
               </Link>
@@ -286,7 +282,7 @@ const NavBar = () => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeMenu}
-            className="flex items-center justify-center gap-1.5 rounded-full bg-gray-950 px-4 py-3 text-white transition-colors hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            className="bg-text-primary text-surface flex items-center justify-center gap-1.5 rounded-full px-4 py-3 transition-opacity hover:opacity-90"
           >
             GitHub Portfolio
             <ArrowUpRight className="h-4 w-4" />
