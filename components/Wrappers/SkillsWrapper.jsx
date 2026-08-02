@@ -92,13 +92,13 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="border-border-subtle flex flex-wrap items-center gap-4 rounded-xl border-[1.5px] border-dashed p-4"
+            className="border-border-subtle flex flex-wrap items-center gap-4 rounded-xl border p-4"
           >
             {technicalSkills.map((skill, _index) => (
               <motion.div
                 key={skill.id}
                 variants={cardVariants}
-                className="bg-surface-raised text-text-primary hover:border-accent border border-transparent px-4 py-3 flex cursor-pointer items-center gap-2 rounded-xl transition-colors duration-150"
+                className="bg-surface-raised text-text-primary hover:border-accent flex cursor-pointer items-center gap-2 rounded-xl border border-transparent px-4 py-3 transition-colors duration-150"
               >
                 <BadgeCheck className="text-text-muted h-4 w-4 shrink-0" />
 
@@ -140,7 +140,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
               <motion.li
                 key={skill.id}
                 variants={cardVariants}
-                className="bg-surface-raised text-text-primary hover:border-accent border border-transparent flex cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-base transition-colors duration-150"
+                className="bg-surface-raised text-text-primary hover:border-accent flex cursor-pointer items-center gap-3 rounded-xl border border-transparent px-4 py-3 text-base transition-colors duration-150"
               >
                 <span className="font-dm-mono text-text-muted inline-block w-8 text-right">
                   {String(index + 1).padStart(2, "0")}.

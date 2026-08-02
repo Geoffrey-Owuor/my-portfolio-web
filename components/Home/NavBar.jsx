@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { tools } from "@/assets/assets";
+import JLogo from "@/public/web-app-manifest-192x192.png";
 import { Menu, X, ArrowUpRight, PenLine } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { usePathname, useRouter } from "next/navigation";
@@ -108,16 +109,28 @@ const NavBar = () => {
             {isInHome ? (
               <a
                 href="/#home"
-                className="font-dm-mono text-text-primary text-xl font-medium"
+                className="font-dm-mono text-text-primary inline-flex items-center text-xl font-medium"
               >
-                <span>Jeff</span>
+                <Image
+                  src={JLogo}
+                  alt="J"
+                  className="-mr-0.5 h-6 w-6 object-contain"
+                  priority
+                />
+                <span>eff</span>
               </a>
             ) : (
               <button
                 onClick={() => handleNavbarRouting("/#home")}
-                className="font-dm-mono text-text-primary cursor-pointer text-xl font-medium"
+                className="font-dm-mono text-text-primary inline-flex cursor-pointer items-center text-xl font-medium"
               >
-                <span>Jeff</span>
+                <Image
+                  src={JLogo}
+                  alt="J"
+                  className="-mr-0.5 h-6 w-6 object-contain"
+                  priority
+                />
+                <span>eff</span>
               </button>
             )}
           </div>

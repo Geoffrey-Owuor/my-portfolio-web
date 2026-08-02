@@ -69,7 +69,15 @@ const Footer = () => {
       </div>
       {/* Large display name */}
       <div className="mt-6 overflow-hidden">
-        <p className="font-dm-mono text-center text-6xl leading-none font-black tracking-wide text-gray-200 select-none md:text-9xl dark:text-gray-900">
+        <p
+          className="font-dm-mono text-center text-6xl leading-none font-black tracking-wide text-gray-200 select-none md:text-9xl dark:text-gray-900"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, black 0%, transparent 90%)",
+            maskImage:
+              "linear-gradient(to bottom, black 0%, transparent 90%)",
+          }}
+        >
           OWUOR
         </p>
       </div>
