@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./ecosystem.config.js)",
+      "Read(//ecosystem.config.js)",
+      "Read(**/.env*)",
+      "Edit(**/.env*)"
+    ]
+  }
+}
