@@ -194,7 +194,7 @@ const Contact = () => {
               whileTap="tap"
               type="submit"
               disabled={sending}
-              className="bg-text-primary text-surface hover:opacity-90 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3 text-base transition-opacity disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center"
+              className="bg-text-primary text-surface flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center"
             >
               {sending ? (
                 <>
