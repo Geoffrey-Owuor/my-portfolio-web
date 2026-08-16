@@ -1,12 +1,6 @@
 "use client";
 import Image from "next/image";
-import {
-  Blocks,
-  CodeXml,
-  Layers2,
-  Loader2,
-  MessageCircleCode,
-} from "lucide-react";
+import { Layers2, Loader2, MessageCircleCode } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useAlertStore } from "@/store/useAlertStore";
@@ -46,150 +40,102 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
     }
   }, [isInView]);
 
-  // Container animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-      },
-    },
-  };
-
-  // Logo card animation variants
-  const logoVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.8,
-      rotate: -10,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  // Tool list item animation variants
-  const listItemVariants = {
-    hidden: {
-      opacity: 0,
-      x: -20,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
-
   return (
     <div className="mx-1 flex-1 md:mx-auto" ref={stackRef}>
       {/* Section Title  */}
       <SectionTitle label="Tools & tech I work with" title="My Tech Stack" />
 
-      {/* Two-Column Grid Layout */}
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
-        {/* --- Grid 1: Core Technology Icons --- */}
-        <div className="flex flex-col">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-            className="text-text-primary mb-6 flex items-center justify-center gap-2 text-2xl font-semibold md:justify-start"
-          >
-            <CodeXml />
-
-            <span>Core Technologies</span>
-          </motion.div>
-
-          {/* Logo Grid */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-5 lg:gap-6"
-          >
-            {toolIcons.map(([name, iconSrc], _index) => (
-              <motion.div
-                key={name}
-                variants={logoVariants}
-                className="flex flex-col items-center justify-center gap-2"
-              >
-                <div className="bg-surface-raised hover:border-accent flex h-20 w-20 cursor-pointer items-center justify-center rounded-xl border border-transparent p-4 transition-colors duration-150">
+      {/* --- Core Technologies: dominant scrolling marquee --- */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+        className="bg-surface border-border-subtle mx-auto w-full max-w-6xl overflow-hidden rounded-xl border py-8"
+      >
+        {toolIcons.length > 0 && (
+          <div className="motion-safe:mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:px-6">
+            <div className="motion-safe:animate-marquee flex items-center gap-10 motion-safe:w-max motion-safe:hover:[animation-play-state:paused] motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:justify-center">
+              {toolIcons.map(([name, iconSrc]) => (
+                <div
+                  key={name}
+                  title={name.replace(/Logo$/, "")}
+                  className="flex shrink-0 flex-col items-center justify-center"
+                >
                   <Image
                     src={iconSrc}
                     alt={name}
-                    width={48}
-                    height={48}
-                    className={`h-12 w-12 object-contain ${iconsToInvert.includes(name) ? "dark:invert" : ""}`}
+                    width={40}
+                    height={40}
+                    className={`h-10 w-10 object-contain grayscale-35 transition-all duration-150 hover:grayscale-0 ${iconsToInvert.includes(name) ? "dark:invert" : ""}`}
                   />
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {toolIcons.length === 0 && (
-            <div className="flex items-center gap-4 px-2 py-15">
-              <Loader2 className="h-8 w-8 animate-spin" />
-              <span>Waiting for connection...</span>
+              ))}
+              {/* Duplicate set for a seamless loop — hidden from assistive tech and reduced-motion users */}
+              {toolIcons.map(([name, iconSrc]) => (
+                <div
+                  key={`${name}-dup`}
+                  aria-hidden="true"
+                  className="flex shrink-0 flex-col items-center justify-center motion-reduce:hidden"
+                >
+                  <Image
+                    src={iconSrc}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className={`h-10 w-10 object-contain grayscale-35 transition-all duration-150 hover:grayscale-0 ${iconsToInvert.includes(name) ? "dark:invert" : ""}`}
+                  />
+                </div>
+              ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* --- Grid 2: Other Tools & Skills List --- */}
-        <div className="flex flex-col">
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-            className="text-text-primary mb-6 flex items-center justify-center gap-2 text-2xl font-semibold md:justify-start"
-          >
-            <Blocks />
+        {toolIcons.length === 0 && (
+          <div className="flex items-center justify-center gap-4 px-5 py-10">
+            <Loader2 className="h-6 w-6 animate-spin" />
+            <span className="text-text-muted text-sm">
+              Waiting for connection...
+            </span>
+          </div>
+        )}
+      </motion.div>
 
-            <span>Other Tools & Skills</span>
-          </motion.div>
+      {/* --- Other Tools & Skills: quiet, additive strip --- */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
+        className="mx-auto mt-8 flex w-full max-w-4xl flex-col items-center gap-3 sm:flex-row sm:items-start"
+      >
+        <span className="text-text-muted flex shrink-0 items-center gap-1.5 pt-0.5 text-xs font-semibold tracking-wide uppercase">
+          <Layers2 className="h-3.5 w-3.5" />
+          Also using
+        </span>
 
-          {/* Tools List */}
-          <motion.ul
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="border-border-subtle flex flex-wrap items-center gap-4 rounded-xl border p-4"
-          >
-            {toolNames.map((tool, _index) => (
-              <motion.li
+        {toolNames.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
+            {toolNames.map((tool) => (
+              <span
                 key={tool.id}
-                variants={listItemVariants}
-                className="bg-surface-raised text-text-primary hover:border-accent flex cursor-pointer items-center gap-3 rounded-xl border border-transparent px-4 py-3 text-base transition-colors duration-150"
+                className="border-border-subtle text-text-muted rounded-full border px-3 py-1 text-sm"
               >
-                <Layers2 className="text-text-muted h-5 w-5 shrink-0" />
-
-                <span>{tool.tool_name}</span>
-              </motion.li>
+                {tool.tool_name}
+              </span>
             ))}
-          </motion.ul>
+          </div>
+        )}
 
-          {toolNames.length === 0 && (
-            <div className="flex items-center gap-4 px-2 py-15">
-              <Loader2 className="h-8 w-8 animate-spin" />
-              <span>Waiting for connection...</span>
-            </div>
-          )}
-        </div>
-      </div>
+        {toolNames.length === 0 && (
+          <div className="flex items-center gap-3">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <span className="text-text-muted text-xs">
+              Waiting for connection...
+            </span>
+          </div>
+        )}
+      </motion.div>
     </div>
   );
 };

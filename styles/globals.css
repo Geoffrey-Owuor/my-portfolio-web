@@ -144,6 +144,21 @@ html[data-theme="dark"] {
   }
 }
 
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Declared with @utility (not a plain .class in @layer utilities) so that
+   Tailwind variants like motion-safe:/hover: can compose with it. */
+@utility animate-marquee {
+  animation: marquee 26s linear infinite;
+}
+
 @layer base {
   /* Maintaining a certain length in different screens - Tailwind css configuration */
   .containerizing {
@@ -176,30 +191,10 @@ html[data-theme="dark"] {
   /* APP BACKGROUND — film grain + soft ambient glow */
   .app-background {
     background-color: white;
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
-      radial-gradient(
-        circle 800px at 50% top,
-        color-mix(in srgb, var(--accent) 10%, transparent),
-        transparent 72%
-      );
-    background-repeat: repeat, no-repeat;
-    background-position: 0 0, center top;
-    background-size: 200px 200px, auto;
   }
 
   [data-theme="dark"] .app-background {
     background-color: #030712;
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
-      radial-gradient(
-        circle 800px at 50% top,
-        color-mix(in srgb, var(--accent) 14%, transparent),
-        transparent 72%
-      );
-    background-repeat: repeat, no-repeat;
-    background-position: 0 0, center top;
-    background-size: 200px 200px, auto;
   }
 }
 

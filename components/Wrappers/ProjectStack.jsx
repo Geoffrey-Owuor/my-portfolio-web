@@ -1,16 +1,24 @@
-const ProjectStack = ({ projectStack }) => {
-  // Turn the tack string into an array
-  const stackArray = projectStack.split(",");
+const ProjectStack = ({ projectStack, limit }) => {
+  // Turn the stack string into an array
+  const stackArray = projectStack.split(",").map((s) => s.trim());
+  const visibleStack = limit ? stackArray.slice(0, limit) : stackArray;
+  const remaining = limit ? stackArray.length - visibleStack.length : 0;
+
   return (
-    <div className="mt-4 flex flex-wrap items-center gap-2">
-      {stackArray.map((stack, index) => (
+    <div className="flex flex-wrap items-center gap-1.5">
+      {visibleStack.map((stack, index) => (
         <div
           key={index}
-          className="font-dm-mono bg-accent/10 text-accent rounded-full px-3 py-1 text-sm text-nowrap"
+          className="font-dm-mono bg-accent/10 text-accent rounded-full px-2.5 py-0.5 text-sm text-nowrap"
         >
           {stack}
         </div>
       ))}
+      {remaining > 0 && (
+        <div className="font-dm-mono text-text-muted border-border-subtle rounded-full border px-2.5 py-0.5 text-sm text-nowrap">
+          +{remaining}
+        </div>
+      )}
     </div>
   );
 };
