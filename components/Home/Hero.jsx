@@ -3,11 +3,16 @@
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Microscope, Code2, Hammer } from "lucide-react";
 import SphereBg from "../Modules/SphereBg";
 import HeroTerminal from "./HeroTerminal";
 
 const Hero = () => {
-  const titleTags = ["#Researcher", "#Developer", "#Builder"];
+  const titleTags = [
+    { label: "Researcher", icon: Microscope },
+    { label: "Developer", icon: Code2 },
+    { label: "Builder", icon: Hammer },
+  ];
 
   return (
     <section
@@ -56,12 +61,13 @@ const Hero = () => {
             transition={{ duration: 0.6 }}
             className="mb-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
           >
-            {titleTags.map((tag, index) => (
+            {titleTags.map(({ label, icon: Icon }) => (
               <span
-                key={index}
-                className="font-dm-mono bg-accent/10 text-accent rounded-full px-3 py-1.5 text-sm text-nowrap"
+                key={label}
+                className="font-dm-mono bg-accent/10 text-accent flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-nowrap"
               >
-                {tag}
+                <Icon className="h-4 w-4" />
+                {label}
               </span>
             ))}
           </motion.div>

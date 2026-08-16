@@ -24,7 +24,7 @@ const LoadingLine = () => {
   }, []);
 
   const content = (
-    <div className="fixed top-0 right-0 left-0 z-9999 h-0.5 bg-transparent">
+    <div className="fixed top-0 right-0 left-0 z-9999 h-[2.5px] bg-transparent">
       <div
         className="bg-accent h-full transition-all duration-300 ease-out"
         style={{ width: `${progress}%` }}
