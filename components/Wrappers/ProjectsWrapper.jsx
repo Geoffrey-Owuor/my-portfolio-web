@@ -1,5 +1,10 @@
 "use client";
-import { BadgeCheck, CircleArrowOutUpRight, Loader2 } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  CircleArrowOutUpRight,
+  Loader2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import LoadingLine from "../Modules/LoadingLine";
 import { motion, AnimatePresence, useInView } from "framer-motion";
@@ -41,7 +46,7 @@ const ProjectsWrapper = ({ projects }) => {
     if (isInView) {
       const timer = setTimeout(() => {
         addAlert({
-          message: "Thoughtful, well-crafted project solutions",
+          message: "Thoughtful, well-crafted project work",
           type: "success",
           iconComponent: BadgeCheck,
         });
@@ -71,10 +76,8 @@ const ProjectsWrapper = ({ projects }) => {
     },
   };
 
-  // Handle navigatiion to a particular project
-  const handleNavigate = (e, projectId) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // Handle navigation to a particular project's case study
+  const handleNavigate = (projectId) => {
     setIsNavigating(true);
     router.push(`/projects/${projectId}`);
   };
@@ -89,55 +92,55 @@ const ProjectsWrapper = ({ projects }) => {
         {/* Responsive Projects Grid */}
         <div className="custom:grid-cols-2 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {visibleProjects.map((project, _index) => (
-            <div key={project.id}>
-              <motion.a
-                href={project.project_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial="rest"
-                whileHover="hover"
-                animate="rest"
-                className="group border-border-subtle hover:border-accent flex h-full flex-col overflow-hidden rounded-xl border p-6 transition-colors duration-150"
-              >
-                {/* Card Header */}
-                <div className="mb-1 flex items-center justify-between">
-                  <div>
-                    <h3 className="text-text-primary line-clamp-2 text-xl font-semibold">
-                      {project.project_name}
-                    </h3>
-                    <button
-                      onClick={(e) => {
-                        handleNavigate(e, project.id);
-                      }}
-                      title="see more"
-                      className="text-accent hover:bg-accent/10 mt-1 rounded-full px-2 pb-0.5 text-sm"
-                    >
-                      more...
-                    </button>
-                  </div>
+            <motion.div
+              key={project.id}
+              role="link"
+              tabIndex={0}
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
+              onClick={() => handleNavigate(project.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleNavigate(project.id);
+                }
+              }}
+              className="group border-border-subtle hover:border-accent focus-visible:border-accent flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border p-6 transition-colors duration-150 focus-visible:outline-none"
+            >
+              {/* Card Header: title + external visit icon */}
+              <div className="mb-3 flex items-start justify-between gap-3">
+                <h3 className="text-text-primary line-clamp-2 text-xl font-semibold">
+                  {project.project_name}
+                </h3>
 
-                  {/* Animated Link Icon */}
-                  <motion.div variants={iconVariants}>
-                    <CircleArrowOutUpRight className="text-text-muted h-5 w-5" />
-                  </motion.div>
-                </div>
-
-                {/* Card Description with reveal animation */}
-                <motion.p
-                  className="text-text-muted line-clamp-6"
-                  initial={{ opacity: 0.8 }}
-                  whileHover={{
-                    opacity: 1,
-                    transition: { duration: 0.2 },
-                  }}
+                <motion.a
+                  href={project.project_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Visit live site"
+                  onClick={(e) => e.stopPropagation()}
+                  variants={iconVariants}
+                  className="text-text-muted hover:text-accent shrink-0"
                 >
-                  {project.project_description}
-                </motion.p>
+                  <CircleArrowOutUpRight className="h-5 w-5" />
+                </motion.a>
+              </div>
 
-                {/* Project stack area */}
-                <ProjectStack projectStack={project.project_stack} />
-              </motion.a>
-            </div>
+              {/* Tech stack pills — quick-scan metadata, high in the hierarchy */}
+              <ProjectStack projectStack={project.project_stack} limit={4} />
+
+              {/* Card Description, trimmed for a consistent, skimmable card height */}
+              <p className="text-text-muted mt-3 line-clamp-3 flex-1 leading-relaxed">
+                {project.project_description}
+              </p>
+
+              {/* Footer: primary in-site action */}
+              <div className="border-border-subtle text-accent mt-4 flex items-center gap-1.5 border-t pt-4 text-sm font-semibold">
+                View case study
+                <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
+              </div>
+            </motion.div>
           ))}
         </div>
 
