@@ -46,7 +46,7 @@ const ProjectsWrapper = ({ projects }) => {
     if (isInView) {
       const timer = setTimeout(() => {
         addAlert({
-          message: "Thoughtful, well-crafted project solutions",
+          message: "Thoughtful, well-crafted project work",
           type: "success",
           iconComponent: BadgeCheck,
         });

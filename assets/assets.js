@@ -24,6 +24,8 @@ import app_script_image from "../public/project_images/app_script_image.png";
 import garbage_collection_image from "../public/project_images/garbage_collection_image.png";
 import google_sheet_image from "../public/project_images/google_sheet_image.png";
 import staffproductpurchase_image from "../public/project_images/staffproductpurchase_image.png";
+import helpdesk_image from "../public/project_images/helpdesk_image.png";
+import apps_hub_image from "../public/project_images/apps_hub_image.png";
 
 export const assets = {
   profile_photo,
@@ -34,6 +36,8 @@ export const project_images = [
   { id: 1, image: garbage_collection_image },
   { id: 3, image: staffproductpurchase_image },
   { id: 5, image: google_sheet_image },
+  { id: 7, image: helpdesk_image },
+  { id: 8, image: apps_hub_image },
 ];
 
 export const tools = {

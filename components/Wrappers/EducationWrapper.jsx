@@ -36,7 +36,7 @@ const EducationWrapper = ({ educationData }) => {
     if (isInView) {
       const timer = setTimeout(() => {
         addAlert({
-          message: "Educated enough to pretend I know what I'm doing",
+          message: "Always learning, always figuring things out",
           type: "success",
           iconComponent: School,
         });

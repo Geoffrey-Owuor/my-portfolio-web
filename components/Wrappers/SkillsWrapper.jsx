@@ -21,7 +21,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
     if (isInView) {
       const timer = setTimeout(() => {
         addAlert({
-          message: "Some of the skills that I have picked along the way",
+          message: "Applying technical skills to real-world problems",
           type: "success",
           iconComponent: Sparkle,
         });
