@@ -201,91 +201,93 @@ const NavBar = () => {
           the two read as two panels of a single shell. ── */}
       <nav
         aria-label="Main"
-        className="fixed top-2 right-2 left-2 z-50 hidden h-14 lg:block"
+        className="fixed top-2 right-2 left-2 z-50 hidden h-12 lg:block"
       >
-        <div className="bg-surface border-border-subtle relative flex h-full items-center gap-3 overflow-hidden rounded-xl border px-2.5">
-          {/* Wordmark */}
-          {isInHome ? (
-            <a
-              href="/#home"
-              className="flex shrink-0 items-center gap-2.5 rounded-lg pr-1"
-            >
-              <Wordmark />
-            </a>
-          ) : (
-            <button
-              onClick={() => handleNavbarRouting("/#home")}
-              className="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg pr-1"
-            >
-              <Wordmark />
-            </button>
-          )}
-
-          <span
-            className="bg-border-subtle h-6 w-px shrink-0"
-            aria-hidden="true"
-          />
-
-          {/* Tabs — the sliding pill tracks the section under the canvas midline */}
-          <ul className="flex min-w-0 flex-1 items-center gap-0.5">
-            {navLinks.map((link) => (
-              <Tab
-                key={link.id}
-                isActive={activeKey === link.id}
-                onClick={() => handleTabClick(link)}
+        <div className="bg-surface relative h-full overflow-hidden px-2.5">
+          <div className="mx-auto flex h-full w-full max-w-7xl items-center gap-3">
+            {/* Wordmark */}
+            {isInHome ? (
+              <a
+                href="/#home"
+                className="flex shrink-0 items-center gap-2.5 rounded-lg pr-1"
               >
-                {link.label}
-              </Tab>
-            ))}
+                <Wordmark />
+              </a>
+            ) : (
+              <button
+                onClick={() => handleNavbarRouting("/#home")}
+                className="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg pr-1"
+              >
+                <Wordmark />
+              </button>
+            )}
 
             <span
-              className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
+              className="bg-border-subtle h-6 w-px shrink-0"
               aria-hidden="true"
             />
 
-            <Tab
-              isActive={activeKey === "blogs"}
-              onClick={() =>
-                pathname === "/blogs"
-                  ? undefined
-                  : handleNavbarRouting("/blogs")
-              }
-            >
-              Blogs
-            </Tab>
-          </ul>
+            {/* Tabs — the sliding pill tracks the section under the canvas midline */}
+            <ul className="flex min-w-0 flex-1 items-center gap-0.5">
+              {navLinks.map((link) => (
+                <Tab
+                  key={link.id}
+                  isActive={activeKey === link.id}
+                  onClick={() => handleTabClick(link)}
+                >
+                  {link.label}
+                </Tab>
+              ))}
 
-          {/* Right cluster */}
-          <div className="flex shrink-0 items-center gap-2">
-            <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
-              <ThemeToggleCompact />
-            </div>
-
-            <a
-              href={GITHUB_URL}
-              aria-label="GitHub Portfolio"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-text-primary text-surface flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-opacity hover:opacity-90"
-            >
-              <Image
-                src={tools.githubLogo}
-                alt=""
-                width={24}
-                height={24}
-                className="h-4 w-4 invert dark:invert-0"
+              <span
+                className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
+                aria-hidden="true"
               />
-              Portfolio
-            </a>
+
+              <Tab
+                isActive={activeKey === "blogs"}
+                onClick={() =>
+                  pathname === "/blogs"
+                    ? undefined
+                    : handleNavbarRouting("/blogs")
+                }
+              >
+                Blogs
+              </Tab>
+            </ul>
+
+            {/* Right cluster */}
+            <div className="flex shrink-0 items-center gap-2">
+              <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+                <ThemeToggleCompact />
+              </div>
+
+              <a
+                href={GITHUB_URL}
+                aria-label="GitHub Portfolio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-text-primary text-surface flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-opacity hover:opacity-90"
+              >
+                <Image
+                  src={tools.githubLogo}
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="h-4 w-4 invert dark:invert-0"
+                />
+                Portfolio
+              </a>
+            </div>
           </div>
 
           {/* Scroll-progress trace along the panel's bottom edge — the bar's
               one live tie-in to the canvas it caps. */}
-          <span
+          {/* <span
             aria-hidden="true"
             className="bg-accent absolute bottom-0 left-0 h-0.5 w-full origin-left"
             style={{ transform: `scaleX(${progress})` }}
-          />
+          /> */}
         </div>
       </nav>
 
