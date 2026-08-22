@@ -108,7 +108,7 @@ const BlogCards = ({ blogs }) => {
   return (
     <>
       {isLoadingLine && <LoadingLine />}
-      <div className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 2xl:max-w-7xl">
+      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="relative mb-10 flex items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-3">

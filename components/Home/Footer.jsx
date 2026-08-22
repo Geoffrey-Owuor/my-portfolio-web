@@ -14,7 +14,7 @@ const Footer = () => {
     <footer
       id="footer"
       // Use a subtle top border to separate it from the content above
-      className="border-border-subtle mx-auto w-full max-w-6xl border-t px-4 py-6 lg:px-8 2xl:max-w-7xl"
+      className="border-border-subtle mx-auto w-full max-w-6xl border-t px-4 py-6 lg:px-8"
     >
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
@@ -74,8 +74,7 @@ const Footer = () => {
           style={{
             WebkitMaskImage:
               "linear-gradient(to bottom, black 0%, transparent 90%)",
-            maskImage:
-              "linear-gradient(to bottom, black 0%, transparent 90%)",
+            maskImage: "linear-gradient(to bottom, black 0%, transparent 90%)",
           }}
         >
           OWUOR

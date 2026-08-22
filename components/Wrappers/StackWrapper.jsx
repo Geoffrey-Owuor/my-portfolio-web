@@ -51,7 +51,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.6 }}
-        className="bg-surface border-border-subtle mx-auto w-full max-w-6xl overflow-hidden rounded-xl border py-8"
+        className="bg-surface border-border-subtle mx-auto w-full max-w-7xl overflow-hidden rounded-xl border py-8"
       >
         {toolIcons.length > 0 && (
           <div className="motion-safe:mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:px-6">

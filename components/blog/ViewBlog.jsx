@@ -170,7 +170,7 @@ const ViewBlog = ({ blogPost, userId }) => {
         setAlertInfo={setAlertInfo}
       />
 
-      <div className="mx-auto flex max-w-6xl flex-col px-5 py-8 sm:px-6 lg:flex-row lg:gap-6 lg:px-8 2xl:max-w-7xl">
+      <div className="mx-auto flex max-w-7xl flex-col px-5 py-8 sm:px-6 lg:flex-row lg:gap-6 lg:px-8">
         <article className="w-full max-w-none">
           {/* Header Section */}
           <header className="mb-6">
