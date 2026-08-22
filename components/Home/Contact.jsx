@@ -133,7 +133,7 @@ const Contact = () => {
 
   return (
     <>
-      <section id="contact" className="w-full px-4 py-24 md:px-8">
+      <section id="contact" className="w-full px-4 py-16 md:px-8">
         <div className="mx-1 max-w-2xl sm:mx-auto">
           {/* Section Title */}
           <SectionTitle label="Don't be a stranger" title="Get in Touch" />
@@ -194,7 +194,7 @@ const Contact = () => {
               whileTap="tap"
               type="submit"
               disabled={sending}
-              className="bg-text-primary text-surface flex w-full cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center"
+              className="bg-text-primary text-surface flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center"
             >
               {sending ? (
                 <>

@@ -9,7 +9,7 @@ const ProjectsSkeleton = () => {
   return (
     <section
       id="projects-skeleton"
-      className="mx-auto min-h-screen w-full max-w-6xl px-4 py-24 md:px-8 2xl:max-w-7xl"
+      className="mx-auto min-h-app w-full max-w-6xl px-4 py-24 md:px-8 2xl:max-w-7xl"
     >
       <div className="mx-auto">
         {/* Section Title Skeleton */}

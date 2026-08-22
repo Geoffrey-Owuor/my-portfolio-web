@@ -114,7 +114,7 @@ const BlogForm = ({
             <button
               type="submit"
               disabled={!isFormValid || isSubmitting}
-              className="bg-text-primary text-surface flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+              className="bg-text-primary text-surface flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               <Send className="h-4 w-4" />
               {IsUpdating ? (
@@ -130,7 +130,7 @@ const BlogForm = ({
             <Link
               href="/blogs"
               onClick={() => setIsLoadingLine(true)}
-              className="bg-surface-raised text-text-primary hover:bg-border-subtle/50 flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-colors duration-150"
+              className="bg-surface-raised text-text-primary hover:bg-border-subtle/50 flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-colors duration-150"
             >
               View <span className="hidden sm:block">Blogs</span>
               <ArrowUpRight className="h-4 w-4" />

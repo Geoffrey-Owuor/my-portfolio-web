@@ -47,7 +47,10 @@ const ExperienceWrapper = ({ experiences }) => {
   }, [isInView]);
 
   return (
-    <div className="mx-1 max-w-5xl flex-1 md:mx-auto" ref={experienceRef}>
+    <div
+      className="mx-1 max-w-5xl min-w-0 flex-1 md:mx-auto"
+      ref={experienceRef}
+    >
       {/* Section Title */}
       <SectionTitle label="Where i've been" title="My Experience" />
 

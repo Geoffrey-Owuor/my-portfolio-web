@@ -113,6 +113,33 @@ html[data-theme="dark"] {
   --danger: var(--color-red-400); /* 7.28:1 on --surface */
 }
 
+/* ── App shell geometry ────────────────────────────────────────────────
+   Single source of truth for the fixed canvas insets, so the shell and the
+   `min-h-app` sections inside it can never drift apart.
+     --layout-top   : space reserved for the header above the canvas
+     --layout-inset : gutter on the other three sides
+   Mobile: the header is flush and full-bleed, and the canvas runs to the
+   screen edges. From 1024px (the width the desktop command bar replaces the
+   mobile header) both panels inset by 0.5rem with a 0.5rem gutter between. */
+:root {
+  --layout-top: 4rem; /* mobile header height (h-16) */
+  --layout-inset: 0px;
+}
+
+@media (width >= 64rem) {
+  :root {
+    --layout-top: 4.5rem; /* top-2 + bar h-14 + 0.5rem gap */
+    --layout-inset: 0.5rem;
+  }
+}
+
+/* One canvas-height tall — the replacement for `min-h-screen` now that the
+   viewport is no longer what scrolls. Declared with @utility so variants
+   (md:, motion-safe:, …) can still compose with it. */
+@utility min-h-app {
+  min-height: calc(100dvh - var(--layout-top) - var(--layout-inset));
+}
+
 @layer utilities {
   @keyframes slideDown {
     from {
@@ -201,6 +228,21 @@ html[data-theme="dark"] {
 html {
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   scroll-behavior: smooth;
+}
+
+/* The scrolling context lives inside <AppCanvas>, so the document itself
+   should never scroll or rubber-band. */
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* The canvas owns the app's only scrollbar. Slimmed down so it doesn't
+   collide with the panel's rounded corners, and kept from chaining its
+   overscroll out to the document. */
+#app-canvas {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  overscroll-behavior: contain;
 }
 
 /* VIEW TRANSITIONS API CONFIGURATION */

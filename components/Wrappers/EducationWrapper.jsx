@@ -47,7 +47,10 @@ const EducationWrapper = ({ educationData }) => {
   }, [isInView]);
 
   return (
-    <div className="mx-1 max-w-5xl flex-1 md:mx-auto" ref={educationRef}>
+    <div
+      className="mx-1 max-w-5xl min-w-0 flex-1 md:mx-auto"
+      ref={educationRef}
+    >
       {/* Section Title */}
       <SectionTitle label="How I got here" title="My Education" />
 

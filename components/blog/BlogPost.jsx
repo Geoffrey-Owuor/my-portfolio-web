@@ -106,7 +106,7 @@ const BlogPost = ({ user }) => {
       {/* Loading Circle */}
       {isSubmitting && <LoadingCircle />}
 
-      <div className="mx-auto w-full max-w-5xl px-2 py-24 sm:px-6">
+      <div className="mx-auto w-full max-w-5xl px-2 py-16 sm:px-6">
         <div className="border-border-subtle overflow-hidden rounded-2xl border">
           {/* Header - Neutral & Clean */}
           <div className="border-border-subtle flex items-center justify-between border-b px-6 py-6">

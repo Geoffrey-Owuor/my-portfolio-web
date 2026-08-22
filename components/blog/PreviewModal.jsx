@@ -5,7 +5,7 @@ const PreviewModal = ({ isOpen, content }) => {
   return (
     <>
       {isOpen && (
-        <div className="max-h-[403px] min-h-[403px] w-full overflow-y-auto p-4">
+        <div className="max-h-[403px] min-h-[403px] w-full overflow-y-auto p-4 [scrollbar-width:thin]">
           {/* 'prose' class comes from @tailwindcss/typography */}
           <article className="prose prose-sm dark:prose-invert prose-img:rounded-xl prose-headings:font-bold prose-a:text-accent max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>

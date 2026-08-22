@@ -41,7 +41,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
   }, [isInView]);
 
   return (
-    <div className="mx-1 flex-1 md:mx-auto" ref={stackRef}>
+    <div className="mx-1 min-w-0 flex-1 md:mx-auto" ref={stackRef}>
       {/* Section Title  */}
       <SectionTitle label="Tools & tech I work with" title="My Tech Stack" />
 
@@ -115,11 +115,16 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
         </span>
 
         {toolNames.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
+          // `w-full min-w-0` is load-bearing: as a flex item this div would
+          // otherwise size to max-content (flex items default to
+          // `min-width: auto`, and `items-center` stops it from stretching),
+          // so the pills laid out one long row that overflowed and clipped on
+          // both sides instead of wrapping.
+          <div className="flex w-full min-w-0 flex-wrap justify-center gap-2 sm:justify-start">
             {toolNames.map((tool) => (
               <span
                 key={tool.id}
-                className="border-border-subtle text-text-muted rounded-full border px-3 py-1 text-sm"
+                className="border-border-subtle text-text-muted rounded-lg border px-3 py-1 text-sm"
               >
                 {tool.tool_name}
               </span>

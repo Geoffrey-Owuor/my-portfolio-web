@@ -1,33 +1,33 @@
 import { useEffect } from "react";
 
+// Locks the app's scrolling surface while a drawer/modal is open. The canvas
+// (not the document) is what scrolls, so that's what has to be frozen —
+// see components/Layout/AppCanvas.jsx.
 export const useHideScrollbar = (bool) => {
-  // Effect to prevent html scroll when menu is open
   useEffect(() => {
     if (!bool) return;
 
-    // Calculate the width of the scrollbar
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth + 0.3;
+    const canvas = document.getElementById("app-canvas");
+    if (!canvas) return;
 
-    // Prevent scrolling
-    document.documentElement.style.overflow = "hidden";
+    const previousOverflow = canvas.style.overflowY;
+    const previousPadding = canvas.style.paddingRight;
 
-    // Add padding to compensate for the missing scrollbar to prevent layout shift
-    document.documentElement.style.paddingRight = `${scrollbarWidth}px`;
+    // Measure the shift the lock actually caused rather than assuming one.
+    // Where `scrollbar-gutter: stable` is honoured the gutter survives the
+    // lock and this is 0; where it isn't, the content gains the scrollbar's
+    // width and needs compensating.
+    const widthBefore = canvas.clientWidth;
+    canvas.style.overflowY = "hidden";
+    const reclaimed = canvas.clientWidth - widthBefore;
 
-    const elements = document.querySelectorAll(".adjust-padding");
-
-    elements.forEach((el) => {
-      el.style.paddingRight = `${scrollbarWidth}px`;
-    });
+    if (reclaimed > 0) {
+      canvas.style.paddingRight = `${reclaimed}px`;
+    }
 
     return () => {
-      // Cleanup
-      document.documentElement.style.overflow = "";
-      document.documentElement.style.paddingRight = "";
-      elements.forEach((el) => {
-        el.style.paddingRight = "";
-      });
+      canvas.style.overflowY = previousOverflow;
+      canvas.style.paddingRight = previousPadding;
     };
   }, [bool]);
 };

@@ -123,7 +123,7 @@ const EditBlog = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={() => setShowEditModal(false)}
-            className="custom-blur adjust-padding fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/60"
+            className="adjust-padding fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/60"
           >
             <motion.div
               ref={modalRef}

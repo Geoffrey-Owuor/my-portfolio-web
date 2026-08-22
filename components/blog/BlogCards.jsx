@@ -75,7 +75,7 @@ const BlogCards = ({ blogs }) => {
 
   if (!blogs || blogs.length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-16 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-text-primary mb-4 text-3xl font-bold">
             No Blogs Available
@@ -87,14 +87,14 @@ const BlogCards = ({ blogs }) => {
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <button
               onClick={() => window.location.reload()}
-              className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-full px-6 py-3 font-medium transition-opacity hover:opacity-90"
+              className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-lg px-6 py-3 font-medium transition-opacity hover:opacity-90"
             >
               <RefreshCcw className="h-5 w-5" />
               Try Again
             </button>
             <button
               onClick={() => router.back()}
-              className="border-border-subtle bg-surface text-text-primary hover:bg-surface-raised inline-flex items-center gap-2 rounded-full border px-6 py-3 font-medium transition-colors"
+              className="border-border-subtle bg-surface text-text-primary hover:bg-surface-raised inline-flex items-center gap-2 rounded-lg border px-6 py-3 font-medium transition-colors"
             >
               <ArrowLeft className="h-5 w-5" />
               Go Back
@@ -108,7 +108,7 @@ const BlogCards = ({ blogs }) => {
   return (
     <>
       {isLoadingLine && <LoadingLine />}
-      <div className="mx-auto max-w-6xl px-5 py-24 sm:px-6 lg:px-8 2xl:max-w-7xl">
+      <div className="mx-auto max-w-6xl px-5 py-16 sm:px-6 lg:px-8 2xl:max-w-7xl">
         {/* Header */}
         <div className="relative mb-10 flex items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-3">
@@ -132,7 +132,7 @@ const BlogCards = ({ blogs }) => {
               placeholder="Search for a blog..."
               value={searchQuery}
               onChange={handleSearchQuery}
-              className="border-border-subtle bg-surface-raised text-text-primary placeholder-text-muted focus:border-accent w-80 rounded-full border py-3 pr-10 pl-11 text-sm transition-colors focus:outline-none"
+              className="border-border-subtle bg-surface-raised text-text-primary placeholder-text-muted focus:border-accent w-80 rounded-xl border py-3 pr-10 pl-11 text-sm transition-colors focus:outline-none"
             />
             <button
               className="text-text-muted hover:bg-surface absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1"
@@ -164,11 +164,11 @@ const BlogCards = ({ blogs }) => {
             </div>
 
             {/* Toggle pill */}
-            <div className="border-border-subtle bg-surface-raised flex items-center gap-0.5 rounded-full border p-1">
+            <div className="border-border-subtle bg-surface-raised flex items-center gap-0.5 rounded-xl border p-1">
               <button
                 onClick={() => setViewMode("card")}
                 aria-label="Card view"
-                className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150 ${
+                className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-150 ${
                   viewMode === "card"
                     ? "bg-surface text-text-primary shadow-sm"
                     : "text-text-muted hover:text-text-primary"
@@ -180,7 +180,7 @@ const BlogCards = ({ blogs }) => {
               <button
                 onClick={() => setViewMode("table")}
                 aria-label="Table view"
-                className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-150 ${
+                className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-150 ${
                   viewMode === "table"
                     ? "bg-surface text-text-primary shadow-sm"
                     : "text-text-muted hover:text-text-primary"

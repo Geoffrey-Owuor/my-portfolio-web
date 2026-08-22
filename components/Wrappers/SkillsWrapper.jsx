@@ -56,7 +56,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
   };
 
   return (
-    <div ref={skillsRef} className="mx-1 flex-1 md:mx-auto">
+    <div ref={skillsRef} className="mx-1 min-w-0 flex-1 md:mx-auto">
       {/* Section Title */}
       <SectionTitle label="What I bring to the table" title="My Skills" />
 
@@ -141,7 +141,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             {softSkills.map((skill) => (
               <span
                 key={skill.id}
-                className="border-border-subtle text-text-muted rounded-full border px-3 py-1 text-sm"
+                className="border-border-subtle text-text-muted rounded-lg border px-3 py-1 text-sm"
               >
                 {skill.skill_description}
               </span>

@@ -64,8 +64,10 @@ const ViewBlog = ({ blogPost, userId }) => {
 
   // UseEffect to run some functionalities on mount
   useEffect(() => {
-    // Disable smooth scrolling on mount
-    document.documentElement.style.scrollBehavior = "auto";
+    // Disable smooth scrolling on mount — on the canvas, which is what
+    // actually scrolls now (see components/Layout/AppCanvas.jsx).
+    const canvas = document.getElementById("app-canvas");
+    if (canvas) canvas.style.scrollBehavior = "auto";
 
     // Determine the URL only after mounting on the client
     if (typeof window !== "undefined") {
@@ -88,7 +90,7 @@ const ViewBlog = ({ blogPost, userId }) => {
     }
 
     return () => {
-      document.documentElement.style.scrollBehavior = ""; // restore on unmount
+      if (canvas) canvas.style.scrollBehavior = ""; // restore on unmount
     };
   }, []);
 
@@ -120,7 +122,7 @@ const ViewBlog = ({ blogPost, userId }) => {
   // Check if blogPost is null, undefined, or empty
   if (!blogPost || Object.keys(blogPost).length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-24 sm:px-6 lg:px-16">
+      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-16 sm:px-6 lg:px-16">
         <div className="text-center">
           <h2 className="text-text-primary mb-4 text-3xl font-bold">
             Blog Not Found
@@ -130,7 +132,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           </p>
           <button
             onClick={() => handleBlogsRoute("/blogs")}
-            className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-full px-6 py-3 font-medium transition-opacity hover:opacity-90"
+            className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-lg px-6 py-3 font-medium transition-opacity hover:opacity-90"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Blogs
@@ -168,7 +170,7 @@ const ViewBlog = ({ blogPost, userId }) => {
         setAlertInfo={setAlertInfo}
       />
 
-      <div className="mx-auto flex max-w-6xl flex-col px-5 py-24 sm:px-6 lg:flex-row lg:gap-6 lg:px-8 2xl:max-w-7xl">
+      <div className="mx-auto flex max-w-6xl flex-col px-5 py-8 sm:px-6 lg:flex-row lg:gap-6 lg:px-8 2xl:max-w-7xl">
         <article className="w-full max-w-none">
           {/* Header Section */}
           <header className="mb-6">
@@ -242,7 +244,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           </header>
 
           {/* Divider */}
-          <div className="mb-8 h-px bg-border-subtle sm:mb-12" />
+          <div className="bg-border-subtle mb-8 h-px sm:mb-12" />
 
           {/* Content Section */}
           <div className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-semi-bold prose-a:text-accent max-w-none wrap-break-word">
@@ -255,14 +257,14 @@ const ViewBlog = ({ blogPost, userId }) => {
           </div>
 
           {/* Bottom Divider */}
-          <div className="mt-12 h-px bg-border-subtle sm:mt-16" />
+          <div className="bg-border-subtle mt-12 h-px sm:mt-16" />
 
           {/* Author Card and Back & Forward Logs */}
           <div className="mt-8 flex items-center justify-between sm:mt-12">
             <button
               onClick={() => handleBlogNavigation(blogPost.previous_blog_id)}
               title="go to previous blog"
-              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-50 sm:pr-4"
+              className="hover:bg-surface-raised inline-flex items-center gap-1 rounded-lg py-2 pr-2 pl-2 disabled:cursor-not-allowed disabled:opacity-50 sm:pr-4"
             >
               {blogPost.is_first_blog ? (
                 <ChevronFirst strokeWidth={1} className="h-7 w-7" />
@@ -294,7 +296,7 @@ const ViewBlog = ({ blogPost, userId }) => {
             <button
               onClick={() => handleBlogNavigation(blogPost.next_blog_id)}
               title="go to next blog"
-              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-50 sm:pl-4"
+              className="hover:bg-surface-raised inline-flex items-center gap-1 rounded-lg py-2 pr-2 pl-2 disabled:cursor-not-allowed disabled:opacity-50 sm:pl-4"
             >
               <span className="hidden sm:flex">
                 {blogPost.is_last_blog ? "first blog" : "next"}

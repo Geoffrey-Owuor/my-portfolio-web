@@ -161,7 +161,7 @@ const CustomMdEditor = ({ value, onChange }) => {
         <button
           type="button"
           onClick={() => setShowPreview(false)}
-          className={`flex items-center gap-2 rounded-full ${!showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+          className={`flex items-center gap-2 rounded-lg ${!showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
         >
           <PenLine size={14} />
           Write
@@ -172,7 +172,7 @@ const CustomMdEditor = ({ value, onChange }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleClick}
-            className={`mr-2 flex items-center gap-2 rounded-full ${showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+            className={`mr-2 flex items-center gap-2 rounded-lg ${showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
           >
             <Glasses size={14} />
             Preview
@@ -194,7 +194,7 @@ const CustomMdEditor = ({ value, onChange }) => {
           value={value}
           onChange={onChange}
           rows={16}
-          className="text-text-primary placeholder:text-text-muted w-full resize-none p-4 text-sm leading-relaxed focus:outline-none"
+          className="text-text-primary placeholder:text-text-muted w-full resize-none p-4 text-sm leading-relaxed [scrollbar-width:thin] focus:outline-none"
           placeholder="Start writing your masterpiece... (Markdown supported)"
         />
       )}

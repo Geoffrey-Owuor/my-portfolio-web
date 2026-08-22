@@ -9,8 +9,10 @@ export const SectionAlert = ({
   onClose,
   IconComponent,
 }) => {
-  // Each alert is offset by 80px per stack position (alert height ~72px + 8px gap)
-  const bottomOffset = 16 + stackIndex * 80;
+  // Each alert is offset by 80px per stack position (alert height ~72px + 8px
+  // gap). Applied as a transform rather than `bottom` so the stack shifts on
+  // the compositor and the element's own corner stays pinned to the gutter.
+  const stackOffset = stackIndex * -80;
 
   const handleClose = () => {
     setTimeout(() => onClose(), 300);
@@ -30,15 +32,16 @@ export const SectionAlert = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0, bottom: bottomOffset }}
+      initial={{ opacity: 0, x: 40, y: stackOffset }}
+      animate={{ opacity: 1, x: 0, y: stackOffset }}
       exit={{ opacity: 0, x: 40 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      style={{ bottom: bottomOffset }}
-      className="adjust-padding fixed right-4 z-50 hidden md:flex"
+      // Offset by the shell gutter so the stack lines up with the canvas
+      // corner rather than the raw viewport corner.
+      className="fixed right-[calc(var(--layout-inset)+1rem)] bottom-[calc(var(--layout-inset)+1rem)] z-50 hidden md:flex"
     >
       <div
-        className={`bg-text-primary text-surface flex w-auto max-w-80 items-center justify-between rounded-full px-6 py-4`}
+        className={`bg-text-primary text-surface flex w-auto max-w-80 items-center justify-between rounded-xl px-6 py-4`}
       >
         <div className="flex items-center gap-3">
           <IconComponent className={`h-6 w-6 shrink-0 ${iconColorClass}`} />
