@@ -51,9 +51,9 @@ When adding a new protected route or mutation, follow the existing pattern: veri
 ### Component organization (`components/`)
 
 - `Home/` — one component per homepage section (Hero, Skills, Stack, Projects, Experience, Education, Contact, NavBar, Footer); these are Server Components that fetch their own data.
-- `Wrappers/` — presentational/client wrapper components that receive fetched data as props from their `Home/` counterpart (e.g. `SkillsWrapper`, `ProjectsWrapper`) — this is the seam between server data-fetching and client interactivity/animation.
+- `Wrappers/` — presentational/client wrapper components that receive fetched data as props from their `Home/` counterpart (e.g. `SkillsWrapper`, `ProjectsWrapper`) — this is the seam between server data-fetching and client interactivity/animation. `SectionTitle` is shared by every section and also owns the section note: pass it `alertMessage` + `alertIcon` and it self-triggers a timed, section-scoped pill beneath the title when that title scrolls into view (both props optional — omit them for a plain heading).
 - `blog/` — blog authoring/viewing pipeline: `BlogForm` → `CustomMdEditor` (markdown editing) → `PreviewModal` → `ViewBlog`/`BlogPost` (rendering via `react-markdown` + `remark-gfm`), plus `BlogCardView`/`BlogTableView` for listing layouts and `EditBlog` for updates.
-- `Modules/` — cross-cutting UI primitives: alert system (`Alert`, `AlertStack`, `SectionAlert`, `BlogAlert` backed by `store/useAlertStore.js`, a Zustand store), `ConfirmationDialog`, `Pagination`, `NetworkStatus` (online/offline banner), `LogoutOverlay`/`LogoutButton`.
+- `Modules/` — cross-cutting UI primitives: alerts (`Alert`, `BlogAlert`), `ConfirmationDialog`, `Pagination`, `NetworkStatus` (online/offline banner), `LogoutOverlay`/`LogoutButton`.
 - `Skeletons/` — loading-state placeholders paired 1:1 with sections/components, used via `<Suspense fallback={...}>` in `app/page.js` and other async pages.
 - `Theme/` — `next-themes`-based dark mode (`Providers`, `ThemeToggleCompact`, `TooltipUI`).
 

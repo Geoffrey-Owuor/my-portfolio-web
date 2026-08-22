@@ -7,7 +7,6 @@ import Footer from "@/components/Home/Footer";
 import AppCanvas, {
   ScrollContainerProvider,
 } from "@/components/Layout/AppCanvas";
-import { AlertStack } from "@/components/Modules/AlertStack";
 
 const dmMono = DM_Mono({
   variable: "--font-dm-mono",
@@ -85,9 +84,6 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <NetworkStatus />
-          {/* Alerts are portalled to <body>, so they sit outside the canvas
-              and stay anchored to the viewport regardless of ancestors. */}
-          <AlertStack />
 
           {/* Header and mobile drawer stay outside the canvas; everything
               that scrolls lives inside it. The provider wraps both so the

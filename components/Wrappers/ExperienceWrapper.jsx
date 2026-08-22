@@ -1,8 +1,7 @@
 "use client";
 import { Briefcase, BriefcaseBusiness, Loader2 } from "lucide-react";
-import { motion, useInView } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
-import { useAlertStore } from "@/store/useAlertStore";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import remarkGfm from "remark-gfm";
 import ReactMarkDown from "react-markdown";
 import ShowMoreButtons from "./ShowMoreButtons";
@@ -22,37 +21,15 @@ const ExperienceWrapper = ({ experiences }) => {
     setVisibleCount((prev) => Math.min(prev + 1, experiences.length));
   const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 1, 1));
 
-  // Creating a ref for the section
-  const experienceRef = useRef(null);
-
-  // Check if section is in view
-  const isInView = useInView(experienceRef, { once: true, amount: 0.2 });
-
-  // Our add alert function
-  const addAlert = useAlertStore((state) => state.addAlert);
-
-  // Trigger Alert 2 seconds after the section comes into view
-  useEffect(() => {
-    if (isInView) {
-      const timer = setTimeout(() => {
-        addAlert({
-          message: "Evolving with challenges, always moving forward",
-          type: "success",
-          iconComponent: BriefcaseBusiness,
-        });
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isInView]);
-
   return (
-    <div
-      className="mx-1 max-w-5xl min-w-0 flex-1 md:mx-auto"
-      ref={experienceRef}
-    >
+    <div className="mx-1 max-w-5xl min-w-0 flex-1 md:mx-auto">
       {/* Section Title */}
-      <SectionTitle label="Where i've been" title="My Experience" />
+      <SectionTitle
+        label="Where i've been"
+        title="My Experience"
+        alertMessage="Evolving with challenges, always moving forward"
+        alertIcon={BriefcaseBusiness}
+      />
 
       {/* Vertical Timeline */}
       <ol className="border-border-subtle relative border-l">

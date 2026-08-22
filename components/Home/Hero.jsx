@@ -90,11 +90,11 @@ const Hero = () => {
             className="text-text-muted mt-6 text-lg leading-relaxed"
           >
             I'm Jeff, a full-stack engineer in Nairobi shipping complete,
-            production-ready web apps
+            production-ready web apps.
           </motion.p>
 
           <motion.div
-            initial={{ y: -20, opacity: 0 }}
+            initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}

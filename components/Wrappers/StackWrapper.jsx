@@ -1,9 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Layers2, Loader2, MessageCircleCode } from "lucide-react";
-import { useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { useAlertStore } from "@/store/useAlertStore";
+import { motion } from "framer-motion";
 import SectionTitle from "./SectionTitle";
 
 // Icons we want to invert their colors in dark mode
@@ -16,34 +14,15 @@ const iconsToInvert = [
 ];
 
 const StackWrapper = ({ toolNames, toolIcons }) => {
-  // Creating a ref for the section
-  const stackRef = useRef(null);
-
-  // Check if section is in view
-  const isInView = useInView(stackRef, { once: true, amount: 0.2 });
-
-  // Our add alert function
-  const addAlert = useAlertStore((state) => state.addAlert);
-
-  // Trigger Alert 2 seconds after the section comes into view
-  useEffect(() => {
-    if (isInView) {
-      const timer = setTimeout(() => {
-        addAlert({
-          message: "Innovating with cutting-edge tools and frameworks",
-          type: "success",
-          iconComponent: MessageCircleCode,
-        });
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isInView]);
-
   return (
-    <div className="mx-1 min-w-0 flex-1 md:mx-auto" ref={stackRef}>
+    <div className="mx-1 min-w-0 flex-1 md:mx-auto">
       {/* Section Title  */}
-      <SectionTitle label="Tools & tech I work with" title="My Tech Stack" />
+      <SectionTitle
+        label="Tools & tech I work with"
+        title="My Tech Stack"
+        alertMessage="Innovating with cutting-edge tools and frameworks"
+        alertIcon={MessageCircleCode}
+      />
 
       {/* --- Core Technologies: dominant scrolling marquee --- */}
       <motion.div
