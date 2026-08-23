@@ -32,7 +32,7 @@ const Project = ({ projectInfo }) => {
 
   if (!project || Object.keys(project).length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-8 text-center sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-8 text-center">
         <p className="font-dm-mono text-danger mb-3 text-sm">
           $ cat project.json
         </p>
@@ -60,7 +60,7 @@ const Project = ({ projectInfo }) => {
     <>
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
 
-      <section className="w-full px-4 py-8 md:px-8">
+      <section className="w-full px-4 py-8">
         <div className="mx-auto max-w-4xl">
           {/* Breadcrumb + Back */}
           <motion.div

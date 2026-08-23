@@ -133,7 +133,7 @@ const Contact = () => {
 
   return (
     <>
-      <section id="contact" className="w-full px-4 py-16 md:px-8">
+      <section id="contact" className="w-full px-4 py-16">
         <div className="mx-1 max-w-2xl sm:mx-auto">
           {/* Section Title */}
           <SectionTitle label="Don't be a stranger" title="Get in Touch" />

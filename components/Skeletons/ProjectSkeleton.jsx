@@ -1,6 +1,6 @@
 export const ProjectSkeleton = () => {
   return (
-    <section className="w-full px-4 py-8 md:px-8">
+    <section className="w-full px-4 py-8">
       <div className="mx-auto max-w-4xl">
         {/* Breadcrumb + Back Skeleton */}
         <div className="bg-border-subtle mb-3 h-3 w-28 animate-pulse rounded" />

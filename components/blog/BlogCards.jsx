@@ -75,7 +75,7 @@ const BlogCards = ({ blogs }) => {
 
   if (!blogs || blogs.length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-16">
         <div className="text-center">
           <h2 className="text-text-primary mb-4 text-3xl font-bold">
             No Blogs Available
@@ -108,7 +108,7 @@ const BlogCards = ({ blogs }) => {
   return (
     <>
       {isLoadingLine && <LoadingLine />}
-      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
         {/* Header */}
         <div className="relative mb-10 flex items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-3">

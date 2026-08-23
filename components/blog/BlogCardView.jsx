@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Calendar, Clock, ArrowRight, UserRound } from "lucide-react";
 import { formatDate } from "@/utils/Helpers";
+import { useRouter } from "next/navigation";
 
 const BlogCardView = ({
   currentBlogs,
@@ -12,13 +13,18 @@ const BlogCardView = ({
   getPreviewText,
   setIsLoadingLine,
 }) => {
+  const router = useRouter();
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {currentBlogs.length > 0 ? (
         currentBlogs.map((blog) => (
           <article
             key={blog.id}
-            className="border-border-subtle hover:border-accent flex flex-col rounded-xl border p-6 transition-colors duration-150"
+            onClick={() => {
+              setIsLoadingLine(true);
+              router.push(`/blog/${blog.id}`);
+            }}
+            className="border-border-subtle hover:border-accent flex cursor-pointer flex-col rounded-xl border p-6 transition-colors duration-150"
           >
             {/* Title */}
             <h2 className="text-text-primary mb-3 line-clamp-2 text-xl font-semibold">
@@ -53,7 +59,10 @@ const BlogCardView = ({
             {/* Read more button */}
             <Link
               href={`/blog/${blog.id}`}
-              onClick={() => setIsLoadingLine(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLoadingLine(true);
+              }}
               className="text-accent inline-flex w-fit items-center gap-1.5 text-sm font-medium underline-offset-4 hover:underline"
             >
               Read more

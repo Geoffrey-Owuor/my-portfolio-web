@@ -170,7 +170,7 @@ const ViewBlog = ({ blogPost, userId }) => {
         setAlertInfo={setAlertInfo}
       />
 
-      <div className="mx-auto flex max-w-7xl flex-col px-5 py-8 sm:px-6 lg:flex-row lg:gap-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col px-4 py-8 lg:flex-row lg:gap-6">
         <article className="w-full max-w-none">
           {/* Header Section */}
           <header className="mb-6">
@@ -264,7 +264,7 @@ const ViewBlog = ({ blogPost, userId }) => {
             <button
               onClick={() => handleBlogNavigation(blogPost.previous_blog_id)}
               title="go to previous blog"
-              className="hover:bg-surface-raised inline-flex items-center gap-1 rounded-lg py-2 pr-2 pl-2 disabled:cursor-not-allowed disabled:opacity-50 sm:pr-4"
+              className="hover:bg-surface-raised inline-flex items-center gap-1 rounded-xl py-2 pr-2 pl-2 disabled:cursor-not-allowed disabled:opacity-50 sm:pr-4"
             >
               {blogPost.is_first_blog ? (
                 <ChevronFirst strokeWidth={1} className="h-7 w-7" />
@@ -296,7 +296,7 @@ const ViewBlog = ({ blogPost, userId }) => {
             <button
               onClick={() => handleBlogNavigation(blogPost.next_blog_id)}
               title="go to next blog"
-              className="hover:bg-surface-raised inline-flex items-center gap-1 rounded-lg py-2 pr-2 pl-2 disabled:cursor-not-allowed disabled:opacity-50 sm:pl-4"
+              className="hover:bg-surface-raised inline-flex items-center gap-1 rounded-xl py-2 pr-2 pl-2 disabled:cursor-not-allowed disabled:opacity-50 sm:pl-4"
             >
               <span className="hidden sm:flex">
                 {blogPost.is_last_blog ? "first blog" : "next"}

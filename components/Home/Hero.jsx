@@ -17,10 +17,10 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="min-h-app relative mx-1 flex max-w-7xl items-center justify-center overflow-hidden px-4 py-16 md:mx-auto lg:px-8"
+      className="min-h-app relative mx-1 flex max-w-6xl items-center justify-center overflow-hidden px-4 py-16 md:mx-auto"
     >
       {/* ── Main grid ── */}
-      <div className="relative z-10 grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20">
+      <div className="relative z-10 grid grid-cols-1 gap-16 lg:grid-cols-2">
         {/* --- Image (Left Side) --- */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0, rotate: -10 }}

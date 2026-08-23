@@ -13,7 +13,7 @@ const Stack = async () => {
   return (
     <section
       id="stack"
-      className="min-h-app mx-auto flex w-full max-w-7xl items-center justify-center px-4 py-16 md:px-8"
+      className="min-h-app mx-auto flex w-full max-w-7xl items-center justify-center px-4 py-16"
     >
       <StackWrapper toolNames={toolNames} toolIcons={toolIcons} />
     </section>
