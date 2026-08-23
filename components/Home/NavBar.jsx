@@ -276,7 +276,7 @@ const NavBar = () => {
                   height={24}
                   className="h-4 w-4 invert dark:invert-0"
                 />
-                Portfolio
+                GitHub
               </a>
             </div>
           </div>

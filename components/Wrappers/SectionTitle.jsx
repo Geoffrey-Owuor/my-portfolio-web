@@ -83,9 +83,9 @@ const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
               // Centred by the full-width flex wrapper rather than a
               // `-translate-x-1/2`, which would fight the inline transform
               // framer-motion writes for the rise.
-              className="pointer-events-none absolute top-full right-0 left-0 mt-2 flex justify-center px-4"
+              className="pointer-events-none absolute top-full right-0 left-0 mt-4 flex justify-center px-4"
             >
-              <div className="border-border-subtle bg-surface-raised flex max-w-full items-center gap-2 rounded-full border px-3 py-1.5 sm:px-4">
+              <div className="border-border-subtle bg-surface-raised flex max-w-full items-center gap-2 rounded-lg border px-3 py-1.5 sm:px-4">
                 <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
                 <p className="font-dm-mono text-text-muted text-center text-[11px] leading-snug sm:text-xs">
                   {alertMessage}

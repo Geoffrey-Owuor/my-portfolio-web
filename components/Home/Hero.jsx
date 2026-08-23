@@ -79,7 +79,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
             className="font-dm-mono text-text-primary text-3xl font-medium tracking-tighter md:text-5xl"
           >
-            Full-Stack Developer
+            Full-Stack Builder
           </motion.h1>
 
           <motion.p
