@@ -67,7 +67,7 @@ const BlogCardView = ({
           </article>
         ))
       ) : (
-        <div className="col-span-full flex min-h-[50vh] flex-col items-center justify-center text-center">
+        <div className="border-border-subtle col-span-full flex min-h-[50vh] flex-col items-center justify-center rounded-xl border-[1.5px] border-dashed text-center">
           <div className="text-text-muted max-w-md px-4">
             <p className="text-lg font-semibold">
               No blog titles matching your search, try searching something else.

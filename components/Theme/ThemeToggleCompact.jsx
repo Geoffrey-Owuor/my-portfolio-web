@@ -39,63 +39,67 @@ export default function ThemeToggleCompact() {
   const isDark = resolvedTheme === "dark";
 
   // Detect Firefox browser
-  const isFirefox =
-    typeof navigator !== "undefined" &&
-    navigator.userAgent.toLowerCase().includes("firefox");
+  // const isFirefox =
+  //   typeof navigator !== "undefined" &&
+  //   navigator.userAgent.toLowerCase().includes("firefox");
+
+  const toggleTheme = () => {
+    setTheme(isDark ? "light" : "dark");
+  };
 
   // Function to toggle the theme using view transitioning
-  const toggleTheme = async () => {
-    // Check if view transitions is supported
-    if (
-      !document.startViewTransition ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      isFirefox
-    ) {
-      // Fallback for old browsers or reduced motion preferences
-      setTheme(isDark ? "light" : "dark");
-      return;
-    }
+  // const toggleTheme = async () => {
+  //   // Check if view transitions is supported
+  //   if (
+  //     !document.startViewTransition ||
+  //     window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+  //     isFirefox
+  //   ) {
+  //     // Fallback for old browsers or reduced motion preferences
+  //     setTheme(isDark ? "light" : "dark");
+  //     return;
+  //   }
 
-    // Determine animation origin based on TARGET theme
-    // isDark === true means target is Light -> Bottom Left
-    // isDark === false means target is Dark -> Top Right
-    const x = isDark ? 0 : window.innerWidth;
-    const y = isDark ? window.innerHeight : 0;
+  //   // Determine animation origin based on TARGET theme
+  //   // isDark === true means target is Light -> Bottom Left
+  //   // isDark === false means target is Dark -> Top Right
+  //   const x = isDark ? 0 : window.innerWidth;
+  //   const y = isDark ? window.innerHeight : 0;
 
-    // Since we are starting from the extreme corners, the furthest point
-    // is always the opposite corner, making maxRadius the full screen diagonal.
-    const maxRadius = Math.hypot(window.innerWidth, window.innerHeight);
+  //   // Since we are starting from the extreme corners, the furthest point
+  //   // is always the opposite corner, making maxRadius the full screen diagonal.
+  //   const maxRadius = Math.hypot(window.innerWidth, window.innerHeight);
 
-    // Start the view transition
-    const transition = document.startViewTransition(() => {
-      // This callback changes the actual theme state
-      setTheme(isDark ? "light" : "dark");
-    });
+  //   // Start the view transition
+  //   const transition = document.startViewTransition(() => {
+  //     // This callback changes the actual theme state
+  //     setTheme(isDark ? "light" : "dark");
+  //   });
 
-    // Wait for the ready promise
-    // The browser has captured the "old" view and is ready to show the "new" view
-    await transition.ready;
+  //   // Wait for the ready promise
+  //   // The browser has captured the "old" view and is ready to show the "new" view
+  //   await transition.ready;
 
-    // Animate the circular clip-path
-    document.documentElement.animate(
-      {
-        clipPath: [
-          `circle(0px at ${x}px ${y}px)`, // Start: 0px at origin
-          `circle(${maxRadius}px at ${x}px ${y}px)`, // End: fullscreen circle
-        ],
-      },
-      {
-        duration: 500,
-        easing: "ease-in-out",
-        pseudoElement: "::view-transition-new(root)",
-      },
-    );
-  };
+  //   // Animate the circular clip-path
+  //   document.documentElement.animate(
+  //     {
+  //       clipPath: [
+  //         `circle(0px at ${x}px ${y}px)`, // Start: 0px at origin
+  //         `circle(${maxRadius}px at ${x}px ${y}px)`, // End: fullscreen circle
+  //       ],
+  //     },
+  //     {
+  //       duration: 500,
+  //       easing: "ease-in-out",
+  //       pseudoElement: "::view-transition-new(root)",
+  //     },
+  //   );
+  // };
 
   const handleClick = async () => {
     setShowToolTip(false);
     setSuppressHover(true);
-    await toggleTheme();
+    toggleTheme();
 
     // A timeout to reset suppress hover after 600 milliseconds
     setTimeout(() => setSuppressHover(false), 600);

@@ -1,16 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ChevronFirst, ChevronLast } from "lucide-react";
-import ProjectStack from "../Wrappers/ProjectStack";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronFirst,
+  ChevronLast,
+  Clock,
+} from "lucide-react";
 
 // One half of the prev/next pair. `direction` decides which way the card leans:
 // "previous" is arrow-first and left aligned, "next" is arrow-last and right
 // aligned, so the pair reads outward from the middle of the page.
 const NeighbourCard = ({
   id,
-  name,
-  stack,
+  title,
+  readTime,
   direction,
   isWrapping,
   onNavigate,
@@ -21,8 +26,8 @@ const NeighbourCard = ({
   // actually land rather than a "previous" that walks forwards.
   const label = isWrapping
     ? isPrevious
-      ? "last project"
-      : "first project"
+      ? "last blog"
+      : "first blog"
     : direction;
 
   const Icon = isWrapping
@@ -35,9 +40,9 @@ const NeighbourCard = ({
 
   return (
     <Link
-      href={`/projects/${id}`}
+      href={`/blog/${id}`}
       onClick={onNavigate}
-      aria-label={`${isPrevious ? "Previous" : "Next"} project: ${name}`}
+      aria-label={`${isPrevious ? "Previous" : "Next"} blog: ${title}`}
       className={`group border-border-subtle hover:border-accent focus-visible:border-accent flex flex-col gap-2 rounded-xl border p-5 transition-colors duration-150 focus-visible:outline-none ${
         isPrevious ? "items-start" : "items-end text-right sm:col-start-2"
       }`}
@@ -57,52 +62,57 @@ const NeighbourCard = ({
         {label}
       </span>
 
-      {/* Names run long, so they are clamped to two lines and allowed to break
+      {/* Titles run long, so they are clamped to two lines and allowed to break
           mid-word — a single unbroken token would otherwise overflow the card. */}
       <h2 className="text-text-primary group-hover:text-accent line-clamp-2 text-lg font-semibold wrap-break-word transition-colors">
-        {name}
+        {title}
       </h2>
 
-      {stack && (
-        <div className={isPrevious ? "" : "flex justify-end"}>
-          <ProjectStack projectStack={stack} limit={2} />
-        </div>
+      {readTime && (
+        <span
+          className={`font-dm-mono text-text-muted flex items-center gap-1.5 text-xs ${
+            isPrevious ? "" : "flex-row-reverse"
+          }`}
+        >
+          <Clock className="h-3.5 w-3.5" />
+          {readTime}
+        </span>
       )}
     </Link>
   );
 };
 
-const ProjectNav = ({ project, onNavigate }) => {
+const BlogNav = ({ blogPost, onNavigate }) => {
   const hasPrevious =
-    project.previous_project_id && project.previous_project_id !== project.id;
+    blogPost.previous_blog_id && blogPost.previous_blog_id !== blogPost.id;
   const hasNext =
-    project.next_project_id && project.next_project_id !== project.id;
+    blogPost.next_blog_id && blogPost.next_blog_id !== blogPost.id;
 
-  // A lone project is its own neighbour on both sides — nothing to page through.
+  // A lone blog is its own neighbour on both sides — nothing to page through.
   if (!hasPrevious && !hasNext) return null;
 
   return (
     <nav
-      aria-label="Project navigation"
-      className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2"
+      aria-label="Blog navigation"
+      className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2"
     >
       {hasPrevious && (
         <NeighbourCard
-          id={project.previous_project_id}
-          name={project.previous_project_name}
-          stack={project.previous_project_stack}
+          id={blogPost.previous_blog_id}
+          title={blogPost.previous_blog_title}
+          readTime={blogPost.previous_blog_read_time}
           direction="previous"
-          isWrapping={project.is_first_project}
+          isWrapping={blogPost.is_first_blog}
           onNavigate={onNavigate}
         />
       )}
       {hasNext && (
         <NeighbourCard
-          id={project.next_project_id}
-          name={project.next_project_name}
-          stack={project.next_project_stack}
+          id={blogPost.next_blog_id}
+          title={blogPost.next_blog_title}
+          readTime={blogPost.next_blog_read_time}
           direction="next"
-          isWrapping={project.is_last_project}
+          isWrapping={blogPost.is_last_blog}
           onNavigate={onNavigate}
         />
       )}
@@ -110,4 +120,4 @@ const ProjectNav = ({ project, onNavigate }) => {
   );
 };
 
-export default ProjectNav;
+export default BlogNav;
