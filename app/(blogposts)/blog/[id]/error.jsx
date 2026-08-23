@@ -10,7 +10,7 @@ const Error = ({ error, reset }) => {
   }, [error]);
 
   return (
-    <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-24 text-center sm:px-6 lg:px-16">
+    <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-24 text-center">
       <AlertTriangle className="text-danger mb-6 h-16 w-16" />
       <h2 className="text-text-primary mb-4 text-3xl font-bold">
         Something went wrong

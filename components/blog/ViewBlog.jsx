@@ -116,7 +116,7 @@ const ViewBlog = ({ blogPost, userId }) => {
   // Check if blogPost is null, undefined, or empty
   if (!blogPost || Object.keys(blogPost).length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-16 sm:px-6 lg:px-16">
+      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-16">
         <div className="text-center">
           <h2 className="text-text-primary mb-4 text-3xl font-bold">
             Blog Not Found
