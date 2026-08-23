@@ -16,7 +16,7 @@ import {
   PenLine,
   Glasses,
 } from "lucide-react";
-import TooltipUI from "../Theme/TooltipUI";
+import TooltipUI, { isFocusVisible } from "../Theme/TooltipUI";
 
 // --- 2. THE MAIN EDITOR COMPONENT ---
 const CustomMdEditor = ({ value, onChange }) => {
@@ -88,6 +88,18 @@ const CustomMdEditor = ({ value, onChange }) => {
       setSuppressHover(false);
       setShowToolTip(false);
     }
+  };
+
+  // Surface the shortcut on a keyboard tab-in too, but not on the focus left
+  // behind by a click.
+  const handleFocus = (e) => {
+    if (isFocusVisible(e.target)) {
+      setShowToolTip(true);
+    }
+  };
+
+  const handleBlur = () => {
+    setShowToolTip(false);
   };
 
   return (
@@ -171,7 +183,10 @@ const CustomMdEditor = ({ value, onChange }) => {
             type="button"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             onClick={handleClick}
+            aria-describedby={showToolTip ? "preview-toggle-tip" : undefined}
             className={`mr-2 flex items-center gap-2 rounded-lg ${showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
           >
             <Glasses size={14} />
@@ -179,9 +194,10 @@ const CustomMdEditor = ({ value, onChange }) => {
           </button>
           {/* Tooltip div */}
           <TooltipUI
-            canHover={canHover}
+            id="preview-toggle-tip"
+            label="Preview Blog"
             shortcut="alt + P"
-            showToolTip={showToolTip}
+            show={showToolTip}
           />
         </div>
       </div>

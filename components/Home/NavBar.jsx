@@ -67,7 +67,6 @@ const NavBar = () => {
 
   // Scroll state read off the canvas, not the window — the document no longer
   // scrolls (see components/Layout/AppCanvas.jsx).
-  const [progress, setProgress] = useState(0);
   const [activeId, setActiveId] = useState("");
 
   const pathname = usePathname();
@@ -84,9 +83,9 @@ const NavBar = () => {
     return isInHome ? activeId : "";
   }, [pathname, isInHome, activeId]);
 
-  // One rAF-throttled listener drives both the progress trace and the
-  // scroll-spy. Sections are looked up per tick rather than observed once,
-  // because they stream in behind <Suspense> and replace their skeletons.
+  // One rAF-throttled listener drives the scroll-spy. Sections are looked up
+  // per tick rather than observed once, because they stream in behind
+  // <Suspense> and replace their skeletons.
   useEffect(() => {
     const canvas = canvasRef?.current;
     if (!canvas) return;
@@ -95,11 +94,6 @@ const NavBar = () => {
 
     const measure = () => {
       queued = false;
-
-      const scrollable = canvas.scrollHeight - canvas.clientHeight;
-      setProgress(
-        scrollable > 0 ? Math.min(1, canvas.scrollTop / scrollable) : 0,
-      );
 
       if (!isInHome) {
         setActiveId("");
@@ -196,15 +190,16 @@ const NavBar = () => {
     <>
       {isLoadingLine && <LoadingLine />}
 
-      {/* ── Desktop: command bar. Sits in the top gutter, inset by the same
-          0.5rem as the canvas below it and sharing its border and radius, so
-          the two read as two panels of a single shell. ── */}
+      {/* ── Desktop: command bar. Sits in the top gutter above the canvas,
+          sharing its 0.5rem inset so the two read as two panels of a single
+          shell. Deliberately unclipped: the theme toggle hangs its tooltip
+          below the bar, so no `overflow-hidden` on this panel. ── */}
       <nav
         aria-label="Main"
         className="fixed top-2 right-2 left-2 z-50 hidden h-12 lg:block"
       >
-        <div className="bg-surface relative h-full overflow-hidden px-2.5">
-          <div className="mx-auto flex h-full w-full max-w-7xl items-center gap-3">
+        <div className="bg-surface relative h-full">
+          <div className="mx-auto flex h-full w-full max-w-7xl items-center gap-3 px-2">
             {/* Wordmark */}
             {isInHome ? (
               <a
@@ -280,14 +275,6 @@ const NavBar = () => {
               </a>
             </div>
           </div>
-
-          {/* Scroll-progress trace along the panel's bottom edge — the bar's
-              one live tie-in to the canvas it caps. */}
-          {/* <span
-            aria-hidden="true"
-            className="bg-accent absolute bottom-0 left-0 h-0.5 w-full origin-left"
-            style={{ transform: `scaleX(${progress})` }}
-          /> */}
         </div>
       </nav>
 

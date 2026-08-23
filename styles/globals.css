@@ -128,7 +128,7 @@ html[data-theme="dark"] {
 
 @media (width >= 64rem) {
   :root {
-    --layout-top: 4rem; /* top-2 + bar h-14 + 0.5rem gap */
+    --layout-top: 4rem; /* top-2 + bar h-12 + 0.5rem gap */
     --layout-inset: 0.5rem;
   }
 }

@@ -2,19 +2,13 @@
 
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
-import TooltipUI from "./TooltipUI";
+import TooltipUI, { isFocusVisible } from "./TooltipUI";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggleCompact() {
   const { setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [showToolTip, setShowToolTip] = useState(false);
   const [suppressHover, setSuppressHover] = useState(false);
-
-  // Ensure this only renders on the client to avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // UseEffect for automatically switching (fast switch) a theme when D key is pressed
   useEffect(() => {
@@ -119,13 +113,29 @@ export default function ThemeToggleCompact() {
     }
   };
 
+  // Keyboard users are the ones who can actually use the shortcut, so the hint
+  // has to reach them too — but only on a real tab-in, not on the focus a
+  // click leaves behind.
+  const handleFocus = (e) => {
+    if (isFocusVisible(e.target)) {
+      setShowToolTip(true);
+    }
+  };
+
+  const handleBlur = () => {
+    setShowToolTip(false);
+  };
+
   return (
     <div className="relative">
       <button
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         aria-label="Toggle theme"
+        aria-describedby={showToolTip ? "theme-toggle-tip" : undefined}
         className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
       >
         {/* Render BOTH icons. Use Tailwind's dark: modifier to let CSS handle visibility instantly */}
@@ -133,11 +143,12 @@ export default function ThemeToggleCompact() {
         <Moon className="hidden h-6 w-6 lg:h-5 lg:w-5 dark:block" />
       </button>
 
-      {/* Keep the mounted check ONLY for the Tooltip to avoid hydration mismatches 
-          caused by window.matchMedia resolving differently on server vs client */}
-      {mounted && (
-        <TooltipUI canHover={canHover} shortcut="D" showToolTip={showToolTip} />
-      )}
+      <TooltipUI
+        id="theme-toggle-tip"
+        label="Toggle Mode"
+        shortcut="D"
+        show={showToolTip}
+      />
     </div>
   );
 }
