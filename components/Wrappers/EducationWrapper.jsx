@@ -1,8 +1,7 @@
 "use client";
 import { GraduationCap, Loader2, School } from "lucide-react";
-import { motion, useInView } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { useAlertStore } from "@/store/useAlertStore";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import remarkGfm from "remark-gfm";
 import ReactMarkDown from "react-markdown";
 import ShowMoreButtons from "./ShowMoreButtons";
@@ -22,34 +21,15 @@ const EducationWrapper = ({ educationData }) => {
     setVisibleCount((prev) => Math.min(prev + 1, educationData.length));
   const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 1, 1));
 
-  // Creating a ref for the section
-  const educationRef = useRef(null);
-
-  // Check if section is in view
-  const isInView = useInView(educationRef, { once: true, amount: 0.2 });
-
-  // Our add alert function
-  const addAlert = useAlertStore((state) => state.addAlert);
-
-  // Trigger Alert 2 seconds after the section comes into view
-  useEffect(() => {
-    if (isInView) {
-      const timer = setTimeout(() => {
-        addAlert({
-          message: "Always learning, always figuring things out",
-          type: "success",
-          iconComponent: School,
-        });
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isInView]);
-
   return (
-    <div className="mx-1 max-w-5xl flex-1 md:mx-auto" ref={educationRef}>
+    <div className="mx-1 max-w-5xl min-w-0 flex-1 md:mx-auto">
       {/* Section Title */}
-      <SectionTitle label="How I got here" title="My Education" />
+      <SectionTitle
+        label="How I got here"
+        title="My Education"
+        alertMessage="Always learning, always figuring things out"
+        alertIcon={School}
+      />
 
       {/* Vertical Timeline */}
       <ol className="border-border-subtle relative border-l">

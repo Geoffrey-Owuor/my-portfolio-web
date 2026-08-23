@@ -8,10 +8,7 @@ const ExperienceSkeleton = () => {
   const skeletonItems = Array.from({ length: 3 });
 
   return (
-    <section
-      id="experience-skeleton"
-      className="min-h-screen w-full px-4 py-24 md:px-8"
-    >
+    <section id="experience-skeleton" className="min-h-app w-full px-4 py-24">
       <div className="mx-auto max-w-5xl">
         {/* Section Title Skeleton */}
         <div className="bg-border-subtle mx-auto mb-16 h-8 w-64 animate-pulse rounded-md"></div>

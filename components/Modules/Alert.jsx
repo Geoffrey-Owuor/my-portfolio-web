@@ -35,7 +35,7 @@ const Alert = ({ message, type, onClose }) => {
         }`}
       >
         <div
-          className={`bg-text-primary text-surface mt-4 flex w-auto items-center justify-between rounded-full px-6 py-4.5 shadow-md`}
+          className={`bg-text-primary text-surface mt-4 flex w-auto items-center justify-between rounded-xl px-6 py-4.5 shadow-md`}
         >
           <div className="flex items-center gap-2">
             {/* Render the appropriate icon */}

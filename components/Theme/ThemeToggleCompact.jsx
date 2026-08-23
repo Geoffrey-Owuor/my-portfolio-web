@@ -2,19 +2,13 @@
 
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
-import TooltipUI from "./TooltipUI";
+import TooltipUI, { isFocusVisible } from "./TooltipUI";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggleCompact() {
   const { setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [showToolTip, setShowToolTip] = useState(false);
   const [suppressHover, setSuppressHover] = useState(false);
-
-  // Ensure this only renders on the client to avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // UseEffect for automatically switching (fast switch) a theme when D key is pressed
   useEffect(() => {
@@ -45,63 +39,67 @@ export default function ThemeToggleCompact() {
   const isDark = resolvedTheme === "dark";
 
   // Detect Firefox browser
-  const isFirefox =
-    typeof navigator !== "undefined" &&
-    navigator.userAgent.toLowerCase().includes("firefox");
+  // const isFirefox =
+  //   typeof navigator !== "undefined" &&
+  //   navigator.userAgent.toLowerCase().includes("firefox");
+
+  const toggleTheme = () => {
+    setTheme(isDark ? "light" : "dark");
+  };
 
   // Function to toggle the theme using view transitioning
-  const toggleTheme = async () => {
-    // Check if view transitions is supported
-    if (
-      !document.startViewTransition ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      isFirefox
-    ) {
-      // Fallback for old browsers or reduced motion preferences
-      setTheme(isDark ? "light" : "dark");
-      return;
-    }
+  // const toggleTheme = async () => {
+  //   // Check if view transitions is supported
+  //   if (
+  //     !document.startViewTransition ||
+  //     window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+  //     isFirefox
+  //   ) {
+  //     // Fallback for old browsers or reduced motion preferences
+  //     setTheme(isDark ? "light" : "dark");
+  //     return;
+  //   }
 
-    // Determine animation origin based on TARGET theme
-    // isDark === true means target is Light -> Bottom Left
-    // isDark === false means target is Dark -> Top Right
-    const x = isDark ? 0 : window.innerWidth;
-    const y = isDark ? window.innerHeight : 0;
+  //   // Determine animation origin based on TARGET theme
+  //   // isDark === true means target is Light -> Bottom Left
+  //   // isDark === false means target is Dark -> Top Right
+  //   const x = isDark ? 0 : window.innerWidth;
+  //   const y = isDark ? window.innerHeight : 0;
 
-    // Since we are starting from the extreme corners, the furthest point
-    // is always the opposite corner, making maxRadius the full screen diagonal.
-    const maxRadius = Math.hypot(window.innerWidth, window.innerHeight);
+  //   // Since we are starting from the extreme corners, the furthest point
+  //   // is always the opposite corner, making maxRadius the full screen diagonal.
+  //   const maxRadius = Math.hypot(window.innerWidth, window.innerHeight);
 
-    // Start the view transition
-    const transition = document.startViewTransition(() => {
-      // This callback changes the actual theme state
-      setTheme(isDark ? "light" : "dark");
-    });
+  //   // Start the view transition
+  //   const transition = document.startViewTransition(() => {
+  //     // This callback changes the actual theme state
+  //     setTheme(isDark ? "light" : "dark");
+  //   });
 
-    // Wait for the ready promise
-    // The browser has captured the "old" view and is ready to show the "new" view
-    await transition.ready;
+  //   // Wait for the ready promise
+  //   // The browser has captured the "old" view and is ready to show the "new" view
+  //   await transition.ready;
 
-    // Animate the circular clip-path
-    document.documentElement.animate(
-      {
-        clipPath: [
-          `circle(0px at ${x}px ${y}px)`, // Start: 0px at origin
-          `circle(${maxRadius}px at ${x}px ${y}px)`, // End: fullscreen circle
-        ],
-      },
-      {
-        duration: 500,
-        easing: "ease-in-out",
-        pseudoElement: "::view-transition-new(root)",
-      },
-    );
-  };
+  //   // Animate the circular clip-path
+  //   document.documentElement.animate(
+  //     {
+  //       clipPath: [
+  //         `circle(0px at ${x}px ${y}px)`, // Start: 0px at origin
+  //         `circle(${maxRadius}px at ${x}px ${y}px)`, // End: fullscreen circle
+  //       ],
+  //     },
+  //     {
+  //       duration: 500,
+  //       easing: "ease-in-out",
+  //       pseudoElement: "::view-transition-new(root)",
+  //     },
+  //   );
+  // };
 
   const handleClick = async () => {
     setShowToolTip(false);
     setSuppressHover(true);
-    await toggleTheme();
+    toggleTheme();
 
     // A timeout to reset suppress hover after 600 milliseconds
     setTimeout(() => setSuppressHover(false), 600);
@@ -119,25 +117,42 @@ export default function ThemeToggleCompact() {
     }
   };
 
+  // Keyboard users are the ones who can actually use the shortcut, so the hint
+  // has to reach them too — but only on a real tab-in, not on the focus a
+  // click leaves behind.
+  const handleFocus = (e) => {
+    if (isFocusVisible(e.target)) {
+      setShowToolTip(true);
+    }
+  };
+
+  const handleBlur = () => {
+    setShowToolTip(false);
+  };
+
   return (
     <div className="relative">
       <button
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         aria-label="Toggle theme"
+        aria-describedby={showToolTip ? "theme-toggle-tip" : undefined}
         className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
       >
         {/* Render BOTH icons. Use Tailwind's dark: modifier to let CSS handle visibility instantly */}
-        <Sun className="block h-5.5 w-5.5 dark:hidden" />
-        <Moon className="hidden h-5.5 w-5.5 dark:block" />
+        <Sun className="block h-6 w-6 lg:h-5 lg:w-5 dark:hidden" />
+        <Moon className="hidden h-6 w-6 lg:h-5 lg:w-5 dark:block" />
       </button>
 
-      {/* Keep the mounted check ONLY for the Tooltip to avoid hydration mismatches 
-          caused by window.matchMedia resolving differently on server vs client */}
-      {mounted && (
-        <TooltipUI canHover={canHover} shortcut="D" showToolTip={showToolTip} />
-      )}
+      <TooltipUI
+        id="theme-toggle-tip"
+        label="Toggle Mode"
+        shortcut="D"
+        show={showToolTip}
+      />
     </div>
   );
 }

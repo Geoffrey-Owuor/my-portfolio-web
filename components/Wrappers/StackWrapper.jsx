@@ -1,9 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Layers2, Loader2, MessageCircleCode } from "lucide-react";
-import { useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { useAlertStore } from "@/store/useAlertStore";
+import { motion } from "framer-motion";
 import SectionTitle from "./SectionTitle";
 
 // Icons we want to invert their colors in dark mode
@@ -16,34 +14,15 @@ const iconsToInvert = [
 ];
 
 const StackWrapper = ({ toolNames, toolIcons }) => {
-  // Creating a ref for the section
-  const stackRef = useRef(null);
-
-  // Check if section is in view
-  const isInView = useInView(stackRef, { once: true, amount: 0.2 });
-
-  // Our add alert function
-  const addAlert = useAlertStore((state) => state.addAlert);
-
-  // Trigger Alert 2 seconds after the section comes into view
-  useEffect(() => {
-    if (isInView) {
-      const timer = setTimeout(() => {
-        addAlert({
-          message: "Innovating with cutting-edge tools and frameworks",
-          type: "success",
-          iconComponent: MessageCircleCode,
-        });
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isInView]);
-
   return (
-    <div className="mx-1 flex-1 md:mx-auto" ref={stackRef}>
+    <div className="mx-1 min-w-0 flex-1 md:mx-auto">
       {/* Section Title  */}
-      <SectionTitle label="Tools & tech I work with" title="My Tech Stack" />
+      <SectionTitle
+        label="Tools & tech I work with"
+        title="My Tech Stack"
+        alertMessage="Innovating with cutting-edge tools and frameworks"
+        alertIcon={MessageCircleCode}
+      />
 
       {/* --- Core Technologies: dominant scrolling marquee --- */}
       <motion.div
@@ -51,7 +30,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.6 }}
-        className="bg-surface border-border-subtle mx-auto w-full max-w-6xl overflow-hidden rounded-xl border py-8"
+        className="bg-surface border-border-subtle mx-auto w-full max-w-7xl overflow-hidden rounded-xl border py-8"
       >
         {toolIcons.length > 0 && (
           <div className="motion-safe:mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:px-6">
@@ -115,11 +94,16 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
         </span>
 
         {toolNames.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
+          // `w-full min-w-0` is load-bearing: as a flex item this div would
+          // otherwise size to max-content (flex items default to
+          // `min-width: auto`, and `items-center` stops it from stretching),
+          // so the pills laid out one long row that overflowed and clipped on
+          // both sides instead of wrapping.
+          <div className="flex w-full min-w-0 flex-wrap justify-center gap-2 sm:justify-start">
             {toolNames.map((tool) => (
               <span
                 key={tool.id}
-                className="border-border-subtle text-text-muted rounded-full border px-3 py-1 text-sm"
+                className="border-border-subtle text-text-muted rounded-lg border px-3 py-1 text-sm"
               >
                 {tool.tool_name}
               </span>

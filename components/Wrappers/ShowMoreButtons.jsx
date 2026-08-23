@@ -11,7 +11,7 @@ const ShowMoreButtons = ({
           {canShowLess ? (
             <button
               onClick={handleShowLess}
-              className="border-border-subtle text-text-muted hover:bg-surface-raised rounded-full border px-5 py-2 text-sm font-semibold transition-colors"
+              className="border-border-subtle text-text-muted hover:bg-surface-raised rounded-lg border px-5 py-2 text-sm font-semibold transition-colors"
             >
               Show less
             </button>
@@ -22,7 +22,7 @@ const ShowMoreButtons = ({
           {canShowMore ? (
             <button
               onClick={handleShowMore}
-              className="border-accent text-accent hover:bg-accent/10 rounded-full border px-5 py-2 text-sm font-semibold transition-colors"
+              className="border-accent text-accent hover:bg-accent/10 rounded-lg border px-5 py-2 text-sm font-semibold transition-colors"
             >
               Show more...
             </button>

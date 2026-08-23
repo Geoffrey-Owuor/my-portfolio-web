@@ -16,7 +16,7 @@ import {
   PenLine,
   Glasses,
 } from "lucide-react";
-import TooltipUI from "../Theme/TooltipUI";
+import TooltipUI, { isFocusVisible } from "../Theme/TooltipUI";
 
 // --- 2. THE MAIN EDITOR COMPONENT ---
 const CustomMdEditor = ({ value, onChange }) => {
@@ -90,6 +90,18 @@ const CustomMdEditor = ({ value, onChange }) => {
     }
   };
 
+  // Surface the shortcut on a keyboard tab-in too, but not on the focus left
+  // behind by a click.
+  const handleFocus = (e) => {
+    if (isFocusVisible(e.target)) {
+      setShowToolTip(true);
+    }
+  };
+
+  const handleBlur = () => {
+    setShowToolTip(false);
+  };
+
   return (
     <div className="border-border-subtle w-full rounded-xl border transition-colors focus:outline-none">
       {/* Toolbar */}
@@ -161,7 +173,7 @@ const CustomMdEditor = ({ value, onChange }) => {
         <button
           type="button"
           onClick={() => setShowPreview(false)}
-          className={`flex items-center gap-2 rounded-full ${!showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+          className={`flex items-center gap-2 rounded-lg ${!showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
         >
           <PenLine size={14} />
           Write
@@ -171,17 +183,21 @@ const CustomMdEditor = ({ value, onChange }) => {
             type="button"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             onClick={handleClick}
-            className={`mr-2 flex items-center gap-2 rounded-full ${showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+            aria-describedby={showToolTip ? "preview-toggle-tip" : undefined}
+            className={`mr-2 flex items-center gap-2 rounded-lg ${showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
           >
             <Glasses size={14} />
             Preview
           </button>
           {/* Tooltip div */}
           <TooltipUI
-            canHover={canHover}
+            id="preview-toggle-tip"
+            label="Preview Blog"
             shortcut="alt + P"
-            showToolTip={showToolTip}
+            show={showToolTip}
           />
         </div>
       </div>
@@ -194,7 +210,7 @@ const CustomMdEditor = ({ value, onChange }) => {
           value={value}
           onChange={onChange}
           rows={16}
-          className="text-text-primary placeholder:text-text-muted w-full resize-none p-4 text-sm leading-relaxed focus:outline-none"
+          className="text-text-primary placeholder:text-text-muted w-full resize-none p-4 text-sm leading-relaxed [scrollbar-width:thin] focus:outline-none"
           placeholder="Start writing your masterpiece... (Markdown supported)"
         />
       )}

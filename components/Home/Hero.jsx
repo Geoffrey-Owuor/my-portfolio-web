@@ -17,10 +17,10 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative mx-1 flex min-h-screen max-w-6xl items-center justify-center overflow-hidden px-4 py-28 md:mx-auto lg:px-8 2xl:max-w-7xl"
+      className="min-h-app relative mx-1 flex max-w-6xl items-center justify-center overflow-hidden px-4 py-16 md:mx-auto"
     >
       {/* ── Main grid ── */}
-      <div className="relative z-10 grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20">
+      <div className="relative z-10 grid grid-cols-1 gap-16 lg:grid-cols-2">
         {/* --- Image (Left Side) --- */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
@@ -77,9 +77,9 @@ const Hero = () => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
-            className="font-dm-mono text-text-primary text-3xl font-medium tracking-tight md:text-5xl"
+            className="font-dm-mono text-text-primary text-3xl font-medium tracking-tighter md:text-5xl"
           >
-            Code, Design, & Everything In-Between
+            Full-Stack Builder
           </motion.h1>
 
           <motion.p
@@ -89,13 +89,12 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
             className="text-text-muted mt-6 text-lg leading-relaxed"
           >
-            I'm Jeff, a Nairobi-based full-stack developer with over three years
-            of experience shipping products end-to-end -&gt; database schema,
-            API, and the interface on top.
+            I'm Jeff, a full-stack engineer in Nairobi shipping complete,
+            production-ready web apps.
           </motion.p>
 
           <motion.div
-            initial={{ y: 30, opacity: 0 }}
+            initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}

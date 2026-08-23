@@ -4,6 +4,9 @@ import { Providers } from "@/components/Theme/Providers";
 import NetworkStatus from "@/components/Modules/NetworkStatus";
 import NavBar from "@/components/Home/NavBar";
 import Footer from "@/components/Home/Footer";
+import AppCanvas, {
+  ScrollContainerProvider,
+} from "@/components/Layout/AppCanvas";
 
 const dmMono = DM_Mono({
   variable: "--font-dm-mono",
@@ -81,12 +84,18 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <NetworkStatus />
-          <div className="flex h-screen flex-col">
+
+          {/* Header and mobile drawer stay outside the canvas; everything
+              that scrolls lives inside it. The provider wraps both so the
+              header can still read the canvas's scroll state. */}
+          <ScrollContainerProvider>
             <NavBar />
 
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+            <AppCanvas>
+              <main>{children}</main>
+              <Footer />
+            </AppCanvas>
+          </ScrollContainerProvider>
         </Providers>
       </body>
     </html>

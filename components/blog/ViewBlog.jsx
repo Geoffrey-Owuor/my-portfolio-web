@@ -5,10 +5,6 @@ import {
   Clock,
   ArrowLeft,
   Share2,
-  ChevronRight,
-  ChevronLeft,
-  ChevronFirst,
-  ChevronLast,
   PenLine,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -22,6 +18,7 @@ import LoadingLine from "../Modules/LoadingLine";
 import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
 import Image from "next/image";
+import BlogNav from "./BlogNav";
 
 const ViewBlog = ({ blogPost, userId }) => {
   const router = useRouter();
@@ -38,11 +35,6 @@ const ViewBlog = ({ blogPost, userId }) => {
   const handleBlogsRoute = (link) => {
     setShowLoadingLine(true);
     router.push(link);
-  };
-
-  const handleBlogNavigation = (id) => {
-    setShowLoadingLine(true);
-    router.push(`/blog/${id}`);
   };
 
   // 1. Define custom renderer for ReactMarkdown to add IDs to h3
@@ -64,31 +56,35 @@ const ViewBlog = ({ blogPost, userId }) => {
 
   // UseEffect to run some functionalities on mount
   useEffect(() => {
-    // Disable smooth scrolling on mount
-    document.documentElement.style.scrollBehavior = "auto";
+    // Disable smooth scrolling on mount — on the canvas, which is what
+    // actually scrolls now (see components/Layout/AppCanvas.jsx).
+    const canvas = document.getElementById("app-canvas");
+    if (canvas) canvas.style.scrollBehavior = "auto";
 
     // Determine the URL only after mounting on the client
     if (typeof window !== "undefined") {
       setCurrentUrl(window.location.href);
     }
 
+    // The flags mark position in the /blogs listing, which runs newest first —
+    // so the first blog is the newset one written and the last is the oldest.
     if (blogPost.is_first_blog) {
       setAlertInfo({
         showAlert: true,
         type: "success",
-        alertMessage: "Where the magic began. My very first post! 🕰️🚀",
+        alertMessage:
+          "You've reached the latest blog. More magic coming soon! 🔮",
       });
     } else if (blogPost.is_last_blog) {
       setAlertInfo({
         showAlert: true,
         type: "success",
-        alertMessage:
-          "You've reached the last blog. More magic coming soon! 🔮",
+        alertMessage: "Where the magic began. My very first post! 🕰️🚀",
       });
     }
 
     return () => {
-      document.documentElement.style.scrollBehavior = ""; // restore on unmount
+      if (canvas) canvas.style.scrollBehavior = ""; // restore on unmount
     };
   }, []);
 
@@ -120,7 +116,7 @@ const ViewBlog = ({ blogPost, userId }) => {
   // Check if blogPost is null, undefined, or empty
   if (!blogPost || Object.keys(blogPost).length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-5 py-24 sm:px-6 lg:px-16">
+      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-16">
         <div className="text-center">
           <h2 className="text-text-primary mb-4 text-3xl font-bold">
             Blog Not Found
@@ -130,7 +126,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           </p>
           <button
             onClick={() => handleBlogsRoute("/blogs")}
-            className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-full px-6 py-3 font-medium transition-opacity hover:opacity-90"
+            className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-lg px-6 py-3 font-medium transition-opacity hover:opacity-90"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Blogs
@@ -168,13 +164,21 @@ const ViewBlog = ({ blogPost, userId }) => {
         setAlertInfo={setAlertInfo}
       />
 
-      <div className="mx-auto flex max-w-6xl flex-col px-5 py-24 sm:px-6 lg:flex-row lg:gap-6 lg:px-8 2xl:max-w-7xl">
-        <article className="w-full max-w-none">
+      <div className="mx-auto flex max-w-7xl flex-col px-4 py-8 lg:flex-row lg:gap-6">
+        <article className="w-full max-w-none min-w-0">
           {/* Header Section */}
           <header className="mb-6">
-            <h1 className="font-dm-mono text-text-primary mb-6 text-3xl leading-tight font-bold sm:text-4xl">
+            <h1 className="font-dm-mono text-text-primary mb-4 text-3xl leading-tight font-bold sm:text-4xl">
               {blogPost.blog_title}
             </h1>
+
+            {/* The tagline doubles as the post's meta description, so it reads
+                as a standfirst under the title now that the author card is gone. */}
+            {blogPost.author_tagline && (
+              <p className="font-dm-mono bg-accent/10 text-accent mb-6 w-fit rounded-full px-3 py-1 text-xs text-nowrap">
+                {blogPost.author_tagline}
+              </p>
+            )}
 
             {/* Meta Information */}
             <div className="text-text-muted flex flex-wrap items-center gap-4 text-sm sm:gap-6 sm:text-base">
@@ -242,7 +246,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           </header>
 
           {/* Divider */}
-          <div className="mb-8 h-px bg-border-subtle sm:mb-12" />
+          <div className="bg-border-subtle mb-8 h-px sm:mb-12" />
 
           {/* Content Section */}
           <div className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-semi-bold prose-a:text-accent max-w-none wrap-break-word">
@@ -255,57 +259,14 @@ const ViewBlog = ({ blogPost, userId }) => {
           </div>
 
           {/* Bottom Divider */}
-          <div className="mt-12 h-px bg-border-subtle sm:mt-16" />
+          <div className="bg-border-subtle mt-12 h-px sm:mt-16" />
 
-          {/* Author Card and Back & Forward Logs */}
-          <div className="mt-8 flex items-center justify-between sm:mt-12">
-            <button
-              onClick={() => handleBlogNavigation(blogPost.previous_blog_id)}
-              title="go to previous blog"
-              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-50 sm:pr-4"
-            >
-              {blogPost.is_first_blog ? (
-                <ChevronFirst strokeWidth={1} className="h-7 w-7" />
-              ) : (
-                <ChevronLeft strokeWidth={1} className="h-7 w-7" />
-              )}
-              <span className="hidden sm:flex">
-                {blogPost.is_first_blog ? "last blog" : "previous"}
-              </span>
-            </button>
-            <div className="inline-flex items-center gap-4 rounded-2xl p-2">
-              <div className="bg-accent flex h-12 w-12 shrink-0 items-center justify-center rounded-full sm:h-16 sm:w-16">
-                <span className="text-surface text-base font-bold sm:text-xl">
-                  {blogPost.blog_author
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </span>
-              </div>
-              <div className="hidden sm:block">
-                <h3 className="text-text-primary mb-2 text-lg font-semibold sm:text-xl">
-                  {blogPost.blog_author}
-                </h3>
-                <p className="text-text-muted text-sm sm:text-base">
-                  {blogPost.author_tagline}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => handleBlogNavigation(blogPost.next_blog_id)}
-              title="go to next blog"
-              className="inline-flex items-center gap-1 rounded-full py-2 pr-2 pl-2 hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-50 sm:pl-4"
-            >
-              <span className="hidden sm:flex">
-                {blogPost.is_last_blog ? "first blog" : "next"}
-              </span>
-              {blogPost.is_last_blog ? (
-                <ChevronLast strokeWidth={1} className="h-7 w-7" />
-              ) : (
-                <ChevronRight strokeWidth={1} className="h-7 w-7" />
-              )}
-            </button>
-          </div>
+          {/* Neighbouring blogs — keeps the reader moving between posts and
+              names where each link lands before they commit to it. */}
+          <BlogNav
+            blogPost={blogPost}
+            onNavigate={() => setShowLoadingLine(true)}
+          />
         </article>
         {/* 3. The Sidebar (Only visible on large screens via CSS in component) */}
         <TableOfContents content={blogPost.blog_content} />

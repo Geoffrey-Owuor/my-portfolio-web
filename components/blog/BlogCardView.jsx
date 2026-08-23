@@ -1,24 +1,28 @@
 "use client";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import MarkdownPreview from "../Modules/MarkdownPreview";
 import { Calendar, Clock, ArrowRight, UserRound } from "lucide-react";
 import { formatDate } from "@/utils/Helpers";
+import { useRouter } from "next/navigation";
 
 const BlogCardView = ({
   currentBlogs,
   searchQuery,
   highlightText,
-  getPreviewText,
   setIsLoadingLine,
 }) => {
+  const router = useRouter();
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {currentBlogs.length > 0 ? (
         currentBlogs.map((blog) => (
           <article
             key={blog.id}
-            className="border-border-subtle hover:border-accent flex flex-col rounded-xl border p-6 transition-colors duration-150"
+            onClick={() => {
+              setIsLoadingLine(true);
+              router.push(`/blog/${blog.id}`);
+            }}
+            className="border-border-subtle hover:border-accent flex cursor-pointer flex-col rounded-xl border p-6 transition-colors duration-150"
           >
             {/* Title */}
             <h2 className="text-text-primary mb-3 line-clamp-2 text-xl font-semibold">
@@ -43,17 +47,18 @@ const BlogCardView = ({
               </span>
             </div>
 
-            {/* Content preview */}
-            <div className="text-text-muted mb-6 grow">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {getPreviewText(blog.blog_content)}
-              </ReactMarkdown>
-            </div>
+            {/* Content preview, clamped for a consistent, skimmable card height */}
+            <MarkdownPreview className="text-text-muted mb-6 line-clamp-3 grow">
+              {blog.blog_content}
+            </MarkdownPreview>
 
             {/* Read more button */}
             <Link
               href={`/blog/${blog.id}`}
-              onClick={() => setIsLoadingLine(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLoadingLine(true);
+              }}
               className="text-accent inline-flex w-fit items-center gap-1.5 text-sm font-medium underline-offset-4 hover:underline"
             >
               Read more
@@ -62,7 +67,7 @@ const BlogCardView = ({
           </article>
         ))
       ) : (
-        <div className="col-span-full flex min-h-[50vh] flex-col items-center justify-center text-center">
+        <div className="border-border-subtle col-span-full flex min-h-[50vh] flex-col items-center justify-center rounded-xl border-[1.5px] border-dashed text-center">
           <div className="text-text-muted max-w-md px-4">
             <p className="text-lg font-semibold">
               No blog titles matching your search, try searching something else.

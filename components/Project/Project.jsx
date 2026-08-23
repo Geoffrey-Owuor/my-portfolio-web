@@ -8,6 +8,9 @@ import Image from "next/image";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ProjectStack from "../Wrappers/ProjectStack";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import ProjectNav from "./ProjectNav";
 
 const Project = ({ projectInfo }) => {
   const router = useRouter();
@@ -32,7 +35,7 @@ const Project = ({ projectInfo }) => {
 
   if (!project || Object.keys(project).length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-24 text-center sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-8 text-center">
         <p className="font-dm-mono text-danger mb-3 text-sm">
           $ cat project.json
         </p>
@@ -60,7 +63,7 @@ const Project = ({ projectInfo }) => {
     <>
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
 
-      <section className="w-full px-4 py-20 md:px-8">
+      <section className="w-full px-4 py-8">
         <div className="mx-auto max-w-4xl">
           {/* Breadcrumb + Back */}
           <motion.div
@@ -157,11 +160,26 @@ const Project = ({ projectInfo }) => {
               </span>
               README.md
             </div>
-            <div className="px-6 py-8">
-              <p className="text-text-muted text-base leading-relaxed">
+            <div className="prose dark:prose-invert prose-img:rounded-xl prose-headings:font-semibold prose-a:text-accent max-w-none px-6 py-8 wrap-break-word">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {project.project_description}
-              </p>
+              </ReactMarkdown>
             </div>
+          </motion.div>
+
+          {/* Neighbouring projects — keeps the reader inside the case studies
+              instead of bouncing back to the grid between each one. */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={5}
+          >
+            <div className="bg-border-subtle mt-10 h-px" />
+            <ProjectNav
+              project={project}
+              onNavigate={() => setIsNavigating(true)}
+            />
           </motion.div>
         </div>
       </section>

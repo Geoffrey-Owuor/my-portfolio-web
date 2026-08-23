@@ -1,36 +1,10 @@
 "use client";
 
 import { HeartHandshake, Loader2, Sparkle } from "lucide-react";
-import { motion, useInView } from "framer-motion";
-import { useEffect, useRef } from "react";
-import { useAlertStore } from "@/store/useAlertStore";
+import { motion } from "framer-motion";
 import SectionTitle from "./SectionTitle";
 
 const SkillsWrapper = ({ technicalSkills, softSkills }) => {
-  // Creating a ref for the section
-  const skillsRef = useRef(null);
-
-  // Check if section is in view
-  const isInView = useInView(skillsRef, { once: true, amount: 0.2 });
-
-  // Our add alert function
-  const addAlert = useAlertStore((state) => state.addAlert);
-
-  // Trigger Alert 2 seconds after the section comes into view
-  useEffect(() => {
-    if (isInView) {
-      const timer = setTimeout(() => {
-        addAlert({
-          message: "Applying technical skills to real-world problems",
-          type: "success",
-          iconComponent: Sparkle,
-        });
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isInView]);
-
   // Container animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -56,9 +30,14 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
   };
 
   return (
-    <div ref={skillsRef} className="mx-1 flex-1 md:mx-auto">
+    <div className="mx-1 min-w-0 flex-1 md:mx-auto">
       {/* Section Title */}
-      <SectionTitle label="What I bring to the table" title="My Skills" />
+      <SectionTitle
+        label="What I bring to the table"
+        title="My Skills"
+        alertMessage="Applying technical skills to real-world problems"
+        alertIcon={Sparkle}
+      />
 
       {/* --- Technical Skills: dominant terminal panel --- */}
       <motion.div
@@ -141,7 +120,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             {softSkills.map((skill) => (
               <span
                 key={skill.id}
-                className="border-border-subtle text-text-muted rounded-full border px-3 py-1 text-sm"
+                className="border-border-subtle text-text-muted rounded-lg border px-3 py-1 text-sm"
               >
                 {skill.skill_description}
               </span>

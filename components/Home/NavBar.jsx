@@ -1,39 +1,153 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { tools } from "@/assets/assets";
-import { Menu, X, ArrowUpRight, PenLine } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { usePathname, useRouter } from "next/navigation";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
+import { useScrollContainer } from "../Layout/AppCanvas";
+import { motion } from "framer-motion";
+
+// Section links double as scroll-spy targets — `id` must match the id on the
+// corresponding <section>. `blogs` is a route, not a section, so it is matched
+// against the pathname instead.
+const navLinks = [
+  { id: "skills", href: "/#skills", label: "Skills" },
+  { id: "stack", href: "/#stack", label: "Stack" },
+  { id: "projects", href: "/#projects", label: "Projects" },
+  { id: "experience", href: "/#experience", label: "Experience" },
+  { id: "education", href: "/#education", label: "Education" },
+  { id: "contact", href: "/#contact", label: "Contact" },
+];
+
+const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
+
+const Wordmark = () => (
+  <span className="font-dm-mono text-text-primary text-[16px] font-medium">
+    Jeff
+  </span>
+);
+
+// Every tab in the command bar: a transparent hit area with the single active
+// pill sliding underneath it via a shared layout animation. Declared at module
+// scope so the pill isn't remounted (and the animation lost) on each render.
+const Tab = ({ isActive, onClick, children }) => (
+  <li className="relative">
+    {isActive && (
+      <motion.span
+        layoutId="command-bar-pill"
+        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+        className="bg-surface-raised border-border-subtle absolute inset-0 rounded-lg border"
+        aria-hidden="true"
+      />
+    )}
+    <button
+      type="button"
+      onClick={onClick}
+      aria-current={isActive ? "true" : undefined}
+      className={`relative cursor-pointer rounded-lg px-3 py-1.5 text-sm transition-colors ${
+        isActive
+          ? "text-text-primary"
+          : "text-text-muted hover:text-text-primary"
+      }`}
+    >
+      {children}
+    </button>
+  </li>
+);
 
 const NavBar = () => {
-  // State to manage the mobile menu's open/closed status
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoadingLine, setIsLoadingLine] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Scroll state read off the canvas, not the window — the document no longer
+  // scrolls (see components/Layout/AppCanvas.jsx).
+  const [activeId, setActiveId] = useState("");
+
   const pathname = usePathname();
   const router = useRouter();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const canvasRef = useScrollContainer();
 
   // derived state to check if we are in the homepage
   const isInHome = pathname === "/";
 
+  // On /blogs the pill parks on the Blogs tab; anywhere else off-home nothing
+  // is active until the user navigates back to a section.
+  const activeKey = useMemo(() => {
+    if (pathname === "/blogs") return "blogs";
+    return isInHome ? activeId : "";
+  }, [pathname, isInHome, activeId]);
+
+  // One rAF-throttled listener drives the scroll-spy. Sections are looked up
+  // per tick rather than observed once, because they stream in behind
+  // <Suspense> and replace their skeletons.
+  useEffect(() => {
+    const canvas = canvasRef?.current;
+    if (!canvas) return;
+
+    let queued = false;
+
+    const measure = () => {
+      queued = false;
+
+      if (!isInHome) {
+        setActiveId("");
+        return;
+      }
+
+      // Whichever section straddles the canvas midline is the active one.
+      const midline =
+        canvas.getBoundingClientRect().top + canvas.clientHeight / 2;
+      let current = "";
+
+      for (const link of navLinks) {
+        const node = document.getElementById(link.id);
+        if (!node) continue;
+
+        const { top, bottom } = node.getBoundingClientRect();
+        if (top <= midline && bottom > midline) {
+          current = link.id;
+          break;
+        }
+      }
+
+      setActiveId(current);
+    };
+
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(measure);
+    };
+
+    measure();
+    canvas.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    return () => {
+      canvas.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [canvasRef, isInHome, pathname]);
+
   const handleNavbarRouting = (route) => {
     setIsLoadingLine(true);
     router.push(route);
+  };
+
+  // Jump to a section on the homepage, or route there first from elsewhere.
+  const handleTabClick = (link) => {
+    if (!isInHome) {
+      handleNavbarRouting(link.href);
+      return;
+    }
+
+    document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   // Function to explicitly close the mobile menu (used for link clicks)
@@ -43,16 +157,6 @@ const NavBar = () => {
 
   // Ref for the sidebar menu
   const menuRef = useRef(null);
-
-  // Array of navigation links for cleaner code
-  const navLinks = [
-    { id: "skills", href: "/#skills", label: "Skills" },
-    { id: "stack", href: "/#stack", label: "Stack" },
-    { id: "projects", href: "/#projects", label: "Projects" },
-    { id: "experience", href: "/#experience", label: "Experience" },
-    { id: "education", href: "/#education", label: "Education" },
-    { id: "contact", href: "/#contact", label: "Contact" },
-  ];
 
   // UseEffect to reset loading when navigation completes
   useEffect(() => {
@@ -85,123 +189,144 @@ const NavBar = () => {
   return (
     <>
       {isLoadingLine && <LoadingLine />}
-      {/* Main Navigation Bar */}
-      <nav
-        className={`adjust-padding fixed top-0 right-0 left-0 z-50 w-full transition-colors duration-300 ease-in-out ${
-          isScrolled ? "navbar-blur bg-surface/70" : "app-background"
-        }`}
-      >
-        {/* Centered Content Container */}
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 lg:px-8 2xl:max-w-7xl">
-          {/* Left Side - Mobile Menu Toggle + Logo */}
-          <div className="flex items-center gap-3">
-            {/* Mobile Menu Toggle Button */}
-            <button
-              onClick={toggleMenu}
-              className="text-text-muted hover:bg-surface-raised rounded-full p-2 transition lg:hidden"
-              title="Toggle menu"
-            >
-              <Menu className="h-6 w-6" />
-            </button>
 
-            {/* Logo */}
+      {/* ── Desktop: command bar. Sits in the top gutter above the canvas,
+          sharing its 0.5rem inset so the two read as two panels of a single
+          shell. Deliberately unclipped: the theme toggle hangs its tooltip
+          below the bar, so no `overflow-hidden` on this panel. ── */}
+      <nav
+        aria-label="Main"
+        className="fixed top-2 right-2 left-2 z-50 hidden h-12 lg:block"
+      >
+        <div className="bg-surface relative h-full">
+          <div className="mx-auto flex h-full w-full max-w-7xl items-center gap-3 px-2">
+            {/* Wordmark */}
             {isInHome ? (
               <a
                 href="/#home"
-                className="font-dm-mono text-text-primary inline-flex items-center text-xl font-medium"
+                className="flex shrink-0 items-center gap-2.5 rounded-lg pr-1"
               >
-                <span>Jeff</span>
+                <Wordmark />
               </a>
             ) : (
               <button
                 onClick={() => handleNavbarRouting("/#home")}
-                className="font-dm-mono text-text-primary inline-flex cursor-pointer items-center text-xl font-medium"
+                className="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg pr-1"
               >
-                <span>Jeff</span>
+                <Wordmark />
               </button>
             )}
-          </div>
 
-          {/* Desktop Navigation Links */}
-          <ul className="hidden items-center space-x-5 text-sm lg:flex">
-            {navLinks.map((link) => (
-              <li key={link.label}>
-                {isInHome ? (
-                  <a
-                    href={link.href}
-                    className="text-text-primary hover:text-accent flex items-center gap-0.5 transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <button
-                    onClick={() => handleNavbarRouting(link.href)}
-                    className="text-text-primary hover:text-accent flex cursor-pointer items-center gap-0.5 transition-colors"
-                  >
-                    {link.label}
-                  </button>
-                )}
-              </li>
-            ))}
-            <li>
-              {pathname === "/blogs" ? (
-                <span className="text-text-muted cursor-default">Blogs</span>
-              ) : (
-                <Link
-                  href="/blogs"
-                  onClick={() => setIsLoadingLine(true)}
-                  className="text-text-primary hover:text-accent transition-colors"
+            <span
+              className="bg-border-subtle h-6 w-px shrink-0"
+              aria-hidden="true"
+            />
+
+            {/* Tabs — the sliding pill tracks the section under the canvas midline */}
+            <ul className="flex min-w-0 flex-1 items-center gap-0.5">
+              {navLinks.map((link) => (
+                <Tab
+                  key={link.id}
+                  isActive={activeKey === link.id}
+                  onClick={() => handleTabClick(link)}
                 >
-                  Blogs
-                </Link>
-              )}
-            </li>
-          </ul>
+                  {link.label}
+                </Tab>
+              ))}
 
-          {/* Right Side Icons (Theme Toggle + GitHub) */}
-          <div className="flex items-center gap-4 lg:gap-6">
-            {/* Theme Toggle Button - Reserve space for it */}
-            <div className="border-border-subtle flex h-5 w-10 items-center justify-center border-r pr-6">
-              <ThemeToggleCompact />
+              <span
+                className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
+                aria-hidden="true"
+              />
+
+              <Tab
+                isActive={activeKey === "blogs"}
+                onClick={() =>
+                  pathname === "/blogs"
+                    ? undefined
+                    : handleNavbarRouting("/blogs")
+                }
+              >
+                Blogs
+              </Tab>
+            </ul>
+
+            {/* Right cluster */}
+            <div className="flex shrink-0 items-center gap-2">
+              <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+                <ThemeToggleCompact />
+              </div>
+
+              <a
+                href={GITHUB_URL}
+                aria-label="GitHub Portfolio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-text-primary text-surface flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-opacity hover:opacity-90"
+              >
+                <Image
+                  src={tools.githubLogo}
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="h-4 w-4 invert dark:invert-0"
+                />
+                GitHub
+              </a>
             </div>
-
-            {/* GitHub Link Mobile */}
-            <a
-              href="https://github.com/Geoffrey-Owuor"
-              title="My Portfolio"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors lg:hidden"
-            >
-              <Image
-                src={tools.githubLogo}
-                alt="GitHub Logo"
-                width={24}
-                height={24}
-                className="h-6 w-6 dark:invert"
-              />
-            </a>
-
-            {/* GitHub Link Desktop */}
-            <a
-              href="https://github.com/Geoffrey-Owuor"
-              aria-label="GitHub Portfolio"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-text-primary text-surface hidden items-center gap-2 rounded-full px-3 py-1.5 text-sm transition-opacity hover:opacity-90 lg:flex"
-            >
-              <Image
-                src={tools.githubLogo}
-                alt="GitHub Logo"
-                width={24}
-                height={24}
-                className="h-5 w-5 invert dark:invert-0"
-              />
-              Portfolio
-            </a>
           </div>
         </div>
       </nav>
+
+      {/* ── Mobile: flush, full-bleed header. Nothing scrolls beneath it, so
+          it is a solid panel rather than a blur. ── */}
+      <header className="bg-surface fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between px-3 lg:hidden">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleMenu}
+            className="text-text-muted hover:bg-surface-raised rounded-lg p-2 transition"
+            aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+
+          {isInHome ? (
+            <a href="/#home" className="flex items-center gap-2.5">
+              <Wordmark />
+            </a>
+          ) : (
+            <button
+              onClick={() => handleNavbarRouting("/#home")}
+              className="flex cursor-pointer items-center gap-2.5"
+            >
+              <Wordmark />
+            </button>
+          )}
+        </div>
+
+        <div className="flex items-center gap-1">
+          <div className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors">
+            <ThemeToggleCompact />
+          </div>
+
+          <a
+            href={GITHUB_URL}
+            title="My Portfolio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-lg p-2 transition-colors"
+          >
+            <Image
+              src={tools.githubLogo}
+              alt="GitHub Logo"
+              width={24}
+              height={24}
+              className="h-6 w-6 dark:invert"
+            />
+          </a>
+        </div>
+      </header>
 
       {/* Overlay - appears when menu is open */}
       <div
@@ -215,7 +340,7 @@ const NavBar = () => {
       {/* Mobile Menu Drawer - slides from left to right */}
       <div
         ref={menuRef}
-        className={`bg-surface border-border-subtle fixed top-0 bottom-0 left-0 z-80 w-72 transform shadow-2xl transition-all duration-200 ease-in-out lg:hidden dark:border-r ${
+        className={`bg-surface fixed top-0 bottom-0 left-0 z-80 w-72 transform shadow-2xl transition-all duration-200 ease-in-out lg:hidden ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -243,15 +368,19 @@ const NavBar = () => {
               {isInHome ? (
                 <a
                   href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-2xl px-4 py-3 text-base transition-colors"
+                  onClick={closeMenu}
+                  className={`block w-full rounded-xl px-4 py-3 text-base transition-colors ${
+                    activeKey === link.id
+                      ? "bg-surface-raised text-text-primary"
+                      : "text-text-muted hover:bg-surface-raised hover:text-text-primary"
+                  }`}
                 >
                   {link.label}
                 </a>
               ) : (
                 <button
                   onClick={() => handleSidebarClick(link.href)}
-                  className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-2xl px-4 py-3 text-left text-base transition-colors"
+                  className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-xl px-4 py-3 text-left text-base transition-colors"
                 >
                   {link.label}
                 </button>
@@ -260,14 +389,14 @@ const NavBar = () => {
           ))}
           <li>
             {pathname === "/blogs" ? (
-              <span className="text-text-muted w-full cursor-default rounded-2xl px-4 py-3 text-base">
+              <span className="bg-surface-raised text-text-primary block w-full rounded-xl px-4 py-3 text-base">
                 Blogs
               </span>
             ) : (
               <Link
                 href="/blogs"
                 onClick={handleBlogLinkClick}
-                className="text-text-muted hover:bg-surface-raised hover:text-text-primary w-full rounded-2xl px-4 py-3 text-base transition-colors"
+                className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-xl px-4 py-3 text-base transition-colors"
               >
                 Blogs
               </Link>
@@ -278,11 +407,11 @@ const NavBar = () => {
         {/* Mobile GitHub Link (In mobile sidebar) */}
         <div className="absolute right-6 bottom-6 left-6">
           <a
-            href="https://github.com/Geoffrey-Owuor"
+            href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeMenu}
-            className="bg-text-primary text-surface flex items-center justify-center gap-1.5 rounded-full px-4 py-3 transition-opacity hover:opacity-90"
+            className="bg-text-primary text-surface flex items-center justify-center gap-1.5 rounded-xl px-4 py-3 transition-opacity hover:opacity-90"
           >
             GitHub Portfolio
             <ArrowUpRight className="h-4 w-4" />

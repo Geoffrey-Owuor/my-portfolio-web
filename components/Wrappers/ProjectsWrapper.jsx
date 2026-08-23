@@ -7,9 +7,9 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import LoadingLine from "../Modules/LoadingLine";
-import { motion, AnimatePresence, useInView } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
-import { useAlertStore } from "@/store/useAlertStore";
+import MarkdownPreview from "../Modules/MarkdownPreview";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import ProjectStack from "./ProjectStack";
 import ShowMoreButtons from "./ShowMoreButtons";
 import SectionTitle from "./SectionTitle";
@@ -31,30 +31,6 @@ const ProjectsWrapper = ({ projects }) => {
   const handleShowMore = () =>
     setVisibleCount((prev) => Math.min(prev + 3, projects.length));
   const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 3, 3));
-
-  // Creating a ref for the section
-  const projectsRef = useRef(null);
-
-  // Check if section is in view
-  const isInView = useInView(projectsRef, { once: true, amount: 0.2 });
-
-  // Our add alert function
-  const addAlert = useAlertStore((state) => state.addAlert);
-
-  // Trigger Alert 2 seconds after the section comes into view
-  useEffect(() => {
-    if (isInView) {
-      const timer = setTimeout(() => {
-        addAlert({
-          message: "Thoughtful, well-crafted project work",
-          type: "success",
-          iconComponent: BadgeCheck,
-        });
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isInView]);
 
   // Icon animation variants
   const iconVariants = {
@@ -86,9 +62,14 @@ const ProjectsWrapper = ({ projects }) => {
     <>
       {/* LoadingLine fixed at the top of the viewport */}
       <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
-      <div className="mx-1 md:mx-auto" ref={projectsRef}>
+      <div className="mx-1 md:mx-auto">
         {/* Section Title */}
-        <SectionTitle label="Things i've built" title="My Projects" />
+        <SectionTitle
+          label="Things i've built"
+          title="My Projects"
+          alertMessage="Thoughtful, well-crafted project work"
+          alertIcon={BadgeCheck}
+        />
         {/* Responsive Projects Grid */}
         <div className="custom:grid-cols-2 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {visibleProjects.map((project, _index) => (
@@ -131,9 +112,9 @@ const ProjectsWrapper = ({ projects }) => {
               <ProjectStack projectStack={project.project_stack} limit={4} />
 
               {/* Card Description, trimmed for a consistent, skimmable card height */}
-              <p className="text-text-muted mt-3 line-clamp-3 flex-1 leading-relaxed">
+              <MarkdownPreview className="text-text-muted mt-3 line-clamp-3 flex-1 leading-relaxed">
                 {project.project_description}
-              </p>
+              </MarkdownPreview>
 
               {/* Footer: primary in-site action */}
               <div className="border-border-subtle text-accent mt-4 flex items-center gap-1.5 border-t pt-4 text-sm font-semibold">

@@ -8,18 +8,18 @@ const StackSkeleton = () => {
   return (
     <section
       id="stack-skeleton"
-      className="mx-auto min-h-screen w-full max-w-6xl px-4 py-24 md:px-8 2xl:max-w-7xl"
+      className="min-h-app mx-auto w-full max-w-7xl px-4 py-24"
     >
       <div className="mx-auto">
         {/* Section Title Skeleton */}
-        <div className="mx-auto mb-16 h-8 w-48 animate-pulse rounded-md bg-border-subtle"></div>
+        <div className="bg-border-subtle mx-auto mb-16 h-8 w-48 animate-pulse rounded-md"></div>
 
         {/* Core Technologies marquee skeleton */}
         <div className="border-border-subtle mx-auto flex w-full max-w-4xl items-center justify-center gap-10 overflow-hidden rounded-lg border py-8">
           {Array.from({ length: 8 }).map((_, index) => (
             <div
               key={index}
-              className="h-10 w-10 shrink-0 animate-pulse rounded-md bg-border-subtle"
+              className="bg-border-subtle h-10 w-10 shrink-0 animate-pulse rounded-md"
             ></div>
           ))}
         </div>
@@ -34,7 +34,7 @@ const StackSkeleton = () => {
             {Array.from({ length: 6 }).map((_, index) => (
               <div
                 key={index}
-                className="h-6 w-20 animate-pulse rounded-full bg-border-subtle"
+                className="bg-border-subtle h-6 w-20 animate-pulse rounded-full"
               ></div>
             ))}
           </div>

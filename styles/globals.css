@@ -93,6 +93,10 @@
   --accent-hover: var(--color-blue-700); /* 6.70:1 on --surface */
   --success: var(--color-green-700); /* 5.01:1 on --surface */
   --danger: var(--color-red-600); /* 4.83:1 on --surface */
+
+  /* Inline-code chip — GitHub's neutral tint, which reads on both the
+     page surface and the raised panels it can sit inside. */
+  --inline-code-bg: rgb(175 184 193 / 0.2);
 }
 
 html[data-theme="dark"] {
@@ -111,6 +115,35 @@ html[data-theme="dark"] {
   --accent-hover: var(--color-blue-300); /* 11.17:1 on --surface */
   --success: var(--color-green-400); /* 11.58:1 on --surface */
   --danger: var(--color-red-400); /* 7.28:1 on --surface */
+
+  --inline-code-bg: rgb(110 118 129 / 0.4);
+}
+
+/* ── App shell geometry ────────────────────────────────────────────────
+   Single source of truth for the fixed canvas insets, so the shell and the
+   `min-h-app` sections inside it can never drift apart.
+     --layout-top   : space reserved for the header above the canvas
+     --layout-inset : gutter on the other three sides
+   Mobile: the header is flush and full-bleed, and the canvas runs to the
+   screen edges. From 1024px (the width the desktop command bar replaces the
+   mobile header) both panels inset by 0.5rem with a 0.5rem gutter between. */
+:root {
+  --layout-top: 4rem; /* mobile header height (h-16) */
+  --layout-inset: 0px;
+}
+
+@media (width >= 64rem) {
+  :root {
+    --layout-top: 4rem; /* top-2 + bar h-12 + 0.5rem gap */
+    --layout-inset: 0.5rem;
+  }
+}
+
+/* One canvas-height tall — the replacement for `min-h-screen` now that the
+   viewport is no longer what scrolls. Declared with @utility so variants
+   (md:, motion-safe:, …) can still compose with it. */
+@utility min-h-app {
+  min-height: calc(100dvh - var(--layout-top) - var(--layout-inset));
 }
 
 @layer utilities {
@@ -203,6 +236,21 @@ html {
   scroll-behavior: smooth;
 }
 
+/* The scrolling context lives inside <AppCanvas>, so the document itself
+   should never scroll or rubber-band. */
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* The canvas owns the app's only scrollbar. Slimmed down so it doesn't
+   collide with the panel's rounded corners, and kept from chaining its
+   overscroll out to the document. */
+#app-canvas {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  overscroll-behavior: contain;
+}
+
 /* VIEW TRANSITIONS API CONFIGURATION */
 
 /* Disable the browser's default cross-fade animation */
@@ -220,4 +268,26 @@ html {
 /* Ensure the group does not get trapped in a lower stacking context */
 ::view-transition-group(root) {
   z-index: 9999;
+}
+
+/* ── Inline code ───────────────────────────────────────────────────────
+   Tailwind Typography wraps bare inline code in literal backticks and bumps
+   it to semibold. Swapped for GitHub's treatment: a tinted chip with a soft
+   radius, normal weight, no backticks. `.md-inline-code` is the same chip for
+   markdown rendered outside a `prose` container (see MarkdownPreview).
+   Scoped away from `pre code` so fenced blocks keep the plugin's styling.
+   Left unlayered on purpose — the typography plugin lands in the components
+   layer, so a layered rule of equal specificity would lose to it. */
+.md-inline-code,
+.prose :where(code):not(:where(pre code, [class~="not-prose"] *)) {
+  background-color: var(--inline-code-bg);
+  border-radius: 0.375rem;
+  padding: 0.2em 0.4em;
+  font-size: 0.875em;
+  font-weight: 400;
+}
+
+.prose :where(code):not(:where(pre code, [class~="not-prose"] *))::before,
+.prose :where(code):not(:where(pre code, [class~="not-prose"] *))::after {
+  content: none;
 }
