@@ -1,6 +1,7 @@
 import { query } from "@/lib/db";
 import Project from "@/components/Project/Project";
 import { cache } from "react";
+import { stripMarkdown } from "@/utils/Helpers";
 
 const getProjectInfo = cache(async (id) => {
   try {
@@ -27,13 +28,18 @@ export async function generateMetadata({ params }) {
     };
   }
 
+  // project_description is markdown, so it has to be flattened before it can
+  // stand in as a meta description.
+  const description =
+    stripMarkdown(projectInfo.project_description) || projectInfo.project_link;
+
   return {
     title: projectInfo.project_name,
-    description: projectInfo.project_link,
+    description,
 
     openGraph: {
       title: projectInfo.project_name,
-      description: projectInfo.project_link,
+      description,
       type: "article",
       url: `/projects/${id}`,
       siteName: projectInfo.project_name,

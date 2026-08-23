@@ -8,6 +8,8 @@ import Image from "next/image";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ProjectStack from "../Wrappers/ProjectStack";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const Project = ({ projectInfo }) => {
   const router = useRouter();
@@ -157,10 +159,10 @@ const Project = ({ projectInfo }) => {
               </span>
               README.md
             </div>
-            <div className="px-6 py-8">
-              <p className="text-text-muted text-base leading-relaxed">
+            <div className="prose dark:prose-invert prose-img:rounded-xl prose-headings:font-semibold prose-a:text-accent max-w-none px-6 py-8 wrap-break-word">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {project.project_description}
-              </p>
+              </ReactMarkdown>
             </div>
           </motion.div>
         </div>

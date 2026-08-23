@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import MarkdownPreview from "../Modules/MarkdownPreview";
 import { Calendar, Clock, ArrowRight, UserRound } from "lucide-react";
 import { formatDate } from "@/utils/Helpers";
 import { useRouter } from "next/navigation";
@@ -10,7 +9,6 @@ const BlogCardView = ({
   currentBlogs,
   searchQuery,
   highlightText,
-  getPreviewText,
   setIsLoadingLine,
 }) => {
   const router = useRouter();
@@ -49,12 +47,10 @@ const BlogCardView = ({
               </span>
             </div>
 
-            {/* Content preview */}
-            <div className="text-text-muted mb-6 grow">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {getPreviewText(blog.blog_content)}
-              </ReactMarkdown>
-            </div>
+            {/* Content preview, clamped for a consistent, skimmable card height */}
+            <MarkdownPreview className="text-text-muted mb-6 line-clamp-3 grow">
+              {blog.blog_content}
+            </MarkdownPreview>
 
             {/* Read more button */}
             <Link

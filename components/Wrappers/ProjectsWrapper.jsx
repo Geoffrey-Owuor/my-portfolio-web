@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import LoadingLine from "../Modules/LoadingLine";
+import MarkdownPreview from "../Modules/MarkdownPreview";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import ProjectStack from "./ProjectStack";
@@ -111,9 +112,9 @@ const ProjectsWrapper = ({ projects }) => {
               <ProjectStack projectStack={project.project_stack} limit={4} />
 
               {/* Card Description, trimmed for a consistent, skimmable card height */}
-              <p className="text-text-muted mt-3 line-clamp-3 flex-1 leading-relaxed">
+              <MarkdownPreview className="text-text-muted mt-3 line-clamp-3 flex-1 leading-relaxed">
                 {project.project_description}
-              </p>
+              </MarkdownPreview>
 
               {/* Footer: primary in-site action */}
               <div className="border-border-subtle text-accent mt-4 flex items-center gap-1.5 border-t pt-4 text-sm font-semibold">

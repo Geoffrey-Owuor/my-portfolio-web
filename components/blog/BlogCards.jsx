@@ -51,12 +51,6 @@ const BlogCards = ({ blogs }) => {
     );
   };
 
-  // Truncate content for card preview
-  const getPreviewText = (content, maxLength = 150) => {
-    const preview = content.slice(0, maxLength);
-    return preview.length < content.length ? `${preview}...` : preview;
-  };
-
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 6;
@@ -199,7 +193,6 @@ const BlogCards = ({ blogs }) => {
             currentBlogs={currentBlogs}
             searchQuery={searchQuery}
             highlightText={highlightText}
-            getPreviewText={getPreviewText}
             setIsLoadingLine={setIsLoadingLine}
           />
         ) : (
