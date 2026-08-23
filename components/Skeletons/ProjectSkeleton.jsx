@@ -45,6 +45,26 @@ export const ProjectSkeleton = () => {
             <div className="bg-border-subtle h-4 w-4/5 animate-pulse rounded" />
           </div>
         </div>
+
+        {/* Prev/next project nav Skeleton */}
+        <div className="bg-border-subtle mt-10 h-px" />
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {[...Array(2)].map((_, i) => (
+            <div
+              key={i}
+              className={`border-border-subtle flex flex-col gap-2 rounded-xl border p-5 ${
+                i === 0 ? "items-start" : "items-end"
+              }`}
+            >
+              <div className="bg-border-subtle h-3 w-20 animate-pulse rounded" />
+              <div className="bg-border-subtle h-5 w-40 animate-pulse rounded" />
+              <div className="flex gap-1.5">
+                <div className="bg-border-subtle h-6 w-16 animate-pulse rounded-full" />
+                <div className="bg-border-subtle h-6 w-16 animate-pulse rounded-full" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import ProjectStack from "../Wrappers/ProjectStack";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import ProjectNav from "./ProjectNav";
 
 const Project = ({ projectInfo }) => {
   const router = useRouter();
@@ -164,6 +165,21 @@ const Project = ({ projectInfo }) => {
                 {project.project_description}
               </ReactMarkdown>
             </div>
+          </motion.div>
+
+          {/* Neighbouring projects — keeps the reader inside the case studies
+              instead of bouncing back to the grid between each one. */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={5}
+          >
+            <div className="bg-border-subtle mt-10 h-px" />
+            <ProjectNav
+              project={project}
+              onNavigate={() => setIsNavigating(true)}
+            />
           </motion.div>
         </div>
       </section>
