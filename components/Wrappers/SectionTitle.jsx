@@ -87,7 +87,7 @@ const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
             >
               <div className="border-border-subtle bg-surface-raised flex max-w-full items-center gap-2 rounded-lg border px-3 py-1.5 sm:px-4">
                 <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
-                <p className="font-dm-mono text-text-muted text-center text-[11px] leading-snug sm:text-xs">
+                <p className="font-dm-mono text-text-muted line-clamp-1 text-center text-[11px] leading-snug sm:text-xs">
                   {alertMessage}
                 </p>
               </div>
