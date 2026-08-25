@@ -47,7 +47,7 @@ const ExperienceWrapper = ({ experiences }) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="font-dm-mono text-text-muted mb-2 block text-sm leading-none"
+                className="font-mono text-text-muted mb-2 block text-sm leading-none"
               >
                 {exp.work_timeline}
               </motion.time>
@@ -67,7 +67,7 @@ const ExperienceWrapper = ({ experiences }) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                className="font-dm-mono text-text-muted mb-3 text-base italic"
+                className="font-mono text-text-muted mb-3 text-base italic"
               >
                 {exp.company_name}
               </motion.p>

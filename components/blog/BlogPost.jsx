@@ -111,7 +111,7 @@ const BlogPost = ({ user }) => {
           {/* Header - Neutral & Clean */}
           <div className="border-border-subtle flex items-center justify-between border-b px-6 py-6">
             <div>
-              <h1 className="font-dm-mono text-text-primary text-xl font-semibold sm:text-2xl">
+              <h1 className="font-mono text-text-primary text-xl font-semibold sm:text-2xl">
                 Create New Blog Post
               </h1>
               <p className="text-text-muted mt-1 text-sm sm:text-base">

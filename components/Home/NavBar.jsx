@@ -28,7 +28,7 @@ const navLinks = [
 const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
 
 const Wordmark = () => (
-  <span className="font-dm-mono text-text-primary text-[16px] font-medium">
+  <span className="font-mono text-text-primary text-[16px] font-medium">
     Jeff
   </span>
 );
@@ -354,7 +354,7 @@ const NavBar = () => {
         {/* Menu Header */}
         <div className="px-4">
           <div className="border-border-subtle flex items-center justify-between border-b p-4">
-            <span className="font-dm-mono text-text-primary text-xl font-medium">
+            <span className="font-mono text-text-primary text-xl font-medium">
               Menu
             </span>
 

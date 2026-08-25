@@ -47,7 +47,7 @@ const EducationWrapper = ({ educationData }) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="font-dm-mono text-text-muted mb-2 block text-sm leading-none"
+                className="font-mono text-text-muted mb-2 block text-sm leading-none"
               >
                 {education.timeline}
               </motion.time>
@@ -67,7 +67,7 @@ const EducationWrapper = ({ educationData }) => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                className="font-dm-mono text-text-muted mb-3 text-base italic"
+                className="font-mono text-text-muted mb-3 text-base italic"
               >
                 {education.institution}
               </motion.p>

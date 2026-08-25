@@ -41,7 +41,7 @@ export default function LoginPage() {
       <div className="w-full max-w-[345px]">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-dm-mono text-text-primary mb-2 text-center text-3xl font-semibold">
+          <h1 className="font-mono text-text-primary mb-2 text-center text-3xl font-semibold">
             Welcome back
           </h1>
           <p className="text-text-muted text-center">

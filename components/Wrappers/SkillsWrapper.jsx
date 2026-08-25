@@ -45,7 +45,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.6 }}
-        className="font-dm-mono border-border-subtle bg-surface mx-auto w-full max-w-4xl overflow-hidden rounded-lg border"
+        className="font-mono border-border-subtle bg-surface mx-auto w-full max-w-4xl overflow-hidden rounded-lg border"
       >
         {/* Terminal chrome header */}
         <div className="border-border-subtle bg-surface-raised/50 flex items-center gap-2 border-b px-4 py-3">
