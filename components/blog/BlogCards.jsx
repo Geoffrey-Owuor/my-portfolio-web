@@ -107,10 +107,10 @@ const BlogCards = ({ blogs }) => {
         <div className="relative mb-10 flex items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-3">
             {/* Heading */}
-            <span className="font-dm-mono text-text-muted text-sm font-medium tracking-[0.2em] uppercase">
+            <span className="font-mono text-text-muted text-sm font-medium tracking-[0.2em] uppercase">
               Thoughts & Writings
             </span>
-            <h2 className="font-dm-mono text-text-primary text-3xl font-semibold tracking-tight md:text-4xl">
+            <h2 className="font-mono text-text-primary text-3xl font-semibold tracking-tight md:text-4xl">
               Blog Space
             </h2>
             <div className="bg-accent mt-1 h-px w-12" />

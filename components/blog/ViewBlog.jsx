@@ -168,14 +168,14 @@ const ViewBlog = ({ blogPost, userId }) => {
         <article className="w-full max-w-none min-w-0">
           {/* Header Section */}
           <header className="mb-6">
-            <h1 className="font-dm-mono text-text-primary mb-4 text-3xl leading-tight font-bold sm:text-4xl">
+            <h1 className="font-mono text-text-primary mb-4 text-3xl leading-tight font-bold sm:text-4xl">
               {blogPost.blog_title}
             </h1>
 
             {/* The tagline doubles as the post's meta description, so it reads
                 as a standfirst under the title now that the author card is gone. */}
             {blogPost.author_tagline && (
-              <p className="font-dm-mono bg-accent/10 text-accent mb-6 w-fit rounded-full px-3 py-1 text-xs text-nowrap">
+              <p className="font-mono bg-accent/10 text-accent mb-6 w-fit rounded-full px-3 py-1 text-xs text-nowrap">
                 {blogPost.author_tagline}
               </p>
             )}

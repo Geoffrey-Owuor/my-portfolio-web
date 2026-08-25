@@ -7,8 +7,23 @@
 @theme {
   --breakpoint-custom: 1000px;
   --breakpoint-custom-content: 1200px;
-  --font-dm-mono: var(--font-dm-mono);
-  --font-dmsans: var(--font-dmsans);
+  --font-geistsans: var(--font-geistsans), ui-sans-serif, system-ui, sans-serif;
+  --font-dmsans: var(--font-dmsans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Accessibility font switcher options (see store/FontStore.js). Registered
+     here so each can be selected directly (e.g. previewed inside the
+     switcher's menu via `font-inter`/`font-lora`/`font-merriweather`), on top
+     of the runtime override below that repoints `font-dmsans` itself. */
+  --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-lora: var(--font-lora), ui-serif, Georgia, serif;
+  --font-merriweather: var(--font-merriweather), ui-serif, Georgia, serif;
+
+  /* Mono counterparts of the fonts above, indirected into `--font-mono`
+     below so `font-mono` always matches the selected reading font. */
+  --font-dm-mono: var(--font-dm-mono), ui-monospace, monospace;
+  --font-geistmono: var(--font-geistmono), ui-monospace, monospace;
+  --font-jetbrainsmono: var(--font-jetbrainsmono), ui-monospace, monospace;
+  --font-courierprime: var(--font-courierprime), "Courier New", monospace;
 
   /* Neutral ramp (gray) — OKLCH equivalents of the gray-50..950 steps
      already used throughout the app via Tailwind's default palette. */
@@ -75,6 +90,10 @@
   --color-accent-hover: var(--accent-hover);
   --color-success: var(--success);
   --color-danger: var(--danger);
+
+  /* `font-mono` resolves through `--font-mono-active`, which each
+     html[data-font] block below repoints to that font's mono counterpart. */
+  --font-mono: var(--font-mono-active);
 }
 
 :root {
@@ -83,7 +102,7 @@
 
   /* Semantic token values — light mode. Contrast verified WCAG AA (see audit). */
   --surface: #ffffff;
-  --surface-raised: var(--color-gray-50);
+  --surface-raised: var(--color-gray-100);
   --text-primary: var(--color-gray-900); /* 17.7:1 on --surface */
   --text-muted: var(--color-gray-500); /* 4.83:1 on --surface */
   --border-subtle: var(
@@ -97,6 +116,35 @@
   /* Inline-code chip — GitHub's neutral tint, which reads on both the
      page surface and the raised panels it can sit inside. */
   --inline-code-bg: rgb(175 184 193 / 0.2);
+
+  /* Default mono pairing, matching the default reading font (geist). */
+  --font-mono-active: var(--font-geistmono);
+}
+
+/* Font switching — each block pairs the reading font with its mono
+   counterpart. Geist and DM Sans have official mono siblings; Inter, Lora,
+   and Merriweather don't, so they're paired with a stylistically-matching
+   mono font instead (see store/useFontStore.js and layout.js). */
+html[data-font="geist"],
+html:not([data-font]) {
+  font-family: var(--font-geistsans);
+  --font-mono-active: var(--font-geistmono);
+}
+html[data-font="dmsans"] {
+  font-family: var(--font-dmsans);
+  --font-mono-active: var(--font-dm-mono);
+}
+html[data-font="inter"] {
+  font-family: var(--font-inter);
+  --font-mono-active: var(--font-jetbrainsmono);
+}
+html[data-font="lora"] {
+  font-family: var(--font-lora);
+  --font-mono-active: var(--font-courierprime);
+}
+html[data-font="merriweather"] {
+  font-family: var(--font-merriweather);
+  --font-mono-active: var(--font-courierprime);
 }
 
 html[data-theme="dark"] {
@@ -226,7 +274,7 @@ html[data-theme="dark"] {
     background-color: white;
   }
 
-  [data-theme="dark"] .app-background {
+  html[data-theme="dark"] .app-background {
     background-color: #030712;
   }
 }

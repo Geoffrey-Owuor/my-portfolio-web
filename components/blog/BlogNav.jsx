@@ -48,7 +48,7 @@ const NeighbourCard = ({
       }`}
     >
       <span
-        className={`font-dm-mono text-text-muted group-hover:text-accent flex items-center gap-1.5 text-xs transition-colors ${
+        className={`font-mono text-text-muted group-hover:text-accent flex items-center gap-1.5 text-xs transition-colors ${
           isPrevious ? "" : "flex-row-reverse"
         }`}
       >
@@ -70,7 +70,7 @@ const NeighbourCard = ({
 
       {readTime && (
         <span
-          className={`font-dm-mono text-text-muted flex items-center gap-1.5 text-xs ${
+          className={`font-mono text-text-muted flex items-center gap-1.5 text-xs ${
             isPrevious ? "" : "flex-row-reverse"
           }`}
         >

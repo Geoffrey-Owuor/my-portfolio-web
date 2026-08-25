@@ -64,7 +64,7 @@ const Hero = () => {
             {titleTags.map(({ label, icon: Icon }) => (
               <span
                 key={label}
-                className="font-dm-mono bg-accent/10 text-accent flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-nowrap"
+                className="font-mono bg-accent/10 text-accent flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-nowrap"
               >
                 <Icon className="h-4 w-4" />
                 {label}
@@ -77,7 +77,7 @@ const Hero = () => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
-            className="font-dm-mono text-text-primary text-3xl font-medium tracking-tighter md:text-5xl"
+            className="font-mono text-text-primary text-3xl font-medium tracking-tighter md:text-5xl"
           >
             Full-Stack Builder
           </motion.h1>

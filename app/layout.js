@@ -1,4 +1,14 @@
-import { DM_Sans, DM_Mono } from "next/font/google";
+import {
+  DM_Sans,
+  DM_Mono,
+  Inter,
+  Lora,
+  Geist,
+  Geist_Mono,
+  Merriweather,
+  JetBrains_Mono,
+  Courier_Prime,
+} from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
 import NetworkStatus from "@/components/Modules/NetworkStatus";
@@ -7,6 +17,12 @@ import Footer from "@/components/Home/Footer";
 import AppCanvas, {
   ScrollContainerProvider,
 } from "@/components/Layout/AppCanvas";
+import { FONT_STORAGE_KEY } from "@/store/useFontStore";
+
+const geistSans = Geist({
+  variable: "--font-geistsans",
+  subsets: ["latin"],
+});
 
 const dmMono = DM_Mono({
   variable: "--font-dm-mono",
@@ -19,6 +35,54 @@ const dmsans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
 });
+
+// Alternate reading fonts offered by the accessibility font switcher (see
+// components/Modules/FontSwitcher.jsx) — always loaded so the switch is
+// instant, and only applied when selected via the `data-font` attribute
+// override in globals.css.
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const merriweather = Merriweather({
+  variable: "--font-merriweather",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+// Mono counterparts for the fonts above (see the `--font-mono-active`
+// indirection in globals.css) — swapped alongside the reading font so
+// `font-mono` always matches whichever family is selected. Geist and DM Sans
+// have official mono siblings; Inter, Lora, and Merriweather don't, so they're
+// paired with a stylistically-matching mono font instead.
+const geistMono = Geist_Mono({
+  variable: "--font-geistmono",
+  subsets: ["latin"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrainsmono",
+  subsets: ["latin"],
+});
+
+const courierPrime = Courier_Prime({
+  variable: "--font-courierprime",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+// Applies the user's saved font preference before hydration to avoid a flash of the wrong font.
+const fontInitScript = `(function(){try{var raw=localStorage.getItem(${JSON.stringify(
+  FONT_STORAGE_KEY,
+)});var font=raw&&JSON.parse(raw).state&&JSON.parse(raw).state.font;if(font)document.documentElement.setAttribute("data-font",font);}catch(e){}})();`;
 
 export const metadata = {
   metadataBase: new URL(
@@ -75,13 +139,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={` ${geistSans.variable} ${dmMono.variable} ${dmsans.variable} ${inter.variable} ${lora.variable} ${merriweather.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${courierPrime.variable} antialiased`}
+    >
       <head>
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
+        <script dangerouslySetInnerHTML={{ __html: fontInitScript }} />
       </head>
-      <body
-        className={` ${dmMono.variable} ${dmsans.variable} font-dmsans app-background antialiased`}
-      >
+      <body className="app-background">
         <Providers>
           <NetworkStatus />
 

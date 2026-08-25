@@ -57,10 +57,10 @@ const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
       ref={titleRef}
       className="relative mb-16 flex flex-col items-center justify-center gap-3"
     >
-      <span className="font-dm-mono text-text-muted text-sm font-medium tracking-[0.2em] uppercase">
+      <span className="font-mono text-text-muted text-sm font-medium tracking-[0.2em] uppercase">
         {label}
       </span>
-      <h2 className="font-dm-mono text-text-primary text-3xl font-semibold tracking-tight md:text-4xl">
+      <h2 className="font-mono text-text-primary text-3xl font-semibold tracking-tight md:text-4xl">
         {title}
       </h2>
       <div className="bg-accent mt-1 h-px w-12" />
@@ -87,7 +87,7 @@ const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
             >
               <div className="border-border-subtle bg-surface-raised flex max-w-full items-center gap-2 rounded-lg border px-3 py-1.5 sm:px-4">
                 <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
-                <p className="font-dm-mono text-text-muted line-clamp-1 text-center text-[11px] leading-snug sm:text-xs">
+                <p className="font-mono text-text-muted line-clamp-1 text-center text-[11px] leading-snug sm:text-xs">
                   {alertMessage}
                 </p>
               </div>
