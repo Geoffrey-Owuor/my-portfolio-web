@@ -45,10 +45,9 @@ const FontSwitcher = () => {
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-label={`Change site font, currently ${FONTS[font].label}`}
-        className="text-text-muted hover:bg-surface-raised hover:text-text-primary flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+        className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
       >
-        <CaseSensitive className="h-4.5 w-4.5" aria-hidden="true" />
-        {FONTS[font].label}
+        <CaseSensitive className="h-6 w-6 lg:h-5 lg:w-5" aria-hidden="true" />
       </button>
 
       <AnimatePresence>
@@ -56,11 +55,11 @@ const FontSwitcher = () => {
           <motion.div
             role="menu"
             aria-label="Site font"
-            initial={{ opacity: 0, y: 6, scale: 0.96 }}
+            initial={{ opacity: 0, y: -6, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 6, scale: 0.96 }}
+            exit={{ opacity: 0, y: -6, scale: 0.96 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="bg-surface border-border-subtle absolute right-0 bottom-full z-10 mb-2 w-52 origin-bottom-right rounded-xl border p-1.5 shadow-lg"
+            className="bg-surface border-border-subtle absolute top-full right-0 z-10 mt-2 w-52 origin-top-right rounded-xl border p-1.5 shadow-lg"
           >
             {FONT_ORDER.map((key) => (
               <button
