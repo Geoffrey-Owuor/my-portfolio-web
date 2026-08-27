@@ -8,6 +8,7 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import LoadingLine from "../Modules/LoadingLine";
 import { usePathname, useRouter } from "next/navigation";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
+import FontSwitcher from "../Modules/FontSwitcher";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 import { useScrollContainer } from "../Layout/AppCanvas";
@@ -28,7 +29,7 @@ const navLinks = [
 const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
 
 const Wordmark = () => (
-  <span className="font-mono text-text-primary text-[16px] font-medium">
+  <span className="text-text-primary font-mono text-[17px] font-medium">
     Jeff
   </span>
 );
@@ -257,6 +258,9 @@ const NavBar = () => {
             {/* Right cluster */}
             <div className="flex shrink-0 items-center gap-2">
               <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+                <FontSwitcher />
+              </div>
+              <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
                 <ThemeToggleCompact />
               </div>
 
@@ -312,6 +316,10 @@ const NavBar = () => {
 
         <div className="flex items-center gap-1">
           <div className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors">
+            <FontSwitcher />
+          </div>
+
+          <div className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors">
             <ThemeToggleCompact />
           </div>
 
@@ -354,7 +362,7 @@ const NavBar = () => {
         {/* Menu Header */}
         <div className="px-4">
           <div className="border-border-subtle flex items-center justify-between border-b p-4">
-            <span className="font-mono text-text-primary text-xl font-medium">
+            <span className="text-text-primary font-mono text-xl font-medium">
               Menu
             </span>
 
