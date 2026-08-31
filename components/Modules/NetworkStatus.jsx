@@ -43,6 +43,8 @@ const NetworkStatus = () => {
     };
   }, []);
 
+  const isOffline = status === "offline";
+
   return (
     <AnimatePresence>
       {status !== "hidden" && (
@@ -51,31 +53,28 @@ const NetworkStatus = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="adjust-padding pointer-events-none fixed right-0 bottom-6 left-0 z-100 flex justify-center"
+          className="pointer-events-none fixed right-0 bottom-4 left-0 z-9999 flex justify-center px-4 md:bottom-6"
         >
-          <div
-            className={`custom-blur text-surface pointer-events-auto flex items-center gap-3 rounded-full px-6 py-3 shadow-lg transition-colors duration-300 ${
-              status === "offline" ? "bg-danger" : "bg-success"
-            }`}
-          >
+          <div className="bg-text-primary text-surface pointer-events-auto flex w-full items-center gap-3 rounded-xl px-4 py-3 shadow-lg sm:w-auto sm:max-w-md sm:px-6 sm:py-3.5">
             {/* Icon Switching */}
-            {status === "offline" ? (
-              <WifiOff className="h-5 w-5 animate-pulse" />
+            {isOffline ? (
+              <WifiOff className="text-danger h-5 w-5 shrink-0 animate-pulse" />
             ) : (
-              <Wifi className="h-5 w-5" />
+              <Wifi className="text-success h-5 w-5 shrink-0" />
             )}
 
             {/* Text Switching */}
-            <span className="font-medium">
-              {status === "offline"
+            <span className="flex-1 text-sm leading-snug font-medium wrap-break-word sm:text-base">
+              {isOffline
                 ? "You are offline. Some features may not work as expected."
-                : "Hooray! You are back online 🎉"}
+                : "Hooray! You are back online"}
             </span>
 
             {/* Optional Close Button (mostly for offline state if it persists) */}
             <button
               onClick={() => setStatus("hidden")}
-              className="hover:bg-surface/20 ml-2 rounded-full p-1"
+              className="text-surface/70 hover:text-surface shrink-0 cursor-pointer rounded-full p-1 transition-colors"
+              aria-label="Dismiss network status message"
             >
               <X className="h-4 w-4" />
             </button>

@@ -18,7 +18,7 @@ export const ProjectSkeleton = () => {
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="bg-border-subtle h-6 w-16 animate-pulse rounded-full"
+                className="bg-border-subtle h-6 w-16 animate-pulse rounded-lg"
               />
             ))}
           </div>
