@@ -9,13 +9,13 @@ const ProjectStack = ({ projectStack, limit }) => {
       {visibleStack.map((stack, index) => (
         <div
           key={index}
-          className="font-mono bg-accent/10 text-accent rounded-full px-2.5 py-0.5 text-sm text-nowrap"
+          className="bg-accent/10 text-accent rounded-lg px-2.5 py-0.5 font-mono text-sm text-nowrap"
         >
           {stack}
         </div>
       ))}
       {remaining > 0 && (
-        <div className="font-mono text-text-muted border-border-subtle rounded-full border px-2.5 py-0.5 text-sm text-nowrap">
+        <div className="text-text-muted border-border-subtle rounded-lg border px-2.5 py-0.5 font-mono text-sm text-nowrap">
           +{remaining}
         </div>
       )}

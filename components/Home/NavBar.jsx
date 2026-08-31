@@ -197,93 +197,86 @@ const NavBar = () => {
           below the bar, so no `overflow-hidden` on this panel. ── */}
       <nav
         aria-label="Main"
-        className="fixed top-2 right-2 left-2 z-50 hidden h-12 lg:block"
+        className="bg-surface fixed top-2 right-2 left-2 z-50 mx-auto hidden h-12 max-w-7xl items-center justify-between gap-3 px-2 lg:flex"
       >
-        <div className="bg-surface relative h-full">
-          <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-3 px-2">
-            {/* Left cluster */}
-            <div className="flex items-center gap-3">
-              {/* Wordmark */}
-              {isInHome ? (
-                <a
-                  href="/#home"
-                  className="flex shrink-0 items-center gap-2.5 rounded-lg pr-1"
-                >
-                  <Wordmark />
-                </a>
-              ) : (
-                <button
-                  onClick={() => handleNavbarRouting("/#home")}
-                  className="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg pr-1"
-                >
-                  <Wordmark />
-                </button>
-              )}
+        {/* Left cluster */}
+        <div className="flex items-center gap-3">
+          {/* Wordmark */}
+          {isInHome ? (
+            <a href="/#home">
+              <Wordmark />
+            </a>
+          ) : (
+            <button
+              onClick={() => handleNavbarRouting("/#home")}
+              className="cursor-pointer"
+            >
+              <Wordmark />
+            </button>
+          )}
 
-              <span
-                className="bg-border-subtle h-6 w-px shrink-0"
-                aria-hidden="true"
-              />
+          <span
+            className="bg-border-subtle h-6 w-px shrink-0"
+            aria-hidden="true"
+          />
 
-              {/* Tabs — the sliding pill tracks the section under the canvas midline */}
-              <ul className="flex items-center gap-0.5">
-                {navLinks.map((link) => (
-                  <Tab
-                    key={link.id}
-                    isActive={activeKey === link.id}
-                    onClick={() => handleTabClick(link)}
-                  >
-                    {link.label}
-                  </Tab>
-                ))}
-
-                <span
-                  className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
-                  aria-hidden="true"
-                />
-
-                <Tab
-                  isActive={activeKey === "blogs"}
-                  onClick={() =>
-                    pathname === "/blogs"
-                      ? undefined
-                      : handleNavbarRouting("/blogs")
-                  }
-                >
-                  Blogs
-                </Tab>
-              </ul>
-            </div>
-
-            {/* Right cluster */}
-            <div className="flex shrink-0 items-center gap-2">
-              <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
-                <FontSwitcher />
-              </div>
-              <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
-                <ThemeToggleCompact />
-              </div>
-
-              <a
-                href={GITHUB_URL}
-                aria-label="GitHub Portfolio"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-text-primary text-surface flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-opacity hover:opacity-90"
+          {/* Tabs — the sliding pill tracks the section under the canvas midline */}
+          <ul className="flex items-center gap-0.5">
+            {navLinks.map((link) => (
+              <Tab
+                key={link.id}
+                isActive={activeKey === link.id}
+                onClick={() => handleTabClick(link)}
               >
-                <span className="flex h-4 w-4 shrink-0 items-center justify-center">
-                  <Image
-                    src={tools.githubLogo}
-                    alt=""
-                    width={24}
-                    height={24}
-                    className="h-4 w-4 invert dark:invert-0"
-                  />
-                </span>
-                GitHub
-              </a>
-            </div>
+                {link.label}
+              </Tab>
+            ))}
+
+            <span
+              className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
+              aria-hidden="true"
+            />
+
+            <Tab
+              isActive={activeKey === "blogs"}
+              onClick={() =>
+                pathname === "/blogs"
+                  ? undefined
+                  : handleNavbarRouting("/blogs")
+              }
+            >
+              Blogs
+            </Tab>
+          </ul>
+        </div>
+
+        {/* Right cluster */}
+        <div className="flex shrink-0 items-center gap-2">
+          <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+            <FontSwitcher />
           </div>
+          <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+            <ThemeToggleCompact />
+          </div>
+
+          <a
+            href={GITHUB_URL}
+            aria-label="GitHub Portfolio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-text-primary text-surface flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-opacity hover:opacity-90"
+          >
+            <span className="flex h-4 w-4 shrink-0 items-center justify-center">
+              <Image
+                src={tools.githubLogo}
+                alt=""
+                width={24}
+                height={24}
+                className="h-4 w-4 invert dark:invert-0"
+              />
+            </span>
+            GitHub
+          </a>
         </div>
       </nav>
 
@@ -301,13 +294,13 @@ const NavBar = () => {
           </button>
 
           {isInHome ? (
-            <a href="/#home" className="flex items-center gap-2.5">
+            <a href="/#home">
               <Wordmark />
             </a>
           ) : (
             <button
               onClick={() => handleNavbarRouting("/#home")}
-              className="flex cursor-pointer items-center gap-2.5"
+              className="cursor-pointer"
             >
               <Wordmark />
             </button>
