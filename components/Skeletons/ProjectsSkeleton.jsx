@@ -29,9 +29,9 @@ const ProjectsSkeleton = () => {
               </div>
               {/* Tech stack pills skeleton */}
               <div className="flex flex-wrap gap-1.5">
-                <div className="bg-border-subtle h-5 w-14 animate-pulse rounded-full"></div>
-                <div className="bg-border-subtle h-5 w-16 animate-pulse rounded-full"></div>
-                <div className="bg-border-subtle h-5 w-12 animate-pulse rounded-full"></div>
+                <div className="bg-border-subtle h-5 w-14 animate-pulse rounded-lg"></div>
+                <div className="bg-border-subtle h-5 w-16 animate-pulse rounded-lg"></div>
+                <div className="bg-border-subtle h-5 w-12 animate-pulse rounded-lg"></div>
               </div>
               {/* Card Description Skeleton */}
               <div className="mt-3 flex flex-1 flex-col gap-2">

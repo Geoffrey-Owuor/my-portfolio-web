@@ -28,7 +28,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="adjust-padding mt-4"
+            className="mt-4"
           >
             <div className="bg-text-primary text-surface flex w-auto min-w-[300px] items-center justify-between rounded-xl px-6 py-4.5 shadow-md">
               <div className="flex items-center gap-2">
