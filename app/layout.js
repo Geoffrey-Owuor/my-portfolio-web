@@ -160,7 +160,7 @@ export default function RootLayout({ children }) {
             <NavBar />
 
             <AppCanvas>
-              <main>{children}</main>
+              <main className="flex flex-1 flex-col">{children}</main>
               <Footer />
             </AppCanvas>
           </ScrollContainerProvider>

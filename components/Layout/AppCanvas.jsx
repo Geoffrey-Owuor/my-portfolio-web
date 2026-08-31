@@ -50,7 +50,11 @@ const AppCanvas = ({ children }) => {
       // the shell and its `min-h-app` children share one geometry source.
       // `scrollbar-gutter: stable` keeps the gutter reserved, so locking the
       // scroll for a modal/drawer causes no reflow.
-      className="border-border-subtle fixed top-(--layout-top) right-(--layout-inset) bottom-(--layout-inset) left-(--layout-inset) overflow-x-hidden overflow-y-auto scroll-smooth rounded-t-xl border [scrollbar-gutter:stable] lg:rounded-xl"
+      // The column layout is what pins the footer: the canvas is always at
+      // least viewport-tall, so a `flex-1` <main> soaks up any leftover space
+      // and pushes <Footer> to the bottom on short pages, while tall pages
+      // just scroll as before.
+      className="border-border-subtle fixed top-(--layout-top) right-(--layout-inset) bottom-(--layout-inset) left-(--layout-inset) flex flex-col overflow-x-hidden overflow-y-auto scroll-smooth rounded-t-xl border [scrollbar-gutter:stable] lg:rounded-xl"
     >
       {children}
     </div>

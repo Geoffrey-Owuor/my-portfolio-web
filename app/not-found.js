@@ -3,8 +3,8 @@ import { Home, FileQuestion } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-app items-center justify-center px-4">
-      <div className="text-center">
+    <div className="my-16 flex flex-1 items-center justify-center px-4">
+      <div className="border-border-subtle rounded-xl border-2 border-dashed p-8 text-center">
         <FileQuestion className="mx-auto mb-6 h-16 w-16 text-gray-600 dark:text-gray-400" />
         <h1 className="mb-4 text-6xl font-bold text-gray-900 dark:text-white">
           404
@@ -17,7 +17,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-100"
+          className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
         >
           <Home className="h-4 w-4" />
           Return Home
