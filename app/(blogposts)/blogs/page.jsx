@@ -18,12 +18,16 @@ export const metadata = {
   },
 };
 
-const page = async () => {
+const BlogCardsData = async () => {
   const blogs = await BlogsData();
 
+  return <BlogCards blogs={blogs} />;
+};
+
+const page = () => {
   return (
     <Suspense fallback={<BlogCardsSkeleton />}>
-      <BlogCards blogs={blogs} />
+      <BlogCardsData />
     </Suspense>
   );
 };

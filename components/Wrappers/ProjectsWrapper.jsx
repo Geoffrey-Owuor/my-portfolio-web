@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import ProjectStack from "./ProjectStack";
 import ShowMoreButtons from "./ShowMoreButtons";
+import Link from "next/link";
 import SectionTitle from "./SectionTitle";
 
 const ProjectsWrapper = ({ projects }) => {
@@ -41,7 +42,6 @@ const ProjectsWrapper = ({ projects }) => {
       y: 0,
     },
     hover: {
-      scale: 1.2,
       rotate: 15,
       x: 3,
       y: -3,
@@ -95,17 +95,12 @@ const ProjectsWrapper = ({ projects }) => {
                   {project.project_name}
                 </h3>
 
-                <motion.a
-                  href={project.project_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Visit live site"
-                  onClick={(e) => e.stopPropagation()}
+                <motion.div
                   variants={iconVariants}
-                  className="text-text-muted hover:text-accent shrink-0"
+                  className="text-text-muted shrink-0"
                 >
                   <CircleArrowOutUpRight className="h-5 w-5" />
-                </motion.a>
+                </motion.div>
               </div>
 
               {/* Tech stack pills — quick-scan metadata, high in the hierarchy */}
@@ -117,10 +112,17 @@ const ProjectsWrapper = ({ projects }) => {
               </MarkdownPreview>
 
               {/* Footer: primary in-site action */}
-              <div className="border-border-subtle text-accent mt-4 flex items-center gap-1.5 border-t pt-4 text-sm font-semibold">
+              <Link
+                href={`/projects/${project.id}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsNavigating(true);
+                }}
+                className="border-border-subtle text-accent mt-4 flex items-center gap-1.5 border-t pt-4 text-sm font-semibold underline-offset-4 hover:underline"
+              >
                 View case study
                 <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>

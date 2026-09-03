@@ -102,15 +102,15 @@ const BlogCards = ({ blogs }) => {
   return (
     <>
       {isLoadingLine && <LoadingLine />}
-      <div className="mx-auto max-w-7xl px-4 py-16">
+      <div className="mx-auto w-full max-w-7xl px-4 py-16">
         {/* Header */}
         <div className="relative mb-10 flex items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-3">
             {/* Heading */}
-            <span className="font-mono text-text-muted text-sm font-medium tracking-[0.2em] uppercase">
+            <span className="text-text-muted font-mono text-sm font-medium tracking-[0.2em] uppercase">
               Thoughts & Writings
             </span>
-            <h2 className="font-mono text-text-primary text-3xl font-semibold tracking-tight md:text-4xl">
+            <h2 className="text-text-primary font-mono text-3xl font-semibold tracking-tight md:text-4xl">
               Blog Space
             </h2>
             <div className="bg-accent mt-1 h-px w-12" />
