@@ -151,6 +151,16 @@ const NavBar = () => {
     document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Wordmark/section links render as plain <a href="/#id"> while on the
+  // homepage (for accessibility/middle-click/new-tab), but a left click is
+  // intercepted so the jump goes through the same explicit smooth-scroll
+  // path as the tabs — native fragment navigation would otherwise scroll
+  // instantly now that AppCanvas no longer sets CSS scroll-smooth.
+  const handleSectionLinkClick = (e, id) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   // Function to explicitly close the mobile menu (used for link clicks)
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -203,7 +213,7 @@ const NavBar = () => {
         <div className="flex items-center gap-3">
           {/* Wordmark */}
           {isInHome ? (
-            <a href="/#home">
+            <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
               <Wordmark />
             </a>
           ) : (
@@ -294,7 +304,7 @@ const NavBar = () => {
           </button>
 
           {isInHome ? (
-            <a href="/#home">
+            <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
               <Wordmark />
             </a>
           ) : (
@@ -376,7 +386,10 @@ const NavBar = () => {
               {isInHome ? (
                 <a
                   href={link.href}
-                  onClick={closeMenu}
+                  onClick={(e) => {
+                    handleSectionLinkClick(e, link.id);
+                    closeMenu();
+                  }}
                   className={`block w-full rounded-xl px-4 py-3 text-base transition-colors ${
                     activeKey === link.id
                       ? "bg-surface-raised text-text-primary"
