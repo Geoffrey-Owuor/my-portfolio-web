@@ -94,16 +94,21 @@ export async function generateMetadata({ params }) {
   };
 }
 
-const page = async ({ params }) => {
-  const { id } = await params;
+const ViewBlogData = async ({ id }) => {
   const blogPost = await getBlogInfo(id);
 
   const headerList = await headers();
   const userId = headerList.get("x-user-id");
 
+  return <ViewBlog blogPost={blogPost} userId={userId} />;
+};
+
+const page = async ({ params }) => {
+  const { id } = await params;
+
   return (
     <Suspense fallback={<ViewBlogsSkeleton />}>
-      <ViewBlog blogPost={blogPost} userId={userId} />
+      <ViewBlogData id={id} />
     </Suspense>
   );
 };

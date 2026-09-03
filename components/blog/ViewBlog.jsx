@@ -56,11 +56,6 @@ const ViewBlog = ({ blogPost, userId }) => {
 
   // UseEffect to run some functionalities on mount
   useEffect(() => {
-    // Disable smooth scrolling on mount — on the canvas, which is what
-    // actually scrolls now (see components/Layout/AppCanvas.jsx).
-    const canvas = document.getElementById("app-canvas");
-    if (canvas) canvas.style.scrollBehavior = "auto";
-
     // Determine the URL only after mounting on the client
     if (typeof window !== "undefined") {
       setCurrentUrl(window.location.href);
@@ -82,10 +77,6 @@ const ViewBlog = ({ blogPost, userId }) => {
         alertMessage: "Where the magic began. My very first post! 🕰️🚀",
       });
     }
-
-    return () => {
-      if (canvas) canvas.style.scrollBehavior = ""; // restore on unmount
-    };
   }, []);
 
   // 2. Helper to generate share links based on the platform key

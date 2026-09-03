@@ -22,7 +22,7 @@ const BlogCardView = ({
               setIsLoadingLine(true);
               router.push(`/blog/${blog.id}`);
             }}
-            className="border-border-subtle hover:border-accent flex cursor-pointer flex-col rounded-xl border p-6 transition-colors duration-150"
+            className="border-border-subtle group hover:border-accent flex cursor-pointer flex-col rounded-xl border p-6 transition-colors duration-150"
           >
             {/* Title */}
             <h2 className="text-text-primary mb-3 line-clamp-2 text-xl font-semibold">
@@ -62,7 +62,7 @@ const BlogCardView = ({
               className="text-accent inline-flex w-fit items-center gap-1.5 text-sm font-medium underline-offset-4 hover:underline"
             >
               Read more
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
             </Link>
           </article>
         ))

@@ -281,7 +281,6 @@ html[data-theme="dark"] {
 
 html {
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-  scroll-behavior: smooth;
 }
 
 /* The scrolling context lives inside <AppCanvas>, so the document itself

@@ -54,7 +54,15 @@ const AppCanvas = ({ children }) => {
       // least viewport-tall, so a `flex-1` <main> soaks up any leftover space
       // and pushes <Footer> to the bottom on short pages, while tall pages
       // just scroll as before.
-      className="border-border-subtle fixed top-(--layout-top) right-(--layout-inset) bottom-(--layout-inset) left-(--layout-inset) flex flex-col overflow-x-hidden overflow-y-auto scroll-smooth rounded-t-xl border [scrollbar-gutter:stable] lg:rounded-xl"
+      //
+      // Deliberately no `scroll-smooth` here: that CSS makes *every* scroll
+      // into this box smooth by default, including Next's own automatic
+      // hash-scroll after a route change (e.g. clicking a section link from
+      // /blogs lands on "/" and then animates into the target section).
+      // Instead, scroll-behavior stays "auto" (instant) unless a caller
+      // explicitly asks for smooth via `scrollIntoView({behavior:"smooth"})`
+      // — see NavBar's handleTabClick/handleSectionLinkClick.
+      className="border-border-subtle fixed top-(--layout-top) right-(--layout-inset) bottom-(--layout-inset) left-(--layout-inset) flex flex-col overflow-x-hidden overflow-y-auto rounded-t-xl border [scrollbar-gutter:stable] lg:rounded-xl"
     >
       {children}
     </div>

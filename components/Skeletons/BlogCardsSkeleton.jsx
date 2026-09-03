@@ -1,6 +1,6 @@
 const BlogCardsSkeleton = () => {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16">
+    <div className="mx-auto w-full max-w-7xl px-4 py-16">
       {/* Header */}
       <div className="relative mb-10 flex items-center justify-center">
         <div className="bg-border-subtle h-9 w-48 animate-pulse rounded-xl" />
@@ -11,8 +11,17 @@ const BlogCardsSkeleton = () => {
         {/* Search input skeleton */}
         <div className="bg-border-subtle h-11 w-80 animate-pulse rounded-xl" />
 
-        {/* View toggle pill skeleton */}
-        <div className="bg-surface-raised h-10 w-36 animate-pulse rounded-xl" />
+        {/* View toggle pill, Login & Create Blog skeleton */}
+        <div className="flex flex-col items-center gap-4 md:flex-row">
+          {/* Login & Create Blog links skeleton */}
+          <div className="flex items-center gap-4">
+            <div className="bg-border-subtle h-4 w-12 animate-pulse rounded-xl" />
+            <div className="bg-border-subtle h-4 w-20 animate-pulse rounded-xl" />
+          </div>
+
+          {/* Toggle pill skeleton */}
+          <div className="bg-surface-raised h-10 w-36 animate-pulse rounded-xl" />
+        </div>
       </div>
 
       {/* Card Grid */}
