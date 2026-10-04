@@ -1,4 +1,4 @@
-import profile_photo from "../public/profile_photo.png";
+import profile_photo from "../public/profile2.jpg";
 import aws from "../public/aws.svg";
 import azure from "../public/azure.svg";
 import docker from "../public/docker.svg";

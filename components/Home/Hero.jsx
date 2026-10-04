@@ -43,7 +43,7 @@ const Hero = () => {
               <Image
                 src={assets.profile_photo}
                 alt="profile-image"
-                className="relative h-60 w-60 rounded-full object-cover md:h-80 md:w-80"
+                className="relative h-60 w-60 rounded-full object-cover object-[50%_25%] md:h-80 md:w-80"
                 priority
                 width={300}
                 height={300}
