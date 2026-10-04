@@ -1,4 +1,5 @@
 import profile_photo from "../public/profile2.jpg";
+import github_avatar from "../public/profile1.png";
 import aws from "../public/aws.svg";
 import azure from "../public/azure.svg";
 import docker from "../public/docker.svg";
@@ -29,6 +30,7 @@ import apps_hub_image from "../public/project_images/apps_hub_image.png";
 
 export const assets = {
   profile_photo,
+  github_avatar,
 };
 
 export const project_images = [
