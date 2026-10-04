@@ -41,7 +41,7 @@ export default function LoginPage() {
       <div className="w-full max-w-[345px]">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-mono text-text-primary mb-2 text-center text-3xl font-semibold">
+          <h1 className="text-text-primary mb-2 text-center font-mono text-3xl font-semibold">
             Welcome back
           </h1>
           <p className="text-text-muted text-center">
@@ -52,7 +52,7 @@ export default function LoginPage() {
         {/* Login Fields */}
         <form onSubmit={handleSubmit} autoComplete="off" className="space-y-6">
           {error && (
-            <div className="bg-danger/10 text-danger rounded-full px-4 py-3 text-sm">
+            <div className="bg-danger/10 text-danger rounded-xl px-4 py-3 text-sm">
               {error}
             </div>
           )}
@@ -73,7 +73,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent block w-full rounded-full border py-3 pr-3 pl-14 transition-colors focus:outline-none"
+                className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent block w-full rounded-xl border py-3 pr-3 pl-14 transition-colors focus:outline-none"
                 placeholder="you@example.com"
                 required
               />
@@ -97,7 +97,7 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent block w-full rounded-full border py-3 pr-10 pl-14 transition-colors focus:outline-none"
+                className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent block w-full rounded-xl border py-3 pr-10 pl-14 transition-colors focus:outline-none"
                 placeholder="••••••••"
                 required
               />
@@ -119,7 +119,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-text-primary text-surface flex w-full items-center justify-center gap-2 rounded-full px-4 py-3 font-semibold transition-opacity hover:opacity-90 focus:outline-none disabled:opacity-50"
+            className="bg-text-primary text-surface flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 font-semibold transition-opacity hover:opacity-90 focus:outline-none disabled:opacity-50"
           >
             {loading ? (
               <>
