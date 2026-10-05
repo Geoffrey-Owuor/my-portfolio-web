@@ -6,8 +6,8 @@ import { CaseSensitive, Check } from "lucide-react";
 import { FONT_ORDER, FONTS, useFontStore } from "@/store/useFontStore";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
-// Accessibility control: lets a visitor swap the site's reading font (DM
-// Sans by default) for one of three alternates — see store/FontStore.js for
+// Accessibility control: lets a visitor swap the site's reading font (Inter
+// by default) for one of four alternates — see store/useFontStore.js for
 // the options and globals.css for how the choice is actually applied.
 const FontSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -76,7 +76,7 @@ const FontSwitcher = () => {
               >
                 <span>
                   {FONTS[key].label}
-                  {key === "geist" && (
+                  {key === "inter" && (
                     <span className="text-text-muted ml-1 text-xs">
                       (default)
                     </span>
