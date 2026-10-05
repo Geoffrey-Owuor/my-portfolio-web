@@ -3,6 +3,7 @@ import Hero from "@/components/Home/Hero";
 import Skills from "@/components/Home/Skills";
 import Stack from "@/components/Home/Stack";
 import Projects from "@/components/Home/Projects";
+import GitHub from "@/components/Home/GitHub";
 import Experience from "@/components/Home/Experience";
 import Education from "@/components/Home/Education";
 import Contact from "@/components/Home/Contact";
@@ -10,6 +11,7 @@ import SkillsSkeleton from "@/components/Skeletons/SkillsSkeleton";
 import StackSkeleton from "@/components/Skeletons/StackSkeleton";
 import ProjectsSkeleton from "@/components/Skeletons/ProjectsSkeleton";
 import ExperienceSkeleton from "@/components/Skeletons/ExperienceSkeleton";
+import GitHubSkeleton from "@/components/Skeletons/GitHubSkeleton";
 
 export default function Home() {
   return (
@@ -23,6 +25,9 @@ export default function Home() {
       </Suspense>
       <Suspense fallback={<ProjectsSkeleton />}>
         <Projects />
+      </Suspense>
+      <Suspense fallback={<GitHubSkeleton />}>
+        <GitHub />
       </Suspense>
       <Suspense fallback={<ExperienceSkeleton />}>
         <Experience />
