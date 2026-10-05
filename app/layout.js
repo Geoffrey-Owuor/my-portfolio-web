@@ -17,7 +17,7 @@ import Footer from "@/components/Home/Footer";
 import AppCanvas, {
   ScrollContainerProvider,
 } from "@/components/Layout/AppCanvas";
-import { FONT_STORAGE_KEY } from "@/store/useFontStore";
+import { FONT_STORAGE_KEY, FONT_STORAGE_VERSION } from "@/store/useFontStore";
 
 const geistSans = Geist({
   variable: "--font-geistsans",
@@ -36,10 +36,10 @@ const dmsans = DM_Sans({
   weight: ["400", "500", "700"],
 });
 
-// Alternate reading fonts offered by the accessibility font switcher (see
-// components/Modules/FontSwitcher.jsx) — always loaded so the switch is
-// instant, and only applied when selected via the `data-font` attribute
-// override in globals.css.
+// Reading fonts offered by the accessibility font switcher (see
+// components/Modules/FontSwitcher.jsx) — Inter is the default; all are always
+// loaded so the switch is instant, and applied via the `data-font` attribute
+// overrides in globals.css.
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -80,9 +80,11 @@ const courierPrime = Courier_Prime({
 });
 
 // Applies the user's saved font preference before hydration to avoid a flash of the wrong font.
+// Preferences from an older storage version are ignored (the store migrates them
+// to the current default), so the CSS default applies instead.
 const fontInitScript = `(function(){try{var raw=localStorage.getItem(${JSON.stringify(
   FONT_STORAGE_KEY,
-)});var font=raw&&JSON.parse(raw).state&&JSON.parse(raw).state.font;if(font)document.documentElement.setAttribute("data-font",font);}catch(e){}})();`;
+)});var saved=raw&&JSON.parse(raw);var font=saved&&saved.version===${FONT_STORAGE_VERSION}&&saved.state&&saved.state.font;if(font)document.documentElement.setAttribute("data-font",font);}catch(e){}})();`;
 
 export const metadata = {
   metadataBase: new URL(
