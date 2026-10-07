@@ -36,10 +36,6 @@ const dmsans = DM_Sans({
   weight: ["400", "500", "700"],
 });
 
-// Reading fonts offered by the accessibility font switcher (see
-// components/Modules/FontSwitcher.jsx) — Inter is the default; all are always
-// loaded so the switch is instant, and applied via the `data-font` attribute
-// overrides in globals.css.
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -139,6 +135,18 @@ export const metadata = {
   },
 };
 
+// Lets the browser paint its pre-CSS blank canvas in the OS theme instead of
+// always white, and pairs with the inline background in <head> below.
+export const viewport = {
+  colorScheme: "light dark",
+};
+
+// Paints the page background before the external stylesheet arrives, so a slow
+// (cold-cache) CSS fetch can't flash white in dark mode. Colours mirror
+// `.app-background` in globals.css; data-theme (set by next-themes) wins once
+// its script runs, the media query covers the moment before.
+const criticalBackgroundCss = `html{background:#fff}@media (prefers-color-scheme:dark){html{background:#030712}}html[data-theme=light]{background:#fff}html[data-theme=dark]{background:#030712}`;
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -148,6 +156,7 @@ export default function RootLayout({ children }) {
       className={` ${geistSans.variable} ${dmMono.variable} ${dmsans.variable} ${inter.variable} ${lora.variable} ${merriweather.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${courierPrime.variable} antialiased`}
     >
       <head>
+        <style dangerouslySetInnerHTML={{ __html: criticalBackgroundCss }} />
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
         <script dangerouslySetInnerHTML={{ __html: fontInitScript }} />
       </head>
