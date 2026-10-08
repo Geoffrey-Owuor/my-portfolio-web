@@ -152,13 +152,26 @@ const NavBar = () => {
     document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Wordmark/section links render as plain <a href="/#id"> while on the
-  // homepage (for accessibility/middle-click/new-tab), but a left click is
-  // intercepted so the jump goes through the same explicit smooth-scroll
-  // path as the tabs — native fragment navigation would otherwise scroll
-  // instantly now that AppCanvas no longer sets CSS scroll-smooth.
+  // Wordmark/section links always render as plain <a href="/#id"> (for
+  // accessibility/middle-click/new-tab), but a plain left click is
+  // intercepted: on the homepage it goes through the same explicit
+  // smooth-scroll path as the tabs — native fragment navigation would
+  // otherwise scroll instantly now that AppCanvas no longer sets CSS
+  // scroll-smooth — and elsewhere it routes client-side to the section.
+  //
+  // The markup must NOT branch on `isInHome`: the homepage is prerendered at
+  // build time where usePathname() reports "/index", not "/", so any
+  // home-only markup mismatches on hydration and React re-renders the whole
+  // document (a full white frame in Chrome).
   const handleSectionLinkClick = (e, id) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
+
+    if (!isInHome) {
+      handleNavbarRouting(`/#${id}`);
+      return;
+    }
+
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -186,13 +199,6 @@ const NavBar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Close menu and scroll
-  const handleSidebarClick = (route) => {
-    setIsMenuOpen(false);
-    setIsLoadingLine(true);
-    router.push(route);
-  };
-
   const handleBlogLinkClick = () => {
     setIsMenuOpen(false);
     setIsLoadingLine(true);
@@ -213,18 +219,9 @@ const NavBar = () => {
         {/* Left cluster */}
         <div className="flex items-center gap-3">
           {/* Wordmark */}
-          {isInHome ? (
-            <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
-              <Wordmark />
-            </a>
-          ) : (
-            <button
-              onClick={() => handleNavbarRouting("/#home")}
-              className="cursor-pointer"
-            >
-              <Wordmark />
-            </button>
-          )}
+          <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
+            <Wordmark />
+          </a>
 
           <span
             className="bg-border-subtle h-6 w-px shrink-0"
@@ -304,18 +301,9 @@ const NavBar = () => {
             <Menu className="h-6 w-6" />
           </button>
 
-          {isInHome ? (
-            <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
-              <Wordmark />
-            </a>
-          ) : (
-            <button
-              onClick={() => handleNavbarRouting("/#home")}
-              className="cursor-pointer"
-            >
-              <Wordmark />
-            </button>
-          )}
+          <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
+            <Wordmark />
+          </a>
         </div>
 
         <div className="flex items-center gap-1">
@@ -384,29 +372,20 @@ const NavBar = () => {
         <ul className="flex flex-col gap-2 p-6">
           {navLinks.map((link) => (
             <li key={link.label}>
-              {isInHome ? (
-                <a
-                  href={link.href}
-                  onClick={(e) => {
-                    handleSectionLinkClick(e, link.id);
-                    closeMenu();
-                  }}
-                  className={`block w-full rounded-xl px-4 py-3 text-base transition-colors ${
-                    activeKey === link.id
-                      ? "bg-surface-raised text-text-primary"
-                      : "text-text-muted hover:bg-surface-raised hover:text-text-primary"
-                  }`}
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <button
-                  onClick={() => handleSidebarClick(link.href)}
-                  className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-xl px-4 py-3 text-left text-base transition-colors"
-                >
-                  {link.label}
-                </button>
-              )}
+              <a
+                href={link.href}
+                onClick={(e) => {
+                  handleSectionLinkClick(e, link.id);
+                  closeMenu();
+                }}
+                className={`block w-full rounded-xl px-4 py-3 text-base transition-colors ${
+                  activeKey === link.id
+                    ? "bg-surface-raised text-text-primary"
+                    : "text-text-muted hover:bg-surface-raised hover:text-text-primary"
+                }`}
+              >
+                {link.label}
+              </a>
             </li>
           ))}
           <li>
