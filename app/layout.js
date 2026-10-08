@@ -135,32 +135,19 @@ export const metadata = {
   },
 };
 
-// Lets the browser paint its pre-CSS blank canvas in the OS theme instead of
-// always white, and pairs with the inline background in <head> below.
-export const viewport = {
-  colorScheme: "light dark",
-};
-
-// Paints the page background before the external stylesheet arrives, so a slow
-// (cold-cache) CSS fetch can't flash white in dark mode. Colours mirror
-// `.app-background` in globals.css; data-theme (set by next-themes) wins once
-// its script runs, the media query covers the moment before.
-const criticalBackgroundCss = `html{background:#fff}@media (prefers-color-scheme:dark){html{background:#030712}}html[data-theme=light]{background:#fff}html[data-theme=dark]{background:#030712}`;
-
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={` ${geistSans.variable} ${dmMono.variable} ${dmsans.variable} ${inter.variable} ${lora.variable} ${merriweather.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${courierPrime.variable} antialiased`}
+      className={` ${geistSans.variable} ${dmMono.variable} ${dmsans.variable} ${inter.variable} ${lora.variable} ${merriweather.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${courierPrime.variable} bg-white antialiased dark:bg-[#030712]`}
     >
       <head>
-        <style dangerouslySetInnerHTML={{ __html: criticalBackgroundCss }} />
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
         <script dangerouslySetInnerHTML={{ __html: fontInitScript }} />
       </head>
-      <body className="app-background">
+      <body>
         <Providers>
           <NetworkStatus />
 

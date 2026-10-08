@@ -268,15 +268,6 @@ html[data-theme="dark"] {
     backdrop-filter: blur(12px);
     will-change: backdrop-filter;
   }
-
-  /* APP BACKGROUND — film grain + soft ambient glow */
-  .app-background {
-    background-color: white;
-  }
-
-  html[data-theme="dark"] .app-background {
-    background-color: #030712;
-  }
 }
 
 html {
