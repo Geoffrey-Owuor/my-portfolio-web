@@ -6,24 +6,62 @@ import {
   motion,
   useInView,
   useReducedMotion,
+  useScroll,
+  useSpring,
 } from "framer-motion";
+import { useScrollContainer } from "../Layout/AppCanvas";
+import { getSection } from "../Home/sections";
 
 // The note waits for the section's own entrance animation to land before it
 // appears, then retires itself — it's an aside, not something to dismiss.
 const APPEAR_DELAY_MS = 900;
 const VISIBLE_MS = 4500;
 
-const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
+// Title glyphs rise out of a mask one after another, once, when the heading
+// first comes into view.
+const titleVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.025 } },
+};
+const glyphVariants = {
+  hidden: { y: "110%" },
+  visible: { y: "0%", transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+/**
+ * Editorial section header: index number (the section's position in the
+ * page, shared with the navbar), title, a one-line subtitle, the section's
+ * `~/path`, and a rule that draws across as the header scrolls in.
+ * `sectionId` must be one of the ids in components/Home/sections.js.
+ */
+const SectionTitle = ({
+  sectionId,
+  title,
+  subtitle,
+  alertMessage,
+  alertIcon: AlertIcon,
+}) => {
   const titleRef = useRef(null);
+  const canvasRef = useScrollContainer();
+  const prefersReducedMotion = useReducedMotion();
+  const section = getSection(sectionId);
 
   // Observed on the title block itself rather than the whole section, so the
-  // note is tied to the thing it annotates: it fires when its own anchor is
-  // on screen, not when a `min-h-app` section's top edge merely peeks in.
+  // note is tied to the thing it annotates.
   const isInView = useInView(titleRef, { once: true, amount: 0.5 });
 
-  const [showAlert, setShowAlert] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    container: canvasRef,
+    target: titleRef,
+    offset: ["start end", "start 0.45"],
+  });
+  const ruleProgress = useSpring(scrollYProgress, {
+    stiffness: 160,
+    damping: 30,
+    mass: 0.4,
+  });
 
+  const [showAlert, setShowAlert] = useState(false);
   const hasAlert = Boolean(alertMessage && AlertIcon);
 
   useEffect(() => {
@@ -53,24 +91,68 @@ const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
     : { opacity: 0, y: -4, filter: "blur(4px)" };
 
   return (
-    <div
-      ref={titleRef}
-      className="relative mb-16 flex flex-col items-center justify-center gap-3"
-    >
-      <span className="font-mono text-text-muted text-sm font-medium tracking-[0.2em] uppercase">
-        {label}
-      </span>
-      <h2 className="font-mono text-text-primary text-3xl font-semibold tracking-tight md:text-4xl">
-        {title}
-      </h2>
-      <div className="bg-accent mt-1 h-px w-12" />
+    <header ref={titleRef} className="relative mb-16">
+      <div className="flex items-start gap-4 md:gap-6">
+        <span
+          className="text-accent pt-1.5 font-mono text-sm tabular-nums md:pt-3 md:text-base"
+          aria-hidden="true"
+        >
+          {section?.index}
+        </span>
 
-      {/* Parked in the title block's own bottom margin — absolute, so it can
-          never displace the section content below it, and `mb-16` already
-          reserves more room than the note needs even when it wraps to two
-          lines on a narrow screen. Hidden from assistive tech: it's a
-          transient flourish restating what the title already says, and a
-          timed live region would only interrupt. */}
+        <div className="min-w-0 flex-1">
+          <motion.h2
+            aria-label={title}
+            variants={prefersReducedMotion ? undefined : titleVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="text-text-primary font-mono text-3xl font-semibold tracking-tight md:text-5xl"
+          >
+            {/* Each word is its own no-wrap group so lines only break
+                between words; each glyph rises inside its word's mask. */}
+            {title.split(" ").map((word, w) => (
+              <span
+                key={w}
+                aria-hidden="true"
+                className="inline-flex overflow-hidden pb-1 whitespace-nowrap"
+              >
+                {[...word].map((char, c) => (
+                  <motion.span
+                    key={c}
+                    variants={prefersReducedMotion ? undefined : glyphVariants}
+                    className="inline-block"
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+                {w < title.split(" ").length - 1 && <span>&nbsp;</span>}
+              </span>
+            ))}
+          </motion.h2>
+
+          <div className="mt-3 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+            {subtitle && (
+              <p className="text-text-muted text-base">{subtitle}</p>
+            )}
+            <span className="text-text-muted/80 font-mono text-xs">
+              ~/{sectionId}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Hairline track with the accent drawn across it by scroll position */}
+      <div className="bg-border-subtle relative mt-6 h-px overflow-hidden">
+        <motion.div
+          style={prefersReducedMotion ? undefined : { scaleX: ruleProgress }}
+          className="bg-accent absolute inset-0 origin-left"
+        />
+      </div>
+
+      {/* Parked in the header's own bottom margin — absolute, so it can never
+          displace the section content below it. Hidden from assistive tech:
+          it's a transient flourish, and a timed live region would only
+          interrupt. */}
       {hasAlert && (
         <AnimatePresence>
           {showAlert && (
@@ -80,14 +162,11 @@ const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
               animate={visible}
               exit={leaving}
               transition={{ duration: 0.45, ease: "easeOut" }}
-              // Centred by the full-width flex wrapper rather than a
-              // `-translate-x-1/2`, which would fight the inline transform
-              // framer-motion writes for the rise.
-              className="pointer-events-none absolute top-full right-0 left-0 mt-4 flex justify-center px-4"
+              className="pointer-events-none absolute top-full left-0 mt-4 flex max-w-full"
             >
               <div className="border-border-subtle bg-surface-raised flex max-w-full items-center gap-2 rounded-lg border px-3 py-1.5 sm:px-4">
                 <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
-                <p className="font-mono text-text-muted line-clamp-1 text-center text-[11px] leading-snug sm:text-xs">
+                <p className="text-text-muted line-clamp-1 font-mono text-[11px] leading-snug sm:text-xs">
                   {alertMessage}
                 </p>
               </div>
@@ -95,7 +174,7 @@ const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
           )}
         </AnimatePresence>
       )}
-    </div>
+    </header>
   );
 };
 

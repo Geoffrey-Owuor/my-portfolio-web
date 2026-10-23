@@ -11,20 +11,13 @@ import FontSwitcher from "../Modules/FontSwitcher";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 import { useScrollContainer } from "../Layout/AppCanvas";
+import { sections } from "./sections";
 import { motion } from "framer-motion";
 
-// Section links double as scroll-spy targets — `id` must match the id on the
-// corresponding <section>. `blogs` is a route, not a section, so it is matched
-// against the pathname instead.
-const navLinks = [
-  { id: "skills", href: "/#skills", label: "Skills" },
-  { id: "stack", href: "/#stack", label: "Stack" },
-  { id: "projects", href: "/#projects", label: "Projects" },
-  { id: "activity", href: "/#activity", label: "Activity" },
-  { id: "experience", href: "/#experience", label: "Experience" },
-  { id: "education", href: "/#education", label: "Education" },
-  { id: "contact", href: "/#contact", label: "Contact" },
-];
+// Section links double as scroll-spy targets (see components/Home/sections.js).
+// `blogs` is a route, not a section, so it is matched against the pathname
+// instead.
+const navLinks = sections;
 
 const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
 

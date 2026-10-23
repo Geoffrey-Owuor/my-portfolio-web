@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   BookMarked,
@@ -16,17 +15,11 @@ import {
 } from "lucide-react";
 import { assets } from "@/assets/assets";
 import SectionTitle from "./SectionTitle";
+import ScrollReveal from "../Modules/ScrollReveal";
 
 const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
 
 const cardClass = "bg-surface border-border-subtle rounded-xl border p-6";
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.2 },
-  transition: { duration: 0.6, delay },
-});
 
 const numberFormat = new Intl.NumberFormat("en");
 const relativeFormat = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
@@ -415,44 +408,45 @@ const GitHubWrapper = ({ data }) => {
   return (
     <div className="mx-1 w-full min-w-0 flex-1 md:mx-auto">
       <SectionTitle
-        label="Code in the open"
+        sectionId="activity"
         title="GitHub Activity"
+        subtitle="Code in the open"
         alertMessage="Shipping consistently, one commit at a time"
         alertIcon={GitCommitHorizontal}
       />
 
       {!data && (
-        <motion.div {...fadeUp()}>
+        <ScrollReveal>
           <FallbackCard />
-        </motion.div>
+        </ScrollReveal>
       )}
 
       {data && (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <ScrollReveal className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="flex min-w-0 flex-col gap-6">
-            <motion.div {...fadeUp()}>
+            <div>
               <ProfileCard profile={data.profile} />
-            </motion.div>
+            </div>
             {data.languages.length > 0 && (
-              <motion.div {...fadeUp(0.1)}>
+              <div>
                 <LanguagesCard languages={data.languages} />
-              </motion.div>
+              </div>
             )}
           </div>
 
           <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
             {data.contributions && (
-              <motion.div {...fadeUp(0.15)}>
+              <div>
                 <ContributionsCard contributions={data.contributions} />
-              </motion.div>
+              </div>
             )}
             {data.recentRepos.length > 0 && (
-              <motion.div {...fadeUp(0.2)}>
+              <div>
                 <RecentReposCard repos={data.recentRepos} />
-              </motion.div>
+              </div>
             )}
           </div>
-        </div>
+        </ScrollReveal>
       )}
     </div>
   );
