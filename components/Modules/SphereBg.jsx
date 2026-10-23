@@ -16,10 +16,11 @@ export default function SphereBg() {
     let animId;
     const rot = { x: 0.3, y: 0, z: 0, targetX: 0.3, targetY: 0 };
 
+    // setTransform rather than scale: scale() compounds on every resize.
     const resize = () => {
       canvas.width = canvas.offsetWidth * dpr;
       canvas.height = canvas.offsetHeight * dpr;
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener("resize", resize);
@@ -116,9 +117,16 @@ export default function SphereBg() {
       animId = requestAnimationFrame(draw);
     };
 
-    draw();
+    // Only spin while the sphere is on screen — 900 projected dots a frame
+    // is wasted work once the hero has scrolled away.
+    const observer = new IntersectionObserver(([entry]) => {
+      cancelAnimationFrame(animId);
+      if (entry.isIntersecting) draw();
+    });
+    observer.observe(canvas);
 
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(animId);
       canvas.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", resize);
