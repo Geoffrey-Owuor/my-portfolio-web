@@ -32,11 +32,11 @@ const ExperienceWrapper = ({ experiences }) => {
       />
 
       {/* Vertical Timeline */}
-      <ol className="border-border-subtle relative border-l">
+      <ol className="border-border-subtle relative md:border-l">
         {visibleExperiences.map((exp, _index) => (
-          <li key={exp.id} className="mb-10 ml-6">
+          <li key={exp.id} className="mb-10 md:ml-6">
             {/* The "dot" breakpoint with animation */}
-            <span className="bg-surface-raised ring-surface absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full ring-8">
+            <span className="bg-surface-raised ring-surface absolute -left-3 hidden h-6 w-6 items-center justify-center rounded-full ring-8 md:flex">
               <Briefcase className="text-text-muted h-4 w-4" />
             </span>
 

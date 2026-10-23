@@ -2,11 +2,10 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { tools } from "@/assets/assets";
 import { Menu, X, ArrowUpRight } from "lucide-react";
-import LoadingLine from "../Modules/LoadingLine";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 import FontSwitcher from "../Modules/FontSwitcher";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
@@ -65,14 +64,13 @@ const Tab = ({ isActive, onClick, children }) => (
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoadingLine, setIsLoadingLine] = useState(false);
 
   // Scroll state read off the canvas, not the window — the document no longer
   // scrolls (see components/Layout/AppCanvas.jsx).
   const [activeId, setActiveId] = useState("");
 
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useProgressRouter();
   const canvasRef = useScrollContainer();
 
   // derived state to check if we are in the homepage
@@ -138,7 +136,6 @@ const NavBar = () => {
   }, [canvasRef, isInHome, pathname]);
 
   const handleNavbarRouting = (route) => {
-    setIsLoadingLine(true);
     router.push(route);
   };
 
@@ -183,11 +180,6 @@ const NavBar = () => {
   // Ref for the sidebar menu
   const menuRef = useRef(null);
 
-  // UseEffect to reset loading when navigation completes
-  useEffect(() => {
-    setIsLoadingLine(false);
-  }, [pathname]);
-
   // Run scrollbar hook to hide scrollbar when sidebar is open
   useHideScrollbar(isMenuOpen);
 
@@ -199,15 +191,8 @@ const NavBar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleBlogLinkClick = () => {
-    setIsMenuOpen(false);
-    setIsLoadingLine(true);
-  };
-
   return (
     <>
-      {isLoadingLine && <LoadingLine />}
-
       {/* ── Desktop: command bar. Sits in the top gutter above the canvas,
           sharing its 0.5rem inset so the two read as two panels of a single
           shell. Deliberately unclipped: the theme toggle hangs its tooltip
@@ -394,13 +379,13 @@ const NavBar = () => {
                 Blogs
               </span>
             ) : (
-              <Link
+              <ProgressLink
                 href="/blogs"
-                onClick={handleBlogLinkClick}
+                onClick={closeMenu}
                 className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-xl px-4 py-3 text-base transition-colors"
               >
                 Blogs
-              </Link>
+              </ProgressLink>
             )}
           </li>
         </ul>

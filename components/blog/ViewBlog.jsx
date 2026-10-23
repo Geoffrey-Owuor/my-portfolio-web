@@ -14,7 +14,7 @@ import EditBlog from "./EditBlog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState, useEffect } from "react";
-import LoadingLine from "../Modules/LoadingLine";
+import { useProgressRouter } from "../Modules/RouteProgress";
 import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
 import Image from "next/image";
@@ -23,7 +23,7 @@ import BlogNav from "./BlogNav";
 const ViewBlog = ({ blogPost, userId }) => {
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
-  const [showLoadingLine, setShowLoadingLine] = useState(false);
+  const progressRouter = useProgressRouter();
   const [alertInfo, setAlertInfo] = useState({
     showAlert: false,
     type: "",
@@ -33,8 +33,7 @@ const ViewBlog = ({ blogPost, userId }) => {
   const shareIconEntries = Object.entries(shareIcons);
 
   const handleBlogsRoute = (link) => {
-    setShowLoadingLine(true);
-    router.push(link);
+    progressRouter.push(link);
   };
 
   // 1. Define custom renderer for ReactMarkdown to add IDs to h3
@@ -146,8 +145,6 @@ const ViewBlog = ({ blogPost, userId }) => {
         }
       />
 
-      {showLoadingLine && <LoadingLine />}
-
       <EditBlog
         setShowEditModal={setShowEditBlog}
         showEditModal={showEditBlog}
@@ -254,10 +251,7 @@ const ViewBlog = ({ blogPost, userId }) => {
 
           {/* Neighbouring blogs — keeps the reader moving between posts and
               names where each link lands before they commit to it. */}
-          <BlogNav
-            blogPost={blogPost}
-            onNavigate={() => setShowLoadingLine(true)}
-          />
+          <BlogNav blogPost={blogPost} />
         </article>
         {/* 3. The Sidebar (Only visible on large screens via CSS in component) */}
         <TableOfContents content={blogPost.blog_content} />

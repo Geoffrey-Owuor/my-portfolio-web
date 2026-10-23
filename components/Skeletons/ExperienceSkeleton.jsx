@@ -14,11 +14,11 @@ const ExperienceSkeleton = () => {
         <div className="bg-border-subtle mx-auto mb-16 h-8 w-64 animate-pulse rounded-md"></div>
 
         {/* Vertical Timeline Skeleton */}
-        <ol className="border-border-subtle relative border-l">
+        <ol className="border-border-subtle relative md:border-l">
           {skeletonItems.map((_, index) => (
-            <li key={index} className="mb-10 ml-6">
+            <li key={index} className="mb-10 md:ml-6">
               {/* The "dot" breakpoint */}
-              <span className="bg-surface-raised ring-surface absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full ring-8">
+              <span className="bg-surface-raised ring-surface absolute -left-3 hidden h-6 w-6 items-center justify-center rounded-full ring-8 md:flex">
                 <Briefcase className="text-text-muted h-4 w-4" />
               </span>
 

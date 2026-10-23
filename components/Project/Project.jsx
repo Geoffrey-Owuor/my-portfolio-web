@@ -1,12 +1,11 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import LoadingLine from "../Modules/LoadingLine";
-import { useState } from "react";
+import { motion } from "framer-motion";
 import { project_images } from "@/assets/assets";
 import Image from "next/image";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useProgressRouter } from "../Modules/RouteProgress";
 import ProjectStack from "../Wrappers/ProjectStack";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -14,8 +13,8 @@ import ProjectNav from "./ProjectNav";
 
 const Project = ({ projectInfo }) => {
   const router = useRouter();
+  const progressRouter = useProgressRouter();
   const project = projectInfo[0];
-  const [isNavigating, setIsNavigating] = useState(false);
 
   const projectImage = project_images.find((image) => image.id === project?.id);
 
@@ -29,8 +28,7 @@ const Project = ({ projectInfo }) => {
   };
 
   const handleGoBack = () => {
-    setIsNavigating(true);
-    router.push("/#projects");
+    progressRouter.push("/#projects");
   };
 
   if (!project || Object.keys(project).length === 0) {
@@ -61,8 +59,6 @@ const Project = ({ projectInfo }) => {
 
   return (
     <>
-      <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
-
       <section className="w-full px-4 py-8">
         <div className="mx-auto max-w-4xl">
           {/* Breadcrumb + Back */}
@@ -176,10 +172,7 @@ const Project = ({ projectInfo }) => {
             custom={5}
           >
             <div className="bg-border-subtle mt-10 h-px" />
-            <ProjectNav
-              project={project}
-              onNavigate={() => setIsNavigating(true)}
-            />
+            <ProjectNav project={project} />
           </motion.div>
         </div>
       </section>

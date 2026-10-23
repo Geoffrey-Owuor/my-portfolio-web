@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { ProgressLink } from "../Modules/RouteProgress";
 import {
   ArrowLeft,
   ArrowRight,
@@ -18,7 +18,6 @@ const NeighbourCard = ({
   readTime,
   direction,
   isWrapping,
-  onNavigate,
 }) => {
   const isPrevious = direction === "previous";
 
@@ -39,9 +38,8 @@ const NeighbourCard = ({
       : ArrowRight;
 
   return (
-    <Link
+    <ProgressLink
       href={`/blog/${id}`}
-      onClick={onNavigate}
       aria-label={`${isPrevious ? "Previous" : "Next"} blog: ${title}`}
       className={`group border-border-subtle hover:border-accent focus-visible:border-accent flex flex-col gap-2 rounded-xl border p-5 transition-colors duration-150 focus-visible:outline-none ${
         isPrevious ? "items-start" : "items-end text-right sm:col-start-2"
@@ -78,11 +76,11 @@ const NeighbourCard = ({
           {readTime}
         </span>
       )}
-    </Link>
+    </ProgressLink>
   );
 };
 
-const BlogNav = ({ blogPost, onNavigate }) => {
+const BlogNav = ({ blogPost }) => {
   const hasPrevious =
     blogPost.previous_blog_id && blogPost.previous_blog_id !== blogPost.id;
   const hasNext =
@@ -103,7 +101,6 @@ const BlogNav = ({ blogPost, onNavigate }) => {
           readTime={blogPost.previous_blog_read_time}
           direction="previous"
           isWrapping={blogPost.is_first_blog}
-          onNavigate={onNavigate}
         />
       )}
       {hasNext && (
@@ -113,7 +110,6 @@ const BlogNav = ({ blogPost, onNavigate }) => {
           readTime={blogPost.next_blog_read_time}
           direction="next"
           isWrapping={blogPost.is_last_blog}
-          onNavigate={onNavigate}
         />
       )}
     </nav>

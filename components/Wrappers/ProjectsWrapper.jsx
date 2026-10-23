@@ -5,20 +5,16 @@ import {
   CircleArrowOutUpRight,
   Loader2,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import LoadingLine from "../Modules/LoadingLine";
 import MarkdownPreview from "../Modules/MarkdownPreview";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import ProjectStack from "./ProjectStack";
 import ShowMoreButtons from "./ShowMoreButtons";
-import Link from "next/link";
+import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
 import SectionTitle from "./SectionTitle";
 
 const ProjectsWrapper = ({ projects }) => {
-  //initialize router
-  const router = useRouter();
-  const [isNavigating, setIsNavigating] = useState(false); //To indicate when the loading should start
+  const router = useProgressRouter();
 
   // The number of projects we see on mount
   const [visibleCount, setVisibleCount] = useState(3);
@@ -54,14 +50,11 @@ const ProjectsWrapper = ({ projects }) => {
 
   // Handle navigation to a particular project's case study
   const handleNavigate = (projectId) => {
-    setIsNavigating(true);
     router.push(`/projects/${projectId}`);
   };
 
   return (
     <>
-      {/* LoadingLine fixed at the top of the viewport */}
-      <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
       <div className="mx-1 md:mx-auto">
         {/* Section Title */}
         <SectionTitle
@@ -112,17 +105,14 @@ const ProjectsWrapper = ({ projects }) => {
               </MarkdownPreview>
 
               {/* Footer: primary in-site action */}
-              <Link
+              <ProgressLink
                 href={`/projects/${project.id}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsNavigating(true);
-                }}
+                onClick={(e) => e.stopPropagation()}
                 className="border-border-subtle text-accent mt-4 flex items-center gap-1.5 border-t pt-4 text-sm font-semibold underline-offset-4 hover:underline"
               >
                 View case study
                 <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
-              </Link>
+              </ProgressLink>
             </motion.div>
           ))}
         </div>

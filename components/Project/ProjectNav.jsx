@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { ProgressLink } from "../Modules/RouteProgress";
 import { ArrowLeft, ArrowRight, ChevronFirst, ChevronLast } from "lucide-react";
 import ProjectStack from "../Wrappers/ProjectStack";
 
@@ -13,7 +13,6 @@ const NeighbourCard = ({
   stack,
   direction,
   isWrapping,
-  onNavigate,
 }) => {
   const isPrevious = direction === "previous";
 
@@ -34,9 +33,8 @@ const NeighbourCard = ({
       : ArrowRight;
 
   return (
-    <Link
+    <ProgressLink
       href={`/projects/${id}`}
-      onClick={onNavigate}
       aria-label={`${isPrevious ? "Previous" : "Next"} project: ${name}`}
       className={`group border-border-subtle hover:border-accent focus-visible:border-accent flex flex-col gap-2 rounded-xl border p-5 transition-colors duration-150 focus-visible:outline-none ${
         isPrevious ? "items-start" : "items-end text-right sm:col-start-2"
@@ -68,11 +66,11 @@ const NeighbourCard = ({
           <ProjectStack projectStack={stack} limit={2} />
         </div>
       )}
-    </Link>
+    </ProgressLink>
   );
 };
 
-const ProjectNav = ({ project, onNavigate }) => {
+const ProjectNav = ({ project }) => {
   const hasPrevious =
     project.previous_project_id && project.previous_project_id !== project.id;
   const hasNext =
@@ -93,7 +91,6 @@ const ProjectNav = ({ project, onNavigate }) => {
           stack={project.previous_project_stack}
           direction="previous"
           isWrapping={project.is_first_project}
-          onNavigate={onNavigate}
         />
       )}
       {hasNext && (
@@ -103,7 +100,6 @@ const ProjectNav = ({ project, onNavigate }) => {
           stack={project.next_project_stack}
           direction="next"
           isWrapping={project.is_last_project}
-          onNavigate={onNavigate}
         />
       )}
     </nav>

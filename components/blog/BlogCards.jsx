@@ -10,14 +10,12 @@ import {
   LayoutGrid,
   List,
 } from "lucide-react";
-import LoadingLine from "../Modules/LoadingLine";
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
-import Link from "next/link";
+import { ProgressLink } from "../Modules/RouteProgress";
 import BlogTableView from "./BlogTableView";
 
 const BlogCards = ({ blogs }) => {
-  const [isLoadingLine, setIsLoadingLine] = useState(false);
   const router = useRouter();
 
   // View toggle: "card" | "table"
@@ -101,7 +99,6 @@ const BlogCards = ({ blogs }) => {
 
   return (
     <>
-      {isLoadingLine && <LoadingLine />}
       <div className="mx-auto w-full max-w-7xl px-4 py-16">
         {/* Header */}
         <div className="relative mb-10 flex items-center justify-center">
@@ -141,20 +138,18 @@ const BlogCards = ({ blogs }) => {
           <div className="flex flex-col items-center gap-4 md:flex-row">
             {/* Login & Create Blog links */}
             <div className="inline-flex items-center gap-4">
-              <Link
+              <ProgressLink
                 href="/login"
-                onClick={() => setIsLoadingLine(true)}
                 className="text-text-muted hover:text-text-primary text-sm underline underline-offset-2 transition-colors duration-150"
               >
                 Login
-              </Link>
-              <Link
+              </ProgressLink>
+              <ProgressLink
                 href="/createblog"
-                onClick={() => setIsLoadingLine(true)}
                 className="text-text-muted hover:text-text-primary text-sm underline underline-offset-2 transition-colors duration-150"
               >
                 Create Blog
-              </Link>
+              </ProgressLink>
             </div>
 
             {/* Toggle pill */}
@@ -193,14 +188,12 @@ const BlogCards = ({ blogs }) => {
             currentBlogs={currentBlogs}
             searchQuery={searchQuery}
             highlightText={highlightText}
-            setIsLoadingLine={setIsLoadingLine}
           />
         ) : (
           <BlogTableView
             currentBlogs={currentBlogs}
             searchQuery={searchQuery}
             highlightText={highlightText}
-            setIsLoadingLine={setIsLoadingLine}
           />
         )}
 

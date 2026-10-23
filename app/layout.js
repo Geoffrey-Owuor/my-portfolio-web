@@ -13,6 +13,7 @@ import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
 import NetworkStatus from "@/components/Modules/NetworkStatus";
 import NavBar from "@/components/Home/NavBar";
+import { RouteProgressProvider } from "@/components/Modules/RouteProgress";
 import Footer from "@/components/Home/Footer";
 import AppCanvas, {
   ScrollContainerProvider,
@@ -151,17 +152,21 @@ export default function RootLayout({ children }) {
         <Providers>
           <NetworkStatus />
 
-          {/* Header and mobile drawer stay outside the canvas; everything
-              that scrolls lives inside it. The provider wraps both so the
-              header can still read the canvas's scroll state. */}
-          <ScrollContainerProvider>
-            <NavBar />
+          {/* Owns the app-wide progress line; client navigations go through
+              its `useProgressRouter()`/`ProgressLink` so the line tracks them. */}
+          <RouteProgressProvider>
+            {/* Header and mobile drawer stay outside the canvas; everything
+                that scrolls lives inside it. The provider wraps both so the
+                header can still read the canvas's scroll state. */}
+            <ScrollContainerProvider>
+              <NavBar />
 
-            <AppCanvas>
-              <main className="flex flex-1 flex-col">{children}</main>
-              <Footer />
-            </AppCanvas>
-          </ScrollContainerProvider>
+              <AppCanvas>
+                <main className="flex flex-1 flex-col">{children}</main>
+                <Footer />
+              </AppCanvas>
+            </ScrollContainerProvider>
+          </RouteProgressProvider>
         </Providers>
       </body>
     </html>

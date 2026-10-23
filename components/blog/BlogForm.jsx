@@ -7,9 +7,7 @@ import {
   Signature,
   Library,
 } from "lucide-react";
-import { useState } from "react";
-import Link from "next/link";
-import LoadingLine from "../Modules/LoadingLine";
+import { ProgressLink } from "../Modules/RouteProgress";
 import CustomMdEditor from "./CustomMdEditor";
 
 const BlogForm = ({
@@ -20,11 +18,8 @@ const BlogForm = ({
   isSubmitting,
   IsUpdating,
 }) => {
-  const [isLoadingLine, setIsLoadingLine] = useState(false);
-
   return (
     <>
-      {isLoadingLine && <LoadingLine />}
       <div className="p-6 sm:p-8">
         <form onSubmit={handleConfirmSubmit} className="space-y-6">
           {/* Title Input */}
@@ -127,14 +122,13 @@ const BlogForm = ({
                 </>
               )}
             </button>
-            <Link
+            <ProgressLink
               href="/blogs"
-              onClick={() => setIsLoadingLine(true)}
               className="bg-surface-raised text-text-primary hover:bg-border-subtle/50 flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-colors duration-150"
             >
               View <span className="hidden sm:block">Blogs</span>
               <ArrowUpRight className="h-4 w-4" />
-            </Link>
+            </ProgressLink>
           </div>
         </form>
       </div>

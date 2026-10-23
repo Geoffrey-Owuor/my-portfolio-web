@@ -1,27 +1,18 @@
 "use client";
-import Link from "next/link";
+import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
 import MarkdownPreview from "../Modules/MarkdownPreview";
 import { Calendar, Clock, ArrowRight, UserRound } from "lucide-react";
 import { formatDate } from "@/utils/Helpers";
-import { useRouter } from "next/navigation";
 
-const BlogCardView = ({
-  currentBlogs,
-  searchQuery,
-  highlightText,
-  setIsLoadingLine,
-}) => {
-  const router = useRouter();
+const BlogCardView = ({ currentBlogs, searchQuery, highlightText }) => {
+  const router = useProgressRouter();
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {currentBlogs.length > 0 ? (
         currentBlogs.map((blog) => (
           <article
             key={blog.id}
-            onClick={() => {
-              setIsLoadingLine(true);
-              router.push(`/blog/${blog.id}`);
-            }}
+            onClick={() => router.push(`/blog/${blog.id}`)}
             className="border-border-subtle group hover:border-accent flex cursor-pointer flex-col rounded-xl border p-6 transition-colors duration-150"
           >
             {/* Title */}
@@ -53,17 +44,14 @@ const BlogCardView = ({
             </MarkdownPreview>
 
             {/* Read more button */}
-            <Link
+            <ProgressLink
               href={`/blog/${blog.id}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsLoadingLine(true);
-              }}
+              onClick={(e) => e.stopPropagation()}
               className="text-accent inline-flex w-fit items-center gap-1.5 text-sm font-medium underline-offset-4 hover:underline"
             >
               Read more
               <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
-            </Link>
+            </ProgressLink>
           </article>
         ))
       ) : (
