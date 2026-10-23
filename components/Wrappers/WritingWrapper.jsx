@@ -11,7 +11,7 @@ import { ProgressLink } from "../Modules/RouteProgress";
 // the section reads as a reading list and doesn't echo Projects above it.
 const WritingWrapper = ({ posts }) => {
   return (
-    <div className="mx-1 w-full max-w-5xl min-w-0 flex-1 md:mx-auto">
+    <div className="mx-1 w-full max-w-7xl min-w-0 flex-1 md:mx-auto">
       <SectionTitle
         sectionId="writing"
         title="Latest Writing"
@@ -38,7 +38,7 @@ const WritingWrapper = ({ posts }) => {
                     <span className="text-text-primary group-hover:text-accent block text-lg font-semibold transition-colors">
                       {post.title}
                     </span>
-                    <span className="text-text-muted mt-1.5 line-clamp-2 block text-sm leading-relaxed">
+                    <span className="text-text-muted mt-1.5 line-clamp-2 block max-w-3xl text-sm leading-relaxed">
                       {post.excerpt}
                     </span>
                   </span>

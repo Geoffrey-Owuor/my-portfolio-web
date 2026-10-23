@@ -23,7 +23,7 @@ const ExperienceWrapper = ({ experiences }) => {
   const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 1, 1));
 
   return (
-    <div className="mx-1 w-full max-w-5xl min-w-0 flex-1 md:mx-auto">
+    <div className="mx-1 w-full max-w-7xl min-w-0 flex-1 md:mx-auto">
       {/* Section Title */}
       <SectionTitle
         sectionId="experience"
@@ -57,7 +57,7 @@ const ExperienceWrapper = ({ experiences }) => {
                   {exp.company_name}
                 </p>
 
-                <div className="prose prose-gray dark:prose-invert text-text-muted max-w-none text-base font-normal">
+                <div className="prose prose-gray dark:prose-invert text-text-muted max-w-[75ch] text-base font-normal">
                   <ReactMarkDown remarkPlugins={[remarkGfm]}>
                     {exp.work_description}
                   </ReactMarkDown>

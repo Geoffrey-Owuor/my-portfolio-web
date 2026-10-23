@@ -104,7 +104,7 @@ const Contact = () => {
   return (
     <>
       <section id="contact" className="w-full px-4 py-20 md:py-28">
-        <div className="mx-1 max-w-3xl sm:mx-auto">
+        <div className="mx-1 max-w-7xl sm:mx-auto">
           {/* Section Title */}
           <SectionTitle
             sectionId="contact"
@@ -113,7 +113,11 @@ const Contact = () => {
           />
 
           <ScrollReveal>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            {/* Header spans the shared measure; the form keeps a readable width */}
+            <form
+              onSubmit={handleSubmit}
+              className="flex max-w-3xl flex-col gap-6"
+            >
               {/* Email/Phone Input */}
               <div className="flex flex-col">
                 <label
@@ -162,7 +166,7 @@ const Contact = () => {
                 whileTap="tap"
                 type="submit"
                 disabled={sending}
-                className="bg-text-primary text-surface flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center"
+                className="bg-text-primary text-surface flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-start"
               >
                 {sending ? (
                   <>

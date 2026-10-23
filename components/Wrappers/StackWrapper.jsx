@@ -16,7 +16,7 @@ const iconsToInvert = [
 
 const StackWrapper = ({ toolNames, toolIcons }) => {
   return (
-    <div className="mx-1 w-full max-w-5xl min-w-0 flex-1 md:mx-auto">
+    <div className="mx-1 w-full max-w-7xl min-w-0 flex-1 md:mx-auto">
       {/* Section Title  */}
       <SectionTitle
         sectionId="stack"
