@@ -55,11 +55,13 @@ const ScrollReveal = ({ children, className = "" }) => {
     );
   }
 
+  // `className` goes on the element that directly holds `children`, so
+  // layout classes (e.g. a grid) apply to them rather than to this wrapper.
   return (
-    <div ref={ref} className={`perspective-[1400px] ${className}`}>
+    <div ref={ref} className="perspective-[1400px]">
       <motion.div
         style={{ clipPath, scale, rotateX, y, opacity }}
-        className="origin-top"
+        className={`origin-top ${className}`}
       >
         {children}
       </motion.div>

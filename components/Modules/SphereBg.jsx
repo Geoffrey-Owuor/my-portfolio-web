@@ -3,7 +3,12 @@
 import { useEffect, useRef } from "react";
 
 // The sphere generation canvas component - Totally AI-Generated
-export default function SphereBg() {
+// `className` sizes/positions the canvas; `dotCount` should scale with that
+// size, or a small sphere turns into noise.
+export default function SphereBg({
+  className = "absolute inline-flex h-90 w-90 md:h-115 md:w-115 lg:h-130 lg:w-130",
+  dotCount = 900,
+}) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -26,7 +31,7 @@ export default function SphereBg() {
     window.addEventListener("resize", resize);
 
     // Fibonacci sphere — perfectly even dot distribution
-    const DOT_COUNT = 900;
+    const DOT_COUNT = dotCount;
     const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
       phi: Math.acos(1 - (2 * (i + 0.5)) / DOT_COUNT),
       theta: Math.PI * (1 + Math.sqrt(5)) * i,
@@ -96,7 +101,9 @@ export default function SphereBg() {
           px: cx + rx * radius * persp,
           py: cy + ry * radius * persp,
           depth: (rz + 1) / 2,
-          size: persp * 2.6,
+          // Dot size tracks the radius (2.6px at the original ~187px radius)
+          // so the sphere keeps its texture when drawn small.
+          size: persp * Math.max(0.8, radius * 0.014),
           nx: rx,
           ny: ry,
           nz: rz,
@@ -131,13 +138,7 @@ export default function SphereBg() {
       canvas.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [dotCount]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className="absolute inline-flex h-90 w-90 md:h-115 md:w-115 lg:h-130 lg:w-130"
-    />
-  );
+  return <canvas ref={canvasRef} aria-hidden="true" className={className} />;
 }

@@ -82,7 +82,7 @@ const HeroTerminal = () => {
   };
 
   return (
-    <div className="border-border-subtle bg-surface w-full max-w-xl rounded-lg border font-mono text-sm">
+    <div className="border-border-subtle bg-surface w-full rounded-lg border font-mono text-sm">
       {/* Prompt line */}
       <div className="border-border-subtle flex items-center gap-2 border-b px-4 py-3">
         <span className="text-accent select-none" aria-hidden="true">
