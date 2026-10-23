@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Layers2, Loader2, MessageCircleCode } from "lucide-react";
 import SectionTitle from "./SectionTitle";
+import EmptyState from "../Modules/EmptyState";
 import ScrollReveal from "../Modules/ScrollReveal";
 
 // Icons we want to invert their colors in dark mode
@@ -83,7 +84,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             Also using
           </span>
 
-          {toolNames.length > 0 && (
+          {toolNames?.length > 0 && (
             // `w-full min-w-0` is load-bearing: as a flex item this div would
             // otherwise size to max-content (flex items default to
             // `min-width: auto`, and `items-center` stops it from stretching),
@@ -101,13 +102,13 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             </div>
           )}
 
-          {toolNames.length === 0 && (
-            <div className="flex items-center gap-3">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-text-muted text-xs">
-                Waiting for connection...
-              </span>
-            </div>
+          {!toolNames?.length && (
+            <EmptyState
+              command="ls ~/stack --other"
+              failed={!toolNames}
+              emptyMessage="None listed yet."
+              compact
+            />
           )}
         </div>
       </ScrollReveal>

@@ -1,10 +1,11 @@
 "use client";
-import { Briefcase, BriefcaseBusiness, Loader2 } from "lucide-react";
+import { Briefcase, BriefcaseBusiness } from "lucide-react";
 import { useState } from "react";
 import remarkGfm from "remark-gfm";
 import ReactMarkDown from "react-markdown";
 import ShowMoreButtons from "./ShowMoreButtons";
 import SectionTitle from "./SectionTitle";
+import EmptyState from "../Modules/EmptyState";
 import ScrollReveal from "../Modules/ScrollReveal";
 
 const ExperienceWrapper = ({ experiences }) => {
@@ -12,8 +13,8 @@ const ExperienceWrapper = ({ experiences }) => {
   const [visibleCount, setVisibleCount] = useState(1);
 
   // Derived states for button visibility logic
-  const visibleExperiences = experiences.slice(0, visibleCount);
-  const canShowMore = visibleCount < experiences.length;
+  const visibleExperiences = (experiences ?? []).slice(0, visibleCount);
+  const canShowMore = visibleCount < (experiences?.length ?? 0);
   const canShowLess = visibleCount > 1;
 
   // Handle show more and show less
@@ -67,11 +68,12 @@ const ExperienceWrapper = ({ experiences }) => {
         </ol>
       </ScrollReveal>
 
-      {experiences.length === 0 && (
-        <div className="flex items-center justify-center gap-4">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span>Waiting for connection...</span>
-        </div>
+      {!experiences?.length && (
+        <EmptyState
+          command="cat experience.md"
+          failed={!experiences}
+          emptyMessage="No experience entries yet."
+        />
       )}
 
       {/* Show more buttons */}

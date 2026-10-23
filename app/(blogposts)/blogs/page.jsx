@@ -21,7 +21,8 @@ export const metadata = {
 const BlogCardsData = async () => {
   const blogs = await BlogsData();
 
-  return <BlogCards blogs={blogs} />;
+  // BlogCards' own empty state already covers a failed read.
+  return <BlogCards blogs={blogs ?? []} />;
 };
 
 const page = () => {

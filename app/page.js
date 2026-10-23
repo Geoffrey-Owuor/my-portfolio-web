@@ -8,6 +8,7 @@ import GitHub from "@/components/Home/GitHub";
 import Experience from "@/components/Home/Experience";
 import Education from "@/components/Home/Education";
 import Contact from "@/components/Home/Contact";
+import Writing from "@/components/Home/Writing";
 import SkillsSkeleton from "@/components/Skeletons/SkillsSkeleton";
 import StackSkeleton from "@/components/Skeletons/StackSkeleton";
 import ProjectsSkeleton from "@/components/Skeletons/ProjectsSkeleton";
@@ -41,6 +42,9 @@ export default function Home() {
       </Suspense>
       <Suspense fallback={<ExperienceSkeleton />}>
         <Education />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Writing />
       </Suspense>
       <Contact />
     </div>

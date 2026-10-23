@@ -1,10 +1,11 @@
 "use client";
-import { GraduationCap, Loader2, School } from "lucide-react";
+import { GraduationCap, School } from "lucide-react";
 import { useState } from "react";
 import remarkGfm from "remark-gfm";
 import ReactMarkDown from "react-markdown";
 import ShowMoreButtons from "./ShowMoreButtons";
 import SectionTitle from "./SectionTitle";
+import EmptyState from "../Modules/EmptyState";
 import ScrollReveal from "../Modules/ScrollReveal";
 
 const EducationWrapper = ({ educationData }) => {
@@ -12,8 +13,8 @@ const EducationWrapper = ({ educationData }) => {
   const [visibleCount, setVisibleCount] = useState(1);
 
   // Derived states for button visibility logic
-  const visibleEducationData = educationData.slice(0, visibleCount);
-  const canShowMore = visibleCount < educationData.length;
+  const visibleEducationData = (educationData ?? []).slice(0, visibleCount);
+  const canShowMore = visibleCount < (educationData?.length ?? 0);
   const canShowLess = visibleCount > 1;
 
   // Handle show more and show less
@@ -67,11 +68,12 @@ const EducationWrapper = ({ educationData }) => {
         </ol>
       </ScrollReveal>
 
-      {educationData.length === 0 && (
-        <div className="flex items-center justify-center gap-4">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span>Waiting for connection...</span>
-        </div>
+      {!educationData?.length && (
+        <EmptyState
+          command="cat education.md"
+          failed={!educationData}
+          emptyMessage="No education entries yet."
+        />
       )}
 
       {/* Show more buttons*/}

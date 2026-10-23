@@ -114,7 +114,7 @@ const SectionTitle = ({
               <span
                 key={w}
                 aria-hidden="true"
-                className="inline-flex overflow-hidden pb-1 whitespace-nowrap"
+                className="inline-block overflow-hidden pb-1 align-bottom whitespace-nowrap"
               >
                 {[...word].map((char, c) => (
                   <motion.span

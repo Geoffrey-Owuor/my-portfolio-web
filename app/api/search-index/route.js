@@ -13,10 +13,13 @@ export async function GET() {
   ]);
 
   return NextResponse.json({
-    projects: projects.map(({ id, project_name }) => ({
+    projects: (projects ?? []).map(({ id, project_name }) => ({
       id,
       title: project_name,
     })),
-    blogs: blogs.map(({ id, blog_title }) => ({ id, title: blog_title })),
+    blogs: (blogs ?? []).map(({ id, blog_title }) => ({
+      id,
+      title: blog_title,
+    })),
   });
 }

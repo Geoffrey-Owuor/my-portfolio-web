@@ -24,7 +24,7 @@ import {
 // Section links double as scroll-spy targets (see components/Home/sections.js).
 // `blogs` is a route, not a section, so it is matched against the pathname
 // instead.
-const navLinks = sections;
+const navLinks = sections.filter((section) => section.nav !== false);
 
 const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
 
@@ -131,7 +131,7 @@ const NavBar = () => {
         canvas.getBoundingClientRect().top + canvas.clientHeight / 2;
       let current = "";
 
-      for (const link of navLinks) {
+      for (const link of sections) {
         const node = document.getElementById(link.id);
         if (!node) continue;
 

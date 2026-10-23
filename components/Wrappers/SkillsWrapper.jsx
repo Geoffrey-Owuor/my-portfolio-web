@@ -1,7 +1,8 @@
 "use client";
 
-import { HeartHandshake, Loader2, Sparkle } from "lucide-react";
+import { HeartHandshake, Sparkle } from "lucide-react";
 import SectionTitle from "./SectionTitle";
+import EmptyState from "../Modules/EmptyState";
 import ScrollReveal from "../Modules/ScrollReveal";
 
 const SkillsWrapper = ({ technicalSkills, softSkills }) => {
@@ -32,7 +33,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
           </div>
 
           {/* Skill rows */}
-          {technicalSkills.length > 0 && (
+          {technicalSkills?.length > 0 && (
             <div className="divide-border-subtle grid grid-cols-1 divide-y sm:grid-cols-2 sm:divide-x sm:divide-y-0">
               {[0, 1].map((col) => (
                 <div key={col} className="divide-border-subtle divide-y">
@@ -57,12 +58,13 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             </div>
           )}
 
-          {technicalSkills.length === 0 && (
-            <div className="flex items-center gap-4 px-5 py-10">
-              <Loader2 className="h-6 w-6 animate-spin" />
-              <span className="text-text-muted text-sm">
-                Waiting for connection...
-              </span>
+          {!technicalSkills?.length && (
+            <div className="p-4">
+              <EmptyState
+                command="ls ~/skills --technical"
+                failed={!technicalSkills}
+                emptyMessage="No technical skills listed yet."
+              />
             </div>
           )}
         </div>
@@ -74,7 +76,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             Also brings
           </span>
 
-          {softSkills.length > 0 && (
+          {softSkills?.length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
               {softSkills.map((skill) => (
                 <span
@@ -87,13 +89,13 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
             </div>
           )}
 
-          {softSkills.length === 0 && (
-            <div className="flex items-center gap-3">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-text-muted text-xs">
-                Waiting for connection...
-              </span>
-            </div>
+          {!softSkills?.length && (
+            <EmptyState
+              command="ls ~/skills --soft"
+              failed={!softSkills}
+              emptyMessage="None listed yet."
+              compact
+            />
           )}
         </div>
       </ScrollReveal>

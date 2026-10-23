@@ -1,17 +1,14 @@
 "use client";
-import {
-  ArrowRight,
-  BadgeCheck,
-  CircleArrowOutUpRight,
-  Loader2,
-} from "lucide-react";
+import { ArrowRight, BadgeCheck, CircleArrowOutUpRight } from "lucide-react";
 import MarkdownPreview from "../Modules/MarkdownPreview";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import ProjectStack from "./ProjectStack";
+import ProjectThumb from "./ProjectThumb";
 import ShowMoreButtons from "./ShowMoreButtons";
 import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
 import SectionTitle from "./SectionTitle";
+import EmptyState from "../Modules/EmptyState";
 import ScrollReveal from "../Modules/ScrollReveal";
 
 const ProjectsWrapper = ({ projects }) => {
@@ -21,8 +18,8 @@ const ProjectsWrapper = ({ projects }) => {
   const [visibleCount, setVisibleCount] = useState(3);
 
   // Derived states for button visibility logic
-  const visibleProjects = projects.slice(0, visibleCount);
-  const canShowMore = visibleCount < projects.length;
+  const visibleProjects = (projects ?? []).slice(0, visibleCount);
+  const canShowMore = visibleCount < (projects?.length ?? 0);
   const canShowLess = visibleCount > 3;
 
   // Handle show more and show less
@@ -85,6 +82,11 @@ const ProjectsWrapper = ({ projects }) => {
                 }}
                 className="group border-border-subtle hover:border-accent focus-visible:border-accent flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border p-6 transition-colors duration-150 focus-visible:outline-none"
               >
+                <ProjectThumb
+                  projectId={project.id}
+                  name={project.project_name}
+                />
+
                 {/* Card Header: title + external visit icon */}
                 <div className="mb-3 flex items-start justify-between gap-3">
                   <h3 className="text-text-primary line-clamp-2 text-xl font-semibold">
@@ -129,11 +131,12 @@ const ProjectsWrapper = ({ projects }) => {
           handleShowMore={handleShowMore}
         />
 
-        {projects.length === 0 && (
-          <div className="flex items-center justify-center gap-4">
-            <Loader2 className="h-8 w-8 animate-spin" />
-            <span>Waiting for connection...</span>
-          </div>
+        {!projects?.length && (
+          <EmptyState
+            command="ls ~/projects"
+            failed={!projects}
+            emptyMessage="No projects published yet."
+          />
         )}
       </div>
     </>
