@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import { tools } from "@/assets/assets";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
@@ -12,7 +12,14 @@ import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 import { useScrollContainer } from "../Layout/AppCanvas";
 import { sections } from "./sections";
-import { motion } from "framer-motion";
+import CommandPalette from "../Modules/CommandPalette";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "framer-motion";
 
 // Section links double as scroll-spy targets (see components/Home/sections.js).
 // `blogs` is a route, not a section, so it is matched against the pathname
@@ -55,8 +62,34 @@ const Tab = ({ isActive, onClick, children }) => (
   </li>
 );
 
+// Reading progress through whatever page is in the canvas, drawn along the
+// header's bottom edge.
+const ScrollProgress = ({ className }) => {
+  const canvasRef = useScrollContainer();
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ container: canvasRef });
+  const smoothed = useSpring(scrollYProgress, {
+    stiffness: 200,
+    damping: 40,
+    mass: 0.3,
+  });
+
+  return (
+    <motion.span
+      aria-hidden="true"
+      style={{ scaleX: prefersReducedMotion ? scrollYProgress : smoothed }}
+      className={`bg-accent pointer-events-none absolute h-px origin-left ${className}`}
+    />
+  );
+};
+
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+
+  // "⌘K" on Apple platforms, "Ctrl K" elsewhere — resolved after mount so
+  // the server-rendered label never mismatches.
+  const [shortcutLabel, setShortcutLabel] = useState("Ctrl K");
 
   // Scroll state read off the canvas, not the window — the document no longer
   // scrolls (see components/Layout/AppCanvas.jsx).
@@ -173,6 +206,23 @@ const NavBar = () => {
   // Ref for the sidebar menu
   const menuRef = useRef(null);
 
+  useEffect(() => {
+    if (/Mac|iPhone|iPad/.test(navigator.platform)) setShortcutLabel("⌘K");
+
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsMenuOpen(false);
+        setIsPaletteOpen((open) => !open);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const activeSection = sections.find((section) => section.id === activeKey);
+
   // Run scrollbar hook to hide scrollbar when sidebar is open
   useHideScrollbar(isMenuOpen);
 
@@ -194,6 +244,8 @@ const NavBar = () => {
         aria-label="Main"
         className="bg-surface fixed top-2 right-2 left-2 z-50 mx-auto hidden h-12 max-w-7xl items-center justify-between gap-3 px-2 lg:flex"
       >
+        <ScrollProgress className="right-2 bottom-0 left-2" />
+
         {/* Left cluster */}
         <div className="flex items-center gap-3">
           {/* Wordmark */}
@@ -238,6 +290,16 @@ const NavBar = () => {
 
         {/* Right cluster */}
         <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsPaletteOpen(true)}
+            aria-label="Open command palette"
+            aria-haspopup="dialog"
+            className="border-border-subtle text-text-muted hover:text-text-primary hover:bg-surface-raised flex h-9 cursor-pointer items-center gap-2 rounded-lg border px-2.5 text-sm transition-colors"
+          >
+            <Search className="h-4 w-4" />
+            <kbd className="font-mono text-xs">{shortcutLabel}</kbd>
+          </button>
           <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
             <FontSwitcher />
           </div>
@@ -269,6 +331,8 @@ const NavBar = () => {
       {/* ── Mobile: flush, full-bleed header. Nothing scrolls beneath it, so
           it is a solid panel rather than a blur. ── */}
       <header className="bg-surface fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between px-3 lg:hidden">
+        <ScrollProgress className="right-0 bottom-0 left-0" />
+
         <div className="flex items-center gap-2">
           <button
             onClick={toggleMenu}
@@ -282,9 +346,35 @@ const NavBar = () => {
           <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
             <Wordmark />
           </a>
+
+          {/* The mobile header has no tabs, so it names the section in view */}
+          <AnimatePresence mode="wait" initial={false}>
+            {activeSection && (
+              <motion.span
+                key={activeSection.id}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.18 }}
+                className="text-text-muted font-mono text-xs"
+              >
+                <span className="text-accent">{activeSection.index}</span>{" "}
+                {activeSection.label}
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
 
         <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setIsPaletteOpen(true)}
+            aria-label="Open command palette"
+            aria-haspopup="dialog"
+            className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors"
+          >
+            <Search className="h-5 w-5" />
+          </button>
           <div className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors">
             <FontSwitcher />
           </div>
@@ -397,6 +487,11 @@ const NavBar = () => {
           </a>
         </div>
       </div>
+
+      <CommandPalette
+        isOpen={isPaletteOpen}
+        onClose={() => setIsPaletteOpen(false)}
+      />
     </>
   );
 };
