@@ -9,7 +9,8 @@ import { useEffect, useRef } from "react";
 // its width: when the canvas is wide enough the whole globe is centred in
 // it; when it's narrower the globe hugs the left edge and the right edge
 // crops the rest (dots past it are never drawn). So a column that grows with
-// the screen reveals more of the globe (see components/Home/Hero.jsx).
+// the screen reveals more of the globe.
+// Currently unused: the hero swapped it for HeroEditor. Kept for future use.
 export default function SphereBg({
   className = "absolute inline-flex h-90 w-90 md:h-115 md:w-115 lg:h-130 lg:w-130",
   dotCount = 900,
