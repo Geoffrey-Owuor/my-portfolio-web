@@ -59,7 +59,7 @@ const Project = ({ projectInfo }) => {
 
   return (
     <>
-      <section className="w-full px-4 py-8">
+      <section className="container-page py-8">
         <div className="mx-auto max-w-4xl">
           {/* Breadcrumb + Back */}
           <motion.div
@@ -86,7 +86,7 @@ const Project = ({ projectInfo }) => {
             initial="hidden"
             animate="visible"
             custom={1}
-            className="font-mono text-text-primary mt-8 text-3xl font-semibold tracking-tight sm:text-4xl"
+            className="text-text-primary text-h1 mt-8 font-semibold"
           >
             {project.project_name}
           </motion.h1>

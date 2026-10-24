@@ -1,15 +1,14 @@
+import { PageHeaderSkeleton } from "../Layout/PageHeader";
+
 const BlogCardsSkeleton = () => {
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-16">
-      {/* Header */}
-      <div className="relative mb-10 flex items-center justify-center">
-        <div className="bg-border-subtle h-9 w-48 animate-pulse rounded-xl" />
-      </div>
+    <div className="container-page py-section">
+      <PageHeaderSkeleton />
 
       {/* Toolbar: Create + Search + View Toggle */}
-      <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         {/* Search input skeleton */}
-        <div className="bg-border-subtle h-11 w-80 animate-pulse rounded-xl" />
+        <div className="bg-border-subtle h-11 w-full animate-pulse rounded-xl md:w-80" />
 
         {/* View toggle pill, Login & Create Blog skeleton */}
         <div className="flex flex-col items-center gap-4 md:flex-row">

@@ -152,11 +152,11 @@ const ViewBlog = ({ blogPost, userId }) => {
         setAlertInfo={setAlertInfo}
       />
 
-      <div className="mx-auto flex max-w-7xl flex-col px-4 py-8 lg:flex-row lg:gap-6">
+      <div className="container-page flex flex-col py-8 lg:flex-row lg:gap-6">
         <article className="w-full max-w-none min-w-0">
           {/* Header Section */}
           <header className="mb-6">
-            <h1 className="text-text-primary mb-4 font-mono text-3xl leading-tight font-bold sm:text-4xl">
+            <h1 className="text-text-primary text-h1 mb-4 font-semibold">
               {blogPost.blog_title}
             </h1>
 

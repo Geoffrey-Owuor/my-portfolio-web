@@ -37,11 +37,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex h-full items-center justify-center py-26">
+    <div className="container-page py-section flex flex-1 items-center justify-center">
       <div className="w-full max-w-[345px]">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-text-primary mb-2 text-center font-mono text-3xl font-semibold">
+          <h1 className="text-text-primary text-h1 mb-2 text-center font-semibold">
             Welcome back
           </h1>
           <p className="text-text-muted text-center">

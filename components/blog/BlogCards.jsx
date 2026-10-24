@@ -13,6 +13,7 @@ import {
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
 import { ProgressLink } from "../Modules/RouteProgress";
+import PageHeader from "../Layout/PageHeader";
 import BlogTableView from "./BlogTableView";
 
 const BlogCards = ({ blogs }) => {
@@ -67,11 +68,11 @@ const BlogCards = ({ blogs }) => {
 
   if (!blogs || blogs.length === 0) {
     return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-16">
+      <div className="container-page py-section flex min-h-[60vh] flex-col items-center justify-center">
         <div className="text-center">
-          <h2 className="text-text-primary mb-4 text-3xl font-bold">
+          <h1 className="text-text-primary text-h1 mb-4 font-semibold">
             No Blogs Available
-          </h2>
+          </h1>
           <p className="text-text-muted mb-8">
             We couldn't load any blogs at the moment. This might be due to a
             connection issue.
@@ -99,31 +100,23 @@ const BlogCards = ({ blogs }) => {
 
   return (
     <>
-      <div className="mx-auto w-full max-w-7xl px-4 py-16">
-        {/* Header */}
-        <div className="relative mb-10 flex items-center justify-center">
-          <div className="flex flex-col items-center justify-center gap-3">
-            {/* Heading */}
-            <span className="text-text-muted font-mono text-sm font-medium tracking-[0.2em] uppercase">
-              Thoughts & Writings
-            </span>
-            <h2 className="text-text-primary font-mono text-3xl font-semibold tracking-tight md:text-4xl">
-              Blog Space
-            </h2>
-            <div className="bg-accent mt-1 h-px w-12" />
-          </div>
-        </div>
+      <div className="container-page py-section">
+        <PageHeader
+          path="blogs"
+          title="Blog Space"
+          subtitle="Thoughts and writing on software, security and emerging tech"
+        />
         {/* Toolbar: Create + Search + View Toggle */}
-        <div className="mb-10 flex flex-col items-center justify-center gap-4 md:flex-row md:justify-between">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           {/* Search input */}
-          <div className="relative">
+          <div className="relative w-full md:w-80">
             <Search className="text-text-muted absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search for a blog..."
               value={searchQuery}
               onChange={handleSearchQuery}
-              className="border-border-subtle bg-surface-raised text-text-primary placeholder-text-muted focus:border-accent w-80 rounded-xl border py-3 pr-10 pl-11 text-sm transition-colors focus:outline-none"
+              className="border-border-subtle bg-surface-raised text-text-primary placeholder-text-muted focus:border-accent w-full rounded-xl border py-3 pr-10 pl-11 text-sm transition-colors focus:outline-none"
             />
             <button
               className="text-text-muted hover:bg-surface absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1"
