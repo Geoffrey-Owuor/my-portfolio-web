@@ -5,9 +5,11 @@ import { useEffect, useRef } from "react";
 // The sphere generation canvas component - Totally AI-Generated
 // `className` sizes/positions the canvas; `dotCount` should scale with that
 // size, or a small sphere turns into noise.
-// `anchor="right"` centres the sphere on the canvas's right edge, so only its
-// left hemisphere is drawn — a half globe for a canvas that sits flush
-// against the viewport edge (see components/Home/Hero.jsx).
+// `anchor="start"` gives the sphere a radius set by the canvas's height, not
+// its width: when the canvas is wide enough the whole globe is centred in
+// it; when it's narrower the globe hugs the left edge and the right edge
+// crops the rest (dots past it are never drawn). So a column that grows with
+// the screen reveals more of the globe (see components/Home/Hero.jsx).
 export default function SphereBg({
   className = "absolute inline-flex h-90 w-90 md:h-115 md:w-115 lg:h-130 lg:w-130",
   dotCount = 900,
@@ -22,7 +24,7 @@ export default function SphereBg({
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const isRight = anchor === "right";
+    const isStart = anchor === "start";
     // Reduced motion keeps the globe but stops the idle spin.
     const spin = window.matchMedia("(prefers-reduced-motion: reduce)").matches
       ? 0
@@ -51,10 +53,20 @@ export default function SphereBg({
     }));
 
     // Sphere centre and radius for the canvas's current size.
-    const geometry = (W, H) =>
-      isRight
-        ? { cx: W, cy: H / 2, radius: Math.min(W * 0.95, H * 0.44) }
-        : { cx: W / 2, cy: H / 2, radius: Math.min(W, H) * 0.36 };
+    // Perspective pushes the projected outline to ~1.1x the radius, so the
+    // start anchor keeps that much clearance from the left edge.
+    const geometry = (W, H) => {
+      if (!isStart) {
+        return { cx: W / 2, cy: H / 2, radius: Math.min(W, H) * 0.36 };
+      }
+      const radius = H * 0.44;
+      const extent = radius * 1.12;
+      return {
+        cx: W >= extent * 2 ? W / 2 : extent,
+        cy: H / 2,
+        radius,
+      };
+    };
 
     const handleMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
