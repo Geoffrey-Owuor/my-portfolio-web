@@ -34,10 +34,8 @@ const Project = ({ projectInfo }) => {
   if (!project || Object.keys(project).length === 0) {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-8 text-center">
-        <p className="font-mono text-danger mb-3 text-sm">
-          $ cat project.json
-        </p>
-        <p className="font-mono text-text-muted mb-8 text-sm">
+        <p className="text-danger mb-3 font-mono text-sm">$ cat project.json</p>
+        <p className="text-text-muted mb-8 font-mono text-sm">
           cat: project.json: No such file or directory
         </p>
         <h2 className="text-text-primary mb-3 text-2xl font-semibold">
@@ -48,7 +46,7 @@ const Project = ({ projectInfo }) => {
         </p>
         <button
           onClick={() => router.back()}
-          className="font-mono border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent inline-flex items-center gap-2 rounded-md border px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none"
+          className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent inline-flex items-center gap-2 rounded-md border px-5 py-2.5 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to projects
@@ -68,7 +66,7 @@ const Project = ({ projectInfo }) => {
             animate="visible"
             custom={0}
           >
-            <p className="font-mono text-text-muted mb-3 text-xs">
+            <p className="text-text-muted mb-3 font-mono text-xs">
               ~/projects/{project.id}
             </p>
             <button
@@ -107,7 +105,7 @@ const Project = ({ projectInfo }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Visit live project"
-                className="font-mono border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent inline-flex w-fit shrink-0 items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none"
+                className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent inline-flex w-fit shrink-0 items-center gap-2 rounded-md border px-4 py-2 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
               >
                 <span className="text-accent" aria-hidden="true">
                   $
@@ -127,7 +125,7 @@ const Project = ({ projectInfo }) => {
               custom={3}
               className="border-border-subtle bg-surface mt-10 overflow-hidden rounded-xl border"
             >
-              <div className="border-border-subtle font-mono text-text-muted flex items-center gap-2 border-b px-4 py-2.5 text-xs">
+              <div className="border-border-subtle text-text-muted flex items-center gap-2 border-b px-4 py-2.5 font-mono text-xs">
                 <span className="text-accent" aria-hidden="true">
                   ●
                 </span>
@@ -150,7 +148,7 @@ const Project = ({ projectInfo }) => {
             custom={4}
             className="border-border-subtle bg-surface mt-6 overflow-hidden rounded-xl border"
           >
-            <div className="border-border-subtle font-mono text-text-muted flex items-center gap-2 border-b px-4 py-2.5 text-xs">
+            <div className="border-border-subtle text-text-muted flex items-center gap-2 border-b px-4 py-2.5 font-mono text-xs">
               <span className="text-accent" aria-hidden="true">
                 ●
               </span>

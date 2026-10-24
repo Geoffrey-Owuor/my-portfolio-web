@@ -107,35 +107,35 @@ const BlogPost = ({ user }) => {
       {isSubmitting && <LoadingCircle />}
 
       <div className="container-page py-section">
-      <div className="mx-auto max-w-5xl">
-        <div className="border-border-subtle overflow-hidden rounded-2xl border">
-          {/* Header - Neutral & Clean */}
-          <div className="border-border-subtle flex items-center justify-between border-b px-6 py-6">
-            <div>
-              <h1 className="text-text-primary text-h2 font-semibold">
-                Create New Blog Post
-              </h1>
-              <p className="text-text-muted mt-1 text-sm sm:text-base">
-                Share your thoughts with the world
-              </p>
+        <div className="mx-auto max-w-5xl">
+          <div className="border-border-subtle overflow-hidden rounded-2xl border">
+            {/* Header - Neutral & Clean */}
+            <div className="border-border-subtle flex items-center justify-between border-b px-6 py-6">
+              <div>
+                <h1 className="text-text-primary text-h2 font-semibold">
+                  Create New Blog Post
+                </h1>
+                <p className="text-text-muted mt-1 text-sm sm:text-base">
+                  Share your thoughts with the world
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <UserInfoCard user={user} />
+                <LogoutButton />
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <UserInfoCard user={user} />
-              <LogoutButton />
-            </div>
-          </div>
 
-          {/* Blog Form */}
-          <BlogForm
-            handleConfirmSubmit={handleConfirmSubmit}
-            formData={formData}
-            handleChange={handleChange}
-            isFormValid={isFormValid}
-            isSubmitting={isSubmitting}
-            IsUpdating={false}
-          />
+            {/* Blog Form */}
+            <BlogForm
+              handleConfirmSubmit={handleConfirmSubmit}
+              formData={formData}
+              handleChange={handleChange}
+              isFormValid={isFormValid}
+              isSubmitting={isSubmitting}
+              IsUpdating={false}
+            />
+          </div>
         </div>
-      </div>
       </div>
     </>
   );

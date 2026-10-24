@@ -7,13 +7,7 @@ import ProjectStack from "../Wrappers/ProjectStack";
 // One half of the prev/next pair. `direction` decides which way the card leans:
 // "previous" is arrow-first and left aligned, "next" is arrow-last and right
 // aligned, so the pair reads outward from the middle of the page.
-const NeighbourCard = ({
-  id,
-  name,
-  stack,
-  direction,
-  isWrapping,
-}) => {
+const NeighbourCard = ({ id, name, stack, direction, isWrapping }) => {
   const isPrevious = direction === "previous";
 
   // At the ends of the list navigation wraps, so the label says where you
@@ -41,7 +35,7 @@ const NeighbourCard = ({
       }`}
     >
       <span
-        className={`font-mono text-text-muted group-hover:text-accent flex items-center gap-1.5 text-xs transition-colors ${
+        className={`text-text-muted group-hover:text-accent flex items-center gap-1.5 font-mono text-xs transition-colors ${
           isPrevious ? "" : "flex-row-reverse"
         }`}
       >
