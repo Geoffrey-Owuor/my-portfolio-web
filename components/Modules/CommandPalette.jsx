@@ -210,7 +210,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
               }
               transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
               onAnimationStart={() => inputRef.current?.focus()}
-              className="border-border-subtle bg-surface rounded-dialog relative w-full max-w-xl overflow-hidden border shadow-2xl"
+              className="border-border-subtle bg-surface rounded-card relative w-full max-w-xl overflow-hidden border shadow-2xl"
             >
               {/* Prompt */}
               <div className="border-border-subtle flex items-center gap-2 border-b px-4 py-3 font-mono text-sm">
@@ -248,7 +248,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
                 id="command-palette-list"
                 role="listbox"
                 aria-label="Commands"
-                className="max-h-[min(60vh,26rem)] overflow-y-auto overscroll-contain p-2"
+                className="max-h-[min(60vh,26rem)] overflow-y-auto overscroll-contain p-2 [scrollbar-width:thin]"
               >
                 {results.length === 0 && (
                   <li className="text-text-muted px-3 py-8 text-center text-sm">
