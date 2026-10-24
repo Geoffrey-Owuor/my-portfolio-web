@@ -23,7 +23,7 @@ const ExperienceWrapper = ({ experiences }) => {
   const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 1, 1));
 
   return (
-    <div className="mx-1 w-full max-w-7xl min-w-0 flex-1 md:mx-auto">
+    <div className="min-w-0">
       {/* Section Title */}
       <SectionTitle
         sectionId="experience"
@@ -49,7 +49,7 @@ const ExperienceWrapper = ({ experiences }) => {
                   {exp.work_timeline}
                 </time>
 
-                <h3 className="text-text-primary text-xl font-semibold">
+                <h3 className="text-text-primary text-h3 font-semibold">
                   {exp.work_title}
                 </h3>
 

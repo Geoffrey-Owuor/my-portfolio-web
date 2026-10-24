@@ -6,10 +6,7 @@ const Skills = async () => {
   const skills = await getCachedSkills();
 
   return (
-    <section
-      id="skills"
-      className="mx-auto flex w-full max-w-7xl justify-center px-4 py-20 md:py-28"
-    >
+    <section id="skills" className="section-shell">
       <SkillsWrapper
         technicalSkills={skills?.technicalSkills ?? null}
         softSkills={skills?.softSkills ?? null}

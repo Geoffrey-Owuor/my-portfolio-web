@@ -19,7 +19,7 @@ const Writing = async () => {
   return (
     <section
       id="writing" // For the command palette and scroll-spy
-      className="mx-auto flex w-full max-w-7xl justify-center px-4 py-20 md:py-28"
+      className="section-shell"
     >
       <WritingWrapper posts={posts ?? null} />
     </section>

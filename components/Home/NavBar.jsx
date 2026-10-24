@@ -235,7 +235,7 @@ const NavBar = () => {
       >
         <ScrollProgress />
 
-        <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-3 px-4">
+        <div className="container-page flex h-full items-center justify-between gap-3">
           {/* Left cluster */}
           <div className="flex items-center gap-3">
             {/* Wordmark */}

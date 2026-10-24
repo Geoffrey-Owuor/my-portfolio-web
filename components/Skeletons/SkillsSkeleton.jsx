@@ -1,3 +1,4 @@
+import SectionTitleSkeleton from "./SectionTitleSkeleton";
 import { HeartHandshake } from "lucide-react";
 
 /**
@@ -6,13 +7,9 @@ import { HeartHandshake } from "lucide-react";
  */
 const SkillsSkeleton = () => {
   return (
-    <section
-      id="skills-skeleton"
-      className="min-h-app mx-auto w-full max-w-7xl px-4 py-24"
-    >
-      <div className="mx-auto">
-        {/* Section Title Skeleton */}
-        <div className="bg-border-subtle mx-auto mb-16 h-8 w-48 animate-pulse rounded-md"></div>
+    <section id="skills-skeleton" className="section-shell">
+      <div>
+        <SectionTitleSkeleton />
 
         {/* Technical Skills terminal panel skeleton */}
         <div className="border-border-subtle mx-auto w-full max-w-4xl overflow-hidden rounded-lg border">

@@ -53,7 +53,7 @@ const ProjectsWrapper = ({ projects }) => {
 
   return (
     <>
-      <div className="mx-1 w-full md:mx-auto">
+      <div className="min-w-0">
         {/* Section Title */}
         <SectionTitle
           sectionId="projects"
@@ -89,7 +89,7 @@ const ProjectsWrapper = ({ projects }) => {
 
                 {/* Card Header: title + external visit icon */}
                 <div className="mb-3 flex items-start justify-between gap-3">
-                  <h3 className="text-text-primary line-clamp-2 text-xl font-semibold">
+                  <h3 className="text-text-primary text-h3 line-clamp-2 font-semibold">
                     {project.project_name}
                   </h3>
 

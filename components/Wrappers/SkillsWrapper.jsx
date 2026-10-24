@@ -7,7 +7,7 @@ import ScrollReveal from "../Modules/ScrollReveal";
 
 const SkillsWrapper = ({ technicalSkills, softSkills }) => {
   return (
-    <div className="mx-1 w-full max-w-7xl min-w-0 flex-1 md:mx-auto">
+    <div className="min-w-0">
       {/* Section Title */}
       <SectionTitle
         sectionId="skills"

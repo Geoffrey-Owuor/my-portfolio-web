@@ -69,7 +69,7 @@ const ProfileCard = ({ profile }) => {
         sizes="112px"
         className="border-border-subtle h-28 w-28 rounded-full border object-cover"
       />
-      <h3 className="text-text-primary mt-4 text-lg font-semibold">
+      <h3 className="text-text-primary text-h3 mt-4 font-semibold">
         {profile.name ?? profile.login}
       </h3>
       <p className="text-text-muted font-mono text-sm">@{profile.login}</p>
@@ -406,7 +406,7 @@ const RecentReposCard = ({ repos }) => (
 
 const GitHubWrapper = ({ data }) => {
   return (
-    <div className="mx-1 w-full min-w-0 flex-1 md:mx-auto">
+    <div className="min-w-0">
       <SectionTitle
         sectionId="activity"
         title="GitHub Activity"

@@ -1,16 +1,13 @@
+import SectionTitleSkeleton from "./SectionTitleSkeleton";
 /**
  * A loading skeleton component for the GitHub section.
  * It mimics the layout of the GitHub component and uses animate-pulse.
  */
 const GitHubSkeleton = () => {
   return (
-    <section
-      id="activity-skeleton"
-      className="min-h-app mx-auto w-full max-w-7xl px-4 py-24"
-    >
-      <div className="mx-auto">
-        {/* Section Title Skeleton */}
-        <div className="bg-border-subtle mx-auto mb-16 h-8 w-48 animate-pulse rounded-md"></div>
+    <section id="activity-skeleton" className="section-shell">
+      <div>
+        <SectionTitleSkeleton />
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Profile + languages column */}

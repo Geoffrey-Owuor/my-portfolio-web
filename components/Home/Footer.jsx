@@ -14,10 +14,10 @@ const Footer = () => {
     <footer
       id="footer"
       // Use a subtle top border to separate it from the content above
-      className="mx-auto w-full max-w-7xl px-4 py-6"
+      className="container-page py-8"
     >
       {/* Border div */}
-      <div className="mb-6 h-px bg-linear-to-br from-gray-200 via-gray-400 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" />
+      <div className="bg-border-subtle mb-6 h-px" />
 
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
@@ -73,7 +73,7 @@ const Footer = () => {
       {/* Large display name */}
       <div className="mt-6 overflow-hidden">
         <p
-          className="text-center font-mono text-6xl leading-none font-black tracking-wide text-gray-200 select-none md:text-9xl dark:text-gray-900"
+          className="text-center font-mono text-5xl leading-none font-black tracking-wide text-gray-200 select-none md:text-7xl dark:text-gray-900"
           style={{
             WebkitMaskImage:
               "linear-gradient(to bottom, black 0%, transparent 90%)",

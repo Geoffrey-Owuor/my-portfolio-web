@@ -16,17 +16,6 @@ import { getSection } from "../Home/sections";
 const APPEAR_DELAY_MS = 900;
 const VISIBLE_MS = 4500;
 
-// Title glyphs rise out of a mask one after another, once, when the heading
-// first comes into view.
-const titleVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.025 } },
-};
-const glyphVariants = {
-  hidden: { y: "110%" },
-  visible: { y: "0%", transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-};
-
 /**
  * Editorial section header: index number (the section's position in the
  * page, shared with the navbar), title, a one-line subtitle, the section's
@@ -88,46 +77,25 @@ const SectionTitle = ({
     : { opacity: 0, y: -4, filter: "blur(4px)" };
 
   return (
-    <header ref={titleRef} className="relative mb-16">
-      <div className="flex items-start gap-4 md:gap-6">
+    <header ref={titleRef} className="relative mb-10">
+      {/* One short fade-up the first time the header comes into view. */}
+      <motion.div
+        initial={hidden}
+        animate={isInView ? visible : hidden}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="flex items-start gap-3 md:gap-4"
+      >
         <span
-          className="text-accent pt-1.5 font-mono text-sm tabular-nums md:pt-3 md:text-base"
+          className="text-accent pt-1.5 font-mono text-sm tabular-nums md:pt-2"
           aria-hidden="true"
         >
           {section?.index}
         </span>
 
         <div className="min-w-0 flex-1">
-          <motion.h2
-            aria-label={title}
-            variants={prefersReducedMotion ? undefined : titleVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            className="text-text-primary font-mono text-3xl font-semibold tracking-tight md:text-5xl"
-          >
-            {/* Each word is its own no-wrap group so lines only break
-                between words; each glyph rises inside its word's mask. */}
-            {title.split(" ").map((word, w) => (
-              <span
-                key={w}
-                aria-hidden="true"
-                className="inline-block overflow-hidden pb-1 align-bottom whitespace-nowrap"
-              >
-                {[...word].map((char, c) => (
-                  <motion.span
-                    key={c}
-                    variants={prefersReducedMotion ? undefined : glyphVariants}
-                    className="inline-block"
-                  >
-                    {char}
-                  </motion.span>
-                ))}
-                {w < title.split(" ").length - 1 && <span>&nbsp;</span>}
-              </span>
-            ))}
-          </motion.h2>
+          <h2 className="text-text-primary text-h2 font-semibold">{title}</h2>
 
-          <div className="mt-3 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+          <div className="mt-1.5 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
             {subtitle && (
               <p className="text-text-muted text-base">{subtitle}</p>
             )}
@@ -136,10 +104,10 @@ const SectionTitle = ({
             </span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Hairline track with the accent drawn across it by scroll position */}
-      <div className="bg-border-subtle relative mt-6 h-px overflow-hidden">
+      <div className="bg-border-subtle relative mt-5 h-px overflow-hidden">
         <motion.div
           style={prefersReducedMotion ? undefined : { scaleX: ruleProgress }}
           className="bg-accent absolute inset-0 origin-left"
@@ -159,7 +127,7 @@ const SectionTitle = ({
               animate={visible}
               exit={leaving}
               transition={{ duration: 0.45, ease: "easeOut" }}
-              className="pointer-events-none absolute top-full left-0 mt-4 flex max-w-full"
+              className="pointer-events-none absolute top-full left-0 mt-2 flex max-w-full"
             >
               <div className="border-border-subtle bg-surface-raised flex max-w-full items-center gap-2 rounded-lg border px-3 py-1.5 sm:px-4">
                 <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />

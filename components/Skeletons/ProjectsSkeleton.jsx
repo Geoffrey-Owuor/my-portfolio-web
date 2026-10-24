@@ -1,3 +1,4 @@
+import SectionTitleSkeleton from "./SectionTitleSkeleton";
 /**
  * A loading skeleton component for the Projects section.
  * It mimics the layout of the Projects component and uses animate-pulse.
@@ -7,13 +8,9 @@ const ProjectsSkeleton = () => {
   const skeletonCards = Array.from({ length: 6 });
 
   return (
-    <section
-      id="projects-skeleton"
-      className="min-h-app mx-auto w-full max-w-7xl px-4 py-24"
-    >
-      <div className="mx-auto">
-        {/* Section Title Skeleton */}
-        <div className="bg-border-subtle mx-auto mb-16 h-8 w-48 animate-pulse rounded-md"></div>
+    <section id="projects-skeleton" className="section-shell">
+      <div>
+        <SectionTitleSkeleton />
 
         {/* Responsive Projects Grid */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">

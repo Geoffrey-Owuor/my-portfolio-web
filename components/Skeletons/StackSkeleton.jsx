@@ -1,3 +1,4 @@
+import SectionTitleSkeleton from "./SectionTitleSkeleton";
 import { Layers2 } from "lucide-react";
 
 /**
@@ -6,13 +7,9 @@ import { Layers2 } from "lucide-react";
  */
 const StackSkeleton = () => {
   return (
-    <section
-      id="stack-skeleton"
-      className="min-h-app mx-auto w-full max-w-7xl px-4 py-24"
-    >
-      <div className="mx-auto">
-        {/* Section Title Skeleton */}
-        <div className="bg-border-subtle mx-auto mb-16 h-8 w-48 animate-pulse rounded-md"></div>
+    <section id="stack-skeleton" className="section-shell">
+      <div>
+        <SectionTitleSkeleton />
 
         {/* Core Technologies marquee skeleton */}
         <div className="border-border-subtle mx-auto flex w-full max-w-4xl items-center justify-center gap-10 overflow-hidden rounded-lg border py-8">

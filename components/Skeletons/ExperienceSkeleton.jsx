@@ -1,3 +1,4 @@
+import SectionTitleSkeleton from "./SectionTitleSkeleton";
 import { Briefcase } from "lucide-react";
 
 /**
@@ -8,10 +9,9 @@ const ExperienceSkeleton = () => {
   const skeletonItems = Array.from({ length: 3 });
 
   return (
-    <section id="experience-skeleton" className="min-h-app w-full px-4 py-24">
-      <div className="mx-auto max-w-5xl">
-        {/* Section Title Skeleton */}
-        <div className="bg-border-subtle mx-auto mb-16 h-8 w-64 animate-pulse rounded-md"></div>
+    <section id="experience-skeleton" className="section-shell">
+      <div>
+        <SectionTitleSkeleton />
 
         {/* Vertical Timeline Skeleton */}
         <ol className="border-border-subtle relative md:border-l">

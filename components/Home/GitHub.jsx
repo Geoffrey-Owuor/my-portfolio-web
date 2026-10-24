@@ -7,7 +7,7 @@ const GitHub = async () => {
   return (
     <section
       id="activity" // For navbar link
-      className="mx-auto flex w-full max-w-7xl justify-center px-4 py-20 md:py-28"
+      className="section-shell"
     >
       <GitHubWrapper data={data} />
     </section>

@@ -11,7 +11,7 @@ import { ProgressLink } from "../Modules/RouteProgress";
 // the section reads as a reading list and doesn't echo Projects above it.
 const WritingWrapper = ({ posts }) => {
   return (
-    <div className="mx-1 w-full max-w-7xl min-w-0 flex-1 md:mx-auto">
+    <div className="min-w-0">
       <SectionTitle
         sectionId="writing"
         title="Latest Writing"

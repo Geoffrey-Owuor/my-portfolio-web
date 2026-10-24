@@ -7,6 +7,29 @@
 @theme {
   --breakpoint-custom: 1000px;
   --breakpoint-custom-content: 1200px;
+
+  /* ── Type scale ──────────────────────────────────────────────────────
+     The only heading sizes in the app: `text-display` (hero), `text-h1`
+     (page titles: blog post, project, 404), `text-h2` (section titles),
+     `text-h3` (card/sub-section titles). Fluid between ~375px and ~1280px
+     so no breakpoint variants are needed at the call site. Body copy stays
+     on Tailwind's text-sm/base/lg. */
+  --text-display: clamp(2rem, 1.55rem + 1.9vw, 3rem);
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.025em;
+  --text-h1: clamp(1.75rem, 1.5rem + 1.05vw, 2.25rem);
+  --text-h1--line-height: 1.2;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: clamp(1.5rem, 1.35rem + 0.65vw, 1.875rem);
+  --text-h2--line-height: 1.25;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: 1.125rem;
+  --text-h3--line-height: 1.4;
+
+  /* ── Vertical rhythm ─────────────────────────────────────────────────
+     `py-section` is each page section's top/bottom padding (40px → 64px),
+     so adjacent sections sit 80–128px apart. Used via `section-shell`. */
+  --spacing-section: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
   --font-geistsans: var(--font-geistsans), ui-sans-serif, system-ui, sans-serif;
   --font-dmsans: var(--font-dmsans), ui-sans-serif, system-ui, sans-serif;
 
@@ -180,6 +203,25 @@ html[data-theme="dark"] {
   min-height: calc(100dvh - var(--header-h));
 }
 
+/* The page measure: centred, max-w-7xl, with the shared side gutter. Every
+   top-level block (header bar, sections, footer, route pages) uses this, so
+   their edges always line up. */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-7xl);
+  padding-inline: --spacing(4);
+  @media (width >= 48rem) {
+    padding-inline: --spacing(6);
+  }
+}
+
+/* A homepage section (and its skeleton): the page measure plus the shared
+   vertical rhythm. Change section spacing here, not at the call sites. */
+@utility section-shell {
+  @apply container-page py-section;
+}
+
 @layer utilities {
   @keyframes slideDown {
     from {
@@ -227,22 +269,6 @@ html[data-theme="dark"] {
 }
 
 @layer base {
-  /* Maintaining a certain length in different screens - Tailwind css configuration */
-  .containerizing {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    @media (width >= 40rem /* 640px */) {
-      max-width: 65rem /* 1040px */;
-    }
-    @media (width >= 64rem /* 1024px */) {
-      max-width: 90rem /* 1280px */;
-    }
-    @media (width >= 96rem /* 1536px */) {
-      max-width: 100rem /* 1536px */;
-    }
-  }
-
   /* Custom blur compatible in all browsers */
   .custom-blur {
     -webkit-backdrop-filter: blur(6px);

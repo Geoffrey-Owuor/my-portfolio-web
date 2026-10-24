@@ -6,7 +6,7 @@ const Experience = async () => {
   return (
     <section
       id="experience" // For navbar link
-      className="flex w-full justify-center px-4 py-20 md:py-28"
+      className="section-shell"
     >
       <ExperienceWrapper experiences={experiences} />
     </section>

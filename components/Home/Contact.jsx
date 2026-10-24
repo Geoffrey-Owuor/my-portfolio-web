@@ -103,8 +103,8 @@ const Contact = () => {
 
   return (
     <>
-      <section id="contact" className="w-full px-4 py-20 md:py-28">
-        <div className="mx-1 max-w-7xl sm:mx-auto">
+      <section id="contact" className="section-shell">
+        <div>
           {/* Section Title */}
           <SectionTitle
             sectionId="contact"
