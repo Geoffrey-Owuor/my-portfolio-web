@@ -1,21 +1,30 @@
 "use client";
 
 import { XIcon, AlertCircle, CheckCircle } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ClientPortal from "./ClientPortal";
 
 const Alert = ({ message, type, onClose }) => {
   const [isClosing, setIsClosing] = useState(false);
 
+  // Latest onClose, read through a ref so the auto-close timer below can
+  // stay mount-only — parents pass a fresh callback on every render, and
+  // depending on it would restart the 6s countdown each time.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
+
   const handleClose = () => {
     setIsClosing(true);
-    setTimeout(() => onClose(), 200); // Match this with animation duration
+    setTimeout(() => onCloseRef.current(), 200); // Match this with animation duration
   };
 
   //Auto close after 6 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
-      handleClose();
+      setIsClosing(true);
+      setTimeout(() => onCloseRef.current(), 200);
     }, 6000);
 
     return () => clearTimeout(timer);

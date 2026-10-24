@@ -74,8 +74,8 @@ const BlogCards = ({ blogs }) => {
             No Blogs Available
           </h1>
           <p className="text-text-muted mb-8">
-            We couldn't load any blogs at the moment. This might be due to a
-            connection issue.
+            We couldn&apos;t load any blogs at the moment. This might be due to
+            a connection issue.
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <button

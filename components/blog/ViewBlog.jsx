@@ -76,7 +76,7 @@ const ViewBlog = ({ blogPost, userId }) => {
         alertMessage: "Where the magic began. My very first post! 🕰️🚀",
       });
     }
-  }, []);
+  }, [blogPost.is_first_blog, blogPost.is_last_blog]);
 
   // 2. Helper to generate share links based on the platform key
   const getShareLink = (platformKey, url, title) => {
@@ -112,7 +112,8 @@ const ViewBlog = ({ blogPost, userId }) => {
             Blog Not Found
           </h2>
           <p className="text-text-muted mb-8">
-            The blog post you're looking for doesn't exist or has been removed.
+            The blog post you&apos;re looking for doesn&apos;t exist or has been
+            removed.
           </p>
           <button
             onClick={() => handleBlogsRoute("/blogs")}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { tools } from "@/assets/assets";
 import { Menu, X, ArrowUpRight, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -164,8 +165,8 @@ const NavBar = () => {
     document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Wordmark/section links always render as plain <a href="/#id"> (for
-  // accessibility/middle-click/new-tab), but a plain left click is
+  // Wordmark/section links always render as a <Link href="/#id"> (a real
+  // anchor, for accessibility/middle-click/new-tab), but a plain left click is
   // intercepted: on the homepage it goes through the same explicit
   // smooth-scroll path as the tabs — native fragment navigation would
   // otherwise scroll instantly (there's deliberately no CSS scroll-smooth, so
@@ -238,9 +239,12 @@ const NavBar = () => {
           {/* Left cluster */}
           <div className="flex items-center gap-3">
             {/* Wordmark */}
-            <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
+            <Link
+              href="/#home"
+              onClick={(e) => handleSectionLinkClick(e, "home")}
+            >
               <Wordmark />
-            </a>
+            </Link>
 
             <span
               className="bg-border-subtle h-6 w-px shrink-0"
@@ -335,13 +339,13 @@ const NavBar = () => {
             <Menu className="h-6 w-6" />
           </button>
 
-          <a
+          <Link
             href="/#home"
             onClick={(e) => handleSectionLinkClick(e, "home")}
             className="shrink-0"
           >
             <Wordmark />
-          </a>
+          </Link>
 
           {/* The mobile header has no tabs, so it names the section in view */}
           <AnimatePresence mode="wait" initial={false}>
@@ -436,7 +440,7 @@ const NavBar = () => {
         <ul className="flex flex-col gap-2 p-6">
           {navLinks.map((link) => (
             <li key={link.label}>
-              <a
+              <Link
                 href={link.href}
                 onClick={(e) => {
                   handleSectionLinkClick(e, link.id);
@@ -449,7 +453,7 @@ const NavBar = () => {
                 }`}
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li>
