@@ -18,10 +18,7 @@ import ClientPortal from "./ClientPortal";
 import { useProgressRouter } from "./RouteProgress";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { sections } from "../Home/sections";
-import { RESUME_URL } from "../Home/HeroTerminal";
-
-const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
-const EMAIL = "geoffreyowuor22@gmail.com";
+import { EMAIL, GITHUB_URL, RESUME_URL } from "@/utils/links";
 
 // Fetched once per page load, the first time the palette opens.
 let searchIndexPromise = null;

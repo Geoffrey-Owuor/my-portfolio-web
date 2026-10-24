@@ -1,38 +1,26 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import { Microscope, Code2, Hammer, ArrowDown } from "lucide-react";
-import SphereBg from "../Modules/SphereBg";
-import HeroTerminal from "./HeroTerminal";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import HeroClock from "./HeroClock";
+import { RESUME_URL } from "@/utils/links";
 
-const titleTags = [
-  { label: "Researcher", icon: Microscope },
-  { label: "Developer", icon: Code2 },
-  { label: "Builder", icon: Hammer },
-];
+const STACK = ["Next.js", "React", "Node.js", "PostgreSQL", "Tailwind CSS"];
 
-// One orchestrated entrance on load: the copy column steps in line by line
-// while the portrait settles alongside it.
+// One orchestrated entrance on load: the column steps in line by line.
 const columnVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
+  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
 };
 const lineVariants = {
-  hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 12 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -44,183 +32,122 @@ const scrollToSection = (e, id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 };
 
-const Availability = ({ status }) => (
-  <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5">
-    {status}
-    <HeroClock />
-  </div>
-);
-
-const Portrait = ({ className, dotCount, sizes }) => (
-  <div className={`relative flex items-center justify-center ${className}`}>
-    <SphereBg className="absolute inset-0 h-full w-full" dotCount={dotCount} />
-    {/* Buffer ring between photo and halo */}
-    <div className="absolute h-[66%] w-[66%] rounded-full bg-linear-to-br from-gray-200/40 via-gray-300/30 to-gray-400/30 dark:from-gray-800/60 dark:via-gray-900/60 dark:to-gray-950/60" />
-    <Image
-      src={assets.profile_photo}
-      alt="Jeff's portrait"
-      className="relative h-[62%] w-[62%] rounded-full object-cover object-[50%_25%]"
-      priority
-      width={300}
-      height={300}
-      sizes={sizes}
-    />
-  </div>
-);
-
 /**
- * Two-column hero in the same max-w-7xl measure as every section: copy leads
- * (7/12) with explicit calls to action, the portrait and its sphere sit in
- * the remaining 5/12, and the terminal closes the hero at full width.
- *
- * Only desktop fills the canvas height. On mobile the hero is content-height
- * — forcing a full screen around a short stack is what left a dead band at
- * the top — and the portrait shrinks to an avatar beside the status line.
+ * Editorial, text-led intro in the shared page measure: status line, who
+ * (avatar + name), what (the display headline), a short bio, calls to
+ * action, and a closing rule with the core stack. Content-height on every
+ * screen — it never stretches to fill the viewport.
  *
  * `status` is a streamed server slot (see app/page.js); may render nothing.
  */
 const Hero = ({ status }) => {
-  const heroRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
 
-  // Leaving the hero, the columns part: the copy lifts away while the
-  // portrait sinks back, so the page visibly hands over to the next section.
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const copyY = useTransform(scrollYProgress, [0, 1], [0, -70]);
-  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 110]);
-  const portraitScale = useTransform(scrollYProgress, [0, 1], [1, 0.84]);
-  const exitOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-  // Scroll-linked values go on outer layers and entrance animations on the
-  // inner ones, so the two never write the same property.
-  const exit = (values) => (prefersReducedMotion ? undefined : values);
+  // "⌘K" on Apple platforms, "Ctrl K" elsewhere — resolved after mount so
+  // the server-rendered label never mismatches (same as the navbar).
+  const [shortcutLabel, setShortcutLabel] = useState("Ctrl K");
+  useEffect(() => {
+    if (/Mac|iPhone|iPad/.test(navigator.platform)) setShortcutLabel("⌘K");
+  }, []);
 
   return (
-    <section
-      ref={heroRef}
-      id="home"
-      className="lg:min-h-app mx-auto flex w-full max-w-7xl flex-col justify-center px-5 pt-10 pb-12 md:pt-14 lg:px-4 lg:py-16"
-    >
-      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
-        {/* --- Copy --- */}
+    <section id="home" className="container-page pb-section pt-12 md:pt-20">
+      <motion.div
+        variants={prefersReducedMotion ? undefined : columnVariants}
+        initial="hidden"
+        animate="visible"
+      >
         <motion.div
-          style={exit({ y: copyY, opacity: exitOpacity })}
-          className="lg:col-span-7"
+          variants={prefersReducedMotion ? undefined : lineVariants}
+          className="flex flex-wrap items-center gap-x-4 gap-y-1.5"
         >
-          <motion.div
-            variants={columnVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Mobile: avatar + availability on one line */}
-            <motion.div
-              variants={lineVariants}
-              className="mb-7 flex items-center gap-4 lg:hidden"
-            >
-              <Portrait
-                className="h-24 w-24 shrink-0"
-                dotCount={220}
-                sizes="64px"
-              />
-              <Availability status={status} />
-            </motion.div>
-
-            <motion.h1
-              variants={lineVariants}
-              className="text-text-primary font-mono text-4xl font-medium tracking-tighter sm:text-5xl xl:text-6xl"
-            >
-              Full-Stack Builder
-            </motion.h1>
-
-            <motion.p
-              variants={lineVariants}
-              className="text-text-muted mt-5 max-w-xl text-lg leading-relaxed md:text-xl"
-            >
-              I&apos;m Jeff, a full-stack engineer in Nairobi shipping complete,
-              production-ready web apps.
-            </motion.p>
-
-            <motion.div
-              variants={lineVariants}
-              className="mt-8 flex flex-wrap items-center gap-3"
-            >
-              <a
-                href="/#projects"
-                onClick={(e) => scrollToSection(e, "projects")}
-                className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
-              >
-                See projects
-                <ArrowDown className="h-4 w-4" />
-              </a>
-              <a
-                href="/#contact"
-                onClick={(e) => scrollToSection(e, "contact")}
-                className="border-border-subtle text-text-primary hover:border-accent hover:text-accent inline-flex items-center rounded-lg border px-5 py-2.5 text-sm font-semibold transition-colors"
-              >
-                Get in touch
-              </a>
-            </motion.div>
-
-            <motion.div
-              variants={lineVariants}
-              className="mt-8 flex flex-wrap items-center gap-2"
-            >
-              {titleTags.map(({ label, icon: Icon }) => (
-                <span
-                  key={label}
-                  className="bg-accent/10 text-accent flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-sm text-nowrap"
-                >
-                  <Icon className="h-4 w-4" />
-                  {label}
-                </span>
-              ))}
-            </motion.div>
-
-            {/* Desktop: availability closes the copy column */}
-            <motion.div
-              variants={lineVariants}
-              className="mt-8 hidden lg:block"
-            >
-              <Availability status={status} />
-            </motion.div>
-          </motion.div>
+          {status}
+          <HeroClock />
         </motion.div>
 
-        {/* --- Portrait (desktop) --- */}
         <motion.div
-          style={exit({
-            y: portraitY,
-            scale: portraitScale,
-            opacity: exitOpacity,
-          })}
-          className="hidden justify-center lg:col-span-5 lg:flex"
+          variants={prefersReducedMotion ? undefined : lineVariants}
+          className="mt-8 flex items-center gap-4"
         >
-          <motion.div
-            initial={{ scale: 0.88, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Portrait
-              className="h-88 w-88 xl:h-104 xl:w-104"
-              dotCount={650}
-              sizes="(max-width: 1280px) 220px, 260px"
-            />
-          </motion.div>
+          <Image
+            src={assets.profile_photo}
+            alt="Jeff's portrait"
+            className="ring-border-subtle h-14 w-14 rounded-full object-cover object-[50%_25%] ring-1"
+            priority
+            width={112}
+            height={112}
+            sizes="56px"
+          />
+          <div>
+            <p className="text-text-primary font-semibold">Jeff Owuor</p>
+            <p className="text-text-muted text-sm">
+              Full-stack engineer · Nairobi, Kenya
+            </p>
+          </div>
         </motion.div>
-      </div>
 
-      {/* Interactive commands close the hero at full width, so they fit on a
-          single row on desktop. */}
-      <motion.div style={exit({ opacity: exitOpacity })} className="mt-12">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        <motion.h1
+          variants={prefersReducedMotion ? undefined : lineVariants}
+          className="text-text-primary text-display mt-6 max-w-4xl font-semibold text-balance"
         >
-          <HeroTerminal />
+          I build production-ready web apps, from database schema to polished
+          UI.
+        </motion.h1>
+
+        <motion.p
+          variants={prefersReducedMotion ? undefined : lineVariants}
+          className="text-text-muted mt-5 max-w-2xl text-base leading-relaxed md:text-lg"
+        >
+          I work across the whole stack — APIs, databases, interfaces and
+          deploys — and ship complete products rather than fragments. A
+          researcher, developer and builder at heart.
+        </motion.p>
+
+        <motion.div
+          variants={prefersReducedMotion ? undefined : lineVariants}
+          className="mt-8 flex flex-wrap items-center gap-3"
+        >
+          <a
+            href="/#projects"
+            onClick={(e) => scrollToSection(e, "projects")}
+            className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
+          >
+            See projects
+            <ArrowDown className="h-4 w-4" />
+          </a>
+          <a
+            href="/#contact"
+            onClick={(e) => scrollToSection(e, "contact")}
+            className="border-border-subtle text-text-primary hover:border-accent hover:text-accent inline-flex items-center rounded-lg border px-4 py-2.5 text-sm font-semibold transition-colors"
+          >
+            Get in touch
+          </a>
+          <a
+            href={RESUME_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-text-muted hover:text-accent inline-flex items-center gap-1 px-2 py-2.5 text-sm font-medium transition-colors"
+          >
+            Résumé
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+        </motion.div>
+
+        {/* Closing rule: the core stack, and where to find everything else */}
+        <motion.div
+          variants={prefersReducedMotion ? undefined : lineVariants}
+          className="border-border-subtle mt-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t pt-5 font-mono text-xs"
+        >
+          <p className="text-text-muted">
+            <span className="text-accent">stack:</span> {STACK.join(" · ")}
+          </p>
+          <p className="text-text-muted hidden lg:block">
+            Press{" "}
+            <kbd className="border-border-subtle text-text-primary rounded border px-1.5 py-0.5">
+              {shortcutLabel}
+            </kbd>{" "}
+            to search projects, posts and more
+          </p>
         </motion.div>
       </motion.div>
     </section>

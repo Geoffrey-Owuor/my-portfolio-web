@@ -1,6 +1,7 @@
 import { socials } from "@/assets/assets";
 import { Terminal } from "lucide-react";
 import Image from "next/image";
+import { EMAIL } from "@/utils/links";
 
 const Footer = () => {
   // Get the current year for the copyright
@@ -22,10 +23,7 @@ const Footer = () => {
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">
         <div className="text-text-muted hover:text-text-primary font-mono text-sm font-medium transition-colors">
-          <a
-            href="mailto:geoffreyowuor22@gmail.com"
-            className="hover:underline"
-          >
+          <a href={`mailto:${EMAIL}`} className="hover:underline">
             #letsCodeSomething
           </a>
         </div>

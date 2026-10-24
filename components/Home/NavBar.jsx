@@ -11,6 +11,7 @@ import FontSwitcher from "../Modules/FontSwitcher";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 import { sections } from "./sections";
+import { GITHUB_URL } from "@/utils/links";
 import CommandPalette from "../Modules/CommandPalette";
 import {
   AnimatePresence,
@@ -24,8 +25,6 @@ import {
 // `blogs` is a route, not a section, so it is matched against the pathname
 // instead.
 const navLinks = sections.filter((section) => section.nav !== false);
-
-const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
 
 const Wordmark = () => (
   <span className="text-text-primary font-mono text-[17px] font-medium">

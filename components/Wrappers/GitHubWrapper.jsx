@@ -15,9 +15,8 @@ import {
 } from "lucide-react";
 import { assets } from "@/assets/assets";
 import SectionTitle from "./SectionTitle";
+import { GITHUB_URL } from "@/utils/links";
 import ScrollReveal from "../Modules/ScrollReveal";
-
-const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
 
 const cardClass = "bg-surface border-border-subtle rounded-xl border p-6";
 
