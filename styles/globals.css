@@ -323,8 +323,12 @@ html[data-theme="dark"] {
 
 /* `scrollbar-gutter: stable` keeps the gutter reserved, so locking the
    scroll for a modal/drawer (useHideScrollbar) causes no reflow.
-   `scroll-padding-top` lands hash/anchor targets below the sticky header. */
+   `scroll-padding-top` lands hash/anchor targets below the sticky header.
+   `position: relative` because <html> is the scroll container for framer's
+   target-based useScroll (SectionTitle's rule): framer measures a target's
+   offset against a *positioned* container and warns when it's static. */
 html {
+  position: relative;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   scrollbar-gutter: stable;
   scroll-padding-top: var(--header-h);
