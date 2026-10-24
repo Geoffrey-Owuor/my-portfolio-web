@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   BookMarked,
@@ -16,17 +15,10 @@ import {
 } from "lucide-react";
 import { assets } from "@/assets/assets";
 import SectionTitle from "./SectionTitle";
+import { GITHUB_URL } from "@/utils/links";
+import ScrollReveal from "../Modules/ScrollReveal";
 
-const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
-
-const cardClass = "bg-surface border-border-subtle rounded-xl border p-6";
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.2 },
-  transition: { duration: 0.6, delay },
-});
+const cardClass = "bg-surface border-border-subtle rounded-card border p-6";
 
 const numberFormat = new Intl.NumberFormat("en");
 const relativeFormat = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
@@ -76,13 +68,13 @@ const ProfileCard = ({ profile }) => {
         sizes="112px"
         className="border-border-subtle h-28 w-28 rounded-full border object-cover"
       />
-      <h3 className="text-text-primary mt-4 text-lg font-semibold">
+      <h3 className="text-text-primary text-h3 mt-4 font-semibold">
         {profile.name ?? profile.login}
       </h3>
       <p className="text-text-muted font-mono text-sm">@{profile.login}</p>
 
       {profile.isHireable && (
-        <span className="bg-success/10 text-success mt-3 flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-mono text-xs">
+        <span className="bg-success/10 text-success rounded-chip mt-3 flex items-center gap-1.5 px-2.5 py-1 font-mono text-xs">
           <span className="bg-success h-1.5 w-1.5 rounded-full" />
           Open to work
         </span>
@@ -114,7 +106,7 @@ const ProfileCard = ({ profile }) => {
         href={profile.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="border-border-subtle hover:border-accent hover:text-accent text-text-primary mt-5 flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm transition-colors duration-150"
+        className="border-border-subtle hover:border-accent hover:text-accent text-text-primary rounded-control mt-5 flex items-center gap-1.5 border px-4 py-2 text-sm transition-colors duration-150"
       >
         View on GitHub
         <ArrowUpRight className="h-4 w-4" />
@@ -145,7 +137,7 @@ const FallbackCard = () => (
       href={GITHUB_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="border-border-subtle hover:border-accent hover:text-accent text-text-primary mt-5 flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm transition-colors duration-150"
+      className="border-border-subtle hover:border-accent hover:text-accent text-text-primary rounded-control mt-5 flex items-center gap-1.5 border px-4 py-2 text-sm transition-colors duration-150"
     >
       View on GitHub
       <ArrowUpRight className="h-4 w-4" />
@@ -254,7 +246,7 @@ const ContributionsCard = ({ contributions }) => {
         {stats.map(({ icon: Icon, label, value, unit }) => (
           <div
             key={label}
-            className="bg-surface-raised flex min-w-0 flex-col gap-1 rounded-lg px-3 py-3 sm:px-4"
+            className="bg-surface-raised rounded-card flex min-w-0 flex-col gap-1 px-3 py-3 sm:px-4"
           >
             <span className="text-text-muted flex items-center gap-1.5 text-[11px] sm:text-xs">
               <Icon className="text-accent hidden h-3.5 w-3.5 shrink-0 sm:block" />
@@ -367,7 +359,7 @@ const RecentReposCard = ({ repos }) => (
           href={repo.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group border-border-subtle hover:border-accent focus-visible:border-accent flex flex-col rounded-lg border p-4 transition-colors duration-150 focus-visible:outline-none"
+          className="group border-border-subtle hover:border-accent focus-visible:border-accent rounded-card flex flex-col border p-4 transition-colors duration-150 focus-visible:outline-none"
         >
           <span className="flex items-start justify-between gap-2">
             <span className="text-text-primary truncate font-mono text-sm font-semibold">
@@ -413,46 +405,47 @@ const RecentReposCard = ({ repos }) => (
 
 const GitHubWrapper = ({ data }) => {
   return (
-    <div className="mx-1 w-full min-w-0 flex-1 md:mx-auto">
+    <div className="min-w-0">
       <SectionTitle
-        label="Code in the open"
+        sectionId="activity"
         title="GitHub Activity"
+        subtitle="Code in the open"
         alertMessage="Shipping consistently, one commit at a time"
         alertIcon={GitCommitHorizontal}
       />
 
       {!data && (
-        <motion.div {...fadeUp()}>
+        <ScrollReveal>
           <FallbackCard />
-        </motion.div>
+        </ScrollReveal>
       )}
 
       {data && (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <ScrollReveal className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="flex min-w-0 flex-col gap-6">
-            <motion.div {...fadeUp()}>
+            <div>
               <ProfileCard profile={data.profile} />
-            </motion.div>
+            </div>
             {data.languages.length > 0 && (
-              <motion.div {...fadeUp(0.1)}>
+              <div>
                 <LanguagesCard languages={data.languages} />
-              </motion.div>
+              </div>
             )}
           </div>
 
           <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
             {data.contributions && (
-              <motion.div {...fadeUp(0.15)}>
+              <div>
                 <ContributionsCard contributions={data.contributions} />
-              </motion.div>
+              </div>
             )}
             {data.recentRepos.length > 0 && (
-              <motion.div {...fadeUp(0.2)}>
+              <div>
                 <RecentReposCard repos={data.recentRepos} />
-              </motion.div>
+              </div>
             )}
           </div>
-        </div>
+        </ScrollReveal>
       )}
     </div>
   );

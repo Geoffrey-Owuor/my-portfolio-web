@@ -5,8 +5,43 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  --breakpoint-custom: 1000px;
-  --breakpoint-custom-content: 1200px;
+  --breakpoint-custom-content: 1100px;
+
+  /* ── Type scale ──────────────────────────────────────────────────────
+     The only heading sizes in the app: `text-display` (hero), `text-h1`
+     (page titles: blog post, project, 404), `text-h2` (section titles),
+     `text-h3` (card/sub-section titles). Fluid between ~375px and ~1280px
+     so no breakpoint variants are needed at the call site. Body copy stays
+     on Tailwind's text-sm/base/lg. */
+  --text-display: clamp(2rem, 1.55rem + 1.9vw, 3rem);
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.025em;
+  --text-h1: clamp(1.75rem, 1.5rem + 1.05vw, 2.25rem);
+  --text-h1--line-height: 1.2;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h2: clamp(1.5rem, 1.35rem + 0.65vw, 1.875rem);
+  --text-h2--line-height: 1.25;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: 1.125rem;
+  --text-h3--line-height: 1.4;
+
+  /* ── Vertical rhythm ─────────────────────────────────────────────────
+     `py-section` is each page section's top/bottom padding (40px → 64px),
+     so adjacent sections sit 80–128px apart. Used via `section-shell`. */
+  --spacing-section: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
+
+  /* ── Corner radii, by role ───────────────────────────────────────────
+     Pick by what the element *is*, not by the size it should look:
+       rounded-chip    : kbd, tags/badges, skeleton text bars
+       rounded-control : buttons, inputs, tabs, menu rows
+       rounded-card    : cards, panels, popovers, toasts, linked cards
+       rounded-dialog  : modals and full-page form shells
+     rounded-full stays for pills, avatars and dots. Nested surfaces step
+     down (a control inside a card) so inner corners never look fatter. */
+  --radius-chip: 0.375rem;
+  --radius-control: 0.5rem;
+  --radius-card: 0.75rem;
+  --radius-dialog: 1rem;
   --font-geistsans: var(--font-geistsans), ui-sans-serif, system-ui, sans-serif;
   --font-dmsans: var(--font-dmsans), ui-sans-serif, system-ui, sans-serif;
 
@@ -91,6 +126,13 @@
   --color-success: var(--success);
   --color-danger: var(--danger);
 
+  /* Syntax colours for the hero's editor card (components/Home/HeroEditor). */
+  --color-code-keyword: var(--code-keyword);
+  --color-code-string: var(--code-string);
+  --color-code-function: var(--code-function);
+  --color-code-number: var(--code-number);
+  --color-code-comment: var(--code-comment);
+
   /* `font-mono` resolves through `--font-mono-active`, which each
      html[data-font] block below repoints to that font's mono counterpart. */
   --font-mono: var(--font-mono-active);
@@ -112,6 +154,13 @@
   --accent-hover: var(--color-blue-700); /* 6.70:1 on --surface */
   --success: var(--color-green-700); /* 5.01:1 on --surface */
   --danger: var(--color-red-600); /* 4.83:1 on --surface */
+
+  /* Syntax colours — GitHub light-ish, all ≥4.5:1 on --surface-raised. */
+  --code-keyword: oklch(50% 0.2 340);
+  --code-string: oklch(42% 0.12 255);
+  --code-function: oklch(48% 0.18 295);
+  --code-number: oklch(48% 0.13 210);
+  --code-comment: var(--color-gray-500);
 
   /* Inline-code chip — GitHub's neutral tint, which reads on both the
      page surface and the raised panels it can sit inside. */
@@ -149,7 +198,6 @@ html[data-font="merriweather"] {
 
 html[data-theme="dark"] {
   --scrollbar-thumb: #4b5563;
-  height: 100%;
 
   /* Semantic token values — dark mode. Contrast verified WCAG AA (see audit). */
   --surface: var(--color-gray-950);
@@ -164,65 +212,133 @@ html[data-theme="dark"] {
   --success: var(--color-green-400); /* 11.58:1 on --surface */
   --danger: var(--color-red-400); /* 7.28:1 on --surface */
 
+  --code-keyword: oklch(76% 0.14 350);
+  --code-string: oklch(82% 0.1 230);
+  --code-function: oklch(78% 0.13 300);
+  --code-number: oklch(80% 0.1 200);
+  --code-comment: var(--color-gray-400);
+
   --inline-code-bg: rgb(110 118 129 / 0.4);
 }
 
 /* ── App shell geometry ────────────────────────────────────────────────
-   Single source of truth for the fixed canvas insets, so the shell and the
-   `min-h-app` sections inside it can never drift apart.
-     --layout-top   : space reserved for the header above the canvas
-     --layout-inset : gutter on the other three sides
-   Mobile: the header is flush and full-bleed, and the canvas runs to the
-   screen edges. From 1024px (the width the desktop command bar replaces the
-   mobile header) both panels inset by 0.5rem with a 0.5rem gutter between. */
+   The document scrolls; the header is sticky above it. `--header-h` is the
+   single source of truth for its height, so the header itself, anchor
+   offsets (scroll-padding), and sticky sidebars below it never drift apart. */
 :root {
-  --layout-top: 4rem; /* mobile header height (h-16) */
-  --layout-inset: 0px;
+  --header-h: 3.5rem;
 }
 
-@media (width >= 64rem) {
-  :root {
-    --layout-top: 4rem; /* top-2 + bar h-12 + 0.5rem gap */
-    --layout-inset: 0.5rem;
-  }
+/* ── Stacking layers ───────────────────────────────────────────────────
+   The only z-index values in the app, from lowest to highest. Use the named
+   utility, never a raw z-*; a new layer goes here, in order.
+     z-raised   : lifted within its own context (popover, sticky modal head)
+     z-header   : sticky site header
+     z-drawer   : mobile nav drawer and its scrim
+     z-modal    : command palette, dialogs, edit modal
+     z-overlay  : full-screen blocking overlays (loading, logging out)
+     z-toast    : alerts and the network banner, above any modal
+     z-progress : the route progress line, always on top */
+:root {
+  --z-raised: 10;
+  --z-header: 50;
+  --z-drawer: 80;
+  --z-modal: 90;
+  --z-overlay: 100;
+  --z-toast: 110;
+  --z-progress: 120;
 }
 
-/* One canvas-height tall — the replacement for `min-h-screen` now that the
-   viewport is no longer what scrolls. Declared with @utility so variants
-   (md:, motion-safe:, …) can still compose with it. */
+@utility z-raised {
+  z-index: var(--z-raised);
+}
+@utility z-header {
+  z-index: var(--z-header);
+}
+@utility z-drawer {
+  z-index: var(--z-drawer);
+}
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+@utility z-toast {
+  z-index: var(--z-toast);
+}
+@utility z-progress {
+  z-index: var(--z-progress);
+}
+
+/* One viewport tall, less the sticky header. Declared with @utility so
+   variants (md:, motion-safe:, …) can still compose with it. */
 @utility min-h-app {
-  min-height: calc(100dvh - var(--layout-top) - var(--layout-inset));
+  min-height: calc(100dvh - var(--header-h));
 }
 
-@layer utilities {
-  @keyframes slideDown {
-    from {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateY(100%);
-      opacity: 0;
-    }
+/* The page measure: centred, max-w-7xl, with the shared side gutter. Every
+   top-level block (header bar, sections, footer, route pages) uses this, so
+   their edges always line up. */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-7xl);
+  padding-inline: --spacing(4);
+  @media (width >= 48rem) {
+    padding-inline: --spacing(6);
   }
-  @keyframes slideUp {
-    from {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
+}
 
-  .animate-slideDown {
-    animation: slideDown 0.2s ease-in-out forwards;
-  }
+/* A homepage section (and its skeleton): the page measure plus the shared
+   vertical rhythm. Change section spacing here, not at the call sites. */
+@utility section-shell {
+  @apply container-page py-section;
+}
 
-  .animate-slideUp {
-    animation: slideUp 0.2s ease-in-out forwards;
+/* Toast countdown bar (components/Modules/Toaster.jsx). Duration and
+   play-state are set inline, so the bar pauses with the toast's timer. */
+@keyframes toast-countdown {
+  from {
+    transform: scaleX(1);
   }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@utility animate-toast-countdown {
+  animation: toast-countdown linear forwards;
+}
+
+/* Hero editor card (components/Home/HeroEditor.jsx): the active tab's bar is
+   also its timer (animationend advances the tab), and each file fades in. */
+@keyframes hero-tab {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@utility animate-hero-tab {
+  animation: hero-tab 5s linear forwards;
+}
+
+@keyframes hero-code {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-hero-code {
+  animation: hero-code 0.35s ease-out;
 }
 
 @keyframes marquee {
@@ -241,22 +357,6 @@ html[data-theme="dark"] {
 }
 
 @layer base {
-  /* Maintaining a certain length in different screens - Tailwind css configuration */
-  .containerizing {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    @media (width >= 40rem /* 640px */) {
-      max-width: 65rem /* 1040px */;
-    }
-    @media (width >= 64rem /* 1024px */) {
-      max-width: 90rem /* 1280px */;
-    }
-    @media (width >= 96rem /* 1536px */) {
-      max-width: 100rem /* 1536px */;
-    }
-  }
-
   /* Custom blur compatible in all browsers */
   .custom-blur {
     -webkit-backdrop-filter: blur(6px);
@@ -270,23 +370,17 @@ html[data-theme="dark"] {
   }
 }
 
+/* `scrollbar-gutter: stable` keeps the gutter reserved, so locking the
+   scroll for a modal/drawer (useHideScrollbar) causes no reflow.
+   `scroll-padding-top` lands hash/anchor targets below the sticky header.
+   `position: relative` because <html> is the scroll container for framer's
+   target-based useScroll (SectionTitle's rule): framer measures a target's
+   offset against a *positioned* container and warns when it's static. */
 html {
+  position: relative;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-}
-
-/* The scrolling context lives inside <AppCanvas>, so the document itself
-   should never scroll or rubber-band. */
-body {
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-
-/* The canvas owns the app's only scrollbar. Slimmed down so it doesn't
-   collide with the panel's rounded corners, and kept from chaining its
-   overscroll out to the document. */
-#app-canvas {
-  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scroll-padding-top: var(--header-h);
 }
 
 /* VIEW TRANSITIONS API CONFIGURATION */

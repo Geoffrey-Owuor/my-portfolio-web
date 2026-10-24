@@ -8,13 +8,13 @@ import {
   PenLine,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import BlogAlert from "../Modules/BlogAlert";
+import { useToast } from "../Modules/Toaster";
 import { formatDate, generateSlug } from "@/utils/Helpers";
 import EditBlog from "./EditBlog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState, useEffect } from "react";
-import LoadingLine from "../Modules/LoadingLine";
+import { useProgressRouter } from "../Modules/RouteProgress";
 import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
 import Image from "next/image";
@@ -23,18 +23,13 @@ import BlogNav from "./BlogNav";
 const ViewBlog = ({ blogPost, userId }) => {
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
-  const [showLoadingLine, setShowLoadingLine] = useState(false);
-  const [alertInfo, setAlertInfo] = useState({
-    showAlert: false,
-    type: "",
-    alertMessage: "",
-  });
+  const progressRouter = useProgressRouter();
+  const toast = useToast();
 
   const shareIconEntries = Object.entries(shareIcons);
 
   const handleBlogsRoute = (link) => {
-    setShowLoadingLine(true);
-    router.push(link);
+    progressRouter.push(link);
   };
 
   // 1. Define custom renderer for ReactMarkdown to add IDs to h3
@@ -63,21 +58,20 @@ const ViewBlog = ({ blogPost, userId }) => {
 
     // The flags mark position in the /blogs listing, which runs newest first —
     // so the first blog is the newset one written and the last is the oldest.
+    // A fixed id, so a re-run (Strict Mode, or the same flags again) replaces
+    // the note instead of stacking a second copy.
     if (blogPost.is_first_blog) {
-      setAlertInfo({
-        showAlert: true,
-        type: "success",
-        alertMessage:
-          "You've reached the latest blog. More magic coming soon! 🔮",
+      toast.info("More magic coming soon! 🔮", {
+        id: "blog-position",
+        title: "You've reached the latest post",
       });
     } else if (blogPost.is_last_blog) {
-      setAlertInfo({
-        showAlert: true,
-        type: "success",
-        alertMessage: "Where the magic began. My very first post! 🕰️🚀",
+      toast.info("Where the magic began. 🕰️🚀", {
+        id: "blog-position",
+        title: "This is my very first post",
       });
     }
-  }, []);
+  }, [blogPost.is_first_blog, blogPost.is_last_blog, toast]);
 
   // 2. Helper to generate share links based on the platform key
   const getShareLink = (platformKey, url, title) => {
@@ -113,11 +107,12 @@ const ViewBlog = ({ blogPost, userId }) => {
             Blog Not Found
           </h2>
           <p className="text-text-muted mb-8">
-            The blog post you're looking for doesn't exist or has been removed.
+            The blog post you&apos;re looking for doesn&apos;t exist or has been
+            removed.
           </p>
           <button
             onClick={() => handleBlogsRoute("/blogs")}
-            className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-lg px-6 py-3 font-medium transition-opacity hover:opacity-90"
+            className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-6 py-3 font-medium transition-opacity hover:opacity-90"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Blogs
@@ -137,36 +132,24 @@ const ViewBlog = ({ blogPost, userId }) => {
   };
   return (
     <div>
-      <BlogAlert
-        message={alertInfo.alertMessage}
-        type={alertInfo.type}
-        isVisible={alertInfo.showAlert}
-        hideAlert={() =>
-          setAlertInfo({ type: "", alertMessage: "", showAlert: false })
-        }
-      />
-
-      {showLoadingLine && <LoadingLine />}
-
       <EditBlog
         setShowEditModal={setShowEditBlog}
         showEditModal={showEditBlog}
         blogInfo={editBlogData}
-        setAlertInfo={setAlertInfo}
       />
 
-      <div className="mx-auto flex max-w-7xl flex-col px-4 py-8 lg:flex-row lg:gap-6">
+      <div className="container-page flex flex-col py-8 lg:flex-row lg:gap-6">
         <article className="w-full max-w-none min-w-0">
           {/* Header Section */}
           <header className="mb-6">
-            <h1 className="text-text-primary mb-4 font-mono text-3xl leading-tight font-bold sm:text-4xl">
+            <h1 className="text-text-primary text-h1 mb-4 font-semibold">
               {blogPost.blog_title}
             </h1>
 
             {/* The tagline doubles as the post's meta description, so it reads
                 as a standfirst under the title now that the author card is gone. */}
             {blogPost.author_tagline && (
-              <p className="bg-accent/10 text-accent mb-6 w-fit rounded-lg px-3 py-1 font-mono text-xs text-nowrap">
+              <p className="bg-accent/10 text-accent rounded-chip mb-6 w-fit px-3 py-1 font-mono text-xs text-nowrap">
                 {blogPost.author_tagline}
               </p>
             )}
@@ -240,7 +223,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           <div className="bg-border-subtle mb-8 h-px sm:mb-12" />
 
           {/* Content Section */}
-          <div className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-semi-bold prose-a:text-accent max-w-none wrap-break-word">
+          <div className="prose prose-lg dark:prose-invert prose-img:rounded-card prose-headings:font-semi-bold prose-a:text-accent max-w-none wrap-break-word">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={MarkdownComponents}
@@ -254,10 +237,7 @@ const ViewBlog = ({ blogPost, userId }) => {
 
           {/* Neighbouring blogs — keeps the reader moving between posts and
               names where each link lands before they commit to it. */}
-          <BlogNav
-            blogPost={blogPost}
-            onNavigate={() => setShowLoadingLine(true)}
-          />
+          <BlogNav blogPost={blogPost} />
         </article>
         {/* 3. The Sidebar (Only visible on large screens via CSS in component) */}
         <TableOfContents content={blogPost.blog_content} />

@@ -4,30 +4,28 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { tools } from "@/assets/assets";
-import { Menu, X, ArrowUpRight } from "lucide-react";
-import LoadingLine from "../Modules/LoadingLine";
-import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, ArrowUpRight, Search } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
 import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 import FontSwitcher from "../Modules/FontSwitcher";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
-import { useScrollContainer } from "../Layout/AppCanvas";
-import { motion } from "framer-motion";
+import { sections } from "./sections";
+import { GITHUB_URL } from "@/utils/links";
+import CommandPalette from "../Modules/CommandPalette";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "framer-motion";
 
-// Section links double as scroll-spy targets — `id` must match the id on the
-// corresponding <section>. `blogs` is a route, not a section, so it is matched
-// against the pathname instead.
-const navLinks = [
-  { id: "skills", href: "/#skills", label: "Skills" },
-  { id: "stack", href: "/#stack", label: "Stack" },
-  { id: "projects", href: "/#projects", label: "Projects" },
-  { id: "activity", href: "/#activity", label: "Activity" },
-  { id: "experience", href: "/#experience", label: "Experience" },
-  { id: "education", href: "/#education", label: "Education" },
-  { id: "contact", href: "/#contact", label: "Contact" },
-];
-
-const GITHUB_URL = "https://github.com/Geoffrey-Owuor";
+// Section links double as scroll-spy targets (see components/Home/sections.js).
+// `blogs` is a route, not a section, so it is matched against the pathname
+// instead.
+const navLinks = sections.filter((section) => section.nav !== false);
 
 const Wordmark = () => (
   <span className="text-text-primary font-mono text-[17px] font-medium">
@@ -44,7 +42,7 @@ const Tab = ({ isActive, onClick, children }) => (
       <motion.span
         layoutId="command-bar-pill"
         transition={{ type: "spring", stiffness: 380, damping: 32 }}
-        className="bg-surface-raised border-border-subtle absolute inset-0 rounded-lg border"
+        className="bg-surface-raised border-border-subtle rounded-control absolute inset-0 border"
         aria-hidden="true"
       />
     )}
@@ -52,7 +50,7 @@ const Tab = ({ isActive, onClick, children }) => (
       type="button"
       onClick={onClick}
       aria-current={isActive ? "true" : undefined}
-      className={`relative cursor-pointer rounded-lg px-3 py-1.5 text-sm transition-colors ${
+      className={`rounded-control relative cursor-pointer px-3 py-1.5 text-sm transition-colors ${
         isActive
           ? "text-text-primary"
           : "text-text-muted hover:text-text-primary"
@@ -63,17 +61,37 @@ const Tab = ({ isActive, onClick, children }) => (
   </li>
 );
 
+// Reading progress through the page, drawn along the header's bottom edge.
+const ScrollProgress = () => {
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const smoothed = useSpring(scrollYProgress, {
+    stiffness: 200,
+    damping: 40,
+    mass: 0.3,
+  });
+
+  return (
+    <motion.span
+      aria-hidden="true"
+      style={{ scaleX: prefersReducedMotion ? scrollYProgress : smoothed }}
+      className="bg-accent pointer-events-none absolute right-0 bottom-0 left-0 h-px origin-left"
+    />
+  );
+};
+
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoadingLine, setIsLoadingLine] = useState(false);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
-  // Scroll state read off the canvas, not the window — the document no longer
-  // scrolls (see components/Layout/AppCanvas.jsx).
+  // "⌘K" on Apple platforms, "Ctrl K" elsewhere — resolved after mount so
+  // the server-rendered label never mismatches.
+  const [shortcutLabel, setShortcutLabel] = useState("Ctrl K");
+
   const [activeId, setActiveId] = useState("");
 
   const pathname = usePathname();
-  const router = useRouter();
-  const canvasRef = useScrollContainer();
+  const router = useProgressRouter();
 
   // derived state to check if we are in the homepage
   const isInHome = pathname === "/";
@@ -89,9 +107,6 @@ const NavBar = () => {
   // per tick rather than observed once, because they stream in behind
   // <Suspense> and replace their skeletons.
   useEffect(() => {
-    const canvas = canvasRef?.current;
-    if (!canvas) return;
-
     let queued = false;
 
     const measure = () => {
@@ -102,12 +117,11 @@ const NavBar = () => {
         return;
       }
 
-      // Whichever section straddles the canvas midline is the active one.
-      const midline =
-        canvas.getBoundingClientRect().top + canvas.clientHeight / 2;
+      // Whichever section straddles the viewport midline is the active one.
+      const midline = window.innerHeight / 2;
       let current = "";
 
-      for (const link of navLinks) {
+      for (const link of sections) {
         const node = document.getElementById(link.id);
         if (!node) continue;
 
@@ -128,17 +142,16 @@ const NavBar = () => {
     };
 
     measure();
-    canvas.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
 
     return () => {
-      canvas.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [canvasRef, isInHome, pathname]);
+  }, [isInHome, pathname]);
 
   const handleNavbarRouting = (route) => {
-    setIsLoadingLine(true);
     router.push(route);
   };
 
@@ -152,12 +165,12 @@ const NavBar = () => {
     document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Wordmark/section links always render as plain <a href="/#id"> (for
-  // accessibility/middle-click/new-tab), but a plain left click is
+  // Wordmark/section links always render as a <Link href="/#id"> (a real
+  // anchor, for accessibility/middle-click/new-tab), but a plain left click is
   // intercepted: on the homepage it goes through the same explicit
   // smooth-scroll path as the tabs — native fragment navigation would
-  // otherwise scroll instantly now that AppCanvas no longer sets CSS
-  // scroll-smooth — and elsewhere it routes client-side to the section.
+  // otherwise scroll instantly (there's deliberately no CSS scroll-smooth, so
+  // Next's own hash-scroll after a route change stays instant) — and elsewhere it routes client-side to the section.
   //
   // The markup must NOT branch on `isInHome`: the homepage is prerendered at
   // build time where usePathname() reports "/index", not "/", so any
@@ -183,10 +196,22 @@ const NavBar = () => {
   // Ref for the sidebar menu
   const menuRef = useRef(null);
 
-  // UseEffect to reset loading when navigation completes
   useEffect(() => {
-    setIsLoadingLine(false);
-  }, [pathname]);
+    if (/Mac|iPhone|iPad/.test(navigator.platform)) setShortcutLabel("⌘K");
+
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsMenuOpen(false);
+        setIsPaletteOpen((open) => !open);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const activeSection = sections.find((section) => section.id === activeKey);
 
   // Run scrollbar hook to hide scrollbar when sidebar is open
   useHideScrollbar(isMenuOpen);
@@ -199,71 +224,162 @@ const NavBar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleBlogLinkClick = () => {
-    setIsMenuOpen(false);
-    setIsLoadingLine(true);
-  };
-
   return (
     <>
-      {isLoadingLine && <LoadingLine />}
-
-      {/* ── Desktop: command bar. Sits in the top gutter above the canvas,
-          sharing its 0.5rem inset so the two read as two panels of a single
-          shell. Deliberately unclipped: the theme toggle hangs its tooltip
-          below the bar, so no `overflow-hidden` on this panel. ── */}
+      {/* ── Desktop: full-width sticky command bar; the page scrolls beneath
+          its translucent blur. Deliberately unclipped: the theme toggle
+          hangs its tooltip below the bar, so no `overflow-hidden` here. ── */}
       <nav
         aria-label="Main"
-        className="bg-surface fixed top-2 right-2 left-2 z-50 mx-auto hidden h-12 max-w-7xl items-center justify-between gap-3 px-2 lg:flex"
+        className="border-border-subtle bg-surface/80 navbar-blur z-header sticky top-0 hidden h-(--header-h) border-b lg:block"
       >
-        {/* Left cluster */}
-        <div className="flex items-center gap-3">
-          {/* Wordmark */}
-          <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
-            <Wordmark />
-          </a>
+        <ScrollProgress />
 
-          <span
-            className="bg-border-subtle h-6 w-px shrink-0"
-            aria-hidden="true"
-          />
-
-          {/* Tabs — the sliding pill tracks the section under the canvas midline */}
-          <ul className="flex items-center gap-0.5">
-            {navLinks.map((link) => (
-              <Tab
-                key={link.id}
-                isActive={activeKey === link.id}
-                onClick={() => handleTabClick(link)}
-              >
-                {link.label}
-              </Tab>
-            ))}
+        <div className="container-page flex h-full items-center justify-between gap-3">
+          {/* Left cluster */}
+          <div className="flex items-center gap-3">
+            {/* Wordmark */}
+            <Link
+              href="/#home"
+              onClick={(e) => handleSectionLinkClick(e, "home")}
+            >
+              <Wordmark />
+            </Link>
 
             <span
-              className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
+              className="bg-border-subtle h-6 w-px shrink-0"
               aria-hidden="true"
             />
 
-            <Tab
-              isActive={activeKey === "blogs"}
-              onClick={() =>
-                pathname === "/blogs"
-                  ? undefined
-                  : handleNavbarRouting("/blogs")
-              }
+            {/* Tabs — the sliding pill tracks the section under the viewport midline */}
+            <ul className="flex items-center gap-0.5">
+              {navLinks.map((link) => (
+                <Tab
+                  key={link.id}
+                  isActive={activeKey === link.id}
+                  onClick={() => handleTabClick(link)}
+                >
+                  {link.label}
+                </Tab>
+              ))}
+
+              <span
+                className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
+                aria-hidden="true"
+              />
+
+              <Tab
+                isActive={activeKey === "blogs"}
+                onClick={() =>
+                  pathname === "/blogs"
+                    ? undefined
+                    : handleNavbarRouting("/blogs")
+                }
+              >
+                Blogs
+              </Tab>
+            </ul>
+          </div>
+
+          {/* Right cluster */}
+          <div className="flex shrink-0 items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsPaletteOpen(true)}
+              aria-label="Open command palette"
+              aria-haspopup="dialog"
+              className="border-border-subtle text-text-muted hover:text-text-primary hover:bg-surface-raised rounded-control flex h-9 cursor-pointer items-center gap-2 border px-2.5 text-sm transition-colors"
             >
-              Blogs
-            </Tab>
-          </ul>
+              <Search className="h-4 w-4" />
+              <kbd className="font-mono text-xs">{shortcutLabel}</kbd>
+            </button>
+            <div className="text-text-muted hover:bg-surface-raised rounded-control flex h-9 w-9 items-center justify-center transition-colors">
+              <FontSwitcher />
+            </div>
+            <div className="text-text-muted hover:bg-surface-raised rounded-control flex h-9 w-9 items-center justify-center transition-colors">
+              <ThemeToggleCompact />
+            </div>
+
+            <a
+              href={GITHUB_URL}
+              aria-label="GitHub Portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-text-primary text-surface rounded-control flex items-center gap-2 px-3 py-2 text-sm transition-opacity hover:opacity-90"
+            >
+              <span className="flex h-4 w-4 shrink-0 items-center justify-center">
+                <Image
+                  src={tools.githubLogo}
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="h-4 w-4 invert dark:invert-0"
+                />
+              </span>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── Mobile: the same sticky, blurred bar, without the tabs. ── */}
+      <header className="border-border-subtle bg-surface/80 navbar-blur z-header sticky top-0 flex h-(--header-h) items-center justify-between border-b px-3 lg:hidden">
+        <ScrollProgress />
+
+        {/* min-w-0 + truncate: a long section label ("05 Experience") used to
+            push the icon cluster past the screen edge on narrow phones,
+            widening the whole document. */}
+        <div className="flex min-w-0 items-center gap-2">
+          <button
+            onClick={toggleMenu}
+            className="text-text-muted hover:bg-surface-raised rounded-control shrink-0 p-2 transition"
+            aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+
+          <Link
+            href="/#home"
+            onClick={(e) => handleSectionLinkClick(e, "home")}
+            className="shrink-0"
+          >
+            <Wordmark />
+          </Link>
+
+          {/* The mobile header has no tabs, so it names the section in view */}
+          <AnimatePresence mode="wait" initial={false}>
+            {activeSection && (
+              <motion.span
+                key={activeSection.id}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.18 }}
+                className="text-text-muted min-w-0 truncate font-mono text-xs"
+              >
+                <span className="text-accent">{activeSection.index}</span>{" "}
+                {activeSection.label}
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Right cluster */}
-        <div className="flex shrink-0 items-center gap-2">
-          <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+        <div className="flex shrink-0 items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setIsPaletteOpen(true)}
+            aria-label="Open command palette"
+            aria-haspopup="dialog"
+            className="text-text-muted hover:bg-surface-raised rounded-control flex size-9 items-center justify-center transition-colors sm:size-10"
+          >
+            <Search className="h-5 w-5" />
+          </button>
+          <div className="text-text-muted hover:bg-surface-raised rounded-control flex size-9 items-center justify-center transition-colors sm:size-10">
             <FontSwitcher />
           </div>
-          <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+
+          <div className="text-text-muted hover:bg-surface-raised rounded-control flex size-9 items-center justify-center transition-colors sm:size-10">
             <ThemeToggleCompact />
           </div>
 
@@ -272,63 +388,15 @@ const NavBar = () => {
             aria-label="GitHub Portfolio"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-text-primary text-surface flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-opacity hover:opacity-90"
+            className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control flex size-9 items-center justify-center transition-colors sm:size-10"
           >
-            <span className="flex h-4 w-4 shrink-0 items-center justify-center">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
               <Image
                 src={tools.githubLogo}
                 alt=""
                 width={24}
                 height={24}
-                className="h-4 w-4 invert dark:invert-0"
-              />
-            </span>
-            GitHub
-          </a>
-        </div>
-      </nav>
-
-      {/* ── Mobile: flush, full-bleed header. Nothing scrolls beneath it, so
-          it is a solid panel rather than a blur. ── */}
-      <header className="bg-surface fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between px-3 lg:hidden">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={toggleMenu}
-            className="text-text-muted hover:bg-surface-raised rounded-lg p-2 transition"
-            aria-label="Toggle menu"
-            aria-expanded={isMenuOpen}
-          >
-            <Menu className="h-6 w-6" />
-          </button>
-
-          <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
-            <Wordmark />
-          </a>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <div className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors">
-            <FontSwitcher />
-          </div>
-
-          <div className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors">
-            <ThemeToggleCompact />
-          </div>
-
-          <a
-            href={GITHUB_URL}
-            title="My Portfolio"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-lg p-2 transition-colors"
-          >
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center">
-              <Image
-                src={tools.githubLogo}
-                alt="GitHub Logo"
-                width={24}
-                height={24}
-                className="h-6 w-6 dark:invert"
+                className="h-5 w-5 dark:invert"
               />
             </span>
           </a>
@@ -337,7 +405,7 @@ const NavBar = () => {
 
       {/* Overlay - appears when menu is open */}
       <div
-        className={`fixed inset-0 z-80 bg-black/50 transition-all duration-200 lg:hidden dark:bg-black/60 ${
+        className={`z-drawer fixed inset-0 bg-black/50 transition-all duration-200 lg:hidden dark:bg-black/60 ${
           isMenuOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
         onClick={closeMenu}
@@ -347,7 +415,7 @@ const NavBar = () => {
       {/* Mobile Menu Drawer - slides from left to right */}
       <div
         ref={menuRef}
-        className={`bg-surface fixed top-0 bottom-0 left-0 z-80 w-72 transform shadow-2xl transition-all duration-200 ease-in-out lg:hidden ${
+        className={`bg-surface z-drawer fixed top-0 bottom-0 left-0 w-72 transform shadow-2xl transition-all duration-200 ease-in-out lg:hidden ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -372,35 +440,35 @@ const NavBar = () => {
         <ul className="flex flex-col gap-2 p-6">
           {navLinks.map((link) => (
             <li key={link.label}>
-              <a
+              <Link
                 href={link.href}
                 onClick={(e) => {
                   handleSectionLinkClick(e, link.id);
                   closeMenu();
                 }}
-                className={`block w-full rounded-xl px-4 py-3 text-base transition-colors ${
+                className={`rounded-control block w-full px-4 py-3 text-base transition-colors ${
                   activeKey === link.id
                     ? "bg-surface-raised text-text-primary"
                     : "text-text-muted hover:bg-surface-raised hover:text-text-primary"
                 }`}
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li>
             {pathname === "/blogs" ? (
-              <span className="bg-surface-raised text-text-primary block w-full rounded-xl px-4 py-3 text-base">
+              <span className="bg-surface-raised text-text-primary rounded-control block w-full px-4 py-3 text-base">
                 Blogs
               </span>
             ) : (
-              <Link
+              <ProgressLink
                 href="/blogs"
-                onClick={handleBlogLinkClick}
-                className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-xl px-4 py-3 text-base transition-colors"
+                onClick={closeMenu}
+                className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control block w-full px-4 py-3 text-base transition-colors"
               >
                 Blogs
-              </Link>
+              </ProgressLink>
             )}
           </li>
         </ul>
@@ -412,13 +480,18 @@ const NavBar = () => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeMenu}
-            className="bg-text-primary text-surface flex items-center justify-center gap-1.5 rounded-xl px-4 py-3 transition-opacity hover:opacity-90"
+            className="bg-text-primary text-surface rounded-control flex items-center justify-center gap-1.5 px-4 py-3 transition-opacity hover:opacity-90"
           >
             GitHub Portfolio
             <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
       </div>
+
+      <CommandPalette
+        isOpen={isPaletteOpen}
+        onClose={() => setIsPaletteOpen(false)}
+      />
     </>
   );
 };

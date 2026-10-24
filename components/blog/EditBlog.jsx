@@ -7,16 +7,13 @@ import apiClient from "@/lib/AxiosClient";
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import ClientPortal from "../Modules/ClientPortal";
+import { useToast } from "../Modules/Toaster";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
-const EditBlog = ({
-  showEditModal,
-  setShowEditModal,
-  setAlertInfo,
-  blogInfo,
-}) => {
+const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
+  const toast = useToast();
   const blogId = blogInfo.blog_id;
   const modalRef = useRef(null);
   const closeModal = useCallback(
@@ -71,11 +68,7 @@ const EditBlog = ({
       // Revalidate blogs data
       await revalidateBlogsData();
 
-      setAlertInfo({
-        showAlert: true,
-        type: "success",
-        alertMessage: data.message,
-      });
+      toast.success(data.message, { title: "Blog updated" });
 
       setFormData({ title: "", author: "", content: "", tagline: "" });
 
@@ -84,13 +77,11 @@ const EditBlog = ({
     } catch (error) {
       // Axios error handling
       const message =
-        error.response?.data?.message || error.message || "Failed to post blog";
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to update blog";
 
-      setAlertInfo({
-        showAlert: true,
-        type: "error",
-        alertMessage: message,
-      });
+      toast.error(message, { title: "Couldn't update the blog" });
 
       console.error("Error updating the blog:", error);
     } finally {
@@ -123,7 +114,7 @@ const EditBlog = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={() => setShowEditModal(false)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/60"
+            className="z-modal fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/60"
           >
             <motion.div
               ref={modalRef}
@@ -132,9 +123,9 @@ const EditBlog = ({
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
-              className="border-border-subtle bg-surface mx-4 max-h-[calc(100vh-5rem)] w-full max-w-4xl overflow-y-auto rounded-2xl border shadow-2xl sm:max-h-[calc(100vh-3rem)]"
+              className="border-border-subtle bg-surface rounded-dialog mx-4 max-h-[calc(100vh-5rem)] w-full max-w-4xl overflow-y-auto border shadow-2xl sm:max-h-[calc(100vh-3rem)]"
             >
-              <div className="border-border-subtle bg-surface sticky top-0 z-10 border-b px-6 py-4">
+              <div className="border-border-subtle bg-surface z-raised sticky top-0 border-b px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
                     <h2 className="text-text-primary text-2xl font-semibold">

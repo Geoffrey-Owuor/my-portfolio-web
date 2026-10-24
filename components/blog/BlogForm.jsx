@@ -7,9 +7,7 @@ import {
   Signature,
   Library,
 } from "lucide-react";
-import { useState } from "react";
-import Link from "next/link";
-import LoadingLine from "../Modules/LoadingLine";
+import { ProgressLink } from "../Modules/RouteProgress";
 import CustomMdEditor from "./CustomMdEditor";
 
 const BlogForm = ({
@@ -20,11 +18,8 @@ const BlogForm = ({
   isSubmitting,
   IsUpdating,
 }) => {
-  const [isLoadingLine, setIsLoadingLine] = useState(false);
-
   return (
     <>
-      {isLoadingLine && <LoadingLine />}
       <div className="p-6 sm:p-8">
         <form onSubmit={handleConfirmSubmit} className="space-y-6">
           {/* Title Input */}
@@ -43,7 +38,7 @@ const BlogForm = ({
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter an engaging title..."
-              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent w-full rounded-lg border px-4 py-3 text-base transition-colors focus:outline-none"
+              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none"
               required
             />
           </div>
@@ -64,7 +59,7 @@ const BlogForm = ({
               value={formData.author}
               onChange={handleChange}
               placeholder="Your name or pen name"
-              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent w-full rounded-lg border px-4 py-3 text-base transition-colors focus:outline-none"
+              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none"
               required
             />
           </div>
@@ -83,7 +78,7 @@ const BlogForm = ({
               value={formData.tagline}
               onChange={handleChange}
               placeholder="Your hashtag line"
-              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent w-full rounded-lg border px-4 py-3 text-base transition-colors focus:outline-none"
+              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none"
               required
             />
           </div>
@@ -114,7 +109,7 @@ const BlogForm = ({
             <button
               type="submit"
               disabled={!isFormValid || isSubmitting}
-              className="bg-text-primary text-surface flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+              className="bg-text-primary text-surface rounded-control flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               <Send className="h-4 w-4" />
               {IsUpdating ? (
@@ -127,14 +122,13 @@ const BlogForm = ({
                 </>
               )}
             </button>
-            <Link
+            <ProgressLink
               href="/blogs"
-              onClick={() => setIsLoadingLine(true)}
-              className="bg-surface-raised text-text-primary hover:bg-border-subtle/50 flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-colors duration-150"
+              className="bg-surface-raised text-text-primary hover:bg-border-subtle/50 rounded-control flex items-center gap-2 px-6 py-3 text-sm font-semibold transition-colors duration-150"
             >
               View <span className="hidden sm:block">Blogs</span>
               <ArrowUpRight className="h-4 w-4" />
-            </Link>
+            </ProgressLink>
           </div>
         </form>
       </div>

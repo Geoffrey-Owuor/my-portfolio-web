@@ -22,7 +22,7 @@ const ConfirmationDialog = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className={`fixed inset-0 z-9999 flex items-center justify-center bg-black/50 dark:bg-black/60`}
+      className={`z-overlay fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/60`}
     >
       <motion.div
         ref={modalRef}
@@ -34,7 +34,7 @@ const ConfirmationDialog = ({
           stiffness: 300,
           damping: 30,
         }}
-        className="border-border-subtle bg-surface-raised mx-auto max-w-90 rounded-2xl border p-4 shadow-2xl md:max-w-md"
+        className="border-border-subtle bg-surface-raised rounded-dialog mx-auto max-w-90 border p-4 shadow-2xl md:max-w-md"
       >
         <div className="relative mb-4 flex items-start justify-between">
           <h3 className="text-text-primary text-xl font-bold">{title}</h3>

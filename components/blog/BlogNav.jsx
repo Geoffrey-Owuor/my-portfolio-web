@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { ProgressLink } from "../Modules/RouteProgress";
 import {
   ArrowLeft,
   ArrowRight,
@@ -12,14 +12,7 @@ import {
 // One half of the prev/next pair. `direction` decides which way the card leans:
 // "previous" is arrow-first and left aligned, "next" is arrow-last and right
 // aligned, so the pair reads outward from the middle of the page.
-const NeighbourCard = ({
-  id,
-  title,
-  readTime,
-  direction,
-  isWrapping,
-  onNavigate,
-}) => {
+const NeighbourCard = ({ id, title, readTime, direction, isWrapping }) => {
   const isPrevious = direction === "previous";
 
   // At the ends of the list navigation wraps, so the label says where you
@@ -39,16 +32,15 @@ const NeighbourCard = ({
       : ArrowRight;
 
   return (
-    <Link
+    <ProgressLink
       href={`/blog/${id}`}
-      onClick={onNavigate}
       aria-label={`${isPrevious ? "Previous" : "Next"} blog: ${title}`}
-      className={`group border-border-subtle hover:border-accent focus-visible:border-accent flex flex-col gap-2 rounded-xl border p-5 transition-colors duration-150 focus-visible:outline-none ${
+      className={`group border-border-subtle hover:border-accent focus-visible:border-accent rounded-card flex flex-col gap-2 border p-5 transition-colors duration-150 focus-visible:outline-none ${
         isPrevious ? "items-start" : "items-end text-right sm:col-start-2"
       }`}
     >
       <span
-        className={`font-mono text-text-muted group-hover:text-accent flex items-center gap-1.5 text-xs transition-colors ${
+        className={`text-text-muted group-hover:text-accent flex items-center gap-1.5 font-mono text-xs transition-colors ${
           isPrevious ? "" : "flex-row-reverse"
         }`}
       >
@@ -70,7 +62,7 @@ const NeighbourCard = ({
 
       {readTime && (
         <span
-          className={`font-mono text-text-muted flex items-center gap-1.5 text-xs ${
+          className={`text-text-muted flex items-center gap-1.5 font-mono text-xs ${
             isPrevious ? "" : "flex-row-reverse"
           }`}
         >
@@ -78,11 +70,11 @@ const NeighbourCard = ({
           {readTime}
         </span>
       )}
-    </Link>
+    </ProgressLink>
   );
 };
 
-const BlogNav = ({ blogPost, onNavigate }) => {
+const BlogNav = ({ blogPost }) => {
   const hasPrevious =
     blogPost.previous_blog_id && blogPost.previous_blog_id !== blogPost.id;
   const hasNext =
@@ -103,7 +95,6 @@ const BlogNav = ({ blogPost, onNavigate }) => {
           readTime={blogPost.previous_blog_read_time}
           direction="previous"
           isWrapping={blogPost.is_first_blog}
-          onNavigate={onNavigate}
         />
       )}
       {hasNext && (
@@ -113,7 +104,6 @@ const BlogNav = ({ blogPost, onNavigate }) => {
           readTime={blogPost.next_blog_read_time}
           direction="next"
           isWrapping={blogPost.is_last_blog}
-          onNavigate={onNavigate}
         />
       )}
     </nav>

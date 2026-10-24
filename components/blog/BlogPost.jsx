@@ -3,7 +3,7 @@ import { useState } from "react";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
-import BlogAlert from "../Modules/BlogAlert";
+import { useToast } from "../Modules/Toaster";
 import apiClient from "@/lib/AxiosClient";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import BlogForm from "./BlogForm";
@@ -20,11 +20,7 @@ const BlogPost = ({ user }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [alertInfo, setAlertInfo] = useState({
-    showAlert: "",
-    type: "",
-    alertMessage: "",
-  });
+  const toast = useToast();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,22 +52,14 @@ const BlogPost = ({ user }) => {
       // Revalidate blogs data
       await revalidateBlogsData();
 
-      setAlertInfo({
-        showAlert: true,
-        type: "success",
-        alertMessage: data.message,
-      });
+      toast.success(data.message, { title: "Blog published" });
       setFormData({ title: "", author: "", content: "", tagline: "" });
     } catch (error) {
       // Axios error handling
       const message =
         error.response?.data?.message || error.message || "Failed to post blog";
 
-      setAlertInfo({
-        showAlert: true,
-        type: "error",
-        alertMessage: message,
-      });
+      toast.error(message, { title: "Couldn't publish the blog" });
 
       console.error("Error posting blog:", error);
     } finally {
@@ -84,15 +72,6 @@ const BlogPost = ({ user }) => {
 
   return (
     <>
-      <BlogAlert
-        message={alertInfo.alertMessage}
-        type={alertInfo.type}
-        isVisible={alertInfo.showAlert}
-        hideAlert={() =>
-          setAlertInfo({ type: "", alertMessage: "", showAlert: false })
-        }
-      />
-
       {showConfirmation && (
         <ConfirmationDialog
           title="Post Blog"
@@ -106,33 +85,35 @@ const BlogPost = ({ user }) => {
       {/* Loading Circle */}
       {isSubmitting && <LoadingCircle />}
 
-      <div className="mx-auto w-full max-w-5xl px-4 py-16">
-        <div className="border-border-subtle overflow-hidden rounded-2xl border">
-          {/* Header - Neutral & Clean */}
-          <div className="border-border-subtle flex items-center justify-between border-b px-6 py-6">
-            <div>
-              <h1 className="font-mono text-text-primary text-xl font-semibold sm:text-2xl">
-                Create New Blog Post
-              </h1>
-              <p className="text-text-muted mt-1 text-sm sm:text-base">
-                Share your thoughts with the world
-              </p>
+      <div className="container-page py-section">
+        <div className="mx-auto max-w-5xl">
+          <div className="border-border-subtle rounded-dialog overflow-hidden border">
+            {/* Header - Neutral & Clean */}
+            <div className="border-border-subtle flex items-center justify-between border-b px-6 py-6">
+              <div>
+                <h1 className="text-text-primary text-h2 font-semibold">
+                  Create New Blog Post
+                </h1>
+                <p className="text-text-muted mt-1 text-sm sm:text-base">
+                  Share your thoughts with the world
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <UserInfoCard user={user} />
+                <LogoutButton />
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <UserInfoCard user={user} />
-              <LogoutButton />
-            </div>
-          </div>
 
-          {/* Blog Form */}
-          <BlogForm
-            handleConfirmSubmit={handleConfirmSubmit}
-            formData={formData}
-            handleChange={handleChange}
-            isFormValid={isFormValid}
-            isSubmitting={isSubmitting}
-            IsUpdating={false}
-          />
+            {/* Blog Form */}
+            <BlogForm
+              handleConfirmSubmit={handleConfirmSubmit}
+              formData={formData}
+              handleChange={handleChange}
+              isFormValid={isFormValid}
+              isSubmitting={isSubmitting}
+              IsUpdating={false}
+            />
+          </div>
         </div>
       </div>
     </>

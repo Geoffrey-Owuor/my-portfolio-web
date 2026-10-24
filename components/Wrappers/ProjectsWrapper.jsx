@@ -1,31 +1,25 @@
 "use client";
-import {
-  ArrowRight,
-  BadgeCheck,
-  CircleArrowOutUpRight,
-  Loader2,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import LoadingLine from "../Modules/LoadingLine";
+import { ArrowRight, BadgeCheck, CircleArrowOutUpRight } from "lucide-react";
 import MarkdownPreview from "../Modules/MarkdownPreview";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import ProjectStack from "./ProjectStack";
+import ProjectThumb from "./ProjectThumb";
 import ShowMoreButtons from "./ShowMoreButtons";
-import Link from "next/link";
+import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
 import SectionTitle from "./SectionTitle";
+import EmptyState from "../Modules/EmptyState";
+import ScrollReveal from "../Modules/ScrollReveal";
 
 const ProjectsWrapper = ({ projects }) => {
-  //initialize router
-  const router = useRouter();
-  const [isNavigating, setIsNavigating] = useState(false); //To indicate when the loading should start
+  const router = useProgressRouter();
 
   // The number of projects we see on mount
   const [visibleCount, setVisibleCount] = useState(3);
 
   // Derived states for button visibility logic
-  const visibleProjects = projects.slice(0, visibleCount);
-  const canShowMore = visibleCount < projects.length;
+  const visibleProjects = (projects ?? []).slice(0, visibleCount);
+  const canShowMore = visibleCount < (projects?.length ?? 0);
   const canShowLess = visibleCount > 3;
 
   // Handle show more and show less
@@ -54,78 +48,80 @@ const ProjectsWrapper = ({ projects }) => {
 
   // Handle navigation to a particular project's case study
   const handleNavigate = (projectId) => {
-    setIsNavigating(true);
     router.push(`/projects/${projectId}`);
   };
 
   return (
     <>
-      {/* LoadingLine fixed at the top of the viewport */}
-      <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
-      <div className="mx-1 md:mx-auto">
+      <div className="min-w-0">
         {/* Section Title */}
         <SectionTitle
-          label="Things i've built"
+          sectionId="projects"
           title="My Projects"
+          subtitle="Things i've built"
           alertMessage="Thoughtful, well-crafted project work"
           alertIcon={BadgeCheck}
         />
         {/* Responsive Projects Grid */}
-        <div className="custom:grid-cols-2 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {visibleProjects.map((project, _index) => (
-            <motion.div
-              key={project.id}
-              role="link"
-              tabIndex={0}
-              initial="rest"
-              whileHover="hover"
-              animate="rest"
-              onClick={() => handleNavigate(project.id)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  handleNavigate(project.id);
-                }
-              }}
-              className="group border-border-subtle hover:border-accent focus-visible:border-accent flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border p-6 transition-colors duration-150 focus-visible:outline-none"
-            >
-              {/* Card Header: title + external visit icon */}
-              <div className="mb-3 flex items-start justify-between gap-3">
-                <h3 className="text-text-primary line-clamp-2 text-xl font-semibold">
-                  {project.project_name}
-                </h3>
-
-                <motion.div
-                  variants={iconVariants}
-                  className="text-text-muted shrink-0"
-                >
-                  <CircleArrowOutUpRight className="h-5 w-5" />
-                </motion.div>
-              </div>
-
-              {/* Tech stack pills — quick-scan metadata, high in the hierarchy */}
-              <ProjectStack projectStack={project.project_stack} limit={4} />
-
-              {/* Card Description, trimmed for a consistent, skimmable card height */}
-              <MarkdownPreview className="text-text-muted mt-3 line-clamp-3 flex-1 leading-relaxed">
-                {project.project_description}
-              </MarkdownPreview>
-
-              {/* Footer: primary in-site action */}
-              <Link
-                href={`/projects/${project.id}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsNavigating(true);
+        <ScrollReveal>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {visibleProjects.map((project, _index) => (
+              <motion.div
+                key={project.id}
+                role="link"
+                tabIndex={0}
+                initial="rest"
+                whileHover="hover"
+                animate="rest"
+                onClick={() => handleNavigate(project.id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleNavigate(project.id);
+                  }
                 }}
-                className="border-border-subtle text-accent mt-4 flex items-center gap-1.5 border-t pt-4 text-sm font-semibold underline-offset-4 hover:underline"
+                className="group border-border-subtle hover:border-accent focus-visible:border-accent rounded-card flex h-full cursor-pointer flex-col overflow-hidden border p-6 transition-colors duration-150 focus-visible:outline-none"
               >
-                View case study
-                <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
-              </Link>
-            </motion.div>
-          ))}
-        </div>
+                <ProjectThumb
+                  projectId={project.id}
+                  name={project.project_name}
+                />
+
+                {/* Card Header: title + external visit icon */}
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <h3 className="text-text-primary text-h3 line-clamp-2 font-semibold">
+                    {project.project_name}
+                  </h3>
+
+                  <motion.div
+                    variants={iconVariants}
+                    className="text-text-muted shrink-0"
+                  >
+                    <CircleArrowOutUpRight className="h-5 w-5" />
+                  </motion.div>
+                </div>
+
+                {/* Tech stack pills — quick-scan metadata, high in the hierarchy */}
+                <ProjectStack projectStack={project.project_stack} limit={4} />
+
+                {/* Card Description, trimmed for a consistent, skimmable card height */}
+                <MarkdownPreview className="text-text-muted mt-3 line-clamp-3 flex-1 leading-relaxed">
+                  {project.project_description}
+                </MarkdownPreview>
+
+                {/* Footer: primary in-site action */}
+                <ProgressLink
+                  href={`/projects/${project.id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="border-border-subtle text-accent mt-4 flex items-center gap-1.5 border-t pt-4 text-sm font-semibold underline-offset-4 hover:underline"
+                >
+                  View case study
+                  <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
+                </ProgressLink>
+              </motion.div>
+            ))}
+          </div>
+        </ScrollReveal>
 
         {/* Show more buttons */}
         <ShowMoreButtons
@@ -135,11 +131,12 @@ const ProjectsWrapper = ({ projects }) => {
           handleShowMore={handleShowMore}
         />
 
-        {projects.length === 0 && (
-          <div className="flex items-center justify-center gap-4">
-            <Loader2 className="h-8 w-8 animate-spin" />
-            <span>Waiting for connection...</span>
-          </div>
+        {!projects?.length && (
+          <EmptyState
+            command="ls ~/projects"
+            failed={!projects}
+            emptyMessage="No projects published yet."
+          />
         )}
       </div>
     </>

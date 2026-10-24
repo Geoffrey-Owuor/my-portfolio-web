@@ -6,24 +6,48 @@ import {
   motion,
   useInView,
   useReducedMotion,
+  useScroll,
+  useSpring,
 } from "framer-motion";
+import { getSection } from "../Home/sections";
 
 // The note waits for the section's own entrance animation to land before it
 // appears, then retires itself — it's an aside, not something to dismiss.
 const APPEAR_DELAY_MS = 900;
 const VISIBLE_MS = 4500;
 
-const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
+/**
+ * Editorial section header: index number (the section's position in the
+ * page, shared with the navbar), title, a one-line subtitle, the section's
+ * `~/path`, and a rule that draws across as the header scrolls in.
+ * `sectionId` must be one of the ids in components/Home/sections.js.
+ */
+const SectionTitle = ({
+  sectionId,
+  title,
+  subtitle,
+  alertMessage,
+  alertIcon: AlertIcon,
+}) => {
   const titleRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
+  const section = getSection(sectionId);
 
   // Observed on the title block itself rather than the whole section, so the
-  // note is tied to the thing it annotates: it fires when its own anchor is
-  // on screen, not when a `min-h-app` section's top edge merely peeks in.
+  // note is tied to the thing it annotates.
   const isInView = useInView(titleRef, { once: true, amount: 0.5 });
 
-  const [showAlert, setShowAlert] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: titleRef,
+    offset: ["start end", "start 0.45"],
+  });
+  const ruleProgress = useSpring(scrollYProgress, {
+    stiffness: 160,
+    damping: 30,
+    mass: 0.4,
+  });
 
+  const [showAlert, setShowAlert] = useState(false);
   const hasAlert = Boolean(alertMessage && AlertIcon);
 
   useEffect(() => {
@@ -53,49 +77,75 @@ const SectionTitle = ({ label, title, alertMessage, alertIcon: AlertIcon }) => {
     : { opacity: 0, y: -4, filter: "blur(4px)" };
 
   return (
-    <div
-      ref={titleRef}
-      className="relative mb-16 flex flex-col items-center justify-center gap-3"
-    >
-      <span className="font-mono text-text-muted text-sm font-medium tracking-[0.2em] uppercase">
-        {label}
-      </span>
-      <h2 className="font-mono text-text-primary text-3xl font-semibold tracking-tight md:text-4xl">
-        {title}
-      </h2>
-      <div className="bg-accent mt-1 h-px w-12" />
+    <header ref={titleRef} className="relative mb-8">
+      {/* One short fade-up the first time the header comes into view. */}
+      <motion.div
+        initial={hidden}
+        animate={isInView ? visible : hidden}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="flex items-start gap-3 md:gap-4"
+      >
+        <span
+          className="text-accent pt-1.5 font-mono text-sm tabular-nums md:pt-2"
+          aria-hidden="true"
+        >
+          {section?.index}
+        </span>
 
-      {/* Parked in the title block's own bottom margin — absolute, so it can
-          never displace the section content below it, and `mb-16` already
-          reserves more room than the note needs even when it wraps to two
-          lines on a narrow screen. Hidden from assistive tech: it's a
-          transient flourish restating what the title already says, and a
-          timed live region would only interrupt. */}
-      {hasAlert && (
-        <AnimatePresence>
-          {showAlert && (
-            <motion.div
-              aria-hidden="true"
-              initial={hidden}
-              animate={visible}
-              exit={leaving}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              // Centred by the full-width flex wrapper rather than a
-              // `-translate-x-1/2`, which would fight the inline transform
-              // framer-motion writes for the rise.
-              className="pointer-events-none absolute top-full right-0 left-0 mt-4 flex justify-center px-4"
-            >
-              <div className="border-border-subtle bg-surface-raised flex max-w-full items-center gap-2 rounded-lg border px-3 py-1.5 sm:px-4">
-                <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
-                <p className="font-mono text-text-muted line-clamp-1 text-center text-[11px] leading-snug sm:text-xs">
-                  {alertMessage}
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      )}
-    </div>
+        <div className="min-w-0 flex-1">
+          <h2 className="text-text-primary text-h2 font-semibold">{title}</h2>
+
+          <div className="mt-1.5 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+            {subtitle && (
+              <p className="text-text-muted text-base">{subtitle}</p>
+            )}
+            {/* The note borrows the ~/path slot: the path cross-fades into
+                it and back once it retires, so the note needs no space of its
+                own and never overlaps the section body. Fixed height, so the
+                swap can't shift the layout. The note is hidden from assistive
+                tech: it's a transient flourish, and a timed live region would
+                only interrupt. */}
+            <div className="flex h-5 min-w-0 items-center sm:justify-end">
+              <AnimatePresence mode="wait" initial={false}>
+                {showAlert ? (
+                  <motion.span
+                    key="note"
+                    aria-hidden="true"
+                    initial={hidden}
+                    animate={visible}
+                    exit={leaving}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="text-text-muted flex min-w-0 items-center gap-1.5 font-mono text-xs"
+                  >
+                    <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">{alertMessage}</span>
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="path"
+                    initial={hidden}
+                    animate={visible}
+                    exit={leaving}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="text-text-muted/80 font-mono text-xs"
+                  >
+                    ~/{sectionId}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Hairline track with the accent drawn across it by scroll position */}
+      <div className="bg-border-subtle relative mt-5 h-px overflow-hidden">
+        <motion.div
+          style={prefersReducedMotion ? undefined : { scaleX: ruleProgress }}
+          className="bg-accent absolute inset-0 origin-left"
+        />
+      </div>
+    </header>
   );
 };
 

@@ -11,7 +11,8 @@ A personal portfolio + blog site built with Next.js 15 (App Router), React 19, a
 - `npm run dev` — start dev server with Turbopack
 - `npm run build` — production build
 - `npm run start` — run production build
-- `npm run lint` — run `next lint` (ESLint, `next/core-web-vitals` config)
+- `npm run lint` — run `eslint .` (flat config in `eslint.config.mjs`, `next/core-web-vitals` rules, covers .js/.jsx)
+- `npm run format` / `npm run format:check` — Prettier write / check
 
 There is no test suite configured in this repo.
 
@@ -46,14 +47,14 @@ When adding a new protected route or mutation, follow the existing pattern: veri
 
 - Route groups: `app/(auth)/login`, `app/(blogposts)/blog/[id]` and `app/(blogposts)/blogs` — grouped for organization only, no shared layout side effects beyond routing.
 - `app/api/*` — REST-style route handlers (`route.js`) for login/logout/refresh, blog CRUD (`blogpost`, `blogpost/[id]`, `updateblog`), contact form (`submitfeedback`), and cache revalidation.
-- `app/layout.js` defines global metadata (Open Graph/Twitter defaults, icons) and wraps every page in `Providers` (theme), `NetworkStatus`, a persistent `NavBar`/`Footer`.
+- `app/layout.js` defines global metadata (Open Graph/Twitter defaults, icons) and wraps every page in `Providers` (theme), `ToastProvider` (+ `NetworkStatus`), a persistent `NavBar`/`Footer`.
 
 ### Component organization (`components/`)
 
 - `Home/` — one component per homepage section (Hero, Skills, Stack, Projects, Experience, Education, Contact, NavBar, Footer); these are Server Components that fetch their own data.
-- `Wrappers/` — presentational/client wrapper components that receive fetched data as props from their `Home/` counterpart (e.g. `SkillsWrapper`, `ProjectsWrapper`) — this is the seam between server data-fetching and client interactivity/animation. `SectionTitle` is shared by every section and also owns the section note: pass it `alertMessage` + `alertIcon` and it self-triggers a timed, section-scoped pill beneath the title when that title scrolls into view (both props optional — omit them for a plain heading).
+- `Wrappers/` — presentational/client wrapper components that receive fetched data as props from their `Home/` counterpart (e.g. `SkillsWrapper`, `ProjectsWrapper`) — this is the seam between server data-fetching and client interactivity/animation. `SectionTitle` is shared by every section and also owns the section note: pass it `alertMessage` + `alertIcon` and it self-triggers a timed note that briefly takes the place of the section's `~/path` (right of the subtitle) when that title scrolls into view (both props optional — omit them for a plain heading).
 - `blog/` — blog authoring/viewing pipeline: `BlogForm` → `CustomMdEditor` (markdown editing) → `PreviewModal` → `ViewBlog`/`BlogPost` (rendering via `react-markdown` + `remark-gfm`), plus `BlogCardView`/`BlogTableView` for listing layouts and `EditBlog` for updates.
-- `Modules/` — cross-cutting UI primitives: alerts (`Alert`, `BlogAlert`), `ConfirmationDialog`, `Pagination`, `NetworkStatus` (online/offline banner), `LogoutOverlay`/`LogoutButton`.
+- `Modules/` — cross-cutting UI primitives: `Toaster` (the app's only notification system: `ToastProvider` is mounted once in `app/layout.js`; call `useToast()` → `toast.success/error/info(message, { title, id, duration, icon })` from any client component — a repeated `id` replaces in place; field errors stay inline in their form), `ConfirmationDialog`, `Pagination`, `NetworkStatus` (headless; drives the offline/back-online toast), `LogoutOverlay`/`LogoutButton`.
 - `Skeletons/` — loading-state placeholders paired 1:1 with sections/components, used via `<Suspense fallback={...}>` in `app/page.js` and other async pages.
 - `Theme/` — `next-themes`-based dark mode (`Providers`, `ThemeToggleCompact`, `TooltipUI`).
 
@@ -67,4 +68,12 @@ Two parallel email paths exist:
 
 ### Styling
 
-Tailwind CSS 4 with the new CSS-first config (`@theme` block in `styles/globals.css`, no `tailwind.config.js`). Dark mode is driven by a custom variant keyed on `[data-theme=dark]` (set by `next-themes`), not Tailwind's default `dark:` media-query strategy. Custom breakpoints `custom` (1000px) and `custom-content` (1200px) are defined there.
+Tailwind CSS 4 with the new CSS-first config (`@theme` block in `styles/globals.css`, no `tailwind.config.js`). Dark mode is driven by a custom variant keyed on `[data-theme=dark]` (set by `next-themes`), not Tailwind's default `dark:` media-query strategy. A custom breakpoint `custom-content` (1100px) is defined there.
+
+Design tokens live in `styles/globals.css` — use them instead of raw values so the UI can't drift:
+
+- **Colour:** semantic tokens (`bg-surface`, `bg-surface-raised`, `text-text-primary`, `text-text-muted`, `border-border-subtle`, `text-accent`, `text-success`, `text-danger`), redefined per theme. Avoid raw `gray-*`/hex.
+- **Type:** headings use `text-display` (hero), `text-h1` (page titles), `text-h2` (section titles), `text-h3` (card titles) in the reading font; `font-mono` is for labels, indices, paths and code only.
+- **Layout:** `container-page` (max-w-7xl + shared gutter) for every top-level block; `section-shell` (container + `py-section` rhythm) for homepage sections and their skeletons; `--header-h` for anything that must clear the sticky header.
+- **Radius, by role:** `rounded-chip` (kbd, tags, skeleton text bars), `rounded-control` (buttons, inputs, tabs, menu rows), `rounded-card` (cards, panels, popovers, toasts), `rounded-dialog` (modals); `rounded-full` for pills/avatars.
+- **Stacking:** only the named layers `z-raised` < `z-header` < `z-drawer` < `z-modal` < `z-overlay` < `z-toast` < `z-progress`; add a new layer there rather than a raw `z-*`.

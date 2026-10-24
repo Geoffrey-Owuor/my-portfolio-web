@@ -1,12 +1,11 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import LoadingLine from "../Modules/LoadingLine";
-import { useState } from "react";
+import { motion } from "framer-motion";
 import { project_images } from "@/assets/assets";
 import Image from "next/image";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useProgressRouter } from "../Modules/RouteProgress";
 import ProjectStack from "../Wrappers/ProjectStack";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -14,8 +13,8 @@ import ProjectNav from "./ProjectNav";
 
 const Project = ({ projectInfo }) => {
   const router = useRouter();
+  const progressRouter = useProgressRouter();
   const project = projectInfo[0];
-  const [isNavigating, setIsNavigating] = useState(false);
 
   const projectImage = project_images.find((image) => image.id === project?.id);
 
@@ -29,28 +28,26 @@ const Project = ({ projectInfo }) => {
   };
 
   const handleGoBack = () => {
-    setIsNavigating(true);
-    router.push("/#projects");
+    progressRouter.push("/#projects");
   };
 
   if (!project || Object.keys(project).length === 0) {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-8 text-center">
-        <p className="font-mono text-danger mb-3 text-sm">
-          $ cat project.json
-        </p>
-        <p className="font-mono text-text-muted mb-8 text-sm">
+        <p className="text-danger mb-3 font-mono text-sm">$ cat project.json</p>
+        <p className="text-text-muted mb-8 font-mono text-sm">
           cat: project.json: No such file or directory
         </p>
         <h2 className="text-text-primary mb-3 text-2xl font-semibold">
           Project not found
         </h2>
         <p className="text-text-muted mb-8">
-          The project you're looking for doesn't exist or has been removed.
+          The project you&apos;re looking for doesn&apos;t exist or has been
+          removed.
         </p>
         <button
           onClick={() => router.back()}
-          className="font-mono border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent inline-flex items-center gap-2 rounded-md border px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none"
+          className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent rounded-control inline-flex items-center gap-2 border px-5 py-2.5 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to projects
@@ -61,9 +58,7 @@ const Project = ({ projectInfo }) => {
 
   return (
     <>
-      <AnimatePresence>{isNavigating && <LoadingLine />}</AnimatePresence>
-
-      <section className="w-full px-4 py-8">
+      <section className="container-page py-8">
         <div className="mx-auto max-w-4xl">
           {/* Breadcrumb + Back */}
           <motion.div
@@ -72,7 +67,7 @@ const Project = ({ projectInfo }) => {
             animate="visible"
             custom={0}
           >
-            <p className="font-mono text-text-muted mb-3 text-xs">
+            <p className="text-text-muted mb-3 font-mono text-xs">
               ~/projects/{project.id}
             </p>
             <button
@@ -90,7 +85,7 @@ const Project = ({ projectInfo }) => {
             initial="hidden"
             animate="visible"
             custom={1}
-            className="font-mono text-text-primary mt-8 text-3xl font-semibold tracking-tight sm:text-4xl"
+            className="text-text-primary text-h1 mt-8 font-semibold"
           >
             {project.project_name}
           </motion.h1>
@@ -111,7 +106,7 @@ const Project = ({ projectInfo }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Visit live project"
-                className="font-mono border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent inline-flex w-fit shrink-0 items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none"
+                className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent rounded-control inline-flex w-fit shrink-0 items-center gap-2 border px-4 py-2 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
               >
                 <span className="text-accent" aria-hidden="true">
                   $
@@ -129,9 +124,9 @@ const Project = ({ projectInfo }) => {
               initial="hidden"
               animate="visible"
               custom={3}
-              className="border-border-subtle bg-surface mt-10 overflow-hidden rounded-xl border"
+              className="border-border-subtle bg-surface rounded-card mt-10 overflow-hidden border"
             >
-              <div className="border-border-subtle font-mono text-text-muted flex items-center gap-2 border-b px-4 py-2.5 text-xs">
+              <div className="border-border-subtle text-text-muted flex items-center gap-2 border-b px-4 py-2.5 font-mono text-xs">
                 <span className="text-accent" aria-hidden="true">
                   ●
                 </span>
@@ -152,15 +147,15 @@ const Project = ({ projectInfo }) => {
             initial="hidden"
             animate="visible"
             custom={4}
-            className="border-border-subtle bg-surface mt-6 overflow-hidden rounded-xl border"
+            className="border-border-subtle bg-surface rounded-card mt-6 overflow-hidden border"
           >
-            <div className="border-border-subtle font-mono text-text-muted flex items-center gap-2 border-b px-4 py-2.5 text-xs">
+            <div className="border-border-subtle text-text-muted flex items-center gap-2 border-b px-4 py-2.5 font-mono text-xs">
               <span className="text-accent" aria-hidden="true">
                 ●
               </span>
               README.md
             </div>
-            <div className="prose dark:prose-invert prose-img:rounded-xl prose-headings:font-semibold prose-a:text-accent max-w-none px-6 py-8 wrap-break-word">
+            <div className="prose dark:prose-invert prose-img:rounded-card prose-headings:font-semibold prose-a:text-accent max-w-none px-6 py-8 wrap-break-word">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {project.project_description}
               </ReactMarkdown>
@@ -176,10 +171,7 @@ const Project = ({ projectInfo }) => {
             custom={5}
           >
             <div className="bg-border-subtle mt-10 h-px" />
-            <ProjectNav
-              project={project}
-              onNavigate={() => setIsNavigating(true)}
-            />
+            <ProjectNav project={project} />
           </motion.div>
         </div>
       </section>

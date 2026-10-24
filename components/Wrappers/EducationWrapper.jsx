@@ -1,19 +1,20 @@
 "use client";
-import { GraduationCap, Loader2, School } from "lucide-react";
-import { motion } from "framer-motion";
+import { GraduationCap, School } from "lucide-react";
 import { useState } from "react";
 import remarkGfm from "remark-gfm";
 import ReactMarkDown from "react-markdown";
 import ShowMoreButtons from "./ShowMoreButtons";
 import SectionTitle from "./SectionTitle";
+import EmptyState from "../Modules/EmptyState";
+import ScrollReveal from "../Modules/ScrollReveal";
 
 const EducationWrapper = ({ educationData }) => {
   // Number of experiences we see on mount
   const [visibleCount, setVisibleCount] = useState(1);
 
   // Derived states for button visibility logic
-  const visibleEducationData = educationData.slice(0, visibleCount);
-  const canShowMore = visibleCount < educationData.length;
+  const visibleEducationData = (educationData ?? []).slice(0, visibleCount);
+  const canShowMore = visibleCount < (educationData?.length ?? 0);
   const canShowLess = visibleCount > 1;
 
   // Handle show more and show less
@@ -22,77 +23,57 @@ const EducationWrapper = ({ educationData }) => {
   const handleShowLess = () => setVisibleCount((prev) => Math.max(prev - 1, 1));
 
   return (
-    <div className="mx-1 max-w-5xl min-w-0 flex-1 md:mx-auto">
+    <div className="min-w-0">
       {/* Section Title */}
       <SectionTitle
-        label="How I got here"
+        sectionId="education"
         title="My Education"
+        subtitle="How I got here"
         alertMessage="Always learning, always figuring things out"
         alertIcon={School}
       />
 
       {/* Vertical Timeline */}
-      <ol className="border-border-subtle relative border-l">
-        {visibleEducationData.map((education, _index) => (
-          <li key={education.id} className="mb-10 ml-6">
-            {/* The "dot" breakpoint with animation */}
-            <span className="bg-surface-raised ring-surface absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full ring-8">
-              <GraduationCap className="text-text-muted h-4 w-4" />
-            </span>
+      <ScrollReveal>
+        <ol className="border-border-subtle relative md:border-l">
+          {visibleEducationData.map((education, _index) => (
+            <li key={education.id} className="mb-10 md:ml-6">
+              {/* The "dot" breakpoint with animation */}
+              <span className="bg-surface-raised ring-surface absolute -left-3 hidden h-6 w-6 items-center justify-center rounded-full ring-8 md:flex">
+                <GraduationCap className="text-text-muted h-4 w-4" />
+              </span>
 
-            {/* Timeline Content with hover effect */}
-            <div className="border-border-subtle hover:border-accent group relative flex flex-col rounded-xl border p-6 transition-colors duration-150">
-              <motion.time
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="font-mono text-text-muted mb-2 block text-sm leading-none"
-              >
-                {education.timeline}
-              </motion.time>
+              {/* Timeline Content with hover effect */}
+              <div className="border-border-subtle hover:border-accent group rounded-card relative flex flex-col border p-6 transition-colors duration-150">
+                <time className="text-text-muted mb-2 block font-mono text-sm leading-none">
+                  {education.timeline}
+                </time>
 
-              <motion.h3
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="text-text-primary text-xl font-semibold"
-              >
-                {education.learning_title}
-              </motion.h3>
+                <h3 className="text-text-primary text-h3 font-semibold">
+                  {education.learning_title}
+                </h3>
 
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-                className="font-mono text-text-muted mb-3 text-base italic"
-              >
-                {education.institution}
-              </motion.p>
+                <p className="text-text-muted mb-3 font-mono text-base italic">
+                  {education.institution}
+                </p>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
-                className="prose prose-gray dark:prose-invert text-text-muted max-w-none text-base font-normal"
-              >
-                <ReactMarkDown remarkPlugins={[remarkGfm]}>
-                  {education.learning_description}
-                </ReactMarkDown>
-              </motion.div>
-            </div>
-          </li>
-        ))}
-      </ol>
+                <div className="prose prose-gray dark:prose-invert text-text-muted max-w-[75ch] text-base font-normal">
+                  <ReactMarkDown remarkPlugins={[remarkGfm]}>
+                    {education.learning_description}
+                  </ReactMarkDown>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </ScrollReveal>
 
-      {educationData.length === 0 && (
-        <div className="flex items-center justify-center gap-4">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span>Waiting for connection...</span>
-        </div>
+      {!educationData?.length && (
+        <EmptyState
+          command="cat education.md"
+          failed={!educationData}
+          emptyMessage="No education entries yet."
+        />
       )}
 
       {/* Show more buttons*/}

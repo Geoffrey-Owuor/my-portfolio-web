@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Loader2, SendHorizonal } from "lucide-react";
-import Alert from "../Modules/Alert";
+import { useToast } from "../Modules/Toaster";
 import SectionTitle from "../Wrappers/SectionTitle";
+import ScrollReveal from "../Modules/ScrollReveal";
 
 const Contact = () => {
   // Set for form inputs
@@ -13,13 +14,8 @@ const Contact = () => {
     message: "",
   });
 
-  //Sending and alert states
   const [sending, setSending] = useState(false);
-  const [alertInfo, setAlertInfo] = useState({
-    show: false,
-    type: "",
-    message: "",
-  });
+  const toast = useToast();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,11 +27,8 @@ const Contact = () => {
     e.preventDefault();
     //Check if form data is available
     if (!formData.contactInfo || !formData.message) {
-      setAlertInfo({
-        show: true,
-        type: "error",
-        message:
-          "Looks like you missed something, please fill in both fields😊",
+      toast.error("Please fill in both fields so I can get back to you.", {
+        title: "A field is missing",
       });
       return;
     }
@@ -50,52 +43,17 @@ const Contact = () => {
       const result = await response.json();
 
       if (response.ok) {
-        setAlertInfo({
-          show: true,
-          type: "success",
-          message: result.message,
-        });
+        toast.success(result.message, { title: "Message sent" });
         setFormData({ contactInfo: "", message: "" }); // Clear form data
       } else {
         throw new Error(result.message || "Something went wrong");
       }
     } catch (error) {
       console.error("Error while submitting form data:", error);
-      setAlertInfo({
-        show: true,
-        type: "error",
-        message: error.message,
-      });
+      toast.error(error.message, { title: "Couldn't send your message" });
     } finally {
       setSending(false);
     }
-  };
-
-  // Container variants for staggering children
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  // Form field animation variants
-  const fieldVariants = {
-    hidden: {
-      y: 20,
-      opacity: 0,
-    },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
   };
 
   // Button animation variants
@@ -104,14 +62,10 @@ const Contact = () => {
       scale: 1,
     },
     hover: {
-      scale: 1.05,
-      transition: {
-        duration: 0.2,
-        ease: "easeOut",
-      },
+      scale: 1,
     },
     tap: {
-      scale: 0.95,
+      scale: 0.97,
     },
   };
 
@@ -133,93 +87,89 @@ const Contact = () => {
 
   return (
     <>
-      <section id="contact" className="w-full px-4 py-16">
-        <div className="mx-1 max-w-2xl sm:mx-auto">
+      <section id="contact" className="section-shell">
+        <div>
           {/* Section Title */}
-          <SectionTitle label="Don't be a stranger" title="Get in Touch" />
+          <SectionTitle
+            sectionId="contact"
+            title="Get in Touch"
+            subtitle="Don't be a stranger"
+          />
 
-          <motion.form
-            onSubmit={handleSubmit}
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="flex flex-col gap-6"
-          >
-            {/* Email/Phone Input */}
-            <motion.div variants={fieldVariants} className="flex flex-col">
-              <label
-                htmlFor="contactInfo"
-                className="text-text-muted mb-2 text-sm font-semibold"
-              >
-                Your Email or Mobile
-              </label>
-              <input
-                type="text"
-                id="contactInfo"
-                name="contactInfo"
-                value={formData.contactInfo}
-                onChange={handleChange}
-                disabled={sending}
-                placeholder="name@example.com or 07xx xxx xxx"
-                className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-xl border p-4 transition-colors focus:outline-none"
-              />
-            </motion.div>
-
-            {/* Message Textarea */}
-            <motion.div variants={fieldVariants} className="flex flex-col">
-              <label
-                htmlFor="message"
-                className="text-text-muted mb-2 text-sm font-semibold"
-              >
-                Your Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={5}
-                value={formData.message}
-                onChange={handleChange}
-                disabled={sending}
-                placeholder="Hi Jeff, I'd like to talk about..."
-                className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-xl border p-4 transition-colors focus:outline-none"
-              />
-            </motion.div>
-
-            {/* Submit Button */}
-            <motion.button
-              variants={buttonVariants}
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
-              type="submit"
-              disabled={sending}
-              className="bg-text-primary text-surface flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-center"
+          <ScrollReveal>
+            {/* Header spans the shared measure; the form keeps a readable width */}
+            <form
+              onSubmit={handleSubmit}
+              className="flex max-w-3xl flex-col gap-6"
             >
-              {sending ? (
-                <>
-                  <span>Sending...</span>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                </>
-              ) : (
-                <>
-                  <span>Send Message</span>
-                  <motion.div variants={iconVariants}>
-                    <SendHorizonal className="h-5 w-5" />
-                  </motion.div>
-                </>
-              )}
-            </motion.button>
-          </motion.form>
+              {/* Email/Phone Input */}
+              <div className="flex flex-col">
+                <label
+                  htmlFor="contactInfo"
+                  className="text-text-muted mb-2 text-sm font-semibold"
+                >
+                  Your Email or Mobile
+                </label>
+                <input
+                  type="text"
+                  id="contactInfo"
+                  name="contactInfo"
+                  value={formData.contactInfo}
+                  onChange={handleChange}
+                  disabled={sending}
+                  placeholder="name@example.com or 07xx xxx xxx"
+                  className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-card border p-4 transition-colors focus:outline-none"
+                />
+              </div>
+
+              {/* Message Textarea */}
+              <div className="flex flex-col">
+                <label
+                  htmlFor="message"
+                  className="text-text-muted mb-2 text-sm font-semibold"
+                >
+                  Your Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
+                  disabled={sending}
+                  placeholder="Hi Jeff, I'd like to talk about..."
+                  className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-card border p-4 transition-colors focus:outline-none"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <motion.button
+                variants={buttonVariants}
+                initial="rest"
+                whileHover="hover"
+                whileTap="tap"
+                type="submit"
+                disabled={sending}
+                className="bg-text-primary text-surface rounded-control flex w-full cursor-pointer items-center justify-center gap-2 px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-start"
+              >
+                {sending ? (
+                  <>
+                    <span>Sending...</span>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  </>
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <motion.div variants={iconVariants}>
+                      <SendHorizonal className="h-5 w-5" />
+                    </motion.div>
+                  </>
+                )}
+              </motion.button>
+            </form>
+          </ScrollReveal>
         </div>
       </section>
-      {alertInfo.show && (
-        <Alert
-          message={alertInfo.message}
-          type={alertInfo.type}
-          onClose={() => setAlertInfo({ show: false, type: "", message: "" })}
-        />
-      )}
     </>
   );
 };

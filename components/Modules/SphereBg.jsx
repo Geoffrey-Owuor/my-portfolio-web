@@ -3,7 +3,19 @@
 import { useEffect, useRef } from "react";
 
 // The sphere generation canvas component - Totally AI-Generated
-export default function SphereBg() {
+// `className` sizes/positions the canvas; `dotCount` should scale with that
+// size, or a small sphere turns into noise.
+// `anchor="start"` gives the sphere a radius set by the canvas's height, not
+// its width: when the canvas is wide enough the whole globe is centred in
+// it; when it's narrower the globe hugs the left edge and the right edge
+// crops the rest (dots past it are never drawn). So a column that grows with
+// the screen reveals more of the globe.
+// Currently unused: the hero swapped it for HeroEditor. Kept for future use.
+export default function SphereBg({
+  className = "absolute inline-flex h-90 w-90 md:h-115 md:w-115 lg:h-130 lg:w-130",
+  dotCount = 900,
+  anchor = "center",
+}) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -13,28 +25,56 @@ export default function SphereBg() {
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
+    const isStart = anchor === "start";
+    // Reduced motion keeps the globe but stops the idle spin.
+    const spin = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? 0
+      : 0.0025;
     let animId;
     const rot = { x: 0.3, y: 0, z: 0, targetX: 0.3, targetY: 0 };
 
+    // setTransform rather than scale: scale() compounds on every resize.
     const resize = () => {
       canvas.width = canvas.offsetWidth * dpr;
       canvas.height = canvas.offsetHeight * dpr;
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
+    // Observed on the canvas itself, not the window: it can mount hidden
+    // (display: none below a breakpoint) or change size without a window
+    // resize, and a stale backing store draws nothing.
     resize();
-    window.addEventListener("resize", resize);
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(canvas);
 
     // Fibonacci sphere — perfectly even dot distribution
-    const DOT_COUNT = 900;
+    const DOT_COUNT = dotCount;
     const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
       phi: Math.acos(1 - (2 * (i + 0.5)) / DOT_COUNT),
       theta: Math.PI * (1 + Math.sqrt(5)) * i,
     }));
 
+    // Sphere centre and radius for the canvas's current size.
+    // Perspective pushes the projected outline to ~1.1x the radius, so the
+    // start anchor keeps that much clearance from the left edge.
+    const geometry = (W, H) => {
+      if (!isStart) {
+        return { cx: W / 2, cy: H / 2, radius: Math.min(W, H) * 0.36 };
+      }
+      const radius = H * 0.44;
+      const extent = radius * 1.12;
+      return {
+        cx: W >= extent * 2 ? W / 2 : extent,
+        cy: H / 2,
+        radius,
+      };
+    };
+
     const handleMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
-      const mx = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-      const my = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+      const { cx, cy, radius } = geometry(rect.width, rect.height);
+      const clamp = (v) => Math.max(-1, Math.min(1, v));
+      const mx = clamp((e.clientX - rect.left - cx) / radius);
+      const my = clamp((e.clientY - rect.top - cy) / radius);
       rot.targetX = 0.3 + my * 0.45;
       rot.targetY = mx * 0.45;
     };
@@ -79,11 +119,9 @@ export default function SphereBg() {
       // Smooth lerp toward mouse target
       rot.x += (rot.targetX - rot.x) * 0.05;
       rot.y += (rot.targetY - rot.y) * 0.05;
-      rot.z += 0.0025; // auto-spin speed
+      rot.z += spin; // auto-spin speed
 
-      const cx = W / 2;
-      const cy = H / 2;
-      const radius = Math.min(W, H) * 0.36;
+      const { cx, cy, radius } = geometry(W, H);
 
       const rendered = dots.map(({ phi, theta }) => {
         const sx = Math.sin(phi) * Math.cos(theta);
@@ -95,7 +133,9 @@ export default function SphereBg() {
           px: cx + rx * radius * persp,
           py: cy + ry * radius * persp,
           depth: (rz + 1) / 2,
-          size: persp * 2.6,
+          // Dot size tracks the radius (2.6px at the original ~187px radius)
+          // so the sphere keeps its texture when drawn small.
+          size: persp * Math.max(0.8, radius * 0.014),
           nx: rx,
           ny: ry,
           nz: rz,
@@ -106,6 +146,7 @@ export default function SphereBg() {
       rendered.sort((a, b) => a.depth - b.depth);
 
       for (const d of rendered) {
+        if (d.px - d.size > W) continue; // off the clipped edge
         const alpha = 0.12 + d.depth * 0.88;
         ctx.beginPath();
         ctx.arc(d.px, d.py, d.size, 0, Math.PI * 2);
@@ -116,20 +157,21 @@ export default function SphereBg() {
       animId = requestAnimationFrame(draw);
     };
 
-    draw();
+    // Only spin while the sphere is on screen — 900 projected dots a frame
+    // is wasted work once the hero has scrolled away.
+    const observer = new IntersectionObserver(([entry]) => {
+      cancelAnimationFrame(animId);
+      if (entry.isIntersecting) draw();
+    });
+    observer.observe(canvas);
 
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(animId);
       canvas.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", resize);
+      resizeObserver.disconnect();
     };
-  }, []);
+  }, [dotCount, anchor]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className="absolute inline-flex h-90 w-90 md:h-115 md:w-115 lg:h-130 lg:w-130"
-    />
-  );
+  return <canvas ref={canvasRef} aria-hidden="true" className={className} />;
 }

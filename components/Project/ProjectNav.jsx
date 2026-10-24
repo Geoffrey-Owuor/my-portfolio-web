@@ -1,20 +1,13 @@
 "use client";
 
-import Link from "next/link";
+import { ProgressLink } from "../Modules/RouteProgress";
 import { ArrowLeft, ArrowRight, ChevronFirst, ChevronLast } from "lucide-react";
 import ProjectStack from "../Wrappers/ProjectStack";
 
 // One half of the prev/next pair. `direction` decides which way the card leans:
 // "previous" is arrow-first and left aligned, "next" is arrow-last and right
 // aligned, so the pair reads outward from the middle of the page.
-const NeighbourCard = ({
-  id,
-  name,
-  stack,
-  direction,
-  isWrapping,
-  onNavigate,
-}) => {
+const NeighbourCard = ({ id, name, stack, direction, isWrapping }) => {
   const isPrevious = direction === "previous";
 
   // At the ends of the list navigation wraps, so the label says where you
@@ -34,16 +27,15 @@ const NeighbourCard = ({
       : ArrowRight;
 
   return (
-    <Link
+    <ProgressLink
       href={`/projects/${id}`}
-      onClick={onNavigate}
       aria-label={`${isPrevious ? "Previous" : "Next"} project: ${name}`}
-      className={`group border-border-subtle hover:border-accent focus-visible:border-accent flex flex-col gap-2 rounded-xl border p-5 transition-colors duration-150 focus-visible:outline-none ${
+      className={`group border-border-subtle hover:border-accent focus-visible:border-accent rounded-card flex flex-col gap-2 border p-5 transition-colors duration-150 focus-visible:outline-none ${
         isPrevious ? "items-start" : "items-end text-right sm:col-start-2"
       }`}
     >
       <span
-        className={`font-mono text-text-muted group-hover:text-accent flex items-center gap-1.5 text-xs transition-colors ${
+        className={`text-text-muted group-hover:text-accent flex items-center gap-1.5 font-mono text-xs transition-colors ${
           isPrevious ? "" : "flex-row-reverse"
         }`}
       >
@@ -68,11 +60,11 @@ const NeighbourCard = ({
           <ProjectStack projectStack={stack} limit={2} />
         </div>
       )}
-    </Link>
+    </ProgressLink>
   );
 };
 
-const ProjectNav = ({ project, onNavigate }) => {
+const ProjectNav = ({ project }) => {
   const hasPrevious =
     project.previous_project_id && project.previous_project_id !== project.id;
   const hasNext =
@@ -93,7 +85,6 @@ const ProjectNav = ({ project, onNavigate }) => {
           stack={project.previous_project_stack}
           direction="previous"
           isWrapping={project.is_first_project}
-          onNavigate={onNavigate}
         />
       )}
       {hasNext && (
@@ -103,7 +94,6 @@ const ProjectNav = ({ project, onNavigate }) => {
           stack={project.next_project_stack}
           direction="next"
           isWrapping={project.is_last_project}
-          onNavigate={onNavigate}
         />
       )}
     </nav>

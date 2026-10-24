@@ -1,109 +1,187 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Microscope, Code2, Hammer } from "lucide-react";
-import SphereBg from "../Modules/SphereBg";
-import HeroTerminal from "./HeroTerminal";
+import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import HeroClock from "./HeroClock";
+import HeroEditor from "./HeroEditor";
+import { RESUME_URL } from "@/utils/links";
 
-const Hero = () => {
-  const titleTags = [
-    { label: "Researcher", icon: Microscope },
-    { label: "Developer", icon: Code2 },
-    { label: "Builder", icon: Hammer },
-  ];
+const STACK = ["Next.js", "React", "Node.js", "PostgreSQL", "Tailwind CSS"];
+
+// One orchestrated entrance on load: the column steps in line by line.
+const columnVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
+};
+const cardVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+const lineVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+// Section links in the hero scroll smoothly rather than jumping, matching
+// the navbar (there is deliberately no CSS scroll-smooth).
+const scrollToSection = (e, id) => {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+};
+
+/**
+ * Editorial, text-led intro in the shared page measure: status line, who
+ * (avatar + name), what (the display headline), a short bio, calls to
+ * action, and a closing rule with the core stack. Content-height on every
+ * screen — it never stretches to fill the viewport.
+ *
+ * From custom-content (1100px) up the copy takes a 42rem column and the
+ * editor card fills the rest, ending on the measure's right edge. Below
+ * that its column would be too narrow to show the code, so the card stacks
+ * under the calls to action instead, left-aligned and capped to the copy's
+ * 42rem.
+ *
+ * `status` is a streamed server slot (see app/page.js); may render nothing.
+ */
+const Hero = ({ status }) => {
+  const prefersReducedMotion = useReducedMotion();
+
+  // "⌘K" on Apple platforms, "Ctrl K" elsewhere — resolved after mount so
+  // the server-rendered label never mismatches (same as the navbar).
+  const [shortcutLabel, setShortcutLabel] = useState("Ctrl K");
+  useEffect(() => {
+    if (/Mac|iPhone|iPad/.test(navigator.platform)) setShortcutLabel("⌘K");
+  }, []);
 
   return (
-    <section
-      id="home"
-      className="min-h-app relative mx-1 flex max-w-6xl items-center justify-center overflow-hidden px-4 py-16 md:mx-auto"
-    >
-      {/* ── Main grid ── */}
-      <div className="relative z-10 grid grid-cols-1 gap-16 lg:grid-cols-2">
-        {/* --- Image (Left Side) --- */}
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
-          whileInView={{ scale: 1, opacity: 1, rotate: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.1,
-            type: "spring",
-            stiffness: 80,
-          }}
-          className="order-first flex justify-center"
-        >
-          <div className="relative flex items-center justify-center">
-            <SphereBg />
-            {/* White buffer ring - some bit of transparency */}
-            <div className="absolute h-62 w-62 rounded-full bg-linear-to-br from-gray-200/40 via-gray-300/30 to-gray-400/30 md:h-82 md:w-82 dark:from-gray-800/60 dark:via-gray-900/60 dark:to-gray-950/60" />
+    <section id="home" className="container-page pb-section pt-10 md:pt-14">
+      <motion.div
+        variants={prefersReducedMotion ? undefined : columnVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <div className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] custom-content:gap-10">
+          <motion.div
+            variants={prefersReducedMotion ? undefined : columnVariants}
+          >
+            <motion.div
+              variants={prefersReducedMotion ? undefined : lineVariants}
+              className="flex flex-wrap items-center gap-x-4 gap-y-1.5"
+            >
+              {status}
+              <HeroClock />
+            </motion.div>
 
-            <div>
+            <motion.div
+              variants={prefersReducedMotion ? undefined : lineVariants}
+              className="mt-8 flex items-center gap-4"
+            >
               <Image
                 src={assets.profile_photo}
-                alt="profile-image"
-                className="relative h-60 w-60 rounded-full object-cover object-[50%_25%] md:h-80 md:w-80"
+                alt="Jeff's portrait"
+                className="ring-border-subtle h-14 w-14 rounded-full object-cover object-[50%_25%] ring-1"
                 priority
-                width={300}
-                height={300}
-                sizes="(max-width: 768px) 240px, (max-width: 1200px) 320px, 400px"
+                width={112}
+                height={112}
+                sizes="56px"
               />
-            </div>
-          </div>
-        </motion.div>
+              <div>
+                <p className="text-text-primary font-semibold">
+                  Geoffrey Owuor
+                </p>
+                <p className="text-text-muted text-sm">
+                  Full-stack developer · Nairobi, Kenya
+                </p>
+              </div>
+            </motion.div>
 
-        {/* --- Text Content (Right Side) --- */}
-        <div className="flex flex-col justify-center text-center lg:text-left">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
-          >
-            {titleTags.map(({ label, icon: Icon }) => (
-              <span
-                key={label}
-                className="bg-accent/10 text-accent flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-sm text-nowrap"
+            <motion.h1
+              variants={prefersReducedMotion ? undefined : lineVariants}
+              className="text-text-primary text-display mt-6 font-semibold text-balance"
+            >
+              I build production-ready web apps, from database schema to
+              polished UI.
+            </motion.h1>
+
+            <motion.p
+              variants={prefersReducedMotion ? undefined : lineVariants}
+              className="text-text-muted mt-5 max-w-2xl text-base leading-relaxed md:text-lg"
+            >
+              I work across the whole stack - APIs, databases, interfaces and
+              deploys, shipping complete products rather than fragments. A
+              researcher, developer and builder at heart.
+            </motion.p>
+
+            <motion.div
+              variants={prefersReducedMotion ? undefined : lineVariants}
+              className="mt-8 flex flex-wrap items-center gap-3"
+            >
+              <Link
+                href="/#projects"
+                onClick={(e) => scrollToSection(e, "projects")}
+                className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
               >
-                <Icon className="h-4 w-4" />
-                {label}
-              </span>
-            ))}
+                See projects
+                <ArrowDown className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/#contact"
+                onClick={(e) => scrollToSection(e, "contact")}
+                className="border-border-subtle text-text-primary hover:border-accent hover:text-accent rounded-control inline-flex items-center border px-4 py-2.5 text-sm font-semibold transition-colors"
+              >
+                Get in touch
+              </Link>
+              <a
+                href={RESUME_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-text-muted hover:text-accent inline-flex items-center gap-1 px-2 py-2.5 text-sm font-medium transition-colors"
+              >
+                Résumé
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </motion.div>
           </motion.div>
 
-          <motion.h1
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
-            className="text-text-primary font-mono text-3xl font-medium tracking-tighter md:text-5xl"
-          >
-            Full-Stack Builder
-          </motion.h1>
-
-          <motion.p
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6, delay: 0.4, ease: "easeInOut" }}
-            className="text-text-muted mt-6 text-lg leading-relaxed"
-          >
-            I'm Jeff, a full-stack engineer in Nairobi shipping complete,
-            production-ready web apps.
-          </motion.p>
-
+          {/* Beside the copy from custom-content, stacked below it before. */}
           <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}
-            className="mt-8 flex justify-center lg:justify-start"
+            variants={prefersReducedMotion ? undefined : cardVariants}
+            className="custom-content:mt-0 custom-content:max-w-none mt-10 max-w-2xl min-w-0 self-center"
           >
-            <HeroTerminal />
+            <HeroEditor />
           </motion.div>
         </div>
-      </div>
+
+        {/* Closing rule: the core stack, and where to find everything else */}
+        <motion.div
+          variants={prefersReducedMotion ? undefined : lineVariants}
+          className="border-border-subtle mt-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t pt-5 font-mono text-xs"
+        >
+          <p className="text-text-muted">
+            <span className="text-accent">stack:</span> {STACK.join(" · ")}
+          </p>
+          <p className="text-text-muted hidden lg:block">
+            Press{" "}
+            <kbd className="border-border-subtle text-text-primary rounded-chip border px-1.5 py-0.5">
+              {shortcutLabel}
+            </kbd>{" "}
+            to search projects, posts and more
+          </p>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

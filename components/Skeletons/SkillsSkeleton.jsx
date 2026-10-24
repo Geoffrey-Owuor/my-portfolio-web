@@ -1,3 +1,4 @@
+import SectionTitleSkeleton from "./SectionTitleSkeleton";
 import { HeartHandshake } from "lucide-react";
 
 /**
@@ -6,23 +7,19 @@ import { HeartHandshake } from "lucide-react";
  */
 const SkillsSkeleton = () => {
   return (
-    <section
-      id="skills-skeleton"
-      className="min-h-app mx-auto w-full max-w-7xl px-4 py-24"
-    >
-      <div className="mx-auto">
-        {/* Section Title Skeleton */}
-        <div className="bg-border-subtle mx-auto mb-16 h-8 w-48 animate-pulse rounded-md"></div>
+    <section id="skills-skeleton" className="section-shell">
+      <div>
+        <SectionTitleSkeleton />
 
         {/* Technical Skills terminal panel skeleton */}
-        <div className="border-border-subtle mx-auto w-full max-w-4xl overflow-hidden rounded-lg border">
+        <div className="border-border-subtle rounded-card mx-auto w-full max-w-4xl overflow-hidden border">
           <div className="border-border-subtle bg-surface-raised/50 flex items-center gap-2 border-b px-4 py-3">
             <span className="flex gap-1.5">
               <span className="bg-border-subtle h-2.5 w-2.5 rounded-full"></span>
               <span className="bg-border-subtle h-2.5 w-2.5 rounded-full"></span>
               <span className="bg-border-subtle h-2.5 w-2.5 rounded-full"></span>
             </span>
-            <div className="bg-border-subtle ml-2 h-3 w-32 animate-pulse rounded-md"></div>
+            <div className="bg-border-subtle rounded-chip ml-2 h-3 w-32 animate-pulse"></div>
           </div>
           <div className="divide-border-subtle grid grid-cols-1 divide-y sm:grid-cols-2 sm:divide-x sm:divide-y-0">
             {[0, 1].map((col) => (
@@ -32,8 +29,8 @@ const SkillsSkeleton = () => {
                     key={index}
                     className="flex items-center gap-3 px-5 py-3"
                   >
-                    <div className="bg-border-subtle h-3 w-4 animate-pulse rounded-md"></div>
-                    <div className="bg-border-subtle h-4 w-full animate-pulse rounded-md"></div>
+                    <div className="bg-border-subtle rounded-chip h-3 w-4 animate-pulse"></div>
+                    <div className="bg-border-subtle rounded-chip h-4 w-full animate-pulse"></div>
                   </div>
                 ))}
               </div>

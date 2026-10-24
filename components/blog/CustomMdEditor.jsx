@@ -103,9 +103,9 @@ const CustomMdEditor = ({ value, onChange }) => {
   };
 
   return (
-    <div className="border-border-subtle w-full rounded-xl border transition-colors focus:outline-none">
+    <div className="border-border-subtle rounded-card w-full border transition-colors focus:outline-none">
       {/* Toolbar */}
-      <div className="border-border-subtle bg-surface-raised flex flex-wrap items-center gap-2 rounded-t-xl border-b p-2">
+      <div className="border-border-subtle bg-surface-raised rounded-t-card flex flex-wrap items-center gap-2 border-b p-2">
         {/* Toolbar buttons */}
         {!showPreview && (
           <div className="flex flex-wrap items-center gap-1">
@@ -173,7 +173,7 @@ const CustomMdEditor = ({ value, onChange }) => {
         <button
           type="button"
           onClick={() => setShowPreview(false)}
-          className={`flex items-center gap-2 rounded-lg ${!showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+          className={`rounded-control flex items-center gap-2 ${!showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
         >
           <PenLine size={14} />
           Write
@@ -187,7 +187,7 @@ const CustomMdEditor = ({ value, onChange }) => {
             onBlur={handleBlur}
             onClick={handleClick}
             aria-describedby={showToolTip ? "preview-toggle-tip" : undefined}
-            className={`mr-2 flex items-center gap-2 rounded-lg ${showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
+            className={`rounded-control mr-2 flex items-center gap-2 ${showPreview ? "bg-text-primary text-surface hover:opacity-90" : "bg-surface-raised text-text-muted hover:text-text-primary"} px-3 py-1.5 text-xs font-semibold transition-colors`}
           >
             <Glasses size={14} />
             Preview
@@ -227,7 +227,7 @@ const ToolbarButton = ({ icon, onClick, label }) => (
     type="button"
     onClick={onClick}
     title={label}
-    className="text-text-muted hover:bg-surface hover:text-text-primary cursor-pointer rounded-md p-1.5 transition-colors"
+    className="text-text-muted hover:bg-surface hover:text-text-primary rounded-control cursor-pointer p-1.5 transition-colors"
   >
     {icon}
   </button>

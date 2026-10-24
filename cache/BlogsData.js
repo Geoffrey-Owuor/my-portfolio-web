@@ -8,15 +8,21 @@ const getBlogData = async () => {
     FROM blogs
     ORDER BY blog_date DESC
     `;
-  try {
-    const blogs = await query(blogsQuery);
-    return blogs;
-  } catch (error) {
-    console.error("Error fetching blogs data:", error);
-    return [];
-  }
+  const blogs = await query(blogsQuery);
+  return blogs;
 };
 
-export const BlogsData = unstable_cache(getBlogData, ["BlogsData"], {
+const cachedBlogData = unstable_cache(getBlogData, ["BlogsData"], {
   tags: ["BlogsData"],
 });
+
+// Failures are caught outside the cache so they're never stored (see
+// cache/CachedData.js); resolves to null when the read fails.
+export const BlogsData = async () => {
+  try {
+    return await cachedBlogData();
+  } catch (error) {
+    console.error("Error fetching blogs data:", error);
+    return null;
+  }
+};

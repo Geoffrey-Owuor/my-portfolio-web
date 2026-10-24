@@ -11,10 +11,7 @@ const Stack = async () => {
   const toolIcons = Object.entries(tools);
 
   return (
-    <section
-      id="stack"
-      className="min-h-app mx-auto flex w-full max-w-7xl items-center justify-center px-4 py-16"
-    >
+    <section id="stack" className="section-shell">
       <StackWrapper toolNames={toolNames} toolIcons={toolIcons} />
     </section>
   );

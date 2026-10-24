@@ -9,6 +9,10 @@ import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 // Accessibility control: lets a visitor swap the site's reading font (Inter
 // by default) for one of four alternates — see store/useFontStore.js for
 // the options and globals.css for how the choice is actually applied.
+// Grouped by category (in FONT_ORDER's order); each row also previews the
+// mono font that comes paired with it.
+const CATEGORIES = [...new Set(FONT_ORDER.map((key) => FONTS[key].category))];
+
 const FontSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false);
   const font = useFontStore((state) => state.font);
@@ -59,31 +63,56 @@ const FontSwitcher = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.96 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="bg-surface border-border-subtle absolute top-full right-0 z-10 mt-2 w-52 origin-top-right rounded-xl border p-1.5 shadow-lg"
+            className="bg-surface border-border-subtle z-raised rounded-card absolute top-full right-0 mt-2 w-52 origin-top-right border p-1.5 shadow-lg"
           >
-            {FONT_ORDER.map((key) => (
-              <button
-                key={key}
-                type="button"
-                role="menuitemradio"
-                aria-checked={font === key}
-                onClick={() => handleSelect(key)}
-                className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm transition-colors ${FONTS[key].family} ${
-                  font === key
-                    ? "bg-surface-raised text-text-primary"
-                    : "text-text-muted hover:bg-surface-raised hover:text-text-primary"
-                }`}
+            {CATEGORIES.map((category) => (
+              <div
+                key={category}
+                role="group"
+                aria-labelledby={`font-group-${category}`}
               >
-                <span>
-                  {FONTS[key].label}
-                  {key === "inter" && (
-                    <span className="text-text-muted ml-1 text-xs">
-                      (default)
+                <p
+                  id={`font-group-${category}`}
+                  className="text-text-muted px-3 pt-2 pb-1 font-mono text-[11px] tracking-wider uppercase"
+                >
+                  {category}
+                </p>
+                {FONT_ORDER.filter(
+                  (key) => FONTS[key].category === category,
+                ).map((key) => (
+                  <button
+                    key={key}
+                    type="button"
+                    role="menuitemradio"
+                    aria-checked={font === key}
+                    onClick={() => handleSelect(key)}
+                    className={`rounded-control flex w-full items-center justify-between px-3 py-2 text-left text-sm transition-colors ${
+                      font === key
+                        ? "bg-surface-raised text-text-primary"
+                        : "text-text-muted hover:bg-surface-raised hover:text-text-primary"
+                    }`}
+                  >
+                    <span>
+                      <span className={`block ${FONTS[key].family}`}>
+                        {FONTS[key].label}
+                        {key === "inter" && (
+                          <span className="text-text-muted ml-1 text-xs">
+                            (default)
+                          </span>
+                        )}
+                      </span>
+                      {/* Its paired code font, previewed in that face */}
+                      <span
+                        className={`text-text-muted block text-xs ${FONTS[key].mono.family}`}
+                      >
+                        <span className="sr-only">with code font </span>
+                        {FONTS[key].mono.label}
+                      </span>
                     </span>
-                  )}
-                </span>
-                {font === key && <Check className="h-4 w-4 shrink-0" />}
-              </button>
+                    {font === key && <Check className="h-4 w-4 shrink-0" />}
+                  </button>
+                ))}
+              </div>
             ))}
           </motion.div>
         )}
