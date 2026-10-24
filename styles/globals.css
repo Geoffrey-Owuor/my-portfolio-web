@@ -5,8 +5,7 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  --breakpoint-custom: 1000px;
-  --breakpoint-custom-content: 1200px;
+  --breakpoint-custom-content: 1100px;
 
   /* ── Type scale ──────────────────────────────────────────────────────
      The only heading sizes in the app: `text-display` (hero), `text-h1`
@@ -127,6 +126,13 @@
   --color-success: var(--success);
   --color-danger: var(--danger);
 
+  /* Syntax colours for the hero's editor card (components/Home/HeroEditor). */
+  --color-code-keyword: var(--code-keyword);
+  --color-code-string: var(--code-string);
+  --color-code-function: var(--code-function);
+  --color-code-number: var(--code-number);
+  --color-code-comment: var(--code-comment);
+
   /* `font-mono` resolves through `--font-mono-active`, which each
      html[data-font] block below repoints to that font's mono counterpart. */
   --font-mono: var(--font-mono-active);
@@ -148,6 +154,13 @@
   --accent-hover: var(--color-blue-700); /* 6.70:1 on --surface */
   --success: var(--color-green-700); /* 5.01:1 on --surface */
   --danger: var(--color-red-600); /* 4.83:1 on --surface */
+
+  /* Syntax colours — GitHub light-ish, all ≥4.5:1 on --surface-raised. */
+  --code-keyword: oklch(50% 0.2 340);
+  --code-string: oklch(42% 0.12 255);
+  --code-function: oklch(48% 0.18 295);
+  --code-number: oklch(48% 0.13 210);
+  --code-comment: var(--color-gray-500);
 
   /* Inline-code chip — GitHub's neutral tint, which reads on both the
      page surface and the raised panels it can sit inside. */
@@ -198,6 +211,12 @@ html[data-theme="dark"] {
   --accent-hover: var(--color-blue-300); /* 11.17:1 on --surface */
   --success: var(--color-green-400); /* 11.58:1 on --surface */
   --danger: var(--color-red-400); /* 7.28:1 on --surface */
+
+  --code-keyword: oklch(76% 0.14 350);
+  --code-string: oklch(82% 0.1 230);
+  --code-function: oklch(78% 0.13 300);
+  --code-number: oklch(80% 0.1 200);
+  --code-comment: var(--color-gray-400);
 
   --inline-code-bg: rgb(110 118 129 / 0.4);
 }
@@ -290,6 +309,36 @@ html[data-theme="dark"] {
 
 @utility animate-toast-countdown {
   animation: toast-countdown linear forwards;
+}
+
+/* Hero editor card (components/Home/HeroEditor.jsx): the active tab's bar is
+   also its timer (animationend advances the tab), and each file fades in. */
+@keyframes hero-tab {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@utility animate-hero-tab {
+  animation: hero-tab 5s linear forwards;
+}
+
+@keyframes hero-code {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-hero-code {
+  animation: hero-code 0.35s ease-out;
 }
 
 @keyframes marquee {

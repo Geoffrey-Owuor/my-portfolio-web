@@ -68,7 +68,7 @@ Two parallel email paths exist:
 
 ### Styling
 
-Tailwind CSS 4 with the new CSS-first config (`@theme` block in `styles/globals.css`, no `tailwind.config.js`). Dark mode is driven by a custom variant keyed on `[data-theme=dark]` (set by `next-themes`), not Tailwind's default `dark:` media-query strategy. Custom breakpoints `custom` (1000px) and `custom-content` (1200px) are defined there.
+Tailwind CSS 4 with the new CSS-first config (`@theme` block in `styles/globals.css`, no `tailwind.config.js`). Dark mode is driven by a custom variant keyed on `[data-theme=dark]` (set by `next-themes`), not Tailwind's default `dark:` media-query strategy. Custom breakpoints `custom` (1000px) and `custom-content` (1100px) are defined there.
 
 Design tokens live in `styles/globals.css` — use them instead of raw values so the UI can't drift:
 

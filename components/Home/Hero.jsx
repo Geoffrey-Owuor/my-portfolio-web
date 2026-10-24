@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import HeroClock from "./HeroClock";
-import SphereBg from "../Modules/SphereBg";
+import HeroEditor from "./HeroEditor";
 import { RESUME_URL } from "@/utils/links";
 
 const STACK = ["Next.js", "React", "Node.js", "PostgreSQL", "Tailwind CSS"];
@@ -17,9 +17,13 @@ const columnVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
 };
-const globeVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 1.2, delay: 0.2 } },
+const cardVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] },
+  },
 };
 const lineVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -44,10 +48,11 @@ const scrollToSection = (e, id) => {
  * action, and a closing rule with the core stack. Content-height on every
  * screen — it never stretches to fill the viewport.
  *
- * From lg up the copy takes a 42rem column and the globe fills the rest of
- * the measure. The globe's size is set by the hero's height, so on a narrow
- * desktop the container edge crops it and wider screens reveal more, until
- * it is whole and centred in its column. It never leaves the page measure.
+ * From custom-content (1100px) up the copy takes a 42rem column and the
+ * editor card fills the rest, ending on the measure's right edge. Below
+ * that its column would be too narrow to show the code, so the card stacks
+ * under the calls to action instead, left-aligned and capped to the copy's
+ * 42rem.
  *
  * `status` is a streamed server slot (see app/page.js); may render nothing.
  */
@@ -68,7 +73,7 @@ const Hero = ({ status }) => {
         initial="hidden"
         animate="visible"
       >
-        <div className="lg:grid lg:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] lg:gap-10">
+        <div className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] custom-content:gap-10">
           <motion.div
             variants={prefersReducedMotion ? undefined : columnVariants}
           >
@@ -151,17 +156,12 @@ const Hero = ({ status }) => {
             </motion.div>
           </motion.div>
 
-          {/* Stretches to the copy's height; overflow-hidden is the crop. */}
+          {/* Beside the copy from custom-content, stacked below it before. */}
           <motion.div
-            aria-hidden="true"
-            variants={prefersReducedMotion ? undefined : globeVariants}
-            className="relative hidden overflow-hidden lg:block"
+            variants={prefersReducedMotion ? undefined : cardVariants}
+            className="custom-content:mt-0 custom-content:max-w-none mt-10 max-w-2xl min-w-0 self-center"
           >
-            <SphereBg
-              className="absolute inset-0 h-full w-full"
-              dotCount={700}
-              anchor="start"
-            />
+            <HeroEditor />
           </motion.div>
         </div>
 
