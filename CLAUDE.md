@@ -47,14 +47,14 @@ When adding a new protected route or mutation, follow the existing pattern: veri
 
 - Route groups: `app/(auth)/login`, `app/(blogposts)/blog/[id]` and `app/(blogposts)/blogs` — grouped for organization only, no shared layout side effects beyond routing.
 - `app/api/*` — REST-style route handlers (`route.js`) for login/logout/refresh, blog CRUD (`blogpost`, `blogpost/[id]`, `updateblog`), contact form (`submitfeedback`), and cache revalidation.
-- `app/layout.js` defines global metadata (Open Graph/Twitter defaults, icons) and wraps every page in `Providers` (theme), `NetworkStatus`, a persistent `NavBar`/`Footer`.
+- `app/layout.js` defines global metadata (Open Graph/Twitter defaults, icons) and wraps every page in `Providers` (theme), `ToastProvider` (+ `NetworkStatus`), a persistent `NavBar`/`Footer`.
 
 ### Component organization (`components/`)
 
 - `Home/` — one component per homepage section (Hero, Skills, Stack, Projects, Experience, Education, Contact, NavBar, Footer); these are Server Components that fetch their own data.
 - `Wrappers/` — presentational/client wrapper components that receive fetched data as props from their `Home/` counterpart (e.g. `SkillsWrapper`, `ProjectsWrapper`) — this is the seam between server data-fetching and client interactivity/animation. `SectionTitle` is shared by every section and also owns the section note: pass it `alertMessage` + `alertIcon` and it self-triggers a timed note that briefly takes the place of the section's `~/path` (right of the subtitle) when that title scrolls into view (both props optional — omit them for a plain heading).
 - `blog/` — blog authoring/viewing pipeline: `BlogForm` → `CustomMdEditor` (markdown editing) → `PreviewModal` → `ViewBlog`/`BlogPost` (rendering via `react-markdown` + `remark-gfm`), plus `BlogCardView`/`BlogTableView` for listing layouts and `EditBlog` for updates.
-- `Modules/` — cross-cutting UI primitives: alerts (`Alert`, `BlogAlert`), `ConfirmationDialog`, `Pagination`, `NetworkStatus` (online/offline banner), `LogoutOverlay`/`LogoutButton`.
+- `Modules/` — cross-cutting UI primitives: `Toaster` (the app's only notification system: `ToastProvider` is mounted once in `app/layout.js`; call `useToast()` → `toast.success/error/info(message, { title, id, duration, icon })` from any client component — a repeated `id` replaces in place; field errors stay inline in their form), `ConfirmationDialog`, `Pagination`, `NetworkStatus` (headless; drives the offline/back-online toast), `LogoutOverlay`/`LogoutButton`.
 - `Skeletons/` — loading-state placeholders paired 1:1 with sections/components, used via `<Suspense fallback={...}>` in `app/page.js` and other async pages.
 - `Theme/` — `next-themes`-based dark mode (`Providers`, `ThemeToggleCompact`, `TooltipUI`).
 

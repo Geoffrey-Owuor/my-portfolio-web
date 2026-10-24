@@ -3,7 +3,7 @@ import { useState } from "react";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
-import BlogAlert from "../Modules/BlogAlert";
+import { useToast } from "../Modules/Toaster";
 import apiClient from "@/lib/AxiosClient";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import BlogForm from "./BlogForm";
@@ -20,11 +20,7 @@ const BlogPost = ({ user }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [alertInfo, setAlertInfo] = useState({
-    showAlert: "",
-    type: "",
-    alertMessage: "",
-  });
+  const toast = useToast();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,22 +52,14 @@ const BlogPost = ({ user }) => {
       // Revalidate blogs data
       await revalidateBlogsData();
 
-      setAlertInfo({
-        showAlert: true,
-        type: "success",
-        alertMessage: data.message,
-      });
+      toast.success(data.message, { title: "Blog published" });
       setFormData({ title: "", author: "", content: "", tagline: "" });
     } catch (error) {
       // Axios error handling
       const message =
         error.response?.data?.message || error.message || "Failed to post blog";
 
-      setAlertInfo({
-        showAlert: true,
-        type: "error",
-        alertMessage: message,
-      });
+      toast.error(message, { title: "Couldn't publish the blog" });
 
       console.error("Error posting blog:", error);
     } finally {
@@ -84,15 +72,6 @@ const BlogPost = ({ user }) => {
 
   return (
     <>
-      <BlogAlert
-        message={alertInfo.alertMessage}
-        type={alertInfo.type}
-        isVisible={alertInfo.showAlert}
-        hideAlert={() =>
-          setAlertInfo({ type: "", alertMessage: "", showAlert: false })
-        }
-      />
-
       {showConfirmation && (
         <ConfirmationDialog
           title="Post Blog"

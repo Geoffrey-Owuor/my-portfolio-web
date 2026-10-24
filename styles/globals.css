@@ -277,35 +277,19 @@ html[data-theme="dark"] {
   @apply container-page py-section;
 }
 
-@layer utilities {
-  @keyframes slideDown {
-    from {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateY(100%);
-      opacity: 0;
-    }
+/* Toast countdown bar (components/Modules/Toaster.jsx). Duration and
+   play-state are set inline, so the bar pauses with the toast's timer. */
+@keyframes toast-countdown {
+  from {
+    transform: scaleX(1);
   }
-  @keyframes slideUp {
-    from {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  to {
+    transform: scaleX(0);
   }
+}
 
-  .animate-slideDown {
-    animation: slideDown 0.2s ease-in-out forwards;
-  }
-
-  .animate-slideUp {
-    animation: slideUp 0.2s ease-in-out forwards;
-  }
+@utility animate-toast-countdown {
+  animation: toast-countdown linear forwards;
 }
 
 @keyframes marquee {

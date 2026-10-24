@@ -8,7 +8,7 @@ import {
   PenLine,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import BlogAlert from "../Modules/BlogAlert";
+import { useToast } from "../Modules/Toaster";
 import { formatDate, generateSlug } from "@/utils/Helpers";
 import EditBlog from "./EditBlog";
 import ReactMarkdown from "react-markdown";
@@ -24,11 +24,7 @@ const ViewBlog = ({ blogPost, userId }) => {
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
   const progressRouter = useProgressRouter();
-  const [alertInfo, setAlertInfo] = useState({
-    showAlert: false,
-    type: "",
-    alertMessage: "",
-  });
+  const toast = useToast();
 
   const shareIconEntries = Object.entries(shareIcons);
 
@@ -62,21 +58,20 @@ const ViewBlog = ({ blogPost, userId }) => {
 
     // The flags mark position in the /blogs listing, which runs newest first —
     // so the first blog is the newset one written and the last is the oldest.
+    // A fixed id, so a re-run (Strict Mode, or the same flags again) replaces
+    // the note instead of stacking a second copy.
     if (blogPost.is_first_blog) {
-      setAlertInfo({
-        showAlert: true,
-        type: "success",
-        alertMessage:
-          "You've reached the latest blog. More magic coming soon! 🔮",
+      toast.info("More magic coming soon! 🔮", {
+        id: "blog-position",
+        title: "You've reached the latest post",
       });
     } else if (blogPost.is_last_blog) {
-      setAlertInfo({
-        showAlert: true,
-        type: "success",
-        alertMessage: "Where the magic began. My very first post! 🕰️🚀",
+      toast.info("Where the magic began. 🕰️🚀", {
+        id: "blog-position",
+        title: "This is my very first post",
       });
     }
-  }, [blogPost.is_first_blog, blogPost.is_last_blog]);
+  }, [blogPost.is_first_blog, blogPost.is_last_blog, toast]);
 
   // 2. Helper to generate share links based on the platform key
   const getShareLink = (platformKey, url, title) => {
@@ -137,20 +132,10 @@ const ViewBlog = ({ blogPost, userId }) => {
   };
   return (
     <div>
-      <BlogAlert
-        message={alertInfo.alertMessage}
-        type={alertInfo.type}
-        isVisible={alertInfo.showAlert}
-        hideAlert={() =>
-          setAlertInfo({ type: "", alertMessage: "", showAlert: false })
-        }
-      />
-
       <EditBlog
         setShowEditModal={setShowEditBlog}
         showEditModal={showEditBlog}
         blogInfo={editBlogData}
-        setAlertInfo={setAlertInfo}
       />
 
       <div className="container-page flex flex-col py-8 lg:flex-row lg:gap-6">

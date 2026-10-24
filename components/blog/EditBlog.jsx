@@ -7,16 +7,13 @@ import apiClient from "@/lib/AxiosClient";
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import ClientPortal from "../Modules/ClientPortal";
+import { useToast } from "../Modules/Toaster";
 import revalidateBlogsData from "@/cache/revalidateBlogsData";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
-const EditBlog = ({
-  showEditModal,
-  setShowEditModal,
-  setAlertInfo,
-  blogInfo,
-}) => {
+const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
+  const toast = useToast();
   const blogId = blogInfo.blog_id;
   const modalRef = useRef(null);
   const closeModal = useCallback(
@@ -71,11 +68,7 @@ const EditBlog = ({
       // Revalidate blogs data
       await revalidateBlogsData();
 
-      setAlertInfo({
-        showAlert: true,
-        type: "success",
-        alertMessage: data.message,
-      });
+      toast.success(data.message, { title: "Blog updated" });
 
       setFormData({ title: "", author: "", content: "", tagline: "" });
 
@@ -84,13 +77,11 @@ const EditBlog = ({
     } catch (error) {
       // Axios error handling
       const message =
-        error.response?.data?.message || error.message || "Failed to post blog";
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to update blog";
 
-      setAlertInfo({
-        showAlert: true,
-        type: "error",
-        alertMessage: message,
-      });
+      toast.error(message, { title: "Couldn't update the blog" });
 
       console.error("Error updating the blog:", error);
     } finally {

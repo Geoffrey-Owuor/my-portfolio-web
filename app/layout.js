@@ -12,6 +12,7 @@ import {
 import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
 import NetworkStatus from "@/components/Modules/NetworkStatus";
+import { ToastProvider } from "@/components/Modules/Toaster";
 import NavBar from "@/components/Home/NavBar";
 import { RouteProgressProvider } from "@/components/Modules/RouteProgress";
 import Footer from "@/components/Home/Footer";
@@ -150,15 +151,18 @@ export default function RootLayout({ children }) {
           document as normal beneath the sticky header. */}
       <body className="flex min-h-dvh flex-col">
         <Providers>
-          <NetworkStatus />
+          {/* The app's single notification system (see Modules/Toaster). */}
+          <ToastProvider>
+            <NetworkStatus />
 
-          {/* Owns the app-wide progress line; client navigations go through
+            {/* Owns the app-wide progress line; client navigations go through
               its `useProgressRouter()`/`ProgressLink` so the line tracks them. */}
-          <RouteProgressProvider>
-            <NavBar />
-            <main className="flex flex-1 flex-col">{children}</main>
-            <Footer />
-          </RouteProgressProvider>
+            <RouteProgressProvider>
+              <NavBar />
+              <main className="flex flex-1 flex-col">{children}</main>
+              <Footer />
+            </RouteProgressProvider>
+          </ToastProvider>
         </Providers>
       </body>
     </html>

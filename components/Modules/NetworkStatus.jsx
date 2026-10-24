@@ -1,88 +1,66 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
-import { Wifi, WifiOff, X } from "lucide-react";
 
+import { useEffect } from "react";
+import { Wifi, WifiOff } from "lucide-react";
+import { useToast } from "./Toaster";
+
+// Shared id, so "back online" replaces the offline toast in place.
+const NETWORK_TOAST = "network";
+
+// Offline status as a toast: persistent while offline, then swapped for a
+// short "back online" confirmation. Renders nothing itself.
 const NetworkStatus = () => {
-  // distinct states: 'hidden' | 'offline' | 'restored'
-  const [status, setStatus] = useState("hidden");
+  const toast = useToast();
 
-  //   Handlers for browser events
   useEffect(() => {
-    // Handlers for browser events
+    let offlineTimer;
+    let wasOffline = false;
 
+    const showOffline = () =>
+      toast.error("Some features may not work until you reconnect.", {
+        id: NETWORK_TOAST,
+        title: "You're offline",
+        icon: WifiOff,
+        duration: Infinity,
+      });
+
+    // Wait 2s before announcing, so a momentary blip doesn't flash a toast.
     const handleOffline = () => {
-      // Set offline status after 2 seconds
-      const timer = setTimeout(() => setStatus("offline"), 2000);
-
-      return () => clearTimeout(timer);
+      clearTimeout(offlineTimer);
+      offlineTimer = setTimeout(() => {
+        wasOffline = true;
+        showOffline();
+      }, 2000);
     };
 
     const handleOnline = () => {
-      setStatus("restored");
-
-      // Hide message automatically after 6 seconds
-      const timer = setTimeout(() => setStatus("hidden"), 6000);
-
-      return () => clearTimeout(timer);
+      clearTimeout(offlineTimer);
+      if (!wasOffline) return;
+      wasOffline = false;
+      toast.success("Your connection has been restored.", {
+        id: NETWORK_TOAST,
+        title: "Back online",
+        icon: Wifi,
+      });
     };
 
-    // Add event listeners
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
 
-    // 3. Initial Check (in case user loads page while offline)
+    // In case the page loads while already offline.
     if (!navigator.onLine) {
-      setStatus("offline");
+      wasOffline = true;
+      showOffline();
     }
 
-    // 4. Cleanup
     return () => {
+      clearTimeout(offlineTimer);
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
-  }, []);
+  }, [toast]);
 
-  const isOffline = status === "offline";
-
-  return (
-    <AnimatePresence>
-      {status !== "hidden" && (
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="z-toast pointer-events-none fixed right-0 bottom-4 left-0 flex justify-center px-4 md:bottom-6"
-        >
-          <div className="bg-text-primary text-surface rounded-card pointer-events-auto flex w-full items-center gap-3 px-4 py-3 shadow-lg sm:w-auto sm:max-w-md sm:px-6 sm:py-3.5">
-            {/* Icon Switching */}
-            {isOffline ? (
-              <WifiOff className="text-danger h-5 w-5 shrink-0 animate-pulse" />
-            ) : (
-              <Wifi className="text-success h-5 w-5 shrink-0" />
-            )}
-
-            {/* Text Switching */}
-            <span className="flex-1 text-sm leading-snug font-medium wrap-break-word sm:text-base">
-              {isOffline
-                ? "You are offline. Some features may not work as expected."
-                : "Hooray! You are back online"}
-            </span>
-
-            {/* Optional Close Button (mostly for offline state if it persists) */}
-            <button
-              onClick={() => setStatus("hidden")}
-              className="text-surface/70 hover:text-surface shrink-0 cursor-pointer rounded-full p-1 transition-colors"
-              aria-label="Dismiss network status message"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
+  return null;
 };
 
 export default NetworkStatus;

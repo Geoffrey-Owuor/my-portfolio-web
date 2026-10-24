@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Loader2, SendHorizonal } from "lucide-react";
-import Alert from "../Modules/Alert";
+import { useToast } from "../Modules/Toaster";
 import SectionTitle from "../Wrappers/SectionTitle";
 import ScrollReveal from "../Modules/ScrollReveal";
 
@@ -14,13 +14,8 @@ const Contact = () => {
     message: "",
   });
 
-  //Sending and alert states
   const [sending, setSending] = useState(false);
-  const [alertInfo, setAlertInfo] = useState({
-    show: false,
-    type: "",
-    message: "",
-  });
+  const toast = useToast();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,11 +27,8 @@ const Contact = () => {
     e.preventDefault();
     //Check if form data is available
     if (!formData.contactInfo || !formData.message) {
-      setAlertInfo({
-        show: true,
-        type: "error",
-        message:
-          "Looks like you missed something, please fill in both fields😊",
+      toast.error("Please fill in both fields so I can get back to you.", {
+        title: "A field is missing",
       });
       return;
     }
@@ -51,22 +43,14 @@ const Contact = () => {
       const result = await response.json();
 
       if (response.ok) {
-        setAlertInfo({
-          show: true,
-          type: "success",
-          message: result.message,
-        });
+        toast.success(result.message, { title: "Message sent" });
         setFormData({ contactInfo: "", message: "" }); // Clear form data
       } else {
         throw new Error(result.message || "Something went wrong");
       }
     } catch (error) {
       console.error("Error while submitting form data:", error);
-      setAlertInfo({
-        show: true,
-        type: "error",
-        message: error.message,
-      });
+      toast.error(error.message, { title: "Couldn't send your message" });
     } finally {
       setSending(false);
     }
@@ -186,13 +170,6 @@ const Contact = () => {
           </ScrollReveal>
         </div>
       </section>
-      {alertInfo.show && (
-        <Alert
-          message={alertInfo.message}
-          type={alertInfo.type}
-          onClose={() => setAlertInfo({ show: false, type: "", message: "" })}
-        />
-      )}
     </>
   );
 };
