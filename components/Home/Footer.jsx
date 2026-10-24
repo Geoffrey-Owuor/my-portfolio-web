@@ -71,7 +71,7 @@ const Footer = () => {
       {/* Large display name */}
       <div className="mt-6 overflow-hidden">
         <p
-          className="text-center font-mono text-5xl leading-none font-black tracking-wide text-gray-200 select-none md:text-7xl dark:text-gray-900"
+          className="text-center font-mono text-7xl leading-none font-black tracking-wide text-gray-200 select-none md:text-9xl dark:text-gray-900"
           style={{
             WebkitMaskImage:
               "linear-gradient(to bottom, black 0%, transparent 90%)",

@@ -94,9 +94,11 @@ const Hero = ({ status }) => {
                 sizes="56px"
               />
               <div>
-                <p className="text-text-primary font-semibold">Jeff Owuor</p>
+                <p className="text-text-primary font-semibold">
+                  Geoffrey Owuor
+                </p>
                 <p className="text-text-muted text-sm">
-                  Full-stack engineer · Nairobi, Kenya
+                  Full-stack developer · Nairobi, Kenya
                 </p>
               </div>
             </motion.div>
@@ -113,8 +115,8 @@ const Hero = ({ status }) => {
               variants={prefersReducedMotion ? undefined : lineVariants}
               className="text-text-muted mt-5 max-w-2xl text-base leading-relaxed md:text-lg"
             >
-              I work across the whole stack — APIs, databases, interfaces and
-              deploys — and ship complete products rather than fragments. A
+              I work across the whole stack - APIs, databases, interfaces and
+              deploys, shipping complete products rather than fragments. A
               researcher, developer and builder at heart.
             </motion.p>
 
