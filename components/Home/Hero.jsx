@@ -13,7 +13,6 @@ import { Microscope, Code2, Hammer, ArrowDown } from "lucide-react";
 import SphereBg from "../Modules/SphereBg";
 import HeroTerminal from "./HeroTerminal";
 import HeroClock from "./HeroClock";
-import { useScrollContainer } from "../Layout/AppCanvas";
 
 const titleTags = [
   { label: "Researcher", icon: Microscope },
@@ -37,8 +36,8 @@ const lineVariants = {
   },
 };
 
-// Section links in the hero scroll the canvas rather than jumping, matching
-// the navbar (AppCanvas deliberately has no CSS scroll-smooth).
+// Section links in the hero scroll smoothly rather than jumping, matching
+// the navbar (there is deliberately no CSS scroll-smooth).
 const scrollToSection = (e, id) => {
   if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   e.preventDefault();
@@ -82,13 +81,11 @@ const Portrait = ({ className, dotCount, sizes }) => (
  */
 const Hero = ({ status }) => {
   const heroRef = useRef(null);
-  const canvasRef = useScrollContainer();
   const prefersReducedMotion = useReducedMotion();
 
   // Leaving the hero, the columns part: the copy lifts away while the
   // portrait sinks back, so the page visibly hands over to the next section.
   const { scrollYProgress } = useScroll({
-    container: canvasRef,
     target: heroRef,
     offset: ["start start", "end start"],
   });

@@ -2,13 +2,11 @@
 import { generateSlug } from "@/utils/Helpers";
 import { useEffect, useState } from "react";
 import TOCSkeleton from "../Skeletons/TOCSkeleton";
-import { useScrollContainer } from "../Layout/AppCanvas";
 
 const TableOfContents = ({ content }) => {
   const [headings, setHeadings] = useState([]);
   const [headingsLoading, setHeadingsLoading] = useState(true);
   const [activeId, setActiveId] = useState("");
-  const canvasRef = useScrollContainer();
 
   // 1. Extract headings from the markdown content
   useEffect(() => {
@@ -47,11 +45,6 @@ const TableOfContents = ({ content }) => {
   useEffect(() => {
     if (headings.length === 0) return;
 
-    // The canvas scrolls, not the window — scroll events on an element don't
-    // bubble, so this has to listen on the canvas itself.
-    const canvas = canvasRef?.current;
-    if (!canvas) return;
-
     // Create a variable to track if we are currently "waiting"
     let ticking = false;
 
@@ -66,8 +59,8 @@ const TableOfContents = ({ content }) => {
 
       if (headingElements.length === 0) return;
 
-      // Measured from the canvas's top edge, not the viewport's.
-      const offset = canvas.getBoundingClientRect().top + 120;
+      // Measured from just below the sticky header.
+      const offset = 120;
       let currentActiveId = "";
 
       for (let i = headingElements.length - 1; i >= 0; i--) {
@@ -100,17 +93,17 @@ const TableOfContents = ({ content }) => {
     // Run once on mount to set initial state
     doScrollMath();
 
-    canvas.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      canvas.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [headings, canvasRef]);
+  }, [headings]);
 
   if (headingsLoading) return <TOCSkeleton />;
 
   return (
-    <nav className="sticky top-4 hidden max-h-[calc(100vh-2rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4 [scrollbar-width:thin] lg:flex">
+    <nav className="sticky top-[calc(var(--header-h)+1rem)] hidden max-h-[calc(100dvh-var(--header-h)-2rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4 [scrollbar-width:thin] lg:flex">
       <h4 className="text-text-muted border-border-subtle mb-4 border-b-2 pb-2 text-sm font-bold tracking-wider uppercase">
         On this page
       </h4>

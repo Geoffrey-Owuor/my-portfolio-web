@@ -8,9 +8,8 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { useScrollContainer } from "../Layout/AppCanvas";
 
-// Scroll-linked entrance for a section's body: as it rises into the canvas
+// Scroll-linked entrance for a section's body: as it rises into view
 // the block unclips from a narrower, inset window, tips back from a slight
 // forward lean and settles to full scale. It's driven by scroll position
 // rather than fired once, so scrolling back up plays it in reverse.
@@ -20,13 +19,11 @@ import { useScrollContainer } from "../Layout/AppCanvas";
 // outside some sections' bounds.
 const ScrollReveal = ({ children, className = "" }) => {
   const ref = useRef(null);
-  const canvasRef = useScrollContainer();
   const prefersReducedMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
-    container: canvasRef,
     target: ref,
-    // 0 when the block's top meets the canvas bottom, 1 once it reaches 60%.
+    // 0 when the block's top meets the viewport bottom, 1 once it reaches 60%.
     offset: ["start end", "start 0.6"],
   });
 

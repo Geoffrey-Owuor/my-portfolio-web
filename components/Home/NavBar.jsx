@@ -10,7 +10,6 @@ import ThemeToggleCompact from "../Theme/ThemeToggleCompact";
 import FontSwitcher from "../Modules/FontSwitcher";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
-import { useScrollContainer } from "../Layout/AppCanvas";
 import { sections } from "./sections";
 import CommandPalette from "../Modules/CommandPalette";
 import {
@@ -62,12 +61,10 @@ const Tab = ({ isActive, onClick, children }) => (
   </li>
 );
 
-// Reading progress through whatever page is in the canvas, drawn along the
-// header's bottom edge.
-const ScrollProgress = ({ className }) => {
-  const canvasRef = useScrollContainer();
+// Reading progress through the page, drawn along the header's bottom edge.
+const ScrollProgress = () => {
   const prefersReducedMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({ container: canvasRef });
+  const { scrollYProgress } = useScroll();
   const smoothed = useSpring(scrollYProgress, {
     stiffness: 200,
     damping: 40,
@@ -78,7 +75,7 @@ const ScrollProgress = ({ className }) => {
     <motion.span
       aria-hidden="true"
       style={{ scaleX: prefersReducedMotion ? scrollYProgress : smoothed }}
-      className={`bg-accent pointer-events-none absolute h-px origin-left ${className}`}
+      className="bg-accent pointer-events-none absolute right-0 bottom-0 left-0 h-px origin-left"
     />
   );
 };
@@ -91,13 +88,10 @@ const NavBar = () => {
   // the server-rendered label never mismatches.
   const [shortcutLabel, setShortcutLabel] = useState("Ctrl K");
 
-  // Scroll state read off the canvas, not the window — the document no longer
-  // scrolls (see components/Layout/AppCanvas.jsx).
   const [activeId, setActiveId] = useState("");
 
   const pathname = usePathname();
   const router = useProgressRouter();
-  const canvasRef = useScrollContainer();
 
   // derived state to check if we are in the homepage
   const isInHome = pathname === "/";
@@ -113,9 +107,6 @@ const NavBar = () => {
   // per tick rather than observed once, because they stream in behind
   // <Suspense> and replace their skeletons.
   useEffect(() => {
-    const canvas = canvasRef?.current;
-    if (!canvas) return;
-
     let queued = false;
 
     const measure = () => {
@@ -126,9 +117,8 @@ const NavBar = () => {
         return;
       }
 
-      // Whichever section straddles the canvas midline is the active one.
-      const midline =
-        canvas.getBoundingClientRect().top + canvas.clientHeight / 2;
+      // Whichever section straddles the viewport midline is the active one.
+      const midline = window.innerHeight / 2;
       let current = "";
 
       for (const link of sections) {
@@ -152,14 +142,14 @@ const NavBar = () => {
     };
 
     measure();
-    canvas.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
 
     return () => {
-      canvas.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [canvasRef, isInHome, pathname]);
+  }, [isInHome, pathname]);
 
   const handleNavbarRouting = (route) => {
     router.push(route);
@@ -179,8 +169,8 @@ const NavBar = () => {
   // accessibility/middle-click/new-tab), but a plain left click is
   // intercepted: on the homepage it goes through the same explicit
   // smooth-scroll path as the tabs — native fragment navigation would
-  // otherwise scroll instantly now that AppCanvas no longer sets CSS
-  // scroll-smooth — and elsewhere it routes client-side to the section.
+  // otherwise scroll instantly (there's deliberately no CSS scroll-smooth, so
+  // Next's own hash-scroll after a route change stays instant) — and elsewhere it routes client-side to the section.
   //
   // The markup must NOT branch on `isInHome`: the homepage is prerendered at
   // build time where usePathname() reports "/index", not "/", so any
@@ -236,102 +226,102 @@ const NavBar = () => {
 
   return (
     <>
-      {/* ── Desktop: command bar. Sits in the top gutter above the canvas,
-          sharing its 0.5rem inset so the two read as two panels of a single
-          shell. Deliberately unclipped: the theme toggle hangs its tooltip
-          below the bar, so no `overflow-hidden` on this panel. ── */}
+      {/* ── Desktop: full-width sticky command bar; the page scrolls beneath
+          its translucent blur. Deliberately unclipped: the theme toggle
+          hangs its tooltip below the bar, so no `overflow-hidden` here. ── */}
       <nav
         aria-label="Main"
-        className="bg-surface fixed top-2 right-2 left-2 z-50 mx-auto hidden h-12 max-w-7xl items-center justify-between gap-3 px-2 lg:flex"
+        className="border-border-subtle bg-surface/80 navbar-blur sticky top-0 z-50 hidden h-(--header-h) border-b lg:block"
       >
-        <ScrollProgress className="right-2 bottom-0 left-2" />
+        <ScrollProgress />
 
-        {/* Left cluster */}
-        <div className="flex items-center gap-3">
-          {/* Wordmark */}
-          <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
-            <Wordmark />
-          </a>
-
-          <span
-            className="bg-border-subtle h-6 w-px shrink-0"
-            aria-hidden="true"
-          />
-
-          {/* Tabs — the sliding pill tracks the section under the canvas midline */}
-          <ul className="flex items-center gap-0.5">
-            {navLinks.map((link) => (
-              <Tab
-                key={link.id}
-                isActive={activeKey === link.id}
-                onClick={() => handleTabClick(link)}
-              >
-                {link.label}
-              </Tab>
-            ))}
+        <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-3 px-4">
+          {/* Left cluster */}
+          <div className="flex items-center gap-3">
+            {/* Wordmark */}
+            <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
+              <Wordmark />
+            </a>
 
             <span
-              className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
+              className="bg-border-subtle h-6 w-px shrink-0"
               aria-hidden="true"
             />
 
-            <Tab
-              isActive={activeKey === "blogs"}
-              onClick={() =>
-                pathname === "/blogs"
-                  ? undefined
-                  : handleNavbarRouting("/blogs")
-              }
-            >
-              Blogs
-            </Tab>
-          </ul>
-        </div>
+            {/* Tabs — the sliding pill tracks the section under the viewport midline */}
+            <ul className="flex items-center gap-0.5">
+              {navLinks.map((link) => (
+                <Tab
+                  key={link.id}
+                  isActive={activeKey === link.id}
+                  onClick={() => handleTabClick(link)}
+                >
+                  {link.label}
+                </Tab>
+              ))}
 
-        {/* Right cluster */}
-        <div className="flex shrink-0 items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setIsPaletteOpen(true)}
-            aria-label="Open command palette"
-            aria-haspopup="dialog"
-            className="border-border-subtle text-text-muted hover:text-text-primary hover:bg-surface-raised flex h-9 cursor-pointer items-center gap-2 rounded-lg border px-2.5 text-sm transition-colors"
-          >
-            <Search className="h-4 w-4" />
-            <kbd className="font-mono text-xs">{shortcutLabel}</kbd>
-          </button>
-          <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
-            <FontSwitcher />
-          </div>
-          <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
-            <ThemeToggleCompact />
-          </div>
-
-          <a
-            href={GITHUB_URL}
-            aria-label="GitHub Portfolio"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-text-primary text-surface flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-opacity hover:opacity-90"
-          >
-            <span className="flex h-4 w-4 shrink-0 items-center justify-center">
-              <Image
-                src={tools.githubLogo}
-                alt=""
-                width={24}
-                height={24}
-                className="h-4 w-4 invert dark:invert-0"
+              <span
+                className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
+                aria-hidden="true"
               />
-            </span>
-            GitHub
-          </a>
+
+              <Tab
+                isActive={activeKey === "blogs"}
+                onClick={() =>
+                  pathname === "/blogs"
+                    ? undefined
+                    : handleNavbarRouting("/blogs")
+                }
+              >
+                Blogs
+              </Tab>
+            </ul>
+          </div>
+
+          {/* Right cluster */}
+          <div className="flex shrink-0 items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsPaletteOpen(true)}
+              aria-label="Open command palette"
+              aria-haspopup="dialog"
+              className="border-border-subtle text-text-muted hover:text-text-primary hover:bg-surface-raised flex h-9 cursor-pointer items-center gap-2 rounded-lg border px-2.5 text-sm transition-colors"
+            >
+              <Search className="h-4 w-4" />
+              <kbd className="font-mono text-xs">{shortcutLabel}</kbd>
+            </button>
+            <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+              <FontSwitcher />
+            </div>
+            <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+              <ThemeToggleCompact />
+            </div>
+
+            <a
+              href={GITHUB_URL}
+              aria-label="GitHub Portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-text-primary text-surface flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-opacity hover:opacity-90"
+            >
+              <span className="flex h-4 w-4 shrink-0 items-center justify-center">
+                <Image
+                  src={tools.githubLogo}
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="h-4 w-4 invert dark:invert-0"
+                />
+              </span>
+              GitHub
+            </a>
+          </div>
         </div>
       </nav>
 
-      {/* ── Mobile: flush, full-bleed header. Nothing scrolls beneath it, so
-          it is a solid panel rather than a blur. ── */}
-      <header className="bg-surface fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between px-3 lg:hidden">
-        <ScrollProgress className="right-0 bottom-0 left-0" />
+      {/* ── Mobile: the same sticky, blurred bar, without the tabs. ── */}
+      <header className="border-border-subtle bg-surface/80 navbar-blur sticky top-0 z-50 flex h-(--header-h) items-center justify-between border-b px-3 lg:hidden">
+        <ScrollProgress />
 
         <div className="flex items-center gap-2">
           <button
@@ -385,7 +375,7 @@ const NavBar = () => {
 
           <a
             href={GITHUB_URL}
-            title="My Portfolio"
+            aria-label="GitHub Portfolio"
             target="_blank"
             rel="noopener noreferrer"
             className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-lg p-2 transition-colors"
@@ -393,7 +383,7 @@ const NavBar = () => {
             <span className="flex h-6 w-6 shrink-0 items-center justify-center">
               <Image
                 src={tools.githubLogo}
-                alt="GitHub Logo"
+                alt=""
                 width={24}
                 height={24}
                 className="h-6 w-6 dark:invert"

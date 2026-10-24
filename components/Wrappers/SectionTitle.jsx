@@ -9,7 +9,6 @@ import {
   useScroll,
   useSpring,
 } from "framer-motion";
-import { useScrollContainer } from "../Layout/AppCanvas";
 import { getSection } from "../Home/sections";
 
 // The note waits for the section's own entrance animation to land before it
@@ -42,7 +41,6 @@ const SectionTitle = ({
   alertIcon: AlertIcon,
 }) => {
   const titleRef = useRef(null);
-  const canvasRef = useScrollContainer();
   const prefersReducedMotion = useReducedMotion();
   const section = getSection(sectionId);
 
@@ -51,7 +49,6 @@ const SectionTitle = ({
   const isInView = useInView(titleRef, { once: true, amount: 0.5 });
 
   const { scrollYProgress } = useScroll({
-    container: canvasRef,
     target: titleRef,
     offset: ["start end", "start 0.45"],
   });

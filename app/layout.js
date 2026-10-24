@@ -15,9 +15,6 @@ import NetworkStatus from "@/components/Modules/NetworkStatus";
 import NavBar from "@/components/Home/NavBar";
 import { RouteProgressProvider } from "@/components/Modules/RouteProgress";
 import Footer from "@/components/Home/Footer";
-import AppCanvas, {
-  ScrollContainerProvider,
-} from "@/components/Layout/AppCanvas";
 import { FONT_STORAGE_KEY, FONT_STORAGE_VERSION } from "@/store/useFontStore";
 
 const geistSans = Geist({
@@ -142,30 +139,25 @@ export default function RootLayout({ children }) {
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={` ${geistSans.variable} ${dmMono.variable} ${dmsans.variable} ${inter.variable} ${lora.variable} ${merriweather.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${courierPrime.variable} bg-white antialiased dark:bg-[#030712]`}
+      className={` ${geistSans.variable} ${dmMono.variable} ${dmsans.variable} ${inter.variable} ${lora.variable} ${merriweather.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${courierPrime.variable} bg-surface antialiased`}
     >
       <head>
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
         <script dangerouslySetInnerHTML={{ __html: fontInitScript }} />
       </head>
-      <body>
+      {/* The column layout pins the footer: a `flex-1` <main> soaks up any
+          leftover height on short pages, while tall pages scroll the
+          document as normal beneath the sticky header. */}
+      <body className="flex min-h-dvh flex-col">
         <Providers>
           <NetworkStatus />
 
           {/* Owns the app-wide progress line; client navigations go through
               its `useProgressRouter()`/`ProgressLink` so the line tracks them. */}
           <RouteProgressProvider>
-            {/* Header and mobile drawer stay outside the canvas; everything
-                that scrolls lives inside it. The provider wraps both so the
-                header can still read the canvas's scroll state. */}
-            <ScrollContainerProvider>
-              <NavBar />
-
-              <AppCanvas>
-                <main className="flex flex-1 flex-col">{children}</main>
-                <Footer />
-              </AppCanvas>
-            </ScrollContainerProvider>
+            <NavBar />
+            <main className="flex flex-1 flex-col">{children}</main>
+            <Footer />
           </RouteProgressProvider>
         </Providers>
       </body>
