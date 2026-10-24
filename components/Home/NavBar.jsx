@@ -322,17 +322,24 @@ const NavBar = () => {
       <header className="border-border-subtle bg-surface/80 navbar-blur sticky top-0 z-50 flex h-(--header-h) items-center justify-between border-b px-3 lg:hidden">
         <ScrollProgress />
 
-        <div className="flex items-center gap-2">
+        {/* min-w-0 + truncate: a long section label ("05 Experience") used to
+            push the icon cluster past the screen edge on narrow phones,
+            widening the whole document. */}
+        <div className="flex min-w-0 items-center gap-2">
           <button
             onClick={toggleMenu}
-            className="text-text-muted hover:bg-surface-raised rounded-lg p-2 transition"
+            className="text-text-muted hover:bg-surface-raised shrink-0 rounded-lg p-2 transition"
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
             <Menu className="h-6 w-6" />
           </button>
 
-          <a href="/#home" onClick={(e) => handleSectionLinkClick(e, "home")}>
+          <a
+            href="/#home"
+            onClick={(e) => handleSectionLinkClick(e, "home")}
+            className="shrink-0"
+          >
             <Wordmark />
           </a>
 
@@ -345,7 +352,7 @@ const NavBar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.18 }}
-                className="text-text-muted font-mono text-xs"
+                className="text-text-muted min-w-0 truncate font-mono text-xs"
               >
                 <span className="text-accent">{activeSection.index}</span>{" "}
                 {activeSection.label}
@@ -354,21 +361,21 @@ const NavBar = () => {
           </AnimatePresence>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex shrink-0 items-center gap-1">
           <button
             type="button"
             onClick={() => setIsPaletteOpen(true)}
             aria-label="Open command palette"
             aria-haspopup="dialog"
-            className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors"
+            className="text-text-muted hover:bg-surface-raised flex size-9 items-center justify-center rounded-lg transition-colors sm:size-10"
           >
             <Search className="h-5 w-5" />
           </button>
-          <div className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors">
+          <div className="text-text-muted hover:bg-surface-raised flex size-9 items-center justify-center rounded-lg transition-colors sm:size-10">
             <FontSwitcher />
           </div>
 
-          <div className="text-text-muted hover:bg-surface-raised flex h-10 w-10 items-center justify-center rounded-lg transition-colors">
+          <div className="text-text-muted hover:bg-surface-raised flex size-9 items-center justify-center rounded-lg transition-colors sm:size-10">
             <ThemeToggleCompact />
           </div>
 
@@ -377,15 +384,15 @@ const NavBar = () => {
             aria-label="GitHub Portfolio"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-lg p-2 transition-colors"
+            className="text-text-muted hover:bg-surface-raised hover:text-text-primary flex size-9 items-center justify-center rounded-lg transition-colors sm:size-10"
           >
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
               <Image
                 src={tools.githubLogo}
                 alt=""
                 width={24}
                 height={24}
-                className="h-6 w-6 dark:invert"
+                className="h-5 w-5 dark:invert"
               />
             </span>
           </a>
