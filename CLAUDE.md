@@ -11,7 +11,8 @@ A personal portfolio + blog site built with Next.js 15 (App Router), React 19, a
 - `npm run dev` — start dev server with Turbopack
 - `npm run build` — production build
 - `npm run start` — run production build
-- `npm run lint` — run `next lint` (ESLint, `next/core-web-vitals` config)
+- `npm run lint` — run `eslint .` (flat config in `eslint.config.mjs`, `next/core-web-vitals` rules, covers .js/.jsx)
+- `npm run format` / `npm run format:check` — Prettier write / check
 
 There is no test suite configured in this repo.
 
@@ -68,3 +69,11 @@ Two parallel email paths exist:
 ### Styling
 
 Tailwind CSS 4 with the new CSS-first config (`@theme` block in `styles/globals.css`, no `tailwind.config.js`). Dark mode is driven by a custom variant keyed on `[data-theme=dark]` (set by `next-themes`), not Tailwind's default `dark:` media-query strategy. Custom breakpoints `custom` (1000px) and `custom-content` (1200px) are defined there.
+
+Design tokens live in `styles/globals.css` — use them instead of raw values so the UI can't drift:
+
+- **Colour:** semantic tokens (`bg-surface`, `bg-surface-raised`, `text-text-primary`, `text-text-muted`, `border-border-subtle`, `text-accent`, `text-success`, `text-danger`), redefined per theme. Avoid raw `gray-*`/hex.
+- **Type:** headings use `text-display` (hero), `text-h1` (page titles), `text-h2` (section titles), `text-h3` (card titles) in the reading font; `font-mono` is for labels, indices, paths and code only.
+- **Layout:** `container-page` (max-w-7xl + shared gutter) for every top-level block; `section-shell` (container + `py-section` rhythm) for homepage sections and their skeletons; `--header-h` for anything that must clear the sticky header.
+- **Radius, by role:** `rounded-chip` (kbd, tags, skeleton text bars), `rounded-control` (buttons, inputs, tabs, menu rows), `rounded-card` (cards, panels, popovers, toasts), `rounded-dialog` (modals); `rounded-full` for pills/avatars.
+- **Stacking:** only the named layers `z-raised` < `z-header` < `z-drawer` < `z-modal` < `z-overlay` < `z-toast` < `z-progress`; add a new layer there rather than a raw `z-*`.

@@ -13,7 +13,7 @@ const BlogCardView = ({ currentBlogs, searchQuery, highlightText }) => {
           <article
             key={blog.id}
             onClick={() => router.push(`/blog/${blog.id}`)}
-            className="border-border-subtle group hover:border-accent flex cursor-pointer flex-col rounded-xl border p-6 transition-colors duration-150"
+            className="border-border-subtle group hover:border-accent rounded-card flex cursor-pointer flex-col border p-6 transition-colors duration-150"
           >
             {/* Title */}
             <h2 className="text-text-primary mb-3 line-clamp-2 text-xl font-semibold">
@@ -55,7 +55,7 @@ const BlogCardView = ({ currentBlogs, searchQuery, highlightText }) => {
           </article>
         ))
       ) : (
-        <div className="border-border-subtle col-span-full flex min-h-[50vh] flex-col items-center justify-center rounded-xl border-[1.5px] border-dashed text-center">
+        <div className="border-border-subtle rounded-card col-span-full flex min-h-[50vh] flex-col items-center justify-center border-[1.5px] border-dashed text-center">
           <div className="text-text-muted max-w-md px-4">
             <p className="text-lg font-semibold">
               No blog titles matching your search, try searching something else.

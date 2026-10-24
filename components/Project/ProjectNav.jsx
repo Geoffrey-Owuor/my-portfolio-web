@@ -30,7 +30,7 @@ const NeighbourCard = ({ id, name, stack, direction, isWrapping }) => {
     <ProgressLink
       href={`/projects/${id}`}
       aria-label={`${isPrevious ? "Previous" : "Next"} project: ${name}`}
-      className={`group border-border-subtle hover:border-accent focus-visible:border-accent flex flex-col gap-2 rounded-xl border p-5 transition-colors duration-150 focus-visible:outline-none ${
+      className={`group border-border-subtle hover:border-accent focus-visible:border-accent rounded-card flex flex-col gap-2 border p-5 transition-colors duration-150 focus-visible:outline-none ${
         isPrevious ? "items-start" : "items-end text-right sm:col-start-2"
       }`}
     >

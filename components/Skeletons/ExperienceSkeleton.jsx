@@ -23,16 +23,16 @@ const ExperienceSkeleton = () => {
               </span>
 
               {/* Skeleton Content */}
-              <div className="border-border-subtle flex flex-col gap-3 rounded-xl border p-6">
+              <div className="border-border-subtle rounded-card flex flex-col gap-3 border p-6">
                 {/* Timeline */}
-                <div className="bg-border-subtle h-4 w-24 animate-pulse rounded-md"></div>
+                <div className="bg-border-subtle rounded-chip h-4 w-24 animate-pulse"></div>
                 {/* Title */}
-                <div className="bg-border-subtle h-6 w-1/2 animate-pulse rounded-md"></div>
+                <div className="bg-border-subtle rounded-chip h-6 w-1/2 animate-pulse"></div>
                 {/* Company */}
-                <div className="bg-border-subtle h-5 w-1/3 animate-pulse rounded-md"></div>
+                <div className="bg-border-subtle rounded-chip h-5 w-1/3 animate-pulse"></div>
                 {/* Description */}
-                <div className="bg-border-subtle h-4 w-full animate-pulse rounded-md"></div>
-                <div className="bg-border-subtle h-4 w-3/4 animate-pulse rounded-md"></div>
+                <div className="bg-border-subtle rounded-chip h-4 w-full animate-pulse"></div>
+                <div className="bg-border-subtle rounded-chip h-4 w-3/4 animate-pulse"></div>
               </div>
             </li>
           ))}

@@ -47,7 +47,7 @@ const Project = ({ projectInfo }) => {
         </p>
         <button
           onClick={() => router.back()}
-          className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent inline-flex items-center gap-2 rounded-md border px-5 py-2.5 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
+          className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent rounded-control inline-flex items-center gap-2 border px-5 py-2.5 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to projects
@@ -106,7 +106,7 @@ const Project = ({ projectInfo }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Visit live project"
-                className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent inline-flex w-fit shrink-0 items-center gap-2 rounded-md border px-4 py-2 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
+                className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent rounded-control inline-flex w-fit shrink-0 items-center gap-2 border px-4 py-2 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
               >
                 <span className="text-accent" aria-hidden="true">
                   $
@@ -124,7 +124,7 @@ const Project = ({ projectInfo }) => {
               initial="hidden"
               animate="visible"
               custom={3}
-              className="border-border-subtle bg-surface mt-10 overflow-hidden rounded-xl border"
+              className="border-border-subtle bg-surface rounded-card mt-10 overflow-hidden border"
             >
               <div className="border-border-subtle text-text-muted flex items-center gap-2 border-b px-4 py-2.5 font-mono text-xs">
                 <span className="text-accent" aria-hidden="true">
@@ -147,7 +147,7 @@ const Project = ({ projectInfo }) => {
             initial="hidden"
             animate="visible"
             custom={4}
-            className="border-border-subtle bg-surface mt-6 overflow-hidden rounded-xl border"
+            className="border-border-subtle bg-surface rounded-card mt-6 overflow-hidden border"
           >
             <div className="border-border-subtle text-text-muted flex items-center gap-2 border-b px-4 py-2.5 font-mono text-xs">
               <span className="text-accent" aria-hidden="true">
@@ -155,7 +155,7 @@ const Project = ({ projectInfo }) => {
               </span>
               README.md
             </div>
-            <div className="prose dark:prose-invert prose-img:rounded-xl prose-headings:font-semibold prose-a:text-accent max-w-none px-6 py-8 wrap-break-word">
+            <div className="prose dark:prose-invert prose-img:rounded-card prose-headings:font-semibold prose-a:text-accent max-w-none px-6 py-8 wrap-break-word">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {project.project_description}
               </ReactMarkdown>

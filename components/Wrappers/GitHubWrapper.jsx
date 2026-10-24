@@ -18,7 +18,7 @@ import SectionTitle from "./SectionTitle";
 import { GITHUB_URL } from "@/utils/links";
 import ScrollReveal from "../Modules/ScrollReveal";
 
-const cardClass = "bg-surface border-border-subtle rounded-xl border p-6";
+const cardClass = "bg-surface border-border-subtle rounded-card border p-6";
 
 const numberFormat = new Intl.NumberFormat("en");
 const relativeFormat = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
@@ -74,7 +74,7 @@ const ProfileCard = ({ profile }) => {
       <p className="text-text-muted font-mono text-sm">@{profile.login}</p>
 
       {profile.isHireable && (
-        <span className="bg-success/10 text-success mt-3 flex items-center gap-1.5 rounded-lg px-2.5 py-1 font-mono text-xs">
+        <span className="bg-success/10 text-success rounded-chip mt-3 flex items-center gap-1.5 px-2.5 py-1 font-mono text-xs">
           <span className="bg-success h-1.5 w-1.5 rounded-full" />
           Open to work
         </span>
@@ -106,7 +106,7 @@ const ProfileCard = ({ profile }) => {
         href={profile.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="border-border-subtle hover:border-accent hover:text-accent text-text-primary mt-5 flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm transition-colors duration-150"
+        className="border-border-subtle hover:border-accent hover:text-accent text-text-primary rounded-control mt-5 flex items-center gap-1.5 border px-4 py-2 text-sm transition-colors duration-150"
       >
         View on GitHub
         <ArrowUpRight className="h-4 w-4" />
@@ -137,7 +137,7 @@ const FallbackCard = () => (
       href={GITHUB_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="border-border-subtle hover:border-accent hover:text-accent text-text-primary mt-5 flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm transition-colors duration-150"
+      className="border-border-subtle hover:border-accent hover:text-accent text-text-primary rounded-control mt-5 flex items-center gap-1.5 border px-4 py-2 text-sm transition-colors duration-150"
     >
       View on GitHub
       <ArrowUpRight className="h-4 w-4" />
@@ -246,7 +246,7 @@ const ContributionsCard = ({ contributions }) => {
         {stats.map(({ icon: Icon, label, value, unit }) => (
           <div
             key={label}
-            className="bg-surface-raised flex min-w-0 flex-col gap-1 rounded-lg px-3 py-3 sm:px-4"
+            className="bg-surface-raised rounded-card flex min-w-0 flex-col gap-1 px-3 py-3 sm:px-4"
           >
             <span className="text-text-muted flex items-center gap-1.5 text-[11px] sm:text-xs">
               <Icon className="text-accent hidden h-3.5 w-3.5 shrink-0 sm:block" />
@@ -359,7 +359,7 @@ const RecentReposCard = ({ repos }) => (
           href={repo.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group border-border-subtle hover:border-accent focus-visible:border-accent flex flex-col rounded-lg border p-4 transition-colors duration-150 focus-visible:outline-none"
+          className="group border-border-subtle hover:border-accent focus-visible:border-accent rounded-card flex flex-col border p-4 transition-colors duration-150 focus-visible:outline-none"
         >
           <span className="flex items-start justify-between gap-2">
             <span className="text-text-primary truncate font-mono text-sm font-semibold">

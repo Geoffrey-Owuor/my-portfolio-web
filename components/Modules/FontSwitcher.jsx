@@ -59,7 +59,7 @@ const FontSwitcher = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.96 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="bg-surface border-border-subtle absolute top-full right-0 z-10 mt-2 w-52 origin-top-right rounded-xl border p-1.5 shadow-lg"
+            className="bg-surface border-border-subtle z-raised rounded-card absolute top-full right-0 mt-2 w-52 origin-top-right border p-1.5 shadow-lg"
           >
             {FONT_ORDER.map((key) => (
               <button
@@ -68,7 +68,7 @@ const FontSwitcher = () => {
                 role="menuitemradio"
                 aria-checked={font === key}
                 onClick={() => handleSelect(key)}
-                className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm transition-colors ${FONTS[key].family} ${
+                className={`rounded-control flex w-full items-center justify-between px-3 py-2 text-left text-sm transition-colors ${FONTS[key].family} ${
                   font === key
                     ? "bg-surface-raised text-text-primary"
                     : "text-text-muted hover:bg-surface-raised hover:text-text-primary"

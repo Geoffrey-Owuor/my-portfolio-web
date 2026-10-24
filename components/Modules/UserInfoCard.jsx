@@ -16,7 +16,7 @@ const UserInfoCard = ({ user }) => {
     : null;
 
   return (
-    <div className="hover:bg-surface-raised hidden items-center gap-3 rounded-2xl p-3 transition-colors sm:inline-flex">
+    <div className="hover:bg-surface-raised rounded-card hidden items-center gap-3 p-3 transition-colors sm:inline-flex">
       {/* Avatar Circle */}
       <div className="bg-surface-raised text-text-muted flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
         {initials ? (

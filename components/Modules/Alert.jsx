@@ -39,12 +39,12 @@ const Alert = ({ message, type, onClose }) => {
   return (
     <ClientPortal>
       <div
-        className={`fixed right-2 bottom-8 left-2 z-50 md:right-auto md:left-4 ${
+        className={`z-toast fixed right-2 bottom-8 left-2 md:right-auto md:left-4 ${
           isClosing ? "animate-slideDown" : "animate-slideUp"
         }`}
       >
         <div
-          className={`bg-text-primary text-surface mt-4 flex w-auto items-center justify-between rounded-xl px-6 py-4.5 shadow-md`}
+          className={`bg-text-primary text-surface rounded-card mt-4 flex w-auto items-center justify-between px-6 py-4.5 shadow-md`}
         >
           <div className="flex items-center gap-2">
             {/* Render the appropriate icon */}

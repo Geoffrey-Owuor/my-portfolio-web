@@ -6,7 +6,7 @@ import { formatDate } from "@/utils/Helpers";
 const BlogTableView = ({ currentBlogs, searchQuery, highlightText }) => {
   if (currentBlogs.length === 0) {
     return (
-      <div className="border-border-subtle col-span-full flex min-h-[50vh] flex-col items-center justify-center rounded-xl border-[1.5px] border-dashed text-center">
+      <div className="border-border-subtle rounded-card col-span-full flex min-h-[50vh] flex-col items-center justify-center border-[1.5px] border-dashed text-center">
         <div className="text-text-muted max-w-md px-4">
           <p className="text-lg font-semibold">
             No blog titles matching your search, try searching something else.
@@ -17,7 +17,7 @@ const BlogTableView = ({ currentBlogs, searchQuery, highlightText }) => {
   }
 
   return (
-    <div className="border-border-subtle w-full overflow-hidden rounded-xl border">
+    <div className="border-border-subtle rounded-card w-full overflow-hidden border">
       {/* Table header */}
       <div className="border-border-subtle bg-surface grid grid-cols-[1fr_auto] items-center border-b px-6 py-3 md:grid-cols-[2fr_1fr_1fr_1fr_auto]">
         <span className="text-text-muted text-xs font-semibold tracking-widest uppercase">

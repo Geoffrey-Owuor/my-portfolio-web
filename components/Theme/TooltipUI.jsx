@@ -36,7 +36,7 @@ const TooltipUI = ({ id, label, shortcut, show }) => {
           transition={{ duration: 0.15, ease: "easeOut" }}
           className="pointer-events-none absolute top-full left-1/2 mt-2.5 mb-2 -translate-x-1/2"
         >
-          <div className="bg-text-primary text-surface relative rounded-lg px-3 py-1.5 text-[13px] whitespace-nowrap">
+          <div className="bg-text-primary text-surface rounded-chip relative px-3 py-1.5 text-[13px] whitespace-nowrap">
             {/* Drawing a rotated square that looks like an arrow */}
             <div
               className="bg-text-primary absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 rounded-sm"

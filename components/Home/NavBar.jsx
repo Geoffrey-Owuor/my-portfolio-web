@@ -42,7 +42,7 @@ const Tab = ({ isActive, onClick, children }) => (
       <motion.span
         layoutId="command-bar-pill"
         transition={{ type: "spring", stiffness: 380, damping: 32 }}
-        className="bg-surface-raised border-border-subtle absolute inset-0 rounded-lg border"
+        className="bg-surface-raised border-border-subtle rounded-control absolute inset-0 border"
         aria-hidden="true"
       />
     )}
@@ -50,7 +50,7 @@ const Tab = ({ isActive, onClick, children }) => (
       type="button"
       onClick={onClick}
       aria-current={isActive ? "true" : undefined}
-      className={`relative cursor-pointer rounded-lg px-3 py-1.5 text-sm transition-colors ${
+      className={`rounded-control relative cursor-pointer px-3 py-1.5 text-sm transition-colors ${
         isActive
           ? "text-text-primary"
           : "text-text-muted hover:text-text-primary"
@@ -231,7 +231,7 @@ const NavBar = () => {
           hangs its tooltip below the bar, so no `overflow-hidden` here. ── */}
       <nav
         aria-label="Main"
-        className="border-border-subtle bg-surface/80 navbar-blur sticky top-0 z-50 hidden h-(--header-h) border-b lg:block"
+        className="border-border-subtle bg-surface/80 navbar-blur z-header sticky top-0 hidden h-(--header-h) border-b lg:block"
       >
         <ScrollProgress />
 
@@ -288,15 +288,15 @@ const NavBar = () => {
               onClick={() => setIsPaletteOpen(true)}
               aria-label="Open command palette"
               aria-haspopup="dialog"
-              className="border-border-subtle text-text-muted hover:text-text-primary hover:bg-surface-raised flex h-9 cursor-pointer items-center gap-2 rounded-lg border px-2.5 text-sm transition-colors"
+              className="border-border-subtle text-text-muted hover:text-text-primary hover:bg-surface-raised rounded-control flex h-9 cursor-pointer items-center gap-2 border px-2.5 text-sm transition-colors"
             >
               <Search className="h-4 w-4" />
               <kbd className="font-mono text-xs">{shortcutLabel}</kbd>
             </button>
-            <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+            <div className="text-text-muted hover:bg-surface-raised rounded-control flex h-9 w-9 items-center justify-center transition-colors">
               <FontSwitcher />
             </div>
-            <div className="text-text-muted hover:bg-surface-raised flex h-9 w-9 items-center justify-center rounded-lg transition-colors">
+            <div className="text-text-muted hover:bg-surface-raised rounded-control flex h-9 w-9 items-center justify-center transition-colors">
               <ThemeToggleCompact />
             </div>
 
@@ -305,7 +305,7 @@ const NavBar = () => {
               aria-label="GitHub Portfolio"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-text-primary text-surface flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-opacity hover:opacity-90"
+              className="bg-text-primary text-surface rounded-control flex items-center gap-2 px-3 py-2 text-sm transition-opacity hover:opacity-90"
             >
               <span className="flex h-4 w-4 shrink-0 items-center justify-center">
                 <Image
@@ -323,7 +323,7 @@ const NavBar = () => {
       </nav>
 
       {/* ── Mobile: the same sticky, blurred bar, without the tabs. ── */}
-      <header className="border-border-subtle bg-surface/80 navbar-blur sticky top-0 z-50 flex h-(--header-h) items-center justify-between border-b px-3 lg:hidden">
+      <header className="border-border-subtle bg-surface/80 navbar-blur z-header sticky top-0 flex h-(--header-h) items-center justify-between border-b px-3 lg:hidden">
         <ScrollProgress />
 
         {/* min-w-0 + truncate: a long section label ("05 Experience") used to
@@ -332,7 +332,7 @@ const NavBar = () => {
         <div className="flex min-w-0 items-center gap-2">
           <button
             onClick={toggleMenu}
-            className="text-text-muted hover:bg-surface-raised shrink-0 rounded-lg p-2 transition"
+            className="text-text-muted hover:bg-surface-raised rounded-control shrink-0 p-2 transition"
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
@@ -371,15 +371,15 @@ const NavBar = () => {
             onClick={() => setIsPaletteOpen(true)}
             aria-label="Open command palette"
             aria-haspopup="dialog"
-            className="text-text-muted hover:bg-surface-raised flex size-9 items-center justify-center rounded-lg transition-colors sm:size-10"
+            className="text-text-muted hover:bg-surface-raised rounded-control flex size-9 items-center justify-center transition-colors sm:size-10"
           >
             <Search className="h-5 w-5" />
           </button>
-          <div className="text-text-muted hover:bg-surface-raised flex size-9 items-center justify-center rounded-lg transition-colors sm:size-10">
+          <div className="text-text-muted hover:bg-surface-raised rounded-control flex size-9 items-center justify-center transition-colors sm:size-10">
             <FontSwitcher />
           </div>
 
-          <div className="text-text-muted hover:bg-surface-raised flex size-9 items-center justify-center rounded-lg transition-colors sm:size-10">
+          <div className="text-text-muted hover:bg-surface-raised rounded-control flex size-9 items-center justify-center transition-colors sm:size-10">
             <ThemeToggleCompact />
           </div>
 
@@ -388,7 +388,7 @@ const NavBar = () => {
             aria-label="GitHub Portfolio"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-text-muted hover:bg-surface-raised hover:text-text-primary flex size-9 items-center justify-center rounded-lg transition-colors sm:size-10"
+            className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control flex size-9 items-center justify-center transition-colors sm:size-10"
           >
             <span className="flex h-5 w-5 shrink-0 items-center justify-center">
               <Image
@@ -405,7 +405,7 @@ const NavBar = () => {
 
       {/* Overlay - appears when menu is open */}
       <div
-        className={`fixed inset-0 z-80 bg-black/50 transition-all duration-200 lg:hidden dark:bg-black/60 ${
+        className={`z-drawer fixed inset-0 bg-black/50 transition-all duration-200 lg:hidden dark:bg-black/60 ${
           isMenuOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
         onClick={closeMenu}
@@ -415,7 +415,7 @@ const NavBar = () => {
       {/* Mobile Menu Drawer - slides from left to right */}
       <div
         ref={menuRef}
-        className={`bg-surface fixed top-0 bottom-0 left-0 z-80 w-72 transform shadow-2xl transition-all duration-200 ease-in-out lg:hidden ${
+        className={`bg-surface z-drawer fixed top-0 bottom-0 left-0 w-72 transform shadow-2xl transition-all duration-200 ease-in-out lg:hidden ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -446,7 +446,7 @@ const NavBar = () => {
                   handleSectionLinkClick(e, link.id);
                   closeMenu();
                 }}
-                className={`block w-full rounded-xl px-4 py-3 text-base transition-colors ${
+                className={`rounded-control block w-full px-4 py-3 text-base transition-colors ${
                   activeKey === link.id
                     ? "bg-surface-raised text-text-primary"
                     : "text-text-muted hover:bg-surface-raised hover:text-text-primary"
@@ -458,14 +458,14 @@ const NavBar = () => {
           ))}
           <li>
             {pathname === "/blogs" ? (
-              <span className="bg-surface-raised text-text-primary block w-full rounded-xl px-4 py-3 text-base">
+              <span className="bg-surface-raised text-text-primary rounded-control block w-full px-4 py-3 text-base">
                 Blogs
               </span>
             ) : (
               <ProgressLink
                 href="/blogs"
                 onClick={closeMenu}
-                className="text-text-muted hover:bg-surface-raised hover:text-text-primary block w-full rounded-xl px-4 py-3 text-base transition-colors"
+                className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control block w-full px-4 py-3 text-base transition-colors"
               >
                 Blogs
               </ProgressLink>
@@ -480,7 +480,7 @@ const NavBar = () => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={closeMenu}
-            className="bg-text-primary text-surface flex items-center justify-center gap-1.5 rounded-xl px-4 py-3 transition-opacity hover:opacity-90"
+            className="bg-text-primary text-surface rounded-control flex items-center justify-center gap-1.5 px-4 py-3 transition-opacity hover:opacity-90"
           >
             GitHub Portfolio
             <ArrowUpRight className="h-4 w-4" />

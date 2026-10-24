@@ -125,7 +125,7 @@ const Hero = ({ status }) => {
               <Link
                 href="/#projects"
                 onClick={(e) => scrollToSection(e, "projects")}
-                className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
+                className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
               >
                 See projects
                 <ArrowDown className="h-4 w-4" />
@@ -133,7 +133,7 @@ const Hero = ({ status }) => {
               <Link
                 href="/#contact"
                 onClick={(e) => scrollToSection(e, "contact")}
-                className="border-border-subtle text-text-primary hover:border-accent hover:text-accent inline-flex items-center rounded-lg border px-4 py-2.5 text-sm font-semibold transition-colors"
+                className="border-border-subtle text-text-primary hover:border-accent hover:text-accent rounded-control inline-flex items-center border px-4 py-2.5 text-sm font-semibold transition-colors"
               >
                 Get in touch
               </Link>
@@ -173,7 +173,7 @@ const Hero = ({ status }) => {
           </p>
           <p className="text-text-muted hidden lg:block">
             Press{" "}
-            <kbd className="border-border-subtle text-text-primary rounded border px-1.5 py-0.5">
+            <kbd className="border-border-subtle text-text-primary rounded-chip border px-1.5 py-0.5">
               {shortcutLabel}
             </kbd>{" "}
             to search projects, posts and more

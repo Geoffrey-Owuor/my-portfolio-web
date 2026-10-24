@@ -103,7 +103,7 @@ const TableOfContents = ({ content }) => {
   if (headingsLoading) return <TOCSkeleton />;
 
   return (
-    <nav className="sticky top-[calc(var(--header-h)+1rem)] hidden max-h-[calc(100dvh-var(--header-h)-2rem)] w-70 shrink-0 flex-col overflow-y-auto rounded-xl p-4 [scrollbar-width:thin] lg:flex">
+    <nav className="rounded-card sticky top-[calc(var(--header-h)+1rem)] hidden max-h-[calc(100dvh-var(--header-h)-2rem)] w-70 shrink-0 flex-col overflow-y-auto p-4 [scrollbar-width:thin] lg:flex">
       <h4 className="text-text-muted border-border-subtle mb-4 border-b-2 pb-2 text-sm font-bold tracking-wider uppercase">
         On this page
       </h4>
@@ -120,7 +120,7 @@ const TableOfContents = ({ content }) => {
               <li key={index}>
                 <a
                   href={`#${heading.id}`}
-                  className={`block rounded-xl px-3 py-2 text-sm text-wrap transition-colors ${
+                  className={`rounded-control block px-3 py-2 text-sm text-wrap transition-colors ${
                     activeId === heading.id
                       ? "bg-accent/10 text-accent font-medium"
                       : "text-text-muted hover:text-accent hover:underline"

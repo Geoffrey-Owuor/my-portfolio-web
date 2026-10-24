@@ -134,7 +134,7 @@ const Contact = () => {
                   onChange={handleChange}
                   disabled={sending}
                   placeholder="name@example.com or 07xx xxx xxx"
-                  className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-xl border p-4 transition-colors focus:outline-none"
+                  className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-card border p-4 transition-colors focus:outline-none"
                 />
               </div>
 
@@ -154,7 +154,7 @@ const Contact = () => {
                   onChange={handleChange}
                   disabled={sending}
                   placeholder="Hi Jeff, I'd like to talk about..."
-                  className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-xl border p-4 transition-colors focus:outline-none"
+                  className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-card border p-4 transition-colors focus:outline-none"
                 />
               </div>
 
@@ -166,7 +166,7 @@ const Contact = () => {
                 whileTap="tap"
                 type="submit"
                 disabled={sending}
-                className="bg-text-primary text-surface flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-start"
+                className="bg-text-primary text-surface rounded-control flex w-full cursor-pointer items-center justify-center gap-2 px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-start"
               >
                 {sending ? (
                   <>

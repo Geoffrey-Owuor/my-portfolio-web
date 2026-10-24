@@ -20,7 +20,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
   const iconColorClass = type === "success" ? "text-success" : "text-danger";
 
   const content = (
-    <div className="fixed top-0 left-1/2 z-9999 -translate-x-1/2">
+    <div className="z-toast fixed top-0 left-1/2 -translate-x-1/2">
       <AnimatePresence>
         {isVisible && (
           <motion.div
@@ -30,7 +30,7 @@ const BlogAlert = ({ message, type, hideAlert, isVisible }) => {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="mt-4"
           >
-            <div className="bg-text-primary text-surface flex w-auto min-w-[300px] items-center justify-between rounded-xl px-6 py-4.5 shadow-md">
+            <div className="bg-text-primary text-surface rounded-card flex w-auto min-w-[300px] items-center justify-between px-6 py-4.5 shadow-md">
               <div className="flex items-center gap-2">
                 {/* Render the appropriate icon */}
                 <IconComponent

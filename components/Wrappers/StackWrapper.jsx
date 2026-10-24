@@ -28,7 +28,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
 
       <ScrollReveal>
         {/* --- Core Technologies: dominant scrolling marquee --- */}
-        <div className="bg-surface border-border-subtle w-full overflow-hidden rounded-xl border py-8">
+        <div className="bg-surface border-border-subtle rounded-card w-full overflow-hidden border py-8">
           {toolIcons.length > 0 && (
             <div className="motion-safe:mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:px-6">
               <div className="motion-safe:animate-marquee flex items-center gap-10 motion-safe:w-max motion-safe:hover:[animation-play-state:paused] motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:justify-center">
@@ -94,7 +94,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
               {toolNames.map((tool) => (
                 <span
                   key={tool.id}
-                  className="border-border-subtle text-text-muted rounded-lg border px-3 py-1 text-sm"
+                  className="border-border-subtle text-text-muted rounded-chip border px-3 py-1 text-sm"
                 >
                   {tool.tool_name}
                 </span>

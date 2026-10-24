@@ -30,6 +30,19 @@
      `py-section` is each page section's top/bottom padding (40px → 64px),
      so adjacent sections sit 80–128px apart. Used via `section-shell`. */
   --spacing-section: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
+
+  /* ── Corner radii, by role ───────────────────────────────────────────
+     Pick by what the element *is*, not by the size it should look:
+       rounded-chip    : kbd, tags/badges, skeleton text bars
+       rounded-control : buttons, inputs, tabs, menu rows
+       rounded-card    : cards, panels, popovers, toasts, linked cards
+       rounded-dialog  : modals and full-page form shells
+     rounded-full stays for pills, avatars and dots. Nested surfaces step
+     down (a control inside a card) so inner corners never look fatter. */
+  --radius-chip: 0.375rem;
+  --radius-control: 0.5rem;
+  --radius-card: 0.75rem;
+  --radius-dialog: 1rem;
   --font-geistsans: var(--font-geistsans), ui-sans-serif, system-ui, sans-serif;
   --font-dmsans: var(--font-dmsans), ui-sans-serif, system-ui, sans-serif;
 
@@ -195,6 +208,48 @@ html[data-theme="dark"] {
    offsets (scroll-padding), and sticky sidebars below it never drift apart. */
 :root {
   --header-h: 3.5rem;
+}
+
+/* ── Stacking layers ───────────────────────────────────────────────────
+   The only z-index values in the app, from lowest to highest. Use the named
+   utility, never a raw z-*; a new layer goes here, in order.
+     z-raised   : lifted within its own context (popover, sticky modal head)
+     z-header   : sticky site header
+     z-drawer   : mobile nav drawer and its scrim
+     z-modal    : command palette, dialogs, edit modal
+     z-overlay  : full-screen blocking overlays (loading, logging out)
+     z-toast    : alerts and the network banner, above any modal
+     z-progress : the route progress line, always on top */
+:root {
+  --z-raised: 10;
+  --z-header: 50;
+  --z-drawer: 80;
+  --z-modal: 90;
+  --z-overlay: 100;
+  --z-toast: 110;
+  --z-progress: 120;
+}
+
+@utility z-raised {
+  z-index: var(--z-raised);
+}
+@utility z-header {
+  z-index: var(--z-header);
+}
+@utility z-drawer {
+  z-index: var(--z-drawer);
+}
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+@utility z-toast {
+  z-index: var(--z-toast);
+}
+@utility z-progress {
+  z-index: var(--z-progress);
 }
 
 /* One viewport tall, less the sticky header. Declared with @utility so

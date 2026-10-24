@@ -4,7 +4,7 @@ import { Loader } from "lucide-react";
 
 const LogoutOverlay = () => {
   const content = (
-    <div className="bg-surface fixed inset-0 z-9999 flex h-screen items-center justify-center">
+    <div className="bg-surface z-overlay fixed inset-0 flex h-screen items-center justify-center">
       {/* Container to align the spinner and text horizontally */}
       <div className="flex items-center space-x-2">
         {/* The Lucide Loader spinner */}

@@ -108,7 +108,7 @@ const BlogPost = ({ user }) => {
 
       <div className="container-page py-section">
         <div className="mx-auto max-w-5xl">
-          <div className="border-border-subtle overflow-hidden rounded-2xl border">
+          <div className="border-border-subtle rounded-dialog overflow-hidden border">
             {/* Header - Neutral & Clean */}
             <div className="border-border-subtle flex items-center justify-between border-b px-6 py-6">
               <div>

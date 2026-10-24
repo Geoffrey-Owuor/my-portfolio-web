@@ -117,7 +117,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           </p>
           <button
             onClick={() => handleBlogsRoute("/blogs")}
-            className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-lg px-6 py-3 font-medium transition-opacity hover:opacity-90"
+            className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-6 py-3 font-medium transition-opacity hover:opacity-90"
           >
             <ArrowLeft className="h-5 w-5" />
             Back to Blogs
@@ -164,7 +164,7 @@ const ViewBlog = ({ blogPost, userId }) => {
             {/* The tagline doubles as the post's meta description, so it reads
                 as a standfirst under the title now that the author card is gone. */}
             {blogPost.author_tagline && (
-              <p className="bg-accent/10 text-accent mb-6 w-fit rounded-lg px-3 py-1 font-mono text-xs text-nowrap">
+              <p className="bg-accent/10 text-accent rounded-chip mb-6 w-fit px-3 py-1 font-mono text-xs text-nowrap">
                 {blogPost.author_tagline}
               </p>
             )}
@@ -238,7 +238,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           <div className="bg-border-subtle mb-8 h-px sm:mb-12" />
 
           {/* Content Section */}
-          <div className="prose prose-lg dark:prose-invert prose-img:rounded-xl prose-headings:font-semi-bold prose-a:text-accent max-w-none wrap-break-word">
+          <div className="prose prose-lg dark:prose-invert prose-img:rounded-card prose-headings:font-semi-bold prose-a:text-accent max-w-none wrap-break-word">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={MarkdownComponents}

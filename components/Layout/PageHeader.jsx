@@ -14,9 +14,9 @@ const PageHeader = ({ path, title, subtitle, className = "" }) => (
 // Same footprint, for route skeletons.
 export const PageHeaderSkeleton = () => (
   <div className="border-border-subtle mb-8 border-b pb-6" aria-hidden="true">
-    <div className="bg-border-subtle h-3 w-16 animate-pulse rounded-md" />
-    <div className="bg-border-subtle mt-3 h-9 w-56 animate-pulse rounded-md" />
-    <div className="bg-border-subtle mt-3 h-4 w-72 max-w-full animate-pulse rounded-md" />
+    <div className="bg-border-subtle rounded-chip h-3 w-16 animate-pulse" />
+    <div className="bg-border-subtle rounded-control mt-3 h-9 w-56 animate-pulse" />
+    <div className="bg-border-subtle rounded-chip mt-3 h-4 w-72 max-w-full animate-pulse" />
   </div>
 );
 

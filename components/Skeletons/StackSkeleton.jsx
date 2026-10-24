@@ -12,11 +12,11 @@ const StackSkeleton = () => {
         <SectionTitleSkeleton />
 
         {/* Core Technologies marquee skeleton */}
-        <div className="border-border-subtle mx-auto flex w-full max-w-4xl items-center justify-center gap-10 overflow-hidden rounded-lg border py-8">
+        <div className="border-border-subtle rounded-card mx-auto flex w-full max-w-4xl items-center justify-center gap-10 overflow-hidden border py-8">
           {Array.from({ length: 8 }).map((_, index) => (
             <div
               key={index}
-              className="bg-border-subtle h-10 w-10 shrink-0 animate-pulse rounded-md"
+              className="bg-border-subtle rounded-control h-10 w-10 shrink-0 animate-pulse"
             ></div>
           ))}
         </div>

@@ -53,9 +53,9 @@ const NetworkStatus = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="pointer-events-none fixed right-0 bottom-4 left-0 z-9999 flex justify-center px-4 md:bottom-6"
+          className="z-toast pointer-events-none fixed right-0 bottom-4 left-0 flex justify-center px-4 md:bottom-6"
         >
-          <div className="bg-text-primary text-surface pointer-events-auto flex w-full items-center gap-3 rounded-xl px-4 py-3 shadow-lg sm:w-auto sm:max-w-md sm:px-6 sm:py-3.5">
+          <div className="bg-text-primary text-surface rounded-card pointer-events-auto flex w-full items-center gap-3 px-4 py-3 shadow-lg sm:w-auto sm:max-w-md sm:px-6 sm:py-3.5">
             {/* Icon Switching */}
             {isOffline ? (
               <WifiOff className="text-danger h-5 w-5 shrink-0 animate-pulse" />

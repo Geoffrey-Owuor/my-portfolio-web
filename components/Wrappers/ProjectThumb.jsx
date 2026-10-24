@@ -66,7 +66,7 @@ const ProjectThumb = ({ projectId, name }) => {
         </motion.div>
       ) : (
         <div className="text-text-muted absolute inset-0 flex items-center justify-center bg-[radial-gradient(var(--border-subtle)_1px,transparent_1px)] [background-size:14px_14px] font-mono text-xs">
-          <span className="bg-surface-raised rounded px-2 py-1">
+          <span className="bg-surface-raised rounded-chip px-2 py-1">
             ~/projects/{projectId}
           </span>
         </div>

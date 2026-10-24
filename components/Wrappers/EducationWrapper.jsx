@@ -44,7 +44,7 @@ const EducationWrapper = ({ educationData }) => {
               </span>
 
               {/* Timeline Content with hover effect */}
-              <div className="border-border-subtle hover:border-accent group relative flex flex-col rounded-xl border p-6 transition-colors duration-150">
+              <div className="border-border-subtle hover:border-accent group rounded-card relative flex flex-col border p-6 transition-colors duration-150">
                 <time className="text-text-muted mb-2 block font-mono text-sm leading-none">
                   {education.timeline}
                 </time>

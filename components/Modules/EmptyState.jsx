@@ -10,7 +10,7 @@ import { RefreshCcw } from "lucide-react";
  */
 const EmptyState = ({ command, failed, emptyMessage, compact = false }) => (
   <div
-    className={`border-border-subtle text-text-muted flex flex-col gap-1.5 rounded-lg border border-dashed font-mono text-sm ${
+    className={`border-border-subtle text-text-muted rounded-card flex flex-col gap-1.5 border border-dashed font-mono text-sm ${
       compact ? "px-4 py-3" : "px-5 py-8"
     }`}
   >

@@ -80,7 +80,7 @@ const ProjectsWrapper = ({ projects }) => {
                     handleNavigate(project.id);
                   }
                 }}
-                className="group border-border-subtle hover:border-accent focus-visible:border-accent flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border p-6 transition-colors duration-150 focus-visible:outline-none"
+                className="group border-border-subtle hover:border-accent focus-visible:border-accent rounded-card flex h-full cursor-pointer flex-col overflow-hidden border p-6 transition-colors duration-150 focus-visible:outline-none"
               >
                 <ProjectThumb
                   projectId={project.id}

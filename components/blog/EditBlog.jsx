@@ -123,7 +123,7 @@ const EditBlog = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={() => setShowEditModal(false)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/60"
+            className="z-modal fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/60"
           >
             <motion.div
               ref={modalRef}
@@ -132,9 +132,9 @@ const EditBlog = ({
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
-              className="border-border-subtle bg-surface mx-4 max-h-[calc(100vh-5rem)] w-full max-w-4xl overflow-y-auto rounded-2xl border shadow-2xl sm:max-h-[calc(100vh-3rem)]"
+              className="border-border-subtle bg-surface rounded-dialog mx-4 max-h-[calc(100vh-5rem)] w-full max-w-4xl overflow-y-auto border shadow-2xl sm:max-h-[calc(100vh-3rem)]"
             >
-              <div className="border-border-subtle bg-surface sticky top-0 z-10 border-b px-6 py-4">
+              <div className="border-border-subtle bg-surface z-raised sticky top-0 border-b px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
                     <h2 className="text-text-primary text-2xl font-semibold">

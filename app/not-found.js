@@ -4,7 +4,7 @@ import { Home, FileQuestion } from "lucide-react";
 export default function NotFound() {
   return (
     <div className="container-page py-section flex flex-1 items-center justify-center">
-      <div className="border-border-subtle rounded-xl border-2 border-dashed p-8 text-center">
+      <div className="border-border-subtle rounded-card border-2 border-dashed p-8 text-center">
         <FileQuestion className="text-text-muted mx-auto mb-5 h-12 w-12" />
         <p className="text-accent font-mono text-sm">404</p>
         <h1 className="text-text-primary text-h1 mt-2 mb-3 font-semibold">
@@ -15,7 +15,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
+          className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
         >
           <Home className="h-4 w-4" />
           Return home

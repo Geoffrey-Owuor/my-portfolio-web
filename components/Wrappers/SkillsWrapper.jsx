@@ -19,7 +19,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
 
       <ScrollReveal>
         {/* --- Technical Skills: dominant terminal panel --- */}
-        <div className="border-border-subtle bg-surface w-full overflow-hidden rounded-lg border font-mono">
+        <div className="border-border-subtle bg-surface rounded-card w-full overflow-hidden border font-mono">
           {/* Terminal chrome header */}
           <div className="border-border-subtle bg-surface-raised/50 flex items-center gap-2 border-b px-4 py-3">
             <span className="flex gap-1.5" aria-hidden="true">
@@ -81,7 +81,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
               {softSkills.map((skill) => (
                 <span
                   key={skill.id}
-                  className="border-border-subtle text-text-muted rounded-lg border px-3 py-1 text-sm"
+                  className="border-border-subtle text-text-muted rounded-chip border px-3 py-1 text-sm"
                 >
                   {skill.skill_description}
                 </span>
