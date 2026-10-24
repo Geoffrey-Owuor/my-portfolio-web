@@ -77,7 +77,7 @@ const SectionTitle = ({
     : { opacity: 0, y: -4, filter: "blur(4px)" };
 
   return (
-    <header ref={titleRef} className="relative mb-10">
+    <header ref={titleRef} className="relative mb-8">
       {/* One short fade-up the first time the header comes into view. */}
       <motion.div
         initial={hidden}
@@ -99,9 +99,41 @@ const SectionTitle = ({
             {subtitle && (
               <p className="text-text-muted text-base">{subtitle}</p>
             )}
-            <span className="text-text-muted/80 font-mono text-xs">
-              ~/{sectionId}
-            </span>
+            {/* The note borrows the ~/path slot: the path cross-fades into
+                it and back once it retires, so the note needs no space of its
+                own and never overlaps the section body. Fixed height, so the
+                swap can't shift the layout. The note is hidden from assistive
+                tech: it's a transient flourish, and a timed live region would
+                only interrupt. */}
+            <div className="flex h-5 min-w-0 items-center sm:justify-end">
+              <AnimatePresence mode="wait" initial={false}>
+                {showAlert ? (
+                  <motion.span
+                    key="note"
+                    aria-hidden="true"
+                    initial={hidden}
+                    animate={visible}
+                    exit={leaving}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="text-text-muted flex min-w-0 items-center gap-1.5 font-mono text-xs"
+                  >
+                    <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">{alertMessage}</span>
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="path"
+                    initial={hidden}
+                    animate={visible}
+                    exit={leaving}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="text-text-muted/80 font-mono text-xs"
+                  >
+                    ~/{sectionId}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -113,32 +145,6 @@ const SectionTitle = ({
           className="bg-accent absolute inset-0 origin-left"
         />
       </div>
-
-      {/* Parked in the header's own bottom margin — absolute, so it can never
-          displace the section content below it. Hidden from assistive tech:
-          it's a transient flourish, and a timed live region would only
-          interrupt. */}
-      {hasAlert && (
-        <AnimatePresence>
-          {showAlert && (
-            <motion.div
-              aria-hidden="true"
-              initial={hidden}
-              animate={visible}
-              exit={leaving}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="pointer-events-none absolute top-full left-0 mt-2 flex max-w-full"
-            >
-              <div className="border-border-subtle bg-surface-raised flex max-w-full items-center gap-2 rounded-lg border px-3 py-1.5 sm:px-4">
-                <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
-                <p className="text-text-muted line-clamp-1 font-mono text-[11px] leading-snug sm:text-xs">
-                  {alertMessage}
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      )}
     </header>
   );
 };
