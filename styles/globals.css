@@ -142,6 +142,15 @@
   --scrollbar-thumb: #9ca3af;
   --scrollbar-track: transparent;
 
+  /* Default mono pairing, matching the default reading font (inter). */
+  --font-mono-active: var(--font-jetbrainsmono);
+}
+
+/* `.theme-inverse` scopes a subtree to the opposite theme's tokens — for
+   UI that should stand out against the page, like toasts. Tokens only:
+   `dark:` utilities still follow the page theme, so swap those by hand. */
+:root,
+html[data-theme="dark"] .theme-inverse {
   /* Semantic token values — light mode. Contrast verified WCAG AA (see audit). */
   --surface: #ffffff;
   --surface-raised: var(--color-gray-100);
@@ -165,9 +174,6 @@
   /* Inline-code chip — GitHub's neutral tint, which reads on both the
      page surface and the raised panels it can sit inside. */
   --inline-code-bg: rgb(175 184 193 / 0.2);
-
-  /* Default mono pairing, matching the default reading font (inter). */
-  --font-mono-active: var(--font-jetbrainsmono);
 }
 
 /* Font switching — each block pairs the reading font with its mono
@@ -198,7 +204,10 @@ html[data-font="merriweather"] {
 
 html[data-theme="dark"] {
   --scrollbar-thumb: #4b5563;
+}
 
+html[data-theme="dark"],
+html:not([data-theme="dark"]) .theme-inverse {
   /* Semantic token values — dark mode. Contrast verified WCAG AA (see audit). */
   --surface: var(--color-gray-950);
   --surface-raised: var(--color-gray-900);
