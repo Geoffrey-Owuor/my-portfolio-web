@@ -105,7 +105,7 @@ export const ToastProvider = ({ children }) => {
 const ToastViewport = ({ toasts, onDismiss }) => (
   <section
     aria-label="Notifications"
-    className="z-toast pointer-events-none fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:right-6 sm:bottom-6 sm:w-[22rem]"
+    className="z-toast pointer-events-none fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:right-6 sm:bottom-6 sm:w-88"
   >
     <ol aria-live="polite" className="flex flex-col gap-2">
       <AnimatePresence initial={false} custom={0}>
@@ -196,7 +196,9 @@ const Toast = ({ toast, onDismiss }) => {
       onBlur={() => setPaused(false)}
       role={type === "error" ? "alert" : "status"}
       aria-atomic="true"
-      className="border-border-subtle bg-surface dark:bg-surface-raised rounded-card pointer-events-auto relative touch-pan-y overflow-hidden border shadow-lg shadow-black/5 select-none dark:shadow-black/40"
+      // Inverted theme so the toast stands out from the page behind it; the
+      // `dark:` pairs below are flipped to match.
+      className="theme-inverse border-border-subtle bg-surface-raised dark:bg-surface rounded-card pointer-events-auto relative touch-pan-y overflow-hidden border shadow-lg shadow-black/40 select-none dark:shadow-black/5"
     >
       <div className="flex items-start gap-3 py-3 pr-2 pl-4">
         <Icon className={`mt-0.5 h-5 w-5 shrink-0 ${iconClass}`} />
@@ -218,7 +220,7 @@ const Toast = ({ toast, onDismiss }) => {
           type="button"
           onClick={onDismiss}
           aria-label="Dismiss notification"
-          className="text-text-muted hover:text-text-primary hover:bg-surface-raised dark:hover:bg-surface rounded-control -my-0.5 flex size-7 shrink-0 cursor-pointer items-center justify-center transition-colors"
+          className="text-text-muted hover:text-text-primary hover:bg-surface dark:hover:bg-surface-raised rounded-control -my-0.5 flex size-7 shrink-0 cursor-pointer items-center justify-center transition-colors"
         >
           <X className="h-4 w-4" />
         </button>
