@@ -41,7 +41,6 @@ const PROFILE_QUERY = `
       login
       bio
       url
-      isHireable
       createdAt
       followers { totalCount }
       repositories(
@@ -185,7 +184,6 @@ const fetchFromGraphQL = async (token) => {
       login: user.login,
       bio: user.bio?.trim() || null,
       url: user.url,
-      isHireable: user.isHireable,
       createdAt: user.createdAt,
       followers: user.followers.totalCount,
       publicRepos: repos.length,
@@ -263,7 +261,6 @@ const fetchFromREST = async () => {
       login: user.login,
       bio: user.bio?.trim() || null,
       url: user.html_url,
-      isHireable: Boolean(user.hireable),
       createdAt: user.created_at,
       followers: user.followers,
       publicRepos: repos.length,

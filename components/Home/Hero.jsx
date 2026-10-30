@@ -43,7 +43,7 @@ const scrollToSection = (e, id) => {
 };
 
 /**
- * Editorial, text-led intro in the shared page measure: status line, who
+ * Editorial, text-led intro in the shared page measure: local clock, who
  * (avatar + name), what (the display headline), a short bio, calls to
  * action, and a closing rule with the core stack. Content-height on every
  * screen — it never stretches to fill the viewport.
@@ -53,10 +53,8 @@ const scrollToSection = (e, id) => {
  * that its column would be too narrow to show the code, so the card stacks
  * under the calls to action instead, left-aligned and capped to the copy's
  * 42rem.
- *
- * `status` is a streamed server slot (see app/page.js); may render nothing.
  */
-const Hero = ({ status }) => {
+const Hero = () => {
   const prefersReducedMotion = useReducedMotion();
 
   // "⌘K" on Apple platforms, "Ctrl K" elsewhere — resolved after mount so
@@ -81,7 +79,6 @@ const Hero = ({ status }) => {
               variants={prefersReducedMotion ? undefined : lineVariants}
               className="flex flex-wrap items-center gap-x-4 gap-y-1.5"
             >
-              {status}
               <HeroClock />
             </motion.div>
 

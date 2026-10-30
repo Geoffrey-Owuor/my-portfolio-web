@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import Hero from "@/components/Home/Hero";
-import HeroStatus from "@/components/Home/HeroStatus";
 import Skills from "@/components/Home/Skills";
 import Stack from "@/components/Home/Stack";
 import Projects from "@/components/Home/Projects";
@@ -18,13 +17,7 @@ import GitHubSkeleton from "@/components/Skeletons/GitHubSkeleton";
 export default function Home() {
   return (
     <div className="overflow-x-hidden">
-      <Hero
-        status={
-          <Suspense fallback={null}>
-            <HeroStatus />
-          </Suspense>
-        }
-      />
+      <Hero />
       <Suspense fallback={<SkillsSkeleton />}>
         <Skills />
       </Suspense>
