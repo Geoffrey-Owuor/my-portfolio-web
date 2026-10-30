@@ -73,13 +73,6 @@ const ProfileCard = ({ profile }) => {
       </h3>
       <p className="text-text-muted font-mono text-sm">@{profile.login}</p>
 
-      {profile.isHireable && (
-        <span className="bg-success/10 text-success rounded-chip mt-3 flex items-center gap-1.5 px-2.5 py-1 font-mono text-xs">
-          <span className="bg-success h-1.5 w-1.5 rounded-full" />
-          Open to work
-        </span>
-      )}
-
       {profile.bio && (
         <p className="text-text-muted mt-3 text-sm leading-relaxed">
           {profile.bio}
