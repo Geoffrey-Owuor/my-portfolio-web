@@ -42,24 +42,24 @@
   --radius-control: 0.5rem;
   --radius-card: 0.75rem;
   --radius-dialog: 1rem;
-  --font-geistsans: var(--font-geistsans), ui-sans-serif, system-ui, sans-serif;
-  --font-dmsans: var(--font-dmsans), ui-sans-serif, system-ui, sans-serif;
+  --font-geistsans: var(--nf-geistsans), ui-sans-serif, system-ui, sans-serif;
+  --font-dmsans: var(--nf-dmsans), ui-sans-serif, system-ui, sans-serif;
 
   /* Accessibility font switcher options (see store/useFontStore.js).
      Registered here so each can be selected directly (e.g. previewed inside
      the switcher's menu via `font-inter`/`font-lora`/`font-sourceserif`), on
      top of the html[data-font] overrides below. */
-  --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-lora: var(--font-lora), ui-serif, Georgia, serif;
-  --font-sourceserif: var(--font-sourceserif), ui-serif, Georgia, serif;
+  --font-inter: var(--nf-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-lora: var(--nf-lora), ui-serif, Georgia, serif;
+  --font-sourceserif: var(--nf-sourceserif), ui-serif, Georgia, serif;
 
   /* Mono counterparts of the fonts above, indirected into `--font-mono`
      below so `font-mono` always matches the selected reading font. */
-  --font-dm-mono: var(--font-dm-mono), ui-monospace, monospace;
-  --font-geistmono: var(--font-geistmono), ui-monospace, monospace;
-  --font-jetbrainsmono: var(--font-jetbrainsmono), ui-monospace, monospace;
-  --font-sourcecodepro: var(--font-sourcecodepro), ui-monospace, monospace;
-  --font-courierprime: var(--font-courierprime), "Courier New", monospace;
+  --font-dm-mono: var(--nf-dm-mono), ui-monospace, monospace;
+  --font-geistmono: var(--nf-geistmono), ui-monospace, monospace;
+  --font-jetbrainsmono: var(--nf-jetbrainsmono), ui-monospace, monospace;
+  --font-sourcecodepro: var(--nf-sourcecodepro), ui-monospace, monospace;
+  --font-courierprime: var(--nf-courierprime), "Courier New", monospace;
 
   /* Neutral ramp (gray) — OKLCH equivalents of the gray-50..950 steps
      already used throughout the app via Tailwind's default palette. */

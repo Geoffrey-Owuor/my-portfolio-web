@@ -24,45 +24,47 @@ import {
   RENAMED_FONTS,
 } from "@/store/useFontStore";
 
+// Each family is exposed as an `--nf-*` variable, which globals.css wraps in
+// the matching `--font-*` theme token (with a generic fallback stack). Weights
+// are only listed for static fonts; the variable ones cover their full range
+// in a single file.
+//
 // Only the default pairing (Inter + JetBrains Mono) is preloaded. The
 // alternates stay declared, so the browser fetches one only once it's in use
 // (a saved preference, or the font switcher's previews), instead of every
 // page preloading all of them.
 const geistSans = Geist({
-  variable: "--font-geistsans",
+  variable: "--nf-geistsans",
   subsets: ["latin"],
   preload: false,
 });
 
 const dmMono = DM_Mono({
-  variable: "--font-dm-mono",
+  variable: "--nf-dm-mono",
   subsets: ["latin"],
   preload: false,
   weight: ["400", "500"],
 });
 
 const dmsans = DM_Sans({
-  variable: "--font-dmsans",
+  variable: "--nf-dmsans",
   subsets: ["latin"],
   preload: false,
-  weight: ["400", "500", "700"],
 });
 
 const inter = Inter({
-  variable: "--font-inter",
+  variable: "--nf-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
 const lora = Lora({
-  variable: "--font-lora",
+  variable: "--nf-lora",
   subsets: ["latin"],
   preload: false,
-  weight: ["400", "500", "600", "700"],
 });
 
 const sourceSerif = Source_Serif_4({
-  variable: "--font-sourceserif",
+  variable: "--nf-sourceserif",
   subsets: ["latin"],
   preload: false,
 });
@@ -73,24 +75,24 @@ const sourceSerif = Source_Serif_4({
 // Source Serif have official mono siblings; Inter and Lora don't, so they're
 // paired with a stylistically-matching mono font instead.
 const geistMono = Geist_Mono({
-  variable: "--font-geistmono",
+  variable: "--nf-geistmono",
   subsets: ["latin"],
   preload: false,
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrainsmono",
+  variable: "--nf-jetbrainsmono",
   subsets: ["latin"],
 });
 
 const sourceCodePro = Source_Code_Pro({
-  variable: "--font-sourcecodepro",
+  variable: "--nf-sourcecodepro",
   subsets: ["latin"],
   preload: false,
 });
 
 const courierPrime = Courier_Prime({
-  variable: "--font-courierprime",
+  variable: "--nf-courierprime",
   subsets: ["latin"],
   preload: false,
   weight: ["400", "700"],

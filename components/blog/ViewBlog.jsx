@@ -216,7 +216,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           <div className="bg-border-subtle mb-8 h-px sm:mb-12" />
 
           {/* Content Section */}
-          <div className="prose prose-lg dark:prose-invert prose-img:rounded-card prose-headings:font-semi-bold prose-a:text-accent max-w-none wrap-break-word">
+          <div className="prose prose-lg dark:prose-invert prose-img:rounded-card prose-headings:font-semibold prose-a:text-accent max-w-none wrap-break-word">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={MarkdownComponents}
