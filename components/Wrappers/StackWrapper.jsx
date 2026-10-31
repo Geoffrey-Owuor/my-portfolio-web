@@ -1,18 +1,13 @@
 "use client";
-import Image from "next/image";
 import { Layers2, Loader2, MessageCircleCode } from "lucide-react";
 import SectionTitle from "./SectionTitle";
 import EmptyState from "../Modules/EmptyState";
 import ScrollReveal from "../Modules/ScrollReveal";
 
-// Icons we want to invert their colors in dark mode
-const iconsToInvert = [
-  "awsLogo",
-  "githubLogo",
-  "nextjsLogo",
-  "prismaLogo",
-  "vercelLogo",
-];
+// Monochrome logos paint with currentColor, so text-text-primary is what
+// keeps them legible in both themes.
+const iconClass =
+  "text-text-primary flex shrink-0 flex-col items-center justify-center grayscale-35 transition-all duration-150 hover:grayscale-0";
 
 const StackWrapper = ({ toolNames, toolIcons }) => {
   return (
@@ -32,35 +27,25 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
           {toolIcons.length > 0 && (
             <div className="motion-safe:mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:px-6">
               <div className="motion-safe:animate-marquee flex items-center gap-10 motion-safe:w-max motion-safe:hover:[animation-play-state:paused] motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:justify-center">
-                {toolIcons.map(([name, iconSrc]) => (
+                {toolIcons.map(({ name, icon }) => (
                   <div
                     key={name}
+                    role="img"
+                    aria-label={name.replace(/Logo$/, "")}
                     title={name.replace(/Logo$/, "")}
-                    className="flex shrink-0 flex-col items-center justify-center"
+                    className={iconClass}
                   >
-                    <Image
-                      src={iconSrc}
-                      alt={name}
-                      width={40}
-                      height={40}
-                      className={`h-10 w-10 object-contain grayscale-35 transition-all duration-150 hover:grayscale-0 ${iconsToInvert.includes(name) ? "dark:invert" : ""}`}
-                    />
+                    {icon}
                   </div>
                 ))}
                 {/* Duplicate set for a seamless loop — hidden from assistive tech and reduced-motion users */}
-                {toolIcons.map(([name, iconSrc]) => (
+                {toolIcons.map(({ name, loopIcon }) => (
                   <div
                     key={`${name}-dup`}
                     aria-hidden="true"
-                    className="flex shrink-0 flex-col items-center justify-center motion-reduce:hidden"
+                    className={`${iconClass} motion-reduce:hidden`}
                   >
-                    <Image
-                      src={iconSrc}
-                      alt=""
-                      width={40}
-                      height={40}
-                      className={`h-10 w-10 object-contain grayscale-35 transition-all duration-150 hover:grayscale-0 ${iconsToInvert.includes(name) ? "dark:invert" : ""}`}
-                    />
+                    {loopIcon}
                   </div>
                 ))}
               </div>

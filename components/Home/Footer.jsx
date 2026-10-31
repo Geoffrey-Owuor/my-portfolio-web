@@ -1,6 +1,5 @@
 import { socials } from "@/assets/assets";
 import { Terminal } from "lucide-react";
-import Image from "next/image";
 import { EMAIL } from "@/utils/links";
 
 const Footer = () => {
@@ -47,23 +46,16 @@ const Footer = () => {
 
         {/* Social Icons */}
         <div className="flex items-center gap-4">
-          {socialEntries.map(([key, social]) => (
+          {socialEntries.map(([key, { link, icon: Icon }]) => (
             <a
               key={key}
-              href={social.link}
+              href={link}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Follow me on ${key.replace("Logo", "")}`} // for accessibility
               className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
             >
-              <Image
-                src={social.icon}
-                // Use the key as a fallback alt tag
-                alt={`${key} logo`}
-                width={24}
-                height={24}
-                className="h-6 w-6 dark:invert"
-              />
+              <Icon className="h-6 w-6" />
             </a>
           ))}
         </div>

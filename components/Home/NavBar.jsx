@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { tools } from "@/assets/assets";
+import { GitHubIcon } from "@/components/Icons/BrandIcons";
 import { Menu, X, ArrowUpRight, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
@@ -307,15 +306,7 @@ const NavBar = () => {
               rel="noopener noreferrer"
               className="bg-text-primary text-surface rounded-control flex items-center gap-2 px-3 py-2 text-sm transition-opacity hover:opacity-90"
             >
-              <span className="flex h-4 w-4 shrink-0 items-center justify-center">
-                <Image
-                  src={tools.githubLogo}
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="h-4 w-4 invert dark:invert-0"
-                />
-              </span>
+              <GitHubIcon className="h-4 w-4 shrink-0" />
               GitHub
             </a>
           </div>
@@ -390,15 +381,7 @@ const NavBar = () => {
             rel="noopener noreferrer"
             className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control flex size-9 items-center justify-center transition-colors sm:size-10"
           >
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-              <Image
-                src={tools.githubLogo}
-                alt=""
-                width={24}
-                height={24}
-                className="h-5 w-5 dark:invert"
-              />
-            </span>
+            <GitHubIcon className="h-5 w-5 shrink-0" />
           </a>
         </div>
       </header>
