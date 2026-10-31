@@ -59,7 +59,10 @@ export default function LoginPage() {
             className="space-y-6"
           >
             {error && (
-              <div className="bg-danger/10 text-danger rounded-card px-4 py-3 text-sm">
+              <div
+                role="alert"
+                className="bg-danger/10 text-danger rounded-card px-4 py-3 text-sm"
+              >
                 {error}
               </div>
             )}
