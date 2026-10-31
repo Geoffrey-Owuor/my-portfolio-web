@@ -2,6 +2,7 @@ import { query } from "@/lib/db";
 import Project from "@/components/Project/Project";
 import { cache } from "react";
 import { stripMarkdown } from "@/utils/Helpers";
+import { OG_IMAGE } from "@/utils/metadata";
 
 const getProjectInfo = cache(async (id) => {
   try {
@@ -88,6 +89,7 @@ export async function generateMetadata({ params }) {
       type: "article",
       url: `/projects/${id}`,
       siteName: projectInfo.project_name,
+      images: OG_IMAGE,
     },
   };
 }

@@ -103,14 +103,7 @@ export const metadata = {
     description:
       "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
     url: "/",
-    images: [
-      {
-        url: "/web-app-manifest-512x512.png", // resolved via metadataBase
-        width: 512,
-        height: 512,
-        alt: "Jeff's Portfolio Preview",
-      },
-    ],
+    // Preview images come from app/opengraph-image.jsx and app/twitter-image.jsx
   },
 
   twitter: {
@@ -118,7 +111,6 @@ export const metadata = {
     title: "Jeff's Portfolio | Software Developer",
     description:
       "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
-    images: ["/web-app-manifest-512x512.png"],
   },
 
   icons: {

@@ -2,6 +2,7 @@ import BlogCards from "@/components/blog/BlogCards";
 import { BlogsData } from "@/cache/BlogsData";
 import { Suspense } from "react";
 import BlogCardsSkeleton from "@/components/Skeletons/BlogCardsSkeleton";
+import { OG_IMAGE } from "@/utils/metadata";
 
 export const metadata = {
   title: "Tech Blogs | Insights on Software, Security & Emerging Technologies",
@@ -15,6 +16,7 @@ export const metadata = {
     type: "website",
     url: "/blogs",
     siteName: "Tech Blogs",
+    images: OG_IMAGE,
   },
 };
 
