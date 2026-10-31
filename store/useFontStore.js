@@ -6,7 +6,8 @@ export const FONT_STORAGE_KEY = "font-preference";
 // Bump when the default font changes: persist writes the store back on every
 // load, so without a version bump returning visitors would keep the old
 // default. layout.js's pre-hydration script checks this too.
-export const FONT_STORAGE_VERSION = 1;
+// v1 → v2: Merriweather was replaced by Source Serif 4 (see migrateFont).
+export const FONT_STORAGE_VERSION = 2;
 
 // Keyed by the same values written to <html data-font>, so FONTS[font] and
 // the CSS overrides in globals.css always agree. `mono` is the code font each
@@ -30,11 +31,11 @@ export const FONTS = {
     category: "Sans-serif",
     mono: { label: "JetBrains Mono", family: "font-jetbrainsmono" },
   },
-  merriweather: {
-    label: "Merriweather",
-    family: "font-merriweather",
+  sourceserif: {
+    label: "Source Serif 4",
+    family: "font-sourceserif",
     category: "Serif",
-    mono: { label: "Courier Prime", family: "font-courierprime" },
+    mono: { label: "Source Code Pro", family: "font-sourcecodepro" },
   },
   lora: {
     label: "Lora",
@@ -44,7 +45,20 @@ export const FONTS = {
   },
 };
 
-export const FONT_ORDER = ["inter", "dmsans", "geist", "merriweather", "lora"];
+export const FONT_ORDER = ["inter", "dmsans", "geist", "sourceserif", "lora"];
+
+// Fonts that were dropped from FONTS, mapped to their replacement. Shared with
+// layout.js's pre-hydration script so a saved choice keeps applying.
+export const RENAMED_FONTS = { merriweather: "sourceserif" };
+
+// Brings a saved preference from an older storage version up to date: v0
+// defaulted to Geist, so everyone on it is reset onto the Inter default; from
+// v1 the choice is kept, with dropped fonts swapped for their replacement.
+const migrateFont = (persisted, version) => {
+  if (version < 1) return { font: "inter" };
+  const font = RENAMED_FONTS[persisted?.font] ?? persisted?.font;
+  return { font: FONTS[font] ? font : "inter" };
+};
 
 export const useFontStore = create(
   persist(
@@ -58,8 +72,7 @@ export const useFontStore = create(
     {
       name: FONT_STORAGE_KEY,
       version: FONT_STORAGE_VERSION,
-      // v0 defaulted to Geist — reset everyone onto the new Inter default.
-      migrate: () => ({ font: "inter" }),
+      migrate: migrateFont,
     },
   ),
 );
