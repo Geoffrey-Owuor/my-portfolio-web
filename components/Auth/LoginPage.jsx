@@ -41,10 +41,10 @@ export default function LoginPage() {
     <div className="relative isolate flex flex-1 flex-col">
       <IconPattern />
       <div className="container-page py-section flex flex-1 items-center justify-center">
-        <div className="w-full max-w-[345px]">
+        <div className="border-border-subtle bg-surface rounded-card w-full max-w-[410px] border p-6 sm:p-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-text-primary text-h1 mb-2 text-center font-semibold">
+            <h1 className="text-text-primary text-h2 mb-2 text-center font-semibold">
               Welcome back
             </h1>
             <p className="text-text-muted text-center">
@@ -53,13 +53,12 @@ export default function LoginPage() {
           </div>
 
           {/* Login Fields */}
-          <form
-            onSubmit={handleSubmit}
-            autoComplete="off"
-            className="space-y-6"
-          >
+          <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-danger/10 text-danger rounded-card px-4 py-3 text-sm">
+              <div
+                role="alert"
+                className="bg-danger/10 text-danger rounded-card px-4 py-3 text-sm"
+              >
                 {error}
               </div>
             )}
@@ -78,6 +77,7 @@ export default function LoginPage() {
                 <input
                   id="email"
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent rounded-control block w-full border py-3 pr-3 pl-14 transition-colors focus:outline-none"
@@ -102,6 +102,7 @@ export default function LoginPage() {
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent rounded-control block w-full border py-3 pr-10 pl-14 transition-colors focus:outline-none"
@@ -111,6 +112,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   className="absolute inset-y-0 right-2 flex items-center pr-4"
                 >
                   {showPassword ? (
