@@ -5,9 +5,10 @@ import {
   Lora,
   Geist,
   Geist_Mono,
-  Merriweather,
   JetBrains_Mono,
   Courier_Prime,
+  Source_Serif_4,
+  Source_Code_Pro,
 } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
@@ -16,70 +17,98 @@ import { ToastProvider } from "@/components/Modules/Toaster";
 import NavBar from "@/components/Home/NavBar";
 import { RouteProgressProvider } from "@/components/Modules/RouteProgress";
 import Footer from "@/components/Home/Footer";
-import { FONT_STORAGE_KEY, FONT_STORAGE_VERSION } from "@/store/useFontStore";
+import {
+  FONT_ORDER,
+  FONT_STORAGE_KEY,
+  FONT_STORAGE_VERSION,
+  RENAMED_FONTS,
+} from "@/store/useFontStore";
 
+// Each family is exposed as an `--nf-*` variable, which globals.css wraps in
+// the matching `--font-*` theme token (with a generic fallback stack). Weights
+// are only listed for static fonts; the variable ones cover their full range
+// in a single file.
+//
+// Only the default pairing (Inter + JetBrains Mono) is preloaded. The
+// alternates stay declared, so the browser fetches one only once it's in use
+// (a saved preference, or the font switcher's previews), instead of every
+// page preloading all of them.
 const geistSans = Geist({
-  variable: "--font-geistsans",
+  variable: "--nf-geistsans",
   subsets: ["latin"],
+  preload: false,
 });
 
 const dmMono = DM_Mono({
-  variable: "--font-dm-mono",
+  variable: "--nf-dm-mono",
   subsets: ["latin"],
+  preload: false,
   weight: ["400", "500"],
 });
 
 const dmsans = DM_Sans({
-  variable: "--font-dmsans",
+  variable: "--nf-dmsans",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  preload: false,
 });
 
 const inter = Inter({
-  variable: "--font-inter",
+  variable: "--nf-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
 const lora = Lora({
-  variable: "--font-lora",
+  variable: "--nf-lora",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  preload: false,
 });
 
-const merriweather = Merriweather({
-  variable: "--font-merriweather",
+const sourceSerif = Source_Serif_4({
+  variable: "--nf-sourceserif",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  preload: false,
 });
 
 // Mono counterparts for the fonts above (see the `--font-mono-active`
 // indirection in globals.css) — swapped alongside the reading font so
-// `font-mono` always matches whichever family is selected. Geist and DM Sans
-// have official mono siblings; Inter, Lora, and Merriweather don't, so they're
+// `font-mono` always matches whichever family is selected. Geist, DM Sans and
+// Source Serif have official mono siblings; Inter and Lora don't, so they're
 // paired with a stylistically-matching mono font instead.
 const geistMono = Geist_Mono({
-  variable: "--font-geistmono",
+  variable: "--nf-geistmono",
   subsets: ["latin"],
+  preload: false,
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrainsmono",
+  variable: "--nf-jetbrainsmono",
   subsets: ["latin"],
 });
 
-const courierPrime = Courier_Prime({
-  variable: "--font-courierprime",
+const sourceCodePro = Source_Code_Pro({
+  variable: "--nf-sourcecodepro",
   subsets: ["latin"],
+  preload: false,
+});
+
+const courierPrime = Courier_Prime({
+  variable: "--nf-courierprime",
+  subsets: ["latin"],
+  preload: false,
   weight: ["400", "700"],
 });
 
 // Applies the user's saved font preference before hydration to avoid a flash of the wrong font.
-// Preferences from an older storage version are ignored (the store migrates them
-// to the current default), so the CSS default applies instead.
+// Mirrors the store's migration: v0 preferences are ignored (the store resets
+// them to the current default, so the CSS default applies instead), renamed
+// fonts map to their replacement, and anything unknown is left to the default.
 const fontInitScript = `(function(){try{var raw=localStorage.getItem(${JSON.stringify(
   FONT_STORAGE_KEY,
-)});var saved=raw&&JSON.parse(raw);var font=saved&&saved.version===${FONT_STORAGE_VERSION}&&saved.state&&saved.state.font;if(font)document.documentElement.setAttribute("data-font",font);}catch(e){}})();`;
+)});var saved=raw&&JSON.parse(raw);if(!saved||!(saved.version>=1&&saved.version<=${FONT_STORAGE_VERSION})||!saved.state)return;var font=saved.state.font;var renamed=${JSON.stringify(
+  RENAMED_FONTS,
+)};if(renamed.hasOwnProperty(font))font=renamed[font];if(${JSON.stringify(
+  FONT_ORDER,
+)}.indexOf(font)!==-1)document.documentElement.setAttribute("data-font",font);}catch(e){}})();`;
 
 export const metadata = {
   metadataBase: new URL(
@@ -103,14 +132,7 @@ export const metadata = {
     description:
       "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
     url: "/",
-    images: [
-      {
-        url: "/web-app-manifest-512x512.png", // resolved via metadataBase
-        width: 512,
-        height: 512,
-        alt: "Jeff's Portfolio Preview",
-      },
-    ],
+    // Preview images come from app/opengraph-image.jsx and app/twitter-image.jsx
   },
 
   twitter: {
@@ -118,13 +140,14 @@ export const metadata = {
     title: "Jeff's Portfolio | Software Developer",
     description:
       "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
-    images: ["/web-app-manifest-512x512.png"],
   },
 
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-icon.png",
   },
+
+  manifest: "/manifest.json",
 
   authors: [{ name: "Geoffrey Owuor" }],
 
@@ -140,7 +163,7 @@ export default function RootLayout({ children }) {
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={` ${geistSans.variable} ${dmMono.variable} ${dmsans.variable} ${inter.variable} ${lora.variable} ${merriweather.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${courierPrime.variable} bg-surface antialiased`}
+      className={` ${geistSans.variable} ${dmMono.variable} ${dmsans.variable} ${inter.variable} ${lora.variable} ${sourceSerif.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${sourceCodePro.variable} ${courierPrime.variable} bg-surface antialiased`}
     >
       <head>
         <meta name="apple-mobile-web-app-title" content="Portfolio" />

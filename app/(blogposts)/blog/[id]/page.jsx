@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import ViewBlogsSkeleton from "@/components/Skeletons/ViewBlogsSkeleton";
 
 import { headers } from "next/headers";
+import { OG_IMAGE } from "@/utils/metadata";
 
 const getBlogInfo = cache(async (id) => {
   try {
@@ -88,6 +89,7 @@ export async function generateMetadata({ params }) {
       type: "article",
       url: `/blog/${id}`,
       siteName: blogPost.blog_title,
+      images: OG_IMAGE,
     },
 
     authors: [{ name: blogPost.blog_author }],

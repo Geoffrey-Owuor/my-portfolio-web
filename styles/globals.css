@@ -42,23 +42,24 @@
   --radius-control: 0.5rem;
   --radius-card: 0.75rem;
   --radius-dialog: 1rem;
-  --font-geistsans: var(--font-geistsans), ui-sans-serif, system-ui, sans-serif;
-  --font-dmsans: var(--font-dmsans), ui-sans-serif, system-ui, sans-serif;
+  --font-geistsans: var(--nf-geistsans), ui-sans-serif, system-ui, sans-serif;
+  --font-dmsans: var(--nf-dmsans), ui-sans-serif, system-ui, sans-serif;
 
   /* Accessibility font switcher options (see store/useFontStore.js).
      Registered here so each can be selected directly (e.g. previewed inside
-     the switcher's menu via `font-inter`/`font-lora`/`font-merriweather`), on
+     the switcher's menu via `font-inter`/`font-lora`/`font-sourceserif`), on
      top of the html[data-font] overrides below. */
-  --font-inter: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-lora: var(--font-lora), ui-serif, Georgia, serif;
-  --font-merriweather: var(--font-merriweather), ui-serif, Georgia, serif;
+  --font-inter: var(--nf-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-lora: var(--nf-lora), ui-serif, Georgia, serif;
+  --font-sourceserif: var(--nf-sourceserif), ui-serif, Georgia, serif;
 
   /* Mono counterparts of the fonts above, indirected into `--font-mono`
      below so `font-mono` always matches the selected reading font. */
-  --font-dm-mono: var(--font-dm-mono), ui-monospace, monospace;
-  --font-geistmono: var(--font-geistmono), ui-monospace, monospace;
-  --font-jetbrainsmono: var(--font-jetbrainsmono), ui-monospace, monospace;
-  --font-courierprime: var(--font-courierprime), "Courier New", monospace;
+  --font-dm-mono: var(--nf-dm-mono), ui-monospace, monospace;
+  --font-geistmono: var(--nf-geistmono), ui-monospace, monospace;
+  --font-jetbrainsmono: var(--nf-jetbrainsmono), ui-monospace, monospace;
+  --font-sourcecodepro: var(--nf-sourcecodepro), ui-monospace, monospace;
+  --font-courierprime: var(--nf-courierprime), "Courier New", monospace;
 
   /* Neutral ramp (gray) — OKLCH equivalents of the gray-50..950 steps
      already used throughout the app via Tailwind's default palette. */
@@ -177,8 +178,8 @@ html[data-theme="dark"] .theme-inverse {
 }
 
 /* Font switching — each block pairs the reading font with its mono
-   counterpart. Geist and DM Sans have official mono siblings; Inter, Lora,
-   and Merriweather don't, so they're paired with a stylistically-matching
+   counterpart. Geist, DM Sans and Source Serif have official mono siblings;
+   Inter and Lora don't, so they're paired with a stylistically-matching
    mono font instead (see store/useFontStore.js and layout.js). */
 html[data-font="inter"],
 html:not([data-font]) {
@@ -197,9 +198,9 @@ html[data-font="lora"] {
   font-family: var(--font-lora);
   --font-mono-active: var(--font-courierprime);
 }
-html[data-font="merriweather"] {
-  font-family: var(--font-merriweather);
-  --font-mono-active: var(--font-courierprime);
+html[data-font="sourceserif"] {
+  font-family: var(--font-sourceserif);
+  --font-mono-active: var(--font-sourcecodepro);
 }
 
 html[data-theme="dark"] {

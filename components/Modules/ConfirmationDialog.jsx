@@ -3,7 +3,7 @@
 import { X } from "lucide-react";
 import ClientPortal from "./ClientPortal";
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
 const ConfirmationDialog = ({
@@ -14,6 +14,8 @@ const ConfirmationDialog = ({
   title,
 }) => {
   const modalRef = useRef(null);
+  const titleId = useId();
+  const messageId = useId();
   useFocusTrapping(modalRef, showConfirmation, onCancel);
 
   const content = (
@@ -22,10 +24,14 @@ const ConfirmationDialog = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className={`z-overlay fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/60`}
+      className={`z-overlay fixed inset-0 flex items-end justify-center bg-black/50 sm:items-center dark:bg-black/60`}
     >
       <motion.div
         ref={modalRef}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={messageId}
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -34,10 +40,13 @@ const ConfirmationDialog = ({
           stiffness: 300,
           damping: 30,
         }}
-        className="border-border-subtle bg-surface-raised rounded-dialog mx-auto max-w-90 border p-4 shadow-2xl md:max-w-md"
+        // Bottom sheet below sm (clear of the home indicator); a centred card from sm up.
+        className="border-border-subtle bg-surface-raised rounded-t-dialog sm:rounded-dialog w-full border-t p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl sm:mx-auto sm:w-auto sm:max-w-90 sm:border sm:pb-4 md:max-w-md"
       >
         <div className="relative mb-4 flex items-start justify-between">
-          <h3 className="text-text-primary text-xl font-bold">{title}</h3>
+          <h3 id={titleId} className="text-text-primary text-xl font-bold">
+            {title}
+          </h3>
           <button
             onClick={onCancel}
             type="button"
@@ -47,18 +56,20 @@ const ConfirmationDialog = ({
             <X className="h-6 w-6" />
           </button>
         </div>
-        <p className="text-text-muted mb-4 text-center">{message}</p>
-        <div className="flex justify-center space-x-4">
+        <p id={messageId} className="text-text-muted mb-4 text-center">
+          {message}
+        </p>
+        <div className="flex justify-center gap-4">
           <button
             onClick={onCancel}
             type="button"
-            className="border-border-subtle bg-surface text-text-primary hover:bg-surface-raised rounded-full border px-4 py-2 transition-colors"
+            className="border-border-subtle bg-surface text-text-primary hover:bg-surface-raised flex-1 rounded-full border px-4 py-2 transition-colors sm:flex-none"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="bg-text-primary text-surface rounded-full px-4 py-2 transition-opacity hover:opacity-90"
+            className="bg-text-primary text-surface flex-1 rounded-full px-4 py-2 transition-opacity hover:opacity-90 sm:flex-none"
           >
             Proceed
           </button>

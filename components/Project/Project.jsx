@@ -136,6 +136,7 @@ const Project = ({ projectInfo }) => {
                 src={projectImage.image}
                 alt={`${project.project_name} preview`}
                 className="w-full object-cover"
+                sizes="(max-width: 896px) 100vw, 896px"
                 priority
               />
             </motion.div>

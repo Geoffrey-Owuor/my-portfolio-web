@@ -1,4 +1,5 @@
 import LoginPage from "@/components/Auth/LoginPage";
+import { OG_IMAGE } from "@/utils/metadata";
 
 export const metadata = {
   title: "Login Page",
@@ -10,6 +11,7 @@ export const metadata = {
     type: "website",
     url: "/login",
     siteName: "Login Page",
+    images: OG_IMAGE,
   },
 };
 

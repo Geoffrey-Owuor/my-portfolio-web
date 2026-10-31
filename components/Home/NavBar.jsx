@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { tools } from "@/assets/assets";
+import { GitHubIcon } from "@/components/Icons/BrandIcons";
 import { Menu, X, ArrowUpRight, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
@@ -20,6 +19,7 @@ import {
   useReducedMotion,
   useScroll,
   useSpring,
+  useTransform,
 } from "framer-motion";
 
 // Section links double as scroll-spy targets (see components/Home/sections.js).
@@ -70,11 +70,19 @@ const ScrollProgress = () => {
     damping: 40,
     mass: 0.3,
   });
+  // Progress can land a hair above 1 (fractional scroll offsets, spring
+  // settling), which pushes the full-width bar past the viewport and adds a
+  // horizontal scrollbar — and that scrollbar changes the scroll range, so
+  // the bar shrinks, the scrollbar goes, and it loops. Keep it within 0–1.
+  const scaleX = useTransform(
+    prefersReducedMotion ? scrollYProgress : smoothed,
+    (v) => Math.min(Math.max(v, 0), 1),
+  );
 
   return (
     <motion.span
       aria-hidden="true"
-      style={{ scaleX: prefersReducedMotion ? scrollYProgress : smoothed }}
+      style={{ scaleX }}
       className="bg-accent pointer-events-none absolute right-0 bottom-0 left-0 h-px origin-left"
     />
   );
@@ -307,15 +315,7 @@ const NavBar = () => {
               rel="noopener noreferrer"
               className="bg-text-primary text-surface rounded-control flex items-center gap-2 px-3 py-2 text-sm transition-opacity hover:opacity-90"
             >
-              <span className="flex h-4 w-4 shrink-0 items-center justify-center">
-                <Image
-                  src={tools.githubLogo}
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="h-4 w-4 invert dark:invert-0"
-                />
-              </span>
+              <GitHubIcon className="h-4 w-4 shrink-0" />
               GitHub
             </a>
           </div>
@@ -390,15 +390,7 @@ const NavBar = () => {
             rel="noopener noreferrer"
             className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control flex size-9 items-center justify-center transition-colors sm:size-10"
           >
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-              <Image
-                src={tools.githubLogo}
-                alt=""
-                width={24}
-                height={24}
-                className="h-5 w-5 dark:invert"
-              />
-            </span>
+            <GitHubIcon className="h-5 w-5 shrink-0" />
           </a>
         </div>
       </header>

@@ -13,6 +13,7 @@ import {
   Mail,
   NotebookPen,
   SunMoon,
+  X,
 } from "lucide-react";
 import ClientPortal from "./ClientPortal";
 import { useProgressRouter } from "./RouteProgress";
@@ -182,7 +183,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
     <ClientPortal>
       <AnimatePresence>
         {isOpen && (
-          <div className="z-modal fixed inset-0 flex items-start justify-center px-4 pt-[12vh]">
+          <div className="z-modal fixed inset-0 flex items-start justify-center sm:px-4 sm:pt-[12vh]">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -210,7 +211,9 @@ const CommandPalette = ({ isOpen, onClose }) => {
               }
               transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
               onAnimationStart={() => inputRef.current?.focus()}
-              className="border-border-subtle bg-surface rounded-card relative w-full max-w-xl overflow-hidden border shadow-2xl"
+              // Full-screen below sm, so the results get the height the
+              // on-screen keyboard leaves; a floating card from sm up.
+              className="border-border-subtle bg-surface sm:rounded-card relative flex h-dvh w-full flex-col overflow-hidden shadow-2xl sm:h-auto sm:max-w-xl sm:border"
             >
               {/* Prompt */}
               <div className="border-border-subtle flex items-center gap-2 border-b px-4 py-3 font-mono text-sm">
@@ -240,6 +243,16 @@ const CommandPalette = ({ isOpen, onClose }) => {
                 <kbd className="border-border-subtle text-text-muted rounded-chip hidden border px-1.5 py-0.5 text-[10px] sm:block">
                   esc
                 </kbd>
+                {/* No Esc key on touch screens; the full-screen palette has
+                    no backdrop to tap either. */}
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close command palette"
+                  className="text-text-muted hover:text-text-primary rounded-control -mr-1 p-1 sm:hidden"
+                >
+                  <X className="h-4 w-4" />
+                </button>
               </div>
 
               {/* Results */}
@@ -248,7 +261,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
                 id="command-palette-list"
                 role="listbox"
                 aria-label="Commands"
-                className="max-h-[min(60vh,26rem)] overflow-y-auto overscroll-contain p-2 [scrollbar-width:thin]"
+                className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2 [scrollbar-width:thin] sm:max-h-[min(60vh,26rem)] sm:flex-none"
               >
                 {results.length === 0 && (
                   <li className="text-text-muted px-3 py-8 text-center text-sm">

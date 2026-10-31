@@ -17,7 +17,6 @@ import { useState, useEffect } from "react";
 import { useProgressRouter } from "../Modules/RouteProgress";
 import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
-import Image from "next/image";
 import BlogNav from "./BlogNav";
 
 const ViewBlog = ({ blogPost, userId }) => {
@@ -197,22 +196,16 @@ const ViewBlog = ({ blogPost, userId }) => {
                 Share:
               </span>
               <div className="flex items-center gap-2">
-                {shareIconEntries.map(([key, shareIcon]) => (
+                {shareIconEntries.map(([key, Icon]) => (
                   <a
                     key={key}
                     href={getShareLink(key, currentUrl, blogPost.blog_title)}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Share the blog on ${key.replace("Link", "")}`}
-                    className="border-border-subtle hover:border-accent rounded-full border p-2 transition-colors"
+                    className="border-border-subtle hover:border-accent hover:text-text-primary rounded-full border p-2 transition-colors"
                   >
-                    <Image
-                      src={shareIcon.logo}
-                      alt={shareIcon.link}
-                      width={16}
-                      height={16}
-                      className="h-3 w-3 dark:invert"
-                    />
+                    <Icon className="h-3 w-3" />
                   </a>
                 ))}
               </div>
@@ -223,7 +216,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           <div className="bg-border-subtle mb-8 h-px sm:mb-12" />
 
           {/* Content Section */}
-          <div className="prose prose-lg dark:prose-invert prose-img:rounded-card prose-headings:font-semi-bold prose-a:text-accent max-w-none wrap-break-word">
+          <div className="prose prose-lg dark:prose-invert prose-img:rounded-card prose-headings:font-semibold prose-a:text-accent max-w-none wrap-break-word">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={MarkdownComponents}

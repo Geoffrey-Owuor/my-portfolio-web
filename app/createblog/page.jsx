@@ -1,6 +1,7 @@
 import { getSession } from "@/cache/getSession";
 import { redirect } from "next/navigation";
 import BlogPost from "@/components/blog/BlogPost";
+import { OG_IMAGE } from "@/utils/metadata";
 
 export const metadata = {
   title: "Create a blog | Engage your audience with tech",
@@ -14,6 +15,7 @@ export const metadata = {
     type: "website",
     url: "/createblog",
     siteName: "Create a blog",
+    images: OG_IMAGE,
   },
 };
 

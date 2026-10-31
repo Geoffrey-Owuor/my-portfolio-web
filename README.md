@@ -31,4 +31,4 @@ Check out the live site **[Here](https://jeff-portfolio-web.vercel.app)**
 - **Email:** [Nodemailer](https://nodemailer.com/) (Gmail OAuth2) + [Resend](https://resend.com/)
 - **Animations:** [Framer Motion](https://www.framer.com/motion/)
 - **Deployment:** [Vercel](https://vercel.com/)
-- **Fonts:** DM Sans, DM Mono (via `next/font`)
+- **Fonts:** Inter + JetBrains Mono by default, with DM Sans, Geist, Source Serif 4 and Lora (each paired with a mono font) in the font switcher (via `next/font`; only the default pair is preloaded)

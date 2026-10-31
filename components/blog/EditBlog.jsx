@@ -4,7 +4,7 @@ import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import { X } from "lucide-react";
 import BlogForm from "./BlogForm";
 import apiClient from "@/lib/AxiosClient";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useId } from "react";
 import { motion } from "framer-motion";
 import ClientPortal from "../Modules/ClientPortal";
 import { useToast } from "../Modules/Toaster";
@@ -16,6 +16,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
   const toast = useToast();
   const blogId = blogInfo.blog_id;
   const modalRef = useRef(null);
+  const titleId = useId();
   const closeModal = useCallback(
     () => setShowEditModal(false),
     [setShowEditModal],
@@ -114,21 +115,28 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={() => setShowEditModal(false)}
-            className="z-modal fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/60"
+            className="z-modal fixed inset-0 flex items-stretch justify-center bg-black/50 sm:items-center dark:bg-black/60"
           >
             <motion.div
               ref={modalRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={titleId}
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
-              className="border-border-subtle bg-surface rounded-dialog mx-4 max-h-[calc(100vh-5rem)] w-full max-w-4xl overflow-y-auto border shadow-2xl sm:max-h-[calc(100vh-3rem)]"
+              // Full-screen below sm; a centred card from sm up.
+              className="border-border-subtle bg-surface sm:rounded-dialog h-dvh w-full max-w-4xl overflow-y-auto shadow-2xl sm:mx-4 sm:h-auto sm:max-h-[calc(100dvh-3rem)] sm:border"
             >
               <div className="border-border-subtle bg-surface z-raised sticky top-0 border-b px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
-                    <h2 className="text-text-primary text-2xl font-semibold">
+                    <h2
+                      id={titleId}
+                      className="text-text-primary text-2xl font-semibold"
+                    >
                       Edit the blog
                     </h2>
                     <p className="text-text-muted mt-1 text-sm">
@@ -137,6 +145,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
                   </div>
                   <button
                     onClick={() => setShowEditModal(false)}
+                    aria-label="Close edit dialog"
                     className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
                   >
                     <X className="h-5 w-5" />
