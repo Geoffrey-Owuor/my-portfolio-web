@@ -114,7 +114,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={() => setShowEditModal(false)}
-            className="z-modal fixed inset-0 flex items-center justify-center bg-black/50 dark:bg-black/60"
+            className="z-modal fixed inset-0 flex items-stretch justify-center bg-black/50 sm:items-center dark:bg-black/60"
           >
             <motion.div
               ref={modalRef}
@@ -123,7 +123,8 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
-              className="border-border-subtle bg-surface rounded-dialog mx-4 max-h-[calc(100vh-5rem)] w-full max-w-4xl overflow-y-auto border shadow-2xl sm:max-h-[calc(100vh-3rem)]"
+              // Full-screen below sm; a centred card from sm up.
+              className="border-border-subtle bg-surface sm:rounded-dialog h-dvh w-full max-w-4xl overflow-y-auto shadow-2xl sm:mx-4 sm:h-auto sm:max-h-[calc(100dvh-3rem)] sm:border"
             >
               <div className="border-border-subtle bg-surface z-raised sticky top-0 border-b px-6 py-4">
                 <div className="flex items-center justify-between">
@@ -137,6 +138,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
                   </div>
                   <button
                     onClick={() => setShowEditModal(false)}
+                    aria-label="Close edit dialog"
                     className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
                   >
                     <X className="h-5 w-5" />
