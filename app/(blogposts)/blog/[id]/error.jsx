@@ -21,14 +21,14 @@ const Error = ({ error, reset }) => {
       <div className="flex flex-wrap items-center justify-center gap-4">
         <button
           onClick={reset}
-          className="bg-text-primary text-surface inline-flex items-center gap-2 rounded-full px-6 py-3 font-medium transition-opacity hover:opacity-90"
+          className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-6 py-3 font-medium transition-opacity hover:opacity-90"
         >
           <RotateCcw className="h-4 w-4" />
           Try Again
         </button>
         <Link
           href="/blogs"
-          className="border-border-subtle text-text-primary hover:bg-surface-raised inline-flex items-center gap-2 rounded-full border px-6 py-3 font-medium transition-colors"
+          className="border-border-subtle text-text-primary hover:bg-surface-raised rounded-control inline-flex items-center gap-2 border px-6 py-3 font-medium transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Blogs

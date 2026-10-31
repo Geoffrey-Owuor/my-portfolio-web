@@ -75,7 +75,7 @@ const BlogTableView = ({ currentBlogs, searchQuery, highlightText }) => {
 
             {/* Arrow */}
             <div className="flex shrink-0 items-center pl-4">
-              <span className="text-text-muted group-hover:bg-accent/10 group-hover:text-accent flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-150">
+              <span className="text-text-muted group-hover:bg-accent/10 group-hover:text-accent rounded-control flex h-8 w-8 items-center justify-center transition-colors duration-150">
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </span>
             </div>

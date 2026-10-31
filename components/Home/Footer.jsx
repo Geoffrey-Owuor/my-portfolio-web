@@ -53,7 +53,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Follow me on ${key.replace("Logo", "")}`} // for accessibility
-              className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
+              className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control p-2 transition-colors"
             >
               <Icon className="h-6 w-6" />
             </a>

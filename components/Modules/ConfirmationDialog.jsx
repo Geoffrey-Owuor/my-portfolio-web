@@ -50,7 +50,7 @@ const ConfirmationDialog = ({
           <button
             onClick={onCancel}
             type="button"
-            className="text-text-muted hover:bg-surface hover:text-text-primary absolute -top-0.5 right-0 cursor-pointer rounded-full p-1 transition-colors"
+            className="text-text-muted hover:bg-surface hover:text-text-primary rounded-control absolute -top-0.5 right-0 cursor-pointer p-1 transition-colors"
             aria-label="Close dialog"
           >
             <X className="h-6 w-6" />
@@ -63,13 +63,13 @@ const ConfirmationDialog = ({
           <button
             onClick={onCancel}
             type="button"
-            className="border-border-subtle bg-surface text-text-primary hover:bg-surface-raised flex-1 rounded-full border px-4 py-2 transition-colors sm:flex-none"
+            className="border-border-subtle bg-surface text-text-primary hover:bg-surface-raised rounded-control flex-1 border px-4 py-2 transition-colors sm:flex-none"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="bg-text-primary text-surface flex-1 rounded-full px-4 py-2 transition-opacity hover:opacity-90 sm:flex-none"
+            className="bg-text-primary text-surface rounded-control flex-1 px-4 py-2 transition-opacity hover:opacity-90 sm:flex-none"
           >
             Proceed
           </button>

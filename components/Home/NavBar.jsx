@@ -420,7 +420,7 @@ const NavBar = () => {
 
             <button
               onClick={closeMenu}
-              className="text-text-muted hover:bg-surface-raised rounded-full p-2 transition"
+              className="text-text-muted hover:bg-surface-raised rounded-control p-2 transition"
               aria-label="Close menu"
             >
               <X className="h-5 w-5" />
