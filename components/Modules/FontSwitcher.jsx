@@ -49,7 +49,7 @@ const FontSwitcher = () => {
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-label={`Change site font, currently ${FONTS[font].label}`}
-        className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
+        className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control p-2 transition-colors"
       >
         <CaseSensitive className="h-6 w-6 lg:h-5 lg:w-5" aria-hidden="true" />
       </button>

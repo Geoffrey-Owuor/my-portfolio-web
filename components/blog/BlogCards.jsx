@@ -119,7 +119,7 @@ const BlogCards = ({ blogs }) => {
               className="border-border-subtle bg-surface-raised text-text-primary placeholder-text-muted focus:border-accent rounded-control w-full border py-3 pr-10 pl-11 text-sm transition-colors focus:outline-none"
             />
             <button
-              className="text-text-muted hover:bg-surface absolute top-1/2 right-4 -translate-y-1/2 rounded-full p-1"
+              className="text-text-muted hover:bg-surface rounded-control absolute top-1/2 right-4 -translate-y-1/2 p-1"
               onClick={() => setSearchQuery("")}
               aria-label="Clear search"
             >

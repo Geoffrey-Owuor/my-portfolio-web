@@ -146,7 +146,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
                   <button
                     onClick={() => setShowEditModal(false)}
                     aria-label="Close edit dialog"
-                    className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
+                    className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control p-2 transition-colors"
                   >
                     <X className="h-5 w-5" />
                   </button>

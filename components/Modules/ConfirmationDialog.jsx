@@ -50,7 +50,7 @@ const ConfirmationDialog = ({
           <button
             onClick={onCancel}
             type="button"
-            className="text-text-muted hover:bg-surface hover:text-text-primary absolute -top-0.5 right-0 cursor-pointer rounded-full p-1 transition-colors"
+            className="text-text-muted hover:bg-surface hover:text-text-primary rounded-control absolute -top-0.5 right-0 cursor-pointer p-1 transition-colors"
             aria-label="Close dialog"
           >
             <X className="h-6 w-6" />

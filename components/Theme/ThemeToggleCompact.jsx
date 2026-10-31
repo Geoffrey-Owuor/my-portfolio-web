@@ -140,7 +140,7 @@ export default function ThemeToggleCompact() {
         onBlur={handleBlur}
         aria-label="Toggle theme"
         aria-describedby={showToolTip ? "theme-toggle-tip" : undefined}
-        className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-full p-2 transition-colors"
+        className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control p-2 transition-colors"
       >
         {/* Render BOTH icons. Use Tailwind's dark: modifier to let CSS handle visibility instantly */}
         <Sun className="block h-6 w-6 lg:h-5 lg:w-5 dark:hidden" />

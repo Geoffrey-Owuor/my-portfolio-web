@@ -204,7 +204,7 @@ const ViewBlog = ({ blogPost, userId }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Share the blog on ${key.replace("Link", "")}`}
-                    className="border-border-subtle hover:border-accent hover:text-text-primary rounded-full border p-2 transition-colors"
+                    className="border-border-subtle hover:border-accent hover:text-text-primary rounded-control border p-2 transition-colors"
                   >
                     <Icon className="h-3 w-3" />
                   </a>
