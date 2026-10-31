@@ -3,7 +3,7 @@
 import { X } from "lucide-react";
 import ClientPortal from "./ClientPortal";
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
 const ConfirmationDialog = ({
@@ -14,6 +14,8 @@ const ConfirmationDialog = ({
   title,
 }) => {
   const modalRef = useRef(null);
+  const titleId = useId();
+  const messageId = useId();
   useFocusTrapping(modalRef, showConfirmation, onCancel);
 
   const content = (
@@ -26,6 +28,10 @@ const ConfirmationDialog = ({
     >
       <motion.div
         ref={modalRef}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={messageId}
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -38,7 +44,9 @@ const ConfirmationDialog = ({
         className="border-border-subtle bg-surface-raised rounded-t-dialog sm:rounded-dialog w-full border-t p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl sm:mx-auto sm:w-auto sm:max-w-90 sm:border sm:pb-4 md:max-w-md"
       >
         <div className="relative mb-4 flex items-start justify-between">
-          <h3 className="text-text-primary text-xl font-bold">{title}</h3>
+          <h3 id={titleId} className="text-text-primary text-xl font-bold">
+            {title}
+          </h3>
           <button
             onClick={onCancel}
             type="button"
@@ -48,7 +56,9 @@ const ConfirmationDialog = ({
             <X className="h-6 w-6" />
           </button>
         </div>
-        <p className="text-text-muted mb-4 text-center">{message}</p>
+        <p id={messageId} className="text-text-muted mb-4 text-center">
+          {message}
+        </p>
         <div className="flex justify-center gap-4">
           <button
             onClick={onCancel}

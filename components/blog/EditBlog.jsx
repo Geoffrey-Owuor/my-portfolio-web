@@ -4,7 +4,7 @@ import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import { X } from "lucide-react";
 import BlogForm from "./BlogForm";
 import apiClient from "@/lib/AxiosClient";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useId } from "react";
 import { motion } from "framer-motion";
 import ClientPortal from "../Modules/ClientPortal";
 import { useToast } from "../Modules/Toaster";
@@ -16,6 +16,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
   const toast = useToast();
   const blogId = blogInfo.blog_id;
   const modalRef = useRef(null);
+  const titleId = useId();
   const closeModal = useCallback(
     () => setShowEditModal(false),
     [setShowEditModal],
@@ -118,6 +119,9 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
           >
             <motion.div
               ref={modalRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={titleId}
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -129,7 +133,10 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
               <div className="border-border-subtle bg-surface z-raised sticky top-0 border-b px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
-                    <h2 className="text-text-primary text-2xl font-semibold">
+                    <h2
+                      id={titleId}
+                      className="text-text-primary text-2xl font-semibold"
+                    >
                       Edit the blog
                     </h2>
                     <p className="text-text-muted mt-1 text-sm">
