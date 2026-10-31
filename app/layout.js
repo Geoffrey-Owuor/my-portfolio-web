@@ -126,6 +126,8 @@ export const metadata = {
     apple: "/apple-icon.png",
   },
 
+  manifest: "/manifest.json",
+
   authors: [{ name: "Geoffrey Owuor" }],
 
   robots: {
