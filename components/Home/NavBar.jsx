@@ -19,6 +19,7 @@ import {
   useReducedMotion,
   useScroll,
   useSpring,
+  useTransform,
 } from "framer-motion";
 
 // Section links double as scroll-spy targets (see components/Home/sections.js).
@@ -69,11 +70,19 @@ const ScrollProgress = () => {
     damping: 40,
     mass: 0.3,
   });
+  // Progress can land a hair above 1 (fractional scroll offsets, spring
+  // settling), which pushes the full-width bar past the viewport and adds a
+  // horizontal scrollbar — and that scrollbar changes the scroll range, so
+  // the bar shrinks, the scrollbar goes, and it loops. Keep it within 0–1.
+  const scaleX = useTransform(
+    prefersReducedMotion ? scrollYProgress : smoothed,
+    (v) => Math.min(Math.max(v, 0), 1),
+  );
 
   return (
     <motion.span
       aria-hidden="true"
-      style={{ scaleX: prefersReducedMotion ? scrollYProgress : smoothed }}
+      style={{ scaleX }}
       className="bg-accent pointer-events-none absolute right-0 bottom-0 left-0 h-px origin-left"
     />
   );
