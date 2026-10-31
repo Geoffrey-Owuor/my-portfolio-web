@@ -18,20 +18,27 @@ import { RouteProgressProvider } from "@/components/Modules/RouteProgress";
 import Footer from "@/components/Home/Footer";
 import { FONT_STORAGE_KEY, FONT_STORAGE_VERSION } from "@/store/useFontStore";
 
+// Only the default pairing (Inter + JetBrains Mono) is preloaded. The
+// alternates stay declared, so the browser fetches one only once it's in use
+// (a saved preference, or the font switcher's previews), instead of every
+// page preloading all of them.
 const geistSans = Geist({
   variable: "--font-geistsans",
   subsets: ["latin"],
+  preload: false,
 });
 
 const dmMono = DM_Mono({
   variable: "--font-dm-mono",
   subsets: ["latin"],
+  preload: false,
   weight: ["400", "500"],
 });
 
 const dmsans = DM_Sans({
   variable: "--font-dmsans",
   subsets: ["latin"],
+  preload: false,
   weight: ["400", "500", "700"],
 });
 
@@ -44,12 +51,14 @@ const inter = Inter({
 const lora = Lora({
   variable: "--font-lora",
   subsets: ["latin"],
+  preload: false,
   weight: ["400", "500", "600", "700"],
 });
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",
   subsets: ["latin"],
+  preload: false,
   weight: ["400", "700"],
 });
 
@@ -61,6 +70,7 @@ const merriweather = Merriweather({
 const geistMono = Geist_Mono({
   variable: "--font-geistmono",
   subsets: ["latin"],
+  preload: false,
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -71,6 +81,7 @@ const jetbrainsMono = JetBrains_Mono({
 const courierPrime = Courier_Prime({
   variable: "--font-courierprime",
   subsets: ["latin"],
+  preload: false,
   weight: ["400", "700"],
 });
 
