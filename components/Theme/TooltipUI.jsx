@@ -43,7 +43,7 @@ const TooltipUI = ({ id, label, shortcut, show }) => {
               aria-hidden="true"
             ></div>
             {label}
-            <kbd className="bg-surface/20 ml-2 rounded-full px-1.5 py-0.5">
+            <kbd className="bg-surface/20 rounded-chip ml-2 px-1.5 py-0.5">
               {shortcut}
             </kbd>
           </div>
