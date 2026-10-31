@@ -9,7 +9,7 @@ A personal portfolio + blog site built with Next.js 15 (App Router), React 19, a
 ## Commands
 
 - `npm run dev` — start dev server with Turbopack
-- `npm run build` — production build
+- `npm run build` — production build. Don't run it while a dev server is running: both write to `.next`, and the build breaks the dev server (500s until it's restarted). To check a build with a dev server up, build a copy of the repo outside the project folder instead.
 - `npm run start` — run production build
 - `npm run lint` — run `eslint .` (flat config in `eslint.config.mjs`, `next/core-web-vitals` rules, covers .js/.jsx)
 - `npm run format` / `npm run format:check` — Prettier write / check
@@ -77,3 +77,12 @@ Design tokens live in `styles/globals.css` — use them instead of raw values so
 - **Layout:** `container-page` (max-w-7xl + shared gutter) for every top-level block; `section-shell` (container + `py-section` rhythm) for homepage sections and their skeletons; `--header-h` for anything that must clear the sticky header.
 - **Radius, by role:** `rounded-chip` (kbd, tags, skeleton text bars), `rounded-control` (buttons, inputs, tabs, menu rows), `rounded-card` (cards, panels, popovers, toasts), `rounded-dialog` (modals); `rounded-full` for pills/avatars.
 - **Stacking:** only the named layers `z-raised` < `z-header` < `z-drawer` < `z-modal` < `z-overlay` < `z-toast` < `z-progress`; add a new layer there rather than a raw `z-*`.
+
+### Working on proposed changes (`.claude/skills/CHANGES.md`)
+
+Proposed bug fixes and UI/UX changes are written up in `.claude/skills/CHANGES.md`. Each time you pick that file up:
+
+- **Clarify first.** If anything in a proposal is ambiguous, ask before you implement. Put every open question in one round of multiple-choice questions, with a recommended option where you have one.
+- **Critique and recommend.** Say so if a proposal has trade-offs, edge cases (mobile, dark mode, accessibility) or a better alternative, and point out related bugs you notice along the way.
+- **Phase the work.** Split larger changes into phases. Verify each phase before you commit it, and use one focused commit per change.
+- **Verify in the running app.** A signed-in dev server is usually running at `localhost:3000` in Chrome, so check there first. If none is running, start one (`npm run dev`). If you're blocked (e.g. a sign-in is needed, or the browser can't reach the server), ask the user to step in rather than skipping verification.
