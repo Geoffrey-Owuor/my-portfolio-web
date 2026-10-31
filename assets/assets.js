@@ -1,5 +1,5 @@
-import profile_photo from "../public/profile2.jpg";
-import github_avatar from "../public/profile1.png";
+import profile_photo from "../public/profile2.webp";
+import github_avatar from "../public/profile1.webp";
 import aws from "../public/aws.svg";
 import azure from "../public/azure.svg";
 import docker from "../public/docker.svg";
@@ -21,10 +21,10 @@ import instagram from "../public/instagram.svg";
 import linkedin from "../public/linkedin.svg";
 import facebook from "../public/facebook.svg";
 import whatsapp from "../public/whatsapp.svg";
-import google_sheet_image from "../public/project_images/google_sheet_image.png";
-import staffproductpurchase_image from "../public/project_images/staffproductpurchase_image.png";
-import helpdesk_image from "../public/project_images/helpdesk_image.png";
-import apps_hub_image from "../public/project_images/apps_hub_image.png";
+import google_sheet_image from "../public/project_images/google_sheet_image.webp";
+import staffproductpurchase_image from "../public/project_images/staffproductpurchase_image.webp";
+import helpdesk_image from "../public/project_images/helpdesk_image.webp";
+import apps_hub_image from "../public/project_images/apps_hub_image.webp";
 
 export const assets = {
   profile_photo,
