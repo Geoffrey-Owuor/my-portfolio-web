@@ -53,11 +53,7 @@ export default function LoginPage() {
           </div>
 
           {/* Login Fields */}
-          <form
-            onSubmit={handleSubmit}
-            autoComplete="off"
-            className="space-y-6"
-          >
+          <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div
                 role="alert"
@@ -81,6 +77,7 @@ export default function LoginPage() {
                 <input
                   id="email"
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent rounded-control block w-full border py-3 pr-3 pl-14 transition-colors focus:outline-none"
@@ -105,6 +102,7 @@ export default function LoginPage() {
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent rounded-control block w-full border py-3 pr-10 pl-14 transition-colors focus:outline-none"
