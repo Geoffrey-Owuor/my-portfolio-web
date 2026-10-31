@@ -433,3 +433,61 @@ html {
 .prose :where(code):not(:where(pre code, [class~="not-prose"] *))::after {
   content: none;
 }
+
+/* ── Fenced code blocks + syntax highlighting ──────────────────────────
+   Blocks sit on --surface-raised (not the plugin's fixed near-black) because
+   the --code-* tokens are contrast-checked against it in both themes.
+   Token classes come from rehype-highlight (utils/rehypeHighlight.js) and
+   reuse the hero editor's palette. Unlayered for the same reason as above. */
+.prose :where(pre):not(:where([class~="not-prose"] *)) {
+  background-color: var(--surface-raised);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.hljs-keyword,
+.hljs-built_in,
+.hljs-literal,
+.hljs-selector-tag,
+.hljs-meta .hljs-keyword,
+.hljs-tag .hljs-name {
+  color: var(--code-keyword);
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-attr,
+.hljs-attribute,
+.hljs-addition,
+.hljs-template-tag {
+  color: var(--code-string);
+}
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_,
+.hljs-section,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: var(--code-function);
+}
+.hljs-number,
+.hljs-variable.language_,
+.hljs-symbol,
+.hljs-property,
+.hljs-params {
+  color: var(--code-number);
+}
+.hljs-comment,
+.hljs-quote,
+.hljs-meta {
+  color: var(--code-comment);
+  font-style: italic;
+}
+.hljs-deletion {
+  color: var(--danger);
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 600;
+}

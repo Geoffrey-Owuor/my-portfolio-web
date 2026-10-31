@@ -13,6 +13,7 @@ import { formatDate, generateSlug } from "@/utils/Helpers";
 import EditBlog from "./EditBlog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { highlightPlugin } from "@/utils/rehypeHighlight";
 import { useState, useEffect } from "react";
 import { useProgressRouter } from "../Modules/RouteProgress";
 import TableOfContents from "../Modules/TableOfContents";
@@ -219,6 +220,7 @@ const ViewBlog = ({ blogPost, userId }) => {
           <div className="prose prose-lg dark:prose-invert prose-img:rounded-card prose-headings:font-semibold prose-a:text-accent max-w-none wrap-break-word">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
+              rehypePlugins={[highlightPlugin]}
               components={MarkdownComponents}
             >
               {blogPost.blog_content}
