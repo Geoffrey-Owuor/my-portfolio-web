@@ -41,10 +41,10 @@ export default function LoginPage() {
     <div className="relative isolate flex flex-1 flex-col">
       <IconPattern />
       <div className="container-page py-section flex flex-1 items-center justify-center">
-        <div className="w-full max-w-[345px]">
+        <div className="border-border-subtle bg-surface rounded-card w-full max-w-[410px] border p-6 sm:p-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-text-primary text-h1 mb-2 text-center font-semibold">
+            <h1 className="text-text-primary text-h2 mb-2 text-center font-semibold">
               Welcome back
             </h1>
             <p className="text-text-muted text-center">
