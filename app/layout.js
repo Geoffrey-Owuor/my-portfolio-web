@@ -124,6 +124,15 @@ export const metadata = {
 
   applicationName: "Jeff's Portfolio",
 
+  // Lets feed readers and browser extensions discover the blog feed.
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        { url: "/feed.xml", title: "Jeff's Portfolio — Blog" },
+      ],
+    },
+  },
+
   openGraph: {
     type: "website",
     siteName: "Jeff's Portfolio",
