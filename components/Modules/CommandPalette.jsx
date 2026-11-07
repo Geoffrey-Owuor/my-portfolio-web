@@ -114,9 +114,9 @@ const CommandPalette = ({ isOpen, onClose }) => {
       {
         id: "action-resume",
         group: "Actions",
-        label: "Download résumé",
-        icon: ArrowUpRight,
-        run: () => openExternal(RESUME_URL),
+        label: "View résumé",
+        icon: FileText,
+        run: () => router.push(RESUME_URL),
       },
       {
         id: "action-github",

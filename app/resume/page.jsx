@@ -1,0 +1,101 @@
+import { Download, ExternalLink } from "lucide-react";
+import PageHeader from "@/components/Layout/PageHeader";
+import ResumePreview from "@/components/Resume/ResumePreview";
+import ResumeUpload from "@/components/Resume/ResumeUpload";
+import { getSession } from "@/cache/getSession";
+import { getCachedLatestResume } from "@/lib/ResumeStorage";
+import { formatDate } from "@/utils/Helpers";
+import { OG_IMAGE } from "@/utils/metadata";
+
+export const metadata = {
+  title: "Résumé",
+  description:
+    "Geoffrey Owuor's résumé: experience, education and skills as a software developer.",
+  openGraph: {
+    title: "Résumé | Jeff's Portfolio",
+    description:
+      "Geoffrey Owuor's résumé: experience, education and skills as a software developer.",
+    url: "/resume",
+    images: OG_IMAGE,
+  },
+};
+
+const FILE_URL = "/resume/file";
+
+const actionClass =
+  "rounded-control inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold transition-colors";
+
+const ResumePage = async () => {
+  // The lookup throws when storage can't be reached; null means nothing has
+  // been uploaded yet.
+  const [session, lookup] = await Promise.all([
+    getSession(),
+    getCachedLatestResume().then(
+      (resume) => ({ resume }),
+      (error) => {
+        console.error("Failed to look up the résumé:", error);
+        return { failed: true };
+      },
+    ),
+  ]);
+  const { resume, failed } = lookup;
+
+  return (
+    <div className="container-page py-section">
+      <PageHeader
+        path="resume"
+        title="Résumé"
+        subtitle={
+          resume
+            ? `Last updated ${formatDate(resume.updatedAt)}`
+            : "Experience, education and skills at a glance"
+        }
+      />
+
+      <div className="mb-8 flex flex-wrap items-center gap-3">
+        {resume && (
+          <>
+            <a
+              href={`${FILE_URL}?download=1`}
+              download
+              className={`bg-text-primary text-surface hover:opacity-90 ${actionClass}`}
+            >
+              <Download className="h-4 w-4" />
+              Download PDF
+            </a>
+            <a
+              href={FILE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`border-border-subtle text-text-primary hover:border-accent hover:text-accent border ${actionClass}`}
+            >
+              <ExternalLink className="h-4 w-4" />
+              Open in new tab
+            </a>
+          </>
+        )}
+        {session && !failed && <ResumeUpload hasResume={Boolean(resume)} />}
+      </div>
+
+      {resume ? (
+        // The key changes on every upload, so the viewer never reuses a
+        // stale copy of the previous version.
+        <ResumePreview
+          file={`${FILE_URL}?v=${encodeURIComponent(resume.key)}`}
+        />
+      ) : (
+        <p
+          className={`border-border-subtle rounded-card border border-dashed px-5 py-8 text-center text-sm ${
+            failed ? "text-danger" : "text-text-muted"
+          }`}
+        >
+          {failed
+            ? "Couldn't load the résumé right now. Please try again shortly."
+            : "The résumé hasn't been published yet. Check back soon."}
+        </p>
+      )}
+    </div>
+  );
+};
+
+export default ResumePage;

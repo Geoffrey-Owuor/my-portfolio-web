@@ -26,6 +26,7 @@ export default async function sitemap() {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    { url: `${SITE_URL}/resume`, changeFrequency: "monthly", priority: 0.8 },
   ];
 
   const blogRoutes = (blogs ?? []).map((blog) => ({
