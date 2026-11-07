@@ -33,6 +33,13 @@ const loadSearchIndex = () => {
   return searchIndexPromise;
 };
 
+// Case- and accent-insensitive matching, so "resume" finds "résumé".
+const foldForSearch = (text) =>
+  text
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
+
 /**
  * ⌘K / Ctrl+K command palette. Focus stays in the input throughout (combobox
  * pattern): ↑/↓ move the active option, Enter runs it, Esc closes.
@@ -114,9 +121,9 @@ const CommandPalette = ({ isOpen, onClose }) => {
       {
         id: "action-resume",
         group: "Actions",
-        label: "Download résumé",
-        icon: ArrowUpRight,
-        run: () => openExternal(RESUME_URL),
+        label: "View résumé",
+        icon: FileText,
+        run: () => router.push(RESUME_URL),
       },
       {
         id: "action-github",
@@ -138,10 +145,10 @@ const CommandPalette = ({ isOpen, onClose }) => {
   }, [index, pathname, router, resolvedTheme, setTheme]);
 
   const results = useMemo(() => {
-    const needle = queryText.trim().toLowerCase();
+    const needle = foldForSearch(queryText.trim());
     if (!needle) return commands;
     return commands.filter((command) =>
-      `${command.label} ${command.group}`.toLowerCase().includes(needle),
+      foldForSearch(`${command.label} ${command.group}`).includes(needle),
     );
   }, [commands, queryText]);
 

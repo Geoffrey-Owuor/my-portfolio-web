@@ -5,10 +5,11 @@ import { assets } from "@/assets/assets";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import HeroClock from "./HeroClock";
 import HeroEditor from "./HeroEditor";
 import { RESUME_URL } from "@/utils/links";
+import { ProgressLink } from "../Modules/RouteProgress";
 
 const STACK = ["Next.js", "React", "Node.js", "PostgreSQL", "Tailwind CSS"];
 
@@ -141,15 +142,13 @@ const Hero = () => {
               >
                 Get in touch
               </Link>
-              <a
+              <ProgressLink
                 href={RESUME_URL}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="text-text-muted hover:text-accent inline-flex items-center gap-1 px-2 py-2.5 text-sm font-medium transition-colors"
               >
                 Résumé
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
+                <ArrowRight className="h-4 w-4" />
+              </ProgressLink>
             </motion.div>
           </motion.div>
 
