@@ -17,6 +17,7 @@ import { ToastProvider } from "@/components/Modules/Toaster";
 import NavBar from "@/components/Home/NavBar";
 import { RouteProgressProvider } from "@/components/Modules/RouteProgress";
 import Footer from "@/components/Home/Footer";
+import { SITE_URL } from "@/utils/metadata";
 import {
   FONT_ORDER,
   FONT_STORAGE_KEY,
@@ -111,9 +112,7 @@ const fontInitScript = `(function(){try{var raw=localStorage.getItem(${JSON.stri
 )}.indexOf(font)!==-1)document.documentElement.setAttribute("data-font",font);}catch(e){}})();`;
 
 export const metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://jeff-portfolio-web.vercel.app",
-  ),
+  metadataBase: new URL(SITE_URL),
 
   title: {
     default: "Jeff's Portfolio | Software Developer",
