@@ -13,7 +13,14 @@ import StackSkeleton from "@/components/Skeletons/StackSkeleton";
 import ProjectsSkeleton from "@/components/Skeletons/ProjectsSkeleton";
 import ExperienceSkeleton from "@/components/Skeletons/ExperienceSkeleton";
 import GitHubSkeleton from "@/components/Skeletons/GitHubSkeleton";
-import { pageMetadata, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/metadata";
+import JsonLd from "@/components/Modules/JsonLd";
+import {
+  pageMetadata,
+  PERSON_SCHEMA,
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+  WEBSITE_SCHEMA,
+} from "@/utils/metadata";
 
 export const metadata = pageMetadata({
   title: { absolute: SITE_TITLE },
@@ -25,6 +32,12 @@ export const metadata = pageMetadata({
 export default function Home() {
   return (
     <div className="overflow-x-hidden">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [PERSON_SCHEMA, WEBSITE_SCHEMA],
+        }}
+      />
       <Hero />
       <Suspense fallback={<SkillsSkeleton />}>
         <Skills />

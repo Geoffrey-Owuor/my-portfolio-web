@@ -6,7 +6,8 @@ import ViewBlogsSkeleton from "@/components/Skeletons/ViewBlogsSkeleton";
 
 import { headers } from "next/headers";
 import { stripMarkdown } from "@/utils/Helpers";
-import { pageMetadata } from "@/utils/metadata";
+import JsonLd from "@/components/Modules/JsonLd";
+import { OG_IMAGE, pageMetadata, PERSON_ID, SITE_URL } from "@/utils/metadata";
 
 const getBlogInfo = cache(async (id) => {
   try {
@@ -103,7 +104,26 @@ const ViewBlogData = async ({ id }) => {
   const headerList = await headers();
   const userId = headerList.get("x-user-id");
 
-  return <ViewBlog blogPost={blogPost} userId={userId} />;
+  return (
+    <>
+      {blogPost && !Array.isArray(blogPost) && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: blogPost.blog_title,
+            description: stripMarkdown(blogPost.blog_content, 155),
+            datePublished: new Date(blogPost.blog_date).toISOString(),
+            url: `${SITE_URL}/blog/${blogPost.id}`,
+            mainEntityOfPage: `${SITE_URL}/blog/${blogPost.id}`,
+            image: `${SITE_URL}${OG_IMAGE}`,
+            author: { "@id": PERSON_ID, name: blogPost.blog_author },
+          }}
+        />
+      )}
+      <ViewBlog blogPost={blogPost} userId={userId} />
+    </>
+  );
 };
 
 const page = async ({ params }) => {
