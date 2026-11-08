@@ -5,20 +5,15 @@ import ResumeUpload from "@/components/Resume/ResumeUpload";
 import { getSession } from "@/cache/getSession";
 import { getCachedLatestResume } from "@/lib/ResumeStorage";
 import { formatDate } from "@/utils/Helpers";
-import { OG_IMAGE } from "@/utils/metadata";
+import { pageMetadata, SITE_NAME } from "@/utils/metadata";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Résumé",
+  socialTitle: `Résumé | ${SITE_NAME}`,
   description:
     "Geoffrey Owuor's résumé: experience, education and skills as a software developer.",
-  openGraph: {
-    title: "Résumé | Jeff's Portfolio",
-    description:
-      "Geoffrey Owuor's résumé: experience, education and skills as a software developer.",
-    url: "/resume",
-    images: OG_IMAGE,
-  },
-};
+  path: "/resume",
+});
 
 const FILE_URL = "/resume/file";
 

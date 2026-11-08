@@ -2,7 +2,7 @@ import { query } from "@/lib/db";
 import Project from "@/components/Project/Project";
 import { cache } from "react";
 import { stripMarkdown } from "@/utils/Helpers";
-import { OG_IMAGE } from "@/utils/metadata";
+import { pageMetadata } from "@/utils/metadata";
 
 const getProjectInfo = cache(async (id) => {
   try {
@@ -79,19 +79,12 @@ export async function generateMetadata({ params }) {
   const description =
     stripMarkdown(projectInfo.project_description) || projectInfo.project_link;
 
-  return {
+  return pageMetadata({
     title: projectInfo.project_name,
     description,
-
-    openGraph: {
-      title: projectInfo.project_name,
-      description,
-      type: "article",
-      url: `/projects/${id}`,
-      siteName: projectInfo.project_name,
-      images: OG_IMAGE,
-    },
-  };
+    path: `/projects/${projectInfo.id}`,
+    type: "article",
+  });
 }
 
 const page = async ({ params }) => {

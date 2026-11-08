@@ -13,6 +13,14 @@ import StackSkeleton from "@/components/Skeletons/StackSkeleton";
 import ProjectsSkeleton from "@/components/Skeletons/ProjectsSkeleton";
 import ExperienceSkeleton from "@/components/Skeletons/ExperienceSkeleton";
 import GitHubSkeleton from "@/components/Skeletons/GitHubSkeleton";
+import { pageMetadata, SITE_DESCRIPTION, SITE_TITLE } from "@/utils/metadata";
+
+export const metadata = pageMetadata({
+  title: { absolute: SITE_TITLE },
+  socialTitle: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  path: "/",
+});
 
 export default function Home() {
   return (

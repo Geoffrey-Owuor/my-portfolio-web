@@ -5,7 +5,8 @@ import { Suspense } from "react";
 import ViewBlogsSkeleton from "@/components/Skeletons/ViewBlogsSkeleton";
 
 import { headers } from "next/headers";
-import { OG_IMAGE } from "@/utils/metadata";
+import { stripMarkdown } from "@/utils/Helpers";
+import { pageMetadata } from "@/utils/metadata";
 
 const getBlogInfo = cache(async (id) => {
   try {
@@ -80,18 +81,18 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: blogPost.blog_title,
-    description: blogPost.author_tagline,
-
-    openGraph: {
+    ...pageMetadata({
       title: blogPost.blog_title,
-      description: blogPost.author_tagline,
+      // Taglines are short labels like "#WebPerformance", so the snippet comes
+      // from the post itself.
+      description: stripMarkdown(blogPost.blog_content, 155),
+      path: `/blog/${blogPost.id}`,
       type: "article",
-      url: `/blog/${id}`,
-      siteName: blogPost.blog_title,
-      images: OG_IMAGE,
-    },
-
+      openGraph: {
+        publishedTime: new Date(blogPost.blog_date).toISOString(),
+        authors: [blogPost.blog_author],
+      },
+    }),
     authors: [{ name: blogPost.blog_author }],
   };
 }

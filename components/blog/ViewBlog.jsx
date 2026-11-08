@@ -146,8 +146,8 @@ const ViewBlog = ({ blogPost, userId }) => {
               {blogPost.blog_title}
             </h1>
 
-            {/* The tagline doubles as the post's meta description, so it reads
-                as a standfirst under the title now that the author card is gone. */}
+            {/* The tagline reads as a standfirst under the title now that the
+                author card is gone. */}
             {blogPost.author_tagline && (
               <p className="bg-accent/10 text-accent rounded-chip mb-6 w-fit px-3 py-1 font-mono text-xs text-nowrap">
                 {blogPost.author_tagline}

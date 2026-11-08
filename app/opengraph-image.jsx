@@ -5,7 +5,7 @@ import { ImageResponse } from "next/og";
 // Social preview card (1200x630, the size summary_large_image expects). Being a
 // file convention, it also covers child routes whose own openGraph metadata
 // sets no images. Colours mirror the dark theme tokens in styles/globals.css.
-export const alt = "Jeff's Portfolio | Software Developer";
+export const alt = "Geoffrey Owuor | Full-Stack Developer in Nairobi";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

@@ -89,7 +89,7 @@ const Hero = () => {
             >
               <Image
                 src={assets.profile_photo}
-                alt="Jeff's portrait"
+                alt="Portrait of Geoffrey Owuor"
                 className="ring-border-subtle h-14 w-14 rounded-full object-cover object-[50%_25%] ring-1"
                 priority
                 width={112}
