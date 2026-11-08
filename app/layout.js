@@ -17,7 +17,13 @@ import { ToastProvider } from "@/components/Modules/Toaster";
 import NavBar from "@/components/Home/NavBar";
 import { RouteProgressProvider } from "@/components/Modules/RouteProgress";
 import Footer from "@/components/Home/Footer";
-import { SITE_URL } from "@/utils/metadata";
+import {
+  RSS_ALTERNATES,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/utils/metadata";
 import {
   FONT_ORDER,
   FONT_STORAGE_KEY,
@@ -115,39 +121,31 @@ export const metadata = {
   metadataBase: new URL(SITE_URL),
 
   title: {
-    default: "Jeff's Portfolio | Software Developer",
-    template: "%s | Jeff's Portfolio",
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
 
-  description:
-    "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
+  description: SITE_DESCRIPTION,
 
-  applicationName: "Jeff's Portfolio",
+  applicationName: SITE_NAME,
 
-  // Lets feed readers and browser extensions discover the blog feed.
-  alternates: {
-    types: {
-      "application/rss+xml": [
-        { url: "/feed.xml", title: "Jeff's Portfolio — Blog" },
-      ],
-    },
-  },
+  // No canonical here: it would be inherited by every child route. Indexable
+  // pages set their own through pageMetadata().
+  alternates: { types: RSS_ALTERNATES },
 
   openGraph: {
     type: "website",
-    siteName: "Jeff's Portfolio",
-    title: "Jeff's Portfolio | Software Developer",
-    description:
-      "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     url: "/",
     // Preview images come from app/opengraph-image.jsx and app/twitter-image.jsx
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Jeff's Portfolio | Software Developer",
-    description:
-      "Welcome to my portfolio showcasing projects, technical skills, tech blogs, experience, and much more",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
 
   icons: {
@@ -157,12 +155,10 @@ export const metadata = {
 
   manifest: "/manifest.json",
 
-  authors: [{ name: "Geoffrey Owuor" }],
+  // Proves ownership to Google Search Console; removing it unverifies the site.
+  verification: { google: "NiBrgievzN1VlVZmMVXroSqS4iDjCUt9x-e3-AXq5l8" },
 
-  robots: {
-    index: true,
-    follow: true,
-  },
+  authors: [{ name: "Geoffrey Owuor" }],
 };
 
 export default function RootLayout({ children }) {

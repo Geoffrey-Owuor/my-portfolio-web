@@ -109,7 +109,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
         group: "Blog posts",
         label: blog.title,
         icon: FileText,
-        run: () => router.push(`/blog/${blog.id}`),
+        run: () => router.push(`/blog/${blog.slug}`),
       })),
       {
         id: "action-theme",

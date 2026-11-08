@@ -89,7 +89,7 @@ const Hero = () => {
             >
               <Image
                 src={assets.profile_photo}
-                alt="Jeff's portrait"
+                alt="Portrait of Geoffrey Owuor"
                 className="ring-border-subtle h-14 w-14 rounded-full object-cover object-[50%_25%] ring-1"
                 priority
                 width={112}
@@ -106,13 +106,12 @@ const Hero = () => {
               </div>
             </motion.div>
 
-            <motion.h1
-              variants={prefersReducedMotion ? undefined : lineVariants}
-              className="text-text-primary text-display mt-6 font-semibold text-balance"
-            >
+            {/* Not animated: this is the largest text on first paint, and a
+                fade from opacity 0 would hold it back until hydration. */}
+            <h1 className="text-text-primary text-display mt-6 font-semibold text-balance">
               I build production-ready web apps, from database schema to
               polished UI.
-            </motion.h1>
+            </h1>
 
             <motion.p
               variants={prefersReducedMotion ? undefined : lineVariants}

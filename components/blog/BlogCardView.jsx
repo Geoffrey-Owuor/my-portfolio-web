@@ -12,7 +12,7 @@ const BlogCardView = ({ currentBlogs, searchQuery, highlightText }) => {
         currentBlogs.map((blog) => (
           <article
             key={blog.id}
-            onClick={() => router.push(`/blog/${blog.id}`)}
+            onClick={() => router.push(`/blog/${blog.slug}`)}
             className="border-border-subtle group hover:border-accent rounded-card flex cursor-pointer flex-col border p-6 transition-colors duration-150"
           >
             {/* Title */}
@@ -45,7 +45,7 @@ const BlogCardView = ({ currentBlogs, searchQuery, highlightText }) => {
 
             {/* Read more button */}
             <ProgressLink
-              href={`/blog/${blog.id}`}
+              href={`/blog/${blog.slug}`}
               onClick={(e) => e.stopPropagation()}
               className="text-accent inline-flex w-fit items-center gap-1.5 text-sm font-medium underline-offset-4 hover:underline"
             >

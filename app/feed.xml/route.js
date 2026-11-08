@@ -1,12 +1,12 @@
 import { BlogsData } from "@/cache/BlogsData";
 import { stripMarkdown } from "@/utils/Helpers";
-import { SITE_URL } from "@/utils/metadata";
+import { SITE_NAME, SITE_URL } from "@/utils/metadata";
 
 // Rebuilt when the BlogsData tag is revalidated (after a blog create, update
 // or delete); the hourly revalidate is only a backstop.
 export const revalidate = 3600;
 
-const FEED_TITLE = "Jeff's Portfolio — Blog";
+const FEED_TITLE = `${SITE_NAME} — Blog`;
 const FEED_DESCRIPTION =
   "Posts on software development, tools and lessons learned.";
 
@@ -19,7 +19,7 @@ const escapeXml = (value = "") =>
     .replace(/'/g, "&apos;");
 
 const toItem = (blog) => {
-  const link = `${SITE_URL}/blog/${blog.id}`;
+  const link = `${SITE_URL}/blog/${blog.slug}`;
   return `    <item>
       <title>${escapeXml(blog.blog_title)}</title>
       <link>${link}</link>

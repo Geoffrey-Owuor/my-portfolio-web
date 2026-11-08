@@ -20,7 +20,7 @@ import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
 import BlogNav from "./BlogNav";
 
-const ViewBlog = ({ blogPost, userId }) => {
+const ViewBlog = ({ blogPost }) => {
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
   const progressRouter = useProgressRouter();
@@ -45,6 +45,19 @@ const ViewBlog = ({ blogPost, userId }) => {
       );
     },
   };
+
+  // The page is cached and identical for every visitor, so whether to offer
+  // Edit is settled here in the browser. The update route still checks the
+  // session itself.
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/session", { signal: controller.signal })
+      .then((response) => response.json())
+      .then((session) => setSignedIn(session.signedIn === true))
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
 
   // 1. State to hold the current URL (avoids hydration mismatch)
   const [currentUrl, setCurrentUrl] = useState("");
@@ -98,30 +111,6 @@ const ViewBlog = ({ blogPost, userId }) => {
     }
   };
 
-  // Check if blogPost is null, undefined, or empty
-  if (!blogPost || Object.keys(blogPost).length === 0) {
-    return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-16">
-        <div className="text-center">
-          <h2 className="text-text-primary mb-4 text-3xl font-bold">
-            Blog Not Found
-          </h2>
-          <p className="text-text-muted mb-8">
-            The blog post you&apos;re looking for doesn&apos;t exist or has been
-            removed.
-          </p>
-          <button
-            onClick={() => handleBlogsRoute("/blogs")}
-            className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-6 py-3 font-medium transition-opacity hover:opacity-90"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            Back to Blogs
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   // Data needed by the Edit Blog Modal
   const editBlogData = {
     blog_id: blogPost.id,
@@ -146,8 +135,8 @@ const ViewBlog = ({ blogPost, userId }) => {
               {blogPost.blog_title}
             </h1>
 
-            {/* The tagline doubles as the post's meta description, so it reads
-                as a standfirst under the title now that the author card is gone. */}
+            {/* The tagline reads as a standfirst under the title now that the
+                author card is gone. */}
             {blogPost.author_tagline && (
               <p className="bg-accent/10 text-accent rounded-chip mb-6 w-fit px-3 py-1 font-mono text-xs text-nowrap">
                 {blogPost.author_tagline}
@@ -172,7 +161,7 @@ const ViewBlog = ({ blogPost, userId }) => {
               </div>
 
               {/* The edit button */}
-              {userId && (
+              {signedIn && (
                 <button
                   onClick={() => setShowEditBlog(true)}
                   className="hover:text-text-primary flex cursor-pointer items-center gap-2 transition-colors duration-150"

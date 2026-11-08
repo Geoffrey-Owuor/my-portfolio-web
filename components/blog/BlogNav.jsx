@@ -12,7 +12,7 @@ import {
 // One half of the prev/next pair. `direction` decides which way the card leans:
 // "previous" is arrow-first and left aligned, "next" is arrow-last and right
 // aligned, so the pair reads outward from the middle of the page.
-const NeighbourCard = ({ id, title, readTime, direction, isWrapping }) => {
+const NeighbourCard = ({ slug, title, readTime, direction, isWrapping }) => {
   const isPrevious = direction === "previous";
 
   // At the ends of the list navigation wraps, so the label says where you
@@ -33,7 +33,7 @@ const NeighbourCard = ({ id, title, readTime, direction, isWrapping }) => {
 
   return (
     <ProgressLink
-      href={`/blog/${id}`}
+      href={`/blog/${slug}`}
       aria-label={`${isPrevious ? "Previous" : "Next"} blog: ${title}`}
       className={`group border-border-subtle hover:border-accent focus-visible:border-accent rounded-card flex flex-col gap-2 border p-5 transition-colors duration-150 focus-visible:outline-none ${
         isPrevious ? "items-start" : "items-end text-right sm:col-start-2"
@@ -90,7 +90,7 @@ const BlogNav = ({ blogPost }) => {
     >
       {hasPrevious && (
         <NeighbourCard
-          id={blogPost.previous_blog_id}
+          slug={blogPost.previous_blog_slug}
           title={blogPost.previous_blog_title}
           readTime={blogPost.previous_blog_read_time}
           direction="previous"
@@ -99,7 +99,7 @@ const BlogNav = ({ blogPost }) => {
       )}
       {hasNext && (
         <NeighbourCard
-          id={blogPost.next_blog_id}
+          slug={blogPost.next_blog_slug}
           title={blogPost.next_blog_title}
           readTime={blogPost.next_blog_read_time}
           direction="next"

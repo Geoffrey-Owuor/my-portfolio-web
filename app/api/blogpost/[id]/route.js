@@ -1,6 +1,7 @@
 import { query } from "@/lib/db";
 import { verifyAccessTokenJWT } from "@/lib/Auth";
-import { NextResponse } from "next/server";
+import { notifyIndexNow } from "@/lib/IndexNow";
+import { after, NextResponse } from "next/server";
 
 export async function PUT(request, { params }) {
   try {
@@ -36,7 +37,7 @@ export async function PUT(request, { params }) {
                             author_tagline = COALESCE($4, author_tagline),
                             read_time = COALESCE($5, read_time)
                             WHERE id = $6 AND user_id = $7
-                            RETURNING id
+                            RETURNING id, slug
                            `;
     const blogUpdateParams = [
       title,
@@ -56,6 +57,8 @@ export async function PUT(request, { params }) {
         { status: 404 },
       );
     }
+
+    after(() => notifyIndexNow([`/blog/${rows[0].slug}`]));
 
     return NextResponse.json(
       { message: "Your blog has been updated successfully" },

@@ -37,7 +37,7 @@ Path alias: `@/*` maps to the repo root (see `jsconfig.json`), e.g. `@/lib/db`, 
 Custom-rolled JWT auth, split across three layers:
 
 - `lib/Auth.js` — token signing/verification using `jose` (HS256), bcrypt password hashing, `ACCESS_TOKEN_SECRET` (15 min expiry) and `REFRESH_TOKEN_SECRET` (7 day expiry). Refresh tokens are additionally hashed and stored in the `users` table so they can be revoked server-side; `requireSession()` and `verifyAccessTokenJWT()` are the main entry points for Server Components/route handlers.
-- `middleware.js` — Edge middleware (matches `/createblog`, `/login`, `/blog/:path*`) that redirects unauthenticated users away from `/createblog` and redirects already-logged-in users away from `/login`. It also verifies the refresh token and injects `x-user-id` into request headers for downstream Server Components — but this is advisory (guest browsing continues if verification fails), not itself an authorization boundary.
+- `middleware.js` — Edge middleware (matches `/createblog`, `/login`) that redirects unauthenticated users away from `/createblog` and redirects already-logged-in users away from `/login`. It's a convenience, not an authorization boundary. Blog and project pages are cached and identical for every visitor, so owner-only controls ask `GET /api/session` from the browser.
 - `lib/AxiosClient.js` — client-side axios instance (`baseURL: /api`, `withCredentials: true`) with a response interceptor that, on a 401, calls `/api/refresh-token` once and retries the original request; if refresh fails it hard-redirects to `/login`.
 - Route handlers under `app/api/{login,logout,refresh-token}` do the actual cookie issuance (`accessToken`, `refreshToken` — both `httpOnly`, `sameSite: lax`, `secure` in production) and DB-side refresh-token rotation/revocation.
 
@@ -45,7 +45,7 @@ When adding a new protected route or mutation, follow the existing pattern: veri
 
 ### App Router structure
 
-- Route groups: `app/(auth)/login`, `app/(blogposts)/blog/[id]` and `app/(blogposts)/blogs` — grouped for organization only, no shared layout side effects beyond routing.
+- Route groups: `app/(auth)/login`, `app/(blogposts)/blog/[slug]` and `app/(blogposts)/blogs` — grouped for organization only, no shared layout side effects beyond routing.
 - `app/api/*` — REST-style route handlers (`route.js`) for login/logout/refresh, blog CRUD (`blogpost`, `blogpost/[id]`, `updateblog`), contact form (`submitfeedback`), and cache revalidation.
 - `app/layout.js` defines global metadata (Open Graph/Twitter defaults, icons) and wraps every page in `Providers` (theme), `ToastProvider` (+ `NetworkStatus`), a persistent `NavBar`/`Footer`.
 

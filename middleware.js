@@ -35,18 +35,10 @@ export async function middleware(request) {
     return NextResponse.redirect(new URL("/createblog", request.url));
   }
 
-  // --- 3. HEADER INJECTION LOGIC (For Blog/Public Pages) ---
-  const response = NextResponse.next();
-
-  if (payload) {
-    // Inject metadata into headers for Server Components to read
-    response.headers.set("x-user-id", String(payload.id || ""));
-  }
-
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
   // This ensures the middleware ONLY runs on these paths
-  matcher: ["/createblog", "/login", "/blog/:path*"],
+  matcher: ["/createblog", "/login"],
 };
