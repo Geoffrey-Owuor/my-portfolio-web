@@ -1,7 +1,8 @@
 import { query } from "@/lib/db";
 import { verifyAccessTokenJWT } from "@/lib/Auth";
 import { createBlogSlug } from "@/lib/BlogSlug";
-import { NextResponse } from "next/server";
+import { notifyIndexNow } from "@/lib/IndexNow";
+import { after, NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
@@ -38,6 +39,8 @@ export async function POST(request) {
     ];
 
     await query(blogQuery, blogParams);
+
+    after(() => notifyIndexNow([`/blog/${slug}`, "/blogs"]));
 
     return NextResponse.json(
       { message: "Your blog has been posted successfully" },
