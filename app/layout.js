@@ -155,6 +155,9 @@ export const metadata = {
 
   manifest: "/manifest.json",
 
+  // Proves ownership to Google Search Console; removing it unverifies the site.
+  verification: { google: "NiBrgievzN1VlVZmMVXroSqS4iDjCUt9x-e3-AXq5l8" },
+
   authors: [{ name: "Geoffrey Owuor" }],
 };
 
