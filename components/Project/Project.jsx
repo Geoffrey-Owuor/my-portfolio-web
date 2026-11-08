@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { project_images } from "@/assets/assets";
 import Image from "next/image";
 import { ExternalLink, ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useProgressRouter } from "../Modules/RouteProgress";
 import ProjectStack from "../Wrappers/ProjectStack";
 import ReactMarkdown from "react-markdown";
@@ -12,11 +11,10 @@ import remarkGfm from "remark-gfm";
 import ProjectNav from "./ProjectNav";
 
 const Project = ({ projectInfo }) => {
-  const router = useRouter();
   const progressRouter = useProgressRouter();
   const project = projectInfo[0];
 
-  const projectImage = project_images.find((image) => image.id === project?.id);
+  const projectImage = project_images.find((image) => image.id === project.id);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -30,31 +28,6 @@ const Project = ({ projectInfo }) => {
   const handleGoBack = () => {
     progressRouter.push("/#projects");
   };
-
-  if (!project || Object.keys(project).length === 0) {
-    return (
-      <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-8 text-center">
-        <p className="text-danger mb-3 font-mono text-sm">$ cat project.json</p>
-        <p className="text-text-muted mb-8 font-mono text-sm">
-          cat: project.json: No such file or directory
-        </p>
-        <h2 className="text-text-primary mb-3 text-2xl font-semibold">
-          Project not found
-        </h2>
-        <p className="text-text-muted mb-8">
-          The project you&apos;re looking for doesn&apos;t exist or has been
-          removed.
-        </p>
-        <button
-          onClick={() => router.back()}
-          className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent rounded-control inline-flex items-center gap-2 border px-5 py-2.5 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to projects
-        </button>
-      </div>
-    );
-  }
 
   return (
     <>

@@ -156,11 +156,6 @@ export const metadata = {
   manifest: "/manifest.json",
 
   authors: [{ name: "Geoffrey Owuor" }],
-
-  robots: {
-    index: true,
-    follow: true,
-  },
 };
 
 export default function RootLayout({ children }) {

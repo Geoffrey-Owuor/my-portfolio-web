@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Home, FileQuestion } from "lucide-react";
 
+export const metadata = { title: "Page not found" };
+
 export default function NotFound() {
   return (
     <div className="container-page py-section flex flex-1 items-center justify-center">

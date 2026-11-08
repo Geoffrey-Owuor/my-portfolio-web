@@ -98,30 +98,6 @@ const ViewBlog = ({ blogPost, userId }) => {
     }
   };
 
-  // Check if blogPost is null, undefined, or empty
-  if (!blogPost || Object.keys(blogPost).length === 0) {
-    return (
-      <div className="mx-auto flex min-h-[60vh] max-w-5xl flex-col items-center justify-center px-4 py-16">
-        <div className="text-center">
-          <h2 className="text-text-primary mb-4 text-3xl font-bold">
-            Blog Not Found
-          </h2>
-          <p className="text-text-muted mb-8">
-            The blog post you&apos;re looking for doesn&apos;t exist or has been
-            removed.
-          </p>
-          <button
-            onClick={() => handleBlogsRoute("/blogs")}
-            className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-6 py-3 font-medium transition-opacity hover:opacity-90"
-          >
-            <ArrowLeft className="h-5 w-5" />
-            Back to Blogs
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   // Data needed by the Edit Blog Modal
   const editBlogData = {
     blog_id: blogPost.id,
