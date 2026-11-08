@@ -20,7 +20,7 @@ import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
 import BlogNav from "./BlogNav";
 
-const ViewBlog = ({ blogPost, userId }) => {
+const ViewBlog = ({ blogPost }) => {
   const router = useRouter();
   const [showEditBlog, setShowEditBlog] = useState(false);
   const progressRouter = useProgressRouter();
@@ -45,6 +45,19 @@ const ViewBlog = ({ blogPost, userId }) => {
       );
     },
   };
+
+  // The page is cached and identical for every visitor, so whether to offer
+  // Edit is settled here in the browser. The update route still checks the
+  // session itself.
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/session", { signal: controller.signal })
+      .then((response) => response.json())
+      .then((session) => setSignedIn(session.signedIn === true))
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
 
   // 1. State to hold the current URL (avoids hydration mismatch)
   const [currentUrl, setCurrentUrl] = useState("");
@@ -148,7 +161,7 @@ const ViewBlog = ({ blogPost, userId }) => {
               </div>
 
               {/* The edit button */}
-              {userId && (
+              {signedIn && (
                 <button
                   onClick={() => setShowEditBlog(true)}
                   className="hover:text-text-primary flex cursor-pointer items-center gap-2 transition-colors duration-150"

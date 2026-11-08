@@ -1,18 +1,20 @@
 import { query } from "@/lib/db";
 import ViewBlog from "@/components/blog/ViewBlog";
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
+import { BlogsData } from "@/cache/BlogsData";
 import { notFound } from "next/navigation";
 
-import { headers } from "next/headers";
 import { stripMarkdown } from "@/utils/Helpers";
 import JsonLd from "@/components/Modules/JsonLd";
 import { OG_IMAGE, pageMetadata, PERSON_ID, SITE_URL } from "@/utils/metadata";
 
-// Resolves to undefined for an unknown post. A failed read throws instead, so
-// it reaches the error page rather than telling crawlers the post is gone.
-const getBlogInfo = cache(async (id) => {
+// Resolves to null for an unknown post. A failed read throws instead, so it
+// reaches the error page rather than telling crawlers the post is gone, and
+// unstable_cache never stores it.
+const readBlogInfo = async (id) => {
   // Anything else would make Postgres reject the integer parameter.
-  if (!/^\d{1,9}$/.test(id)) return undefined;
+  if (!/^\d{1,9}$/.test(id)) return null;
 
   // Neighbours follow the same order the blogs listing renders in (newest
   // first), matching the projects page: "previous" is the card above this one
@@ -67,8 +69,21 @@ const getBlogInfo = cache(async (id) => {
 
   const blogPost = await query(blogQuery, [id]);
 
-  return blogPost[0];
-});
+  return blogPost[0] ?? null;
+};
+
+// Tagged with the listing, so publishing, editing or deleting any post also
+// refreshes the neighbour links on the others.
+const getBlogInfo = cache(
+  unstable_cache(readBlogInfo, ["blogInfo"], { tags: ["BlogsData"] }),
+);
+
+// Known posts are prerendered; a newer one renders on first visit, then stays
+// cached like the rest.
+export async function generateStaticParams() {
+  const blogs = await BlogsData();
+  return (blogs ?? []).map((blog) => ({ id: String(blog.id) }));
+}
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -101,9 +116,6 @@ const page = async ({ params }) => {
 
   if (!blogPost) notFound();
 
-  const headerList = await headers();
-  const userId = headerList.get("x-user-id");
-
   return (
     <>
       <JsonLd
@@ -119,7 +131,7 @@ const page = async ({ params }) => {
           author: { "@id": PERSON_ID, name: blogPost.blog_author },
         }}
       />
-      <ViewBlog blogPost={blogPost} userId={userId} />
+      <ViewBlog blogPost={blogPost} />
     </>
   );
 };

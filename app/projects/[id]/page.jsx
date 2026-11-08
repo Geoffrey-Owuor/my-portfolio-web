@@ -1,13 +1,16 @@
 import { query } from "@/lib/db";
 import Project from "@/components/Project/Project";
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
+import { getCachedProjects } from "@/cache/CachedData";
 import { notFound } from "next/navigation";
 import { stripMarkdown } from "@/utils/Helpers";
 import { pageMetadata } from "@/utils/metadata";
 
 // Resolves to [] for an unknown project. A failed read throws instead, so it
-// reaches the error page rather than telling crawlers the project is gone.
-const getProjectInfo = cache(async (id) => {
+// reaches the error page rather than telling crawlers the project is gone, and
+// unstable_cache never stores it.
+const readProjectInfo = async (id) => {
   // Anything else would make Postgres reject the integer parameter.
   if (!/^\d{1,9}$/.test(id)) return [];
 
@@ -62,7 +65,18 @@ const getProjectInfo = cache(async (id) => {
 
   const projectInfo = await query(selectQuery, queryParams);
   return projectInfo;
-});
+};
+
+const getProjectInfo = cache(
+  unstable_cache(readProjectInfo, ["projectInfo"], { tags: ["projects"] }),
+);
+
+// Known projects are prerendered; a newer one renders on first visit, then
+// stays cached like the rest.
+export async function generateStaticParams() {
+  const projects = await getCachedProjects();
+  return (projects ?? []).map((project) => ({ id: String(project.id) }));
+}
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
