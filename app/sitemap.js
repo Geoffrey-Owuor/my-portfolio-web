@@ -30,7 +30,7 @@ export default async function sitemap() {
   ];
 
   const blogRoutes = (blogs ?? []).map((blog) => ({
-    url: `${SITE_URL}/blog/${blog.id}`,
+    url: `${SITE_URL}/blog/${blog.slug}`,
     lastModified: blog.blog_date ? new Date(blog.blog_date) : undefined,
     changeFrequency: "monthly",
     priority: 0.7,

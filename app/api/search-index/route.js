@@ -17,8 +17,9 @@ export async function GET() {
       id,
       title: project_name,
     })),
-    blogs: (blogs ?? []).map(({ id, blog_title }) => ({
+    blogs: (blogs ?? []).map(({ id, slug, blog_title }) => ({
       id,
+      slug,
       title: blog_title,
     })),
   });

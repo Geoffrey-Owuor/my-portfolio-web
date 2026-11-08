@@ -42,7 +42,7 @@ const BlogTableView = ({ currentBlogs, searchQuery, highlightText }) => {
         {currentBlogs.map((blog, index) => (
           <ProgressLink
             key={blog.id}
-            href={`/blog/${blog.id}`}
+            href={`/blog/${blog.slug}`}
             className="group bg-surface hover:bg-accent/5 grid grid-cols-[1fr_auto] items-center px-6 py-4 transition-colors duration-150 md:grid-cols-[2fr_1fr_1fr_1fr_auto]"
           >
             {/* Index + Title */}

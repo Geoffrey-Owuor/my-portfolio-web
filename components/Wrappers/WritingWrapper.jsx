@@ -26,7 +26,7 @@ const WritingWrapper = ({ posts }) => {
             {posts.map((post) => (
               <li key={post.id}>
                 <ProgressLink
-                  href={`/blog/${post.id}`}
+                  href={`/blog/${post.slug}`}
                   className="group hover:bg-surface-raised/60 focus-visible:bg-surface-raised/60 grid grid-cols-1 gap-2 px-2 py-6 transition-colors focus-visible:outline-none sm:grid-cols-[9rem_1fr_auto] sm:gap-6 sm:px-4"
                 >
                   <span className="text-text-muted pt-1 font-mono text-xs tabular-nums">

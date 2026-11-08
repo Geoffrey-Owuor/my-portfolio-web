@@ -10,6 +10,7 @@ const Writing = async () => {
   // Only a short plain-text excerpt crosses to the client, not whole posts.
   const posts = blogs?.slice(0, LATEST_COUNT).map((blog) => ({
     id: blog.id,
+    slug: blog.slug,
     title: blog.blog_title,
     date: blog.blog_date,
     readTime: blog.read_time,

@@ -19,7 +19,7 @@ const escapeXml = (value = "") =>
     .replace(/'/g, "&apos;");
 
 const toItem = (blog) => {
-  const link = `${SITE_URL}/blog/${blog.id}`;
+  const link = `${SITE_URL}/blog/${blog.slug}`;
   return `    <item>
       <title>${escapeXml(blog.blog_title)}</title>
       <link>${link}</link>
