@@ -1,8 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const CLICK_HOLD_PX = 8;
 
 const TableOfContents = ({ headings }) => {
   const [activeId, setActiveId] = useState("");
+  const clickedRef = useRef(null);
+
+  const handleLinkClick = (e, id) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    clickedRef.current = { landedAt: null };
+    setActiveId(id);
+  };
 
   // Track scroll position to update active heading
   useEffect(() => {
@@ -25,8 +34,23 @@ const TableOfContents = ({ headings }) => {
 
       if (headingElements.length === 0) return;
 
-      // Measured from just below the sticky header.
-      const offset = 120;
+      // A clicked heading keeps its highlight until the reader scrolls away,
+      // because one near the end of the post may never reach the threshold.
+      const clicked = clickedRef.current;
+      if (clicked) {
+        clicked.landedAt ??= window.scrollY;
+        if (Math.abs(window.scrollY - clicked.landedAt) < CLICK_HOLD_PX) return;
+        clickedRef.current = null;
+      }
+
+      // Where a hash link parks a heading (scroll-padding + scroll-margin), so
+      // the heading a link lands on counts as reached. +1 absorbs rounding.
+      const offset =
+        parseFloat(
+          getComputedStyle(document.documentElement).scrollPaddingTop,
+        ) +
+        parseFloat(getComputedStyle(headingElements[0]).scrollMarginTop) +
+        1;
       let currentActiveId = "";
 
       for (let i = headingElements.length - 1; i >= 0; i--) {
@@ -81,6 +105,7 @@ const TableOfContents = ({ headings }) => {
               <li key={index}>
                 <a
                   href={`#${heading.id}`}
+                  onClick={(e) => handleLinkClick(e, heading.id)}
                   className={`rounded-control block px-3 py-2 text-sm text-wrap transition-colors ${
                     activeId === heading.id
                       ? "bg-accent/10 text-accent font-medium"
