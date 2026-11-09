@@ -74,8 +74,10 @@ const ResumePage = async () => {
 
       {resume ? (
         // The key changes on every upload, so the viewer never reuses a
-        // stale copy of the previous version.
+        // stale copy of the previous version, and the preview remounts to
+        // show its loading state again.
         <ResumePreview
+          key={resume.key}
           file={`${FILE_URL}?v=${encodeURIComponent(resume.key)}`}
         />
       ) : (
