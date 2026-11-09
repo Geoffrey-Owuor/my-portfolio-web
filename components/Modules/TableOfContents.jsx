@@ -1,15 +1,10 @@
 "use client";
-import { extractHeadings } from "@/utils/blogHeadings";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-const TableOfContents = ({ content }) => {
+const TableOfContents = ({ headings }) => {
   const [activeId, setActiveId] = useState("");
 
-  // 1. Extract headings from the markdown content. Done during render so the
-  // list is part of the cached HTML and appears together with the post.
-  const headings = useMemo(() => extractHeadings(content), [content]);
-
-  // 2. Track scroll position to update active heading
+  // Track scroll position to update active heading
   useEffect(() => {
     if (headings.length === 0) return;
 
