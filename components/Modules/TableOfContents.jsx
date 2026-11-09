@@ -23,6 +23,9 @@ const TableOfContents = ({ content }) => {
     let ticking = false;
 
     const doScrollMath = () => {
+      // Open the gate for the next scroll event, before any early return
+      ticking = false;
+
       // 1. Instantly abort the heavy DOM math if we are on a mobile screen on the screen is less than 1024px.
       // The event listener fires, but it costs virtually zero performance.
       if (window.innerWidth < 1024) return;
@@ -48,9 +51,6 @@ const TableOfContents = ({ content }) => {
       }
 
       setActiveId(currentActiveId);
-
-      // Once the math is done, open the gate for the next scroll event
-      ticking = false;
     };
 
     const handleScroll = () => {
