@@ -1,45 +1,19 @@
 "use client";
 import { generateSlug } from "@/utils/Helpers";
-import { useEffect, useState } from "react";
-import TOCSkeleton from "../Skeletons/TOCSkeleton";
+import { useEffect, useMemo, useState } from "react";
+
+const extractHeadings = (content) =>
+  [...(content ?? "").matchAll(/^###\s+(.+)$/gm)].map((match) => ({
+    text: match[1],
+    id: generateSlug(match[1]),
+  }));
 
 const TableOfContents = ({ content }) => {
-  const [headings, setHeadings] = useState([]);
-  const [headingsLoading, setHeadingsLoading] = useState(true);
   const [activeId, setActiveId] = useState("");
 
-  // 1. Extract headings from the markdown content
-  useEffect(() => {
-    const handleHeadingsPopulation = () => {
-      if (!content) {
-        setHeadingsLoading(false);
-        return;
-      }
-
-      setHeadingsLoading(true);
-
-      try {
-        const regex = /^###\s+(.+)$/gm;
-        const matches = [];
-        let match;
-
-        while ((match = regex.exec(content)) !== null) {
-          matches.push({
-            text: match[1],
-            id: generateSlug(match[1]),
-          });
-        }
-
-        setHeadings(matches);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setHeadingsLoading(false);
-      }
-    };
-
-    handleHeadingsPopulation();
-  }, [content]);
+  // 1. Extract headings from the markdown content. Done during render so the
+  // list is part of the cached HTML and appears together with the post.
+  const headings = useMemo(() => extractHeadings(content), [content]);
 
   // 2. Track scroll position to update active heading
   useEffect(() => {
@@ -99,8 +73,6 @@ const TableOfContents = ({ content }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [headings]);
-
-  if (headingsLoading) return <TOCSkeleton />;
 
   return (
     <nav className="rounded-card sticky top-[calc(var(--header-h)+1rem)] hidden max-h-[calc(100dvh-var(--header-h)-2rem)] w-70 shrink-0 flex-col overflow-y-auto p-4 [scrollbar-width:thin] lg:flex">
