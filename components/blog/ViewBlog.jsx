@@ -9,7 +9,8 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "../Modules/Toaster";
-import { formatDate, generateSlug } from "@/utils/Helpers";
+import { formatDate } from "@/utils/Helpers";
+import { headingId } from "@/utils/blogHeadings";
 import EditBlog from "./EditBlog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -34,16 +35,11 @@ const ViewBlog = ({ blogPost }) => {
 
   // 1. Define custom renderer for ReactMarkdown to add IDs to h3
   const MarkdownComponents = {
-    h3: ({ node, children, ...props }) => {
-      // Extract text content from children to generate the slug
-      const text = children?.toString() || "";
-      const id = generateSlug(text);
-      return (
-        <h3 id={id} style={{ scrollMarginTop: "6rem" }} {...props}>
-          {children}
-        </h3>
-      );
-    },
+    h3: ({ node, children, ...props }) => (
+      <h3 id={headingId(node)} style={{ scrollMarginTop: "6rem" }} {...props}>
+        {children}
+      </h3>
+    ),
   };
 
   // The page is cached and identical for every visitor, so whether to offer

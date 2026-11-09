@@ -1,12 +1,6 @@
 "use client";
-import { generateSlug } from "@/utils/Helpers";
+import { extractHeadings } from "@/utils/blogHeadings";
 import { useEffect, useMemo, useState } from "react";
-
-const extractHeadings = (content) =>
-  [...(content ?? "").matchAll(/^###\s+(.+)$/gm)].map((match) => ({
-    text: match[1],
-    id: generateSlug(match[1]),
-  }));
 
 const TableOfContents = ({ content }) => {
   const [activeId, setActiveId] = useState("");
