@@ -9,12 +9,13 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "../Modules/Toaster";
-import { formatDate, generateSlug } from "@/utils/Helpers";
+import { formatDate } from "@/utils/Helpers";
+import { extractHeadings } from "@/utils/blogHeadings";
 import EditBlog from "./EditBlog";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { highlightPlugin } from "@/utils/rehypeHighlight";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useProgressRouter } from "../Modules/RouteProgress";
 import TableOfContents from "../Modules/TableOfContents";
 import { shareIcons } from "@/assets/assets";
@@ -32,19 +33,28 @@ const ViewBlog = ({ blogPost }) => {
     progressRouter.push(link);
   };
 
+  // One set of ids for the article and the table of contents.
+  const headings = useMemo(
+    () => extractHeadings(blogPost.blog_content),
+    [blogPost.blog_content],
+  );
+
   // 1. Define custom renderer for ReactMarkdown to add IDs to h3
-  const MarkdownComponents = {
-    h3: ({ node, children, ...props }) => {
-      // Extract text content from children to generate the slug
-      const text = children?.toString() || "";
-      const id = generateSlug(text);
-      return (
-        <h3 id={id} style={{ scrollMarginTop: "6rem" }} {...props}>
+  const MarkdownComponents = useMemo(() => {
+    const idsByOffset = new Map(headings.map((h) => [h.offset, h.id]));
+
+    return {
+      h3: ({ node, children, ...props }) => (
+        <h3
+          id={idsByOffset.get(node.position?.start.offset)}
+          style={{ scrollMarginTop: "6rem" }}
+          {...props}
+        >
           {children}
         </h3>
-      );
-    },
-  };
+      ),
+    };
+  }, [headings]);
 
   // The page is cached and identical for every visitor, so whether to offer
   // Edit is settled here in the browser. The update route still checks the
@@ -224,7 +234,7 @@ const ViewBlog = ({ blogPost }) => {
           <BlogNav blogPost={blogPost} />
         </article>
         {/* 3. The Sidebar (Only visible on large screens via CSS in component) */}
-        <TableOfContents content={blogPost.blog_content} />
+        <TableOfContents headings={headings} />
       </div>
     </div>
   );

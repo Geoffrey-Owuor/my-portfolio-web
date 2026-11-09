@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useLayoutEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { GitHubIcon } from "@/components/Icons/BrandIcons";
 import { Menu, X, ArrowUpRight, Search } from "lucide-react";
@@ -33,19 +33,10 @@ const Wordmark = () => (
   </span>
 );
 
-// Every tab in the command bar: a transparent hit area with the single active
-// pill sliding underneath it via a shared layout animation. Declared at module
-// scope so the pill isn't remounted (and the animation lost) on each render.
+// Every tab in the command bar: a transparent hit area above the single
+// sliding pill, which NavBar renders once per list.
 const Tab = ({ isActive, onClick, children }) => (
   <li className="relative">
-    {isActive && (
-      <motion.span
-        layoutId="command-bar-pill"
-        transition={{ type: "spring", stiffness: 380, damping: 32 }}
-        className="bg-surface-raised border-border-subtle rounded-control absolute inset-0 border"
-        aria-hidden="true"
-      />
-    )}
     <button
       type="button"
       onClick={onClick}
@@ -110,6 +101,37 @@ const NavBar = () => {
     if (pathname === "/blogs") return "blogs";
     return isInHome ? activeId : "";
   }, [pathname, isInHome, activeId]);
+
+  // The pill is placed from the active tab's offset within the list. A shared
+  // layout animation measures against the page, so in this sticky bar a route
+  // change that resets the scroll made the pill fly in from far below. The
+  // observer catches width changes from the font switcher and breakpoints.
+  const tabListRef = useRef(null);
+  const [pill, setPill] = useState(null);
+
+  useLayoutEffect(() => {
+    const list = tabListRef.current;
+    if (!list) return;
+
+    const placePill = () => {
+      const tab = list.querySelector('[aria-current="true"]');
+      if (!tab) {
+        setPill(null);
+        return;
+      }
+
+      const tabBox = tab.getBoundingClientRect();
+      setPill({
+        x: tabBox.left - list.getBoundingClientRect().left,
+        width: tabBox.width,
+      });
+    };
+
+    placePill();
+    const observer = new ResizeObserver(placePill);
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, [activeKey]);
 
   // One rAF-throttled listener drives the scroll-spy. Sections are looked up
   // per tick rather than observed once, because they stream in behind
@@ -260,7 +282,17 @@ const NavBar = () => {
             />
 
             {/* Tabs — the sliding pill tracks the section under the viewport midline */}
-            <ul className="flex items-center gap-0.5">
+            <ul ref={tabListRef} className="relative flex items-center gap-0.5">
+              {pill && (
+                <motion.li
+                  aria-hidden="true"
+                  initial={false}
+                  animate={pill}
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  className="bg-surface-raised border-border-subtle rounded-control absolute inset-y-0 left-0 border"
+                />
+              )}
+
               {navLinks.map((link) => (
                 <Tab
                   key={link.id}

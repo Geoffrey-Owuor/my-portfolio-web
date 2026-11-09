@@ -1,47 +1,19 @@
 "use client";
-import { generateSlug } from "@/utils/Helpers";
-import { useEffect, useState } from "react";
-import TOCSkeleton from "../Skeletons/TOCSkeleton";
+import { useEffect, useRef, useState } from "react";
 
-const TableOfContents = ({ content }) => {
-  const [headings, setHeadings] = useState([]);
-  const [headingsLoading, setHeadingsLoading] = useState(true);
+const CLICK_HOLD_PX = 8;
+
+const TableOfContents = ({ headings }) => {
   const [activeId, setActiveId] = useState("");
+  const clickedRef = useRef(null);
 
-  // 1. Extract headings from the markdown content
-  useEffect(() => {
-    const handleHeadingsPopulation = () => {
-      if (!content) {
-        setHeadingsLoading(false);
-        return;
-      }
+  const handleLinkClick = (e, id) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    clickedRef.current = { landedAt: null };
+    setActiveId(id);
+  };
 
-      setHeadingsLoading(true);
-
-      try {
-        const regex = /^###\s+(.+)$/gm;
-        const matches = [];
-        let match;
-
-        while ((match = regex.exec(content)) !== null) {
-          matches.push({
-            text: match[1],
-            id: generateSlug(match[1]),
-          });
-        }
-
-        setHeadings(matches);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setHeadingsLoading(false);
-      }
-    };
-
-    handleHeadingsPopulation();
-  }, [content]);
-
-  // 2. Track scroll position to update active heading
+  // Track scroll position to update active heading
   useEffect(() => {
     if (headings.length === 0) return;
 
@@ -49,6 +21,9 @@ const TableOfContents = ({ content }) => {
     let ticking = false;
 
     const doScrollMath = () => {
+      // Open the gate for the next scroll event, before any early return
+      ticking = false;
+
       // 1. Instantly abort the heavy DOM math if we are on a mobile screen on the screen is less than 1024px.
       // The event listener fires, but it costs virtually zero performance.
       if (window.innerWidth < 1024) return;
@@ -59,8 +34,23 @@ const TableOfContents = ({ content }) => {
 
       if (headingElements.length === 0) return;
 
-      // Measured from just below the sticky header.
-      const offset = 120;
+      // A clicked heading keeps its highlight until the reader scrolls away,
+      // because one near the end of the post may never reach the threshold.
+      const clicked = clickedRef.current;
+      if (clicked) {
+        clicked.landedAt ??= window.scrollY;
+        if (Math.abs(window.scrollY - clicked.landedAt) < CLICK_HOLD_PX) return;
+        clickedRef.current = null;
+      }
+
+      // Where a hash link parks a heading (scroll-padding + scroll-margin), so
+      // the heading a link lands on counts as reached. +1 absorbs rounding.
+      const offset =
+        parseFloat(
+          getComputedStyle(document.documentElement).scrollPaddingTop,
+        ) +
+        parseFloat(getComputedStyle(headingElements[0]).scrollMarginTop) +
+        1;
       let currentActiveId = "";
 
       for (let i = headingElements.length - 1; i >= 0; i--) {
@@ -74,9 +64,6 @@ const TableOfContents = ({ content }) => {
       }
 
       setActiveId(currentActiveId);
-
-      // Once the math is done, open the gate for the next scroll event
-      ticking = false;
     };
 
     const handleScroll = () => {
@@ -100,8 +87,6 @@ const TableOfContents = ({ content }) => {
     };
   }, [headings]);
 
-  if (headingsLoading) return <TOCSkeleton />;
-
   return (
     <nav className="rounded-card sticky top-[calc(var(--header-h)+1rem)] hidden max-h-[calc(100dvh-var(--header-h)-2rem)] w-70 shrink-0 flex-col overflow-y-auto p-4 [scrollbar-width:thin] lg:flex">
       <h4 className="text-text-muted border-border-subtle mb-4 border-b-2 pb-2 text-sm font-bold tracking-wider uppercase">
@@ -120,6 +105,7 @@ const TableOfContents = ({ content }) => {
               <li key={index}>
                 <a
                   href={`#${heading.id}`}
+                  onClick={(e) => handleLinkClick(e, heading.id)}
                   className={`rounded-control block px-3 py-2 text-sm text-wrap transition-colors ${
                     activeId === heading.id
                       ? "bg-accent/10 text-accent font-medium"
