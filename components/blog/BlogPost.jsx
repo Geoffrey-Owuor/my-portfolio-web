@@ -9,6 +9,8 @@ import apiClient from "@/lib/AxiosClient";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import BlogForm from "./BlogForm";
 import IconPattern from "../Modules/IconPattern";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { estimateReadTime } from "@/utils/Helpers";
 
 const BlogPost = ({ user }) => {
   const name = user.name;
@@ -23,6 +25,17 @@ const BlogPost = ({ user }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const toast = useToast();
   const router = useRouter();
+
+  const { hasDraft, clearDraft, discardDraft } = useFormDraft(
+    "blog-draft:new",
+    formData,
+    setFormData,
+    () =>
+      toast.info("Picking up where you left off.", {
+        id: "blog-draft",
+        title: "Draft restored",
+      }),
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +58,7 @@ const BlogPost = ({ user }) => {
       // Blog post api endpoint
       const response = await apiClient.post("/blogpost", {
         ...formData,
-        readTime: `${Math.ceil(formData.content.split(" ").length / 200)} min read`,
+        readTime: estimateReadTime(formData.content),
       });
 
       // Axios puts the response body in `response.data`
@@ -56,6 +69,7 @@ const BlogPost = ({ user }) => {
       router.refresh();
 
       toast.success(data.message, { title: "Blog published" });
+      clearDraft();
       setFormData({ title: "", author: name ?? "", content: "", tagline: "" });
     } catch (error) {
       // Axios error handling
@@ -118,6 +132,8 @@ const BlogPost = ({ user }) => {
                 isFormValid={isFormValid}
                 isSubmitting={isSubmitting}
                 IsUpdating={false}
+                canDiscard={hasDraft}
+                onDiscard={discardDraft}
               />
             </div>
           </div>

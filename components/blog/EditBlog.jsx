@@ -11,6 +11,8 @@ import ClientPortal from "../Modules/ClientPortal";
 import { useToast } from "../Modules/Toaster";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { estimateReadTime } from "@/utils/Helpers";
 
 const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
   const toast = useToast();
@@ -34,6 +36,17 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
     content: blogInfo.blog_content || "",
   });
 
+  const { hasDraft, clearDraft, discardDraft } = useFormDraft(
+    `blog-draft:${blogId}`,
+    formData,
+    setFormData,
+    () =>
+      toast.info("Your unsaved edits to this post are back.", {
+        id: "blog-draft",
+        title: "Draft restored",
+      }),
+  );
+
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -56,10 +69,9 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
 
     try {
       // Prepare api payload
-      const readTime = `${Math.ceil(formData.content.split(" ").length / 200)} min read`;
       const apiPayload = {
         ...formData,
-        readTime,
+        readTime: estimateReadTime(formData.content),
       };
       // Blog put api endpoint
       const response = await apiClient.put(`/blogpost/${blogId}`, apiPayload);
@@ -72,6 +84,7 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
       router.refresh();
 
       toast.success(data.message, { title: "Blog updated" });
+      clearDraft();
 
       // The form keeps what was just saved: this component stays mounted, so
       // clearing it here left the next Edit with empty fields.
@@ -162,6 +175,8 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
                 isFormValid={isFormValid}
                 IsUpdating={true}
                 isSubmitting={isSubmitting}
+                canDiscard={hasDraft}
+                onDiscard={discardDraft}
               />
             </motion.div>
           </motion.div>

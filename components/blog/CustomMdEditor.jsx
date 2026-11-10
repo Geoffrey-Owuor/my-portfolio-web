@@ -27,8 +27,8 @@ const CustomMdEditor = ({ value, onChange }) => {
   // UseEffect which is a shortcut for toggling preview mode (alt + P)
   useEffect(() => {
     const handleKeyDown = (event) => {
-      // Check for alt + p
-      if (event.altKey && event.key === "p") {
+      // Check for alt + p. By key position: on macOS Option+P types "π".
+      if (event.altKey && event.code === "KeyP") {
         // prevent browsers default action for this particular shortcut
         event.preventDefault();
 
@@ -40,7 +40,7 @@ const CustomMdEditor = ({ value, onChange }) => {
     document.addEventListener("keydown", handleKeyDown);
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [showPreview]); //rerun when showPreview changes
+  }, []);
 
   // Detect if current device supports hovering and has a pointer
   const canHover =
@@ -59,10 +59,23 @@ const CustomMdEditor = ({ value, onChange }) => {
     const selectedText = previousText.substring(start, end);
     const afterText = previousText.substring(end);
 
-    const newText = `${beforeText}${before}${selectedText}${after}${afterText}`;
+    // execCommand is the only way to edit a textarea that keeps Ctrl+Z working;
+    // it fires a normal input event, which reaches `onChange`.
+    textarea.focus();
+    const inserted = document.execCommand(
+      "insertText",
+      false,
+      `${before}${selectedText}${after}`,
+    );
 
-    // Simulate event for parent handler
-    onChange({ target: { name: "content", value: newText } });
+    if (!inserted) {
+      onChange({
+        target: {
+          name: "content",
+          value: `${beforeText}${before}${selectedText}${after}${afterText}`,
+        },
+      });
+    }
 
     // Restore focus and cursor position
     setTimeout(() => {
@@ -103,7 +116,7 @@ const CustomMdEditor = ({ value, onChange }) => {
   };
 
   return (
-    <div className="border-border-subtle rounded-card w-full border transition-colors focus:outline-none">
+    <div className="border-border-subtle rounded-card focus-within:border-accent w-full border transition-colors">
       {/* Toolbar */}
       <div className="border-border-subtle bg-surface-raised rounded-t-card flex flex-wrap items-center gap-2 border-b p-2">
         {/* Toolbar buttons */}
@@ -227,6 +240,7 @@ const ToolbarButton = ({ icon, onClick, label }) => (
     type="button"
     onClick={onClick}
     title={label}
+    aria-label={label}
     className="text-text-muted hover:bg-surface hover:text-text-primary rounded-control cursor-pointer p-1.5 transition-colors"
   >
     {icon}

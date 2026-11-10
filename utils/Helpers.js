@@ -7,6 +7,12 @@ export const formatDate = (dateInput) => {
   });
 };
 
+export const countWords = (text = "") =>
+  text.split(/\s+/).filter(Boolean).length;
+
+export const estimateReadTime = (content) =>
+  `${Math.max(1, Math.ceil(countWords(content) / 200))} min read`;
+
 // simple slugify function to create safe ids from text
 export const generateSlug = (text) => {
   return text
