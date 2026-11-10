@@ -12,14 +12,11 @@ import {
 } from "lucide-react";
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
-import { ProgressLink } from "../Modules/RouteProgress";
 import PageHeader from "../Layout/PageHeader";
 import BlogTableView from "./BlogTableView";
-import { useSignedIn } from "@/hooks/useSignedIn";
 
 const BlogCards = ({ blogs, failed = false }) => {
   const router = useRouter();
-  const signedIn = useSignedIn();
   const toolbarRef = useRef(null);
 
   // View toggle: "card" | "table"
@@ -80,15 +77,6 @@ const BlogCards = ({ blogs, failed = false }) => {
     toolbarRef.current?.scrollIntoView({ block: "start" });
   };
 
-  const createBlogLink = signedIn && (
-    <ProgressLink
-      href="/createblog"
-      className="text-text-muted hover:text-text-primary text-sm underline underline-offset-2 transition-colors duration-150"
-    >
-      Create Blog
-    </ProgressLink>
-  );
-
   // Published nothing yet: not an error, so nothing to retry.
   if (!failed && blogs.length === 0) {
     return (
@@ -102,7 +90,6 @@ const BlogCards = ({ blogs, failed = false }) => {
           <p className="text-text-muted text-lg font-semibold">
             No posts yet. Check back soon.
           </p>
-          {createBlogLink}
         </div>
       </div>
     );
@@ -148,7 +135,7 @@ const BlogCards = ({ blogs, failed = false }) => {
           title="Blog Space"
           subtitle="Thoughts and writing on software, security and emerging tech"
         />
-        {/* Toolbar: Create + Search + View Toggle */}
+        {/* Toolbar: Search + View Toggle */}
         <div
           ref={toolbarRef}
           className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
@@ -176,10 +163,7 @@ const BlogCards = ({ blogs, failed = false }) => {
             )}
           </div>
 
-          {/* View toggle pill & the owner's Create Blog link */}
           <div className="flex flex-col items-center gap-4 md:flex-row">
-            {createBlogLink}
-
             {/* Toggle pill */}
             <div className="border-border-subtle bg-surface-raised rounded-card flex items-center gap-0.5 border p-1">
               <button

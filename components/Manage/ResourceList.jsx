@@ -8,11 +8,8 @@ import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import EmptyState from "../Modules/EmptyState";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import { useToast } from "../Modules/Toaster";
-import { capitalize, MANAGE_LISTS } from "./manageLists";
+import { capitalize, iconButtonClass, MANAGE_LISTS } from "./manageLists";
 import ResourceFormModal from "./ResourceFormModal";
-
-const iconButtonClass =
-  "text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control cursor-pointer p-2.5 transition-colors disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent";
 
 // Long skill text is fine on screen, but too much for a button's name.
 const shortLabel = (text) =>

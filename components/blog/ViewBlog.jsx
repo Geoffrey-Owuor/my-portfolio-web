@@ -11,7 +11,6 @@ import TableOfContents, {
   MobileTableOfContents,
 } from "../Modules/TableOfContents";
 import BlogNav from "./BlogNav";
-import BlogOwnerActions from "./BlogOwnerActions";
 
 const getShareLink = (platformKey, url, title) => {
   const encodedUrl = encodeURIComponent(url);
@@ -32,8 +31,7 @@ const getShareLink = (platformKey, url, title) => {
 };
 
 // Rendered on the server, so readers don't download the markdown and syntax
-// highlighting libraries. Only the owner controls and the table of contents
-// run in the browser.
+// highlighting libraries. Only the table of contents runs in the browser.
 const ViewBlog = ({ blogPost }) => {
   // One set of ids for the article and the table of contents.
   const headings = extractHeadings(blogPost.blog_content);
@@ -90,16 +88,6 @@ const ViewBlog = ({ blogPost }) => {
                 <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>{blogPost.read_time}</span>
               </div>
-
-              <BlogOwnerActions
-                blogInfo={{
-                  blog_id: blogPost.id,
-                  blog_title: blogPost.blog_title,
-                  blog_author: blogPost.blog_author,
-                  blog_content: blogPost.blog_content,
-                  author_tagline: blogPost.author_tagline,
-                }}
-              />
 
               <ProgressLink
                 href="/blogs"

@@ -35,5 +35,8 @@ export const MANAGE_LISTS = {
   },
 };
 
+export const iconButtonClass =
+  "text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control cursor-pointer p-2.5 transition-colors disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent";
+
 export const capitalize = (text) =>
   text.charAt(0).toUpperCase() + text.slice(1);

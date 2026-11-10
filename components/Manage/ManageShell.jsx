@@ -6,7 +6,9 @@ import PageHeader from "../Layout/PageHeader";
 import EmptyState from "../Modules/EmptyState";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
+import BlogsTab from "./BlogsTab";
 import ResourceList from "./ResourceList";
+import ResumeTab from "./ResumeTab";
 
 const TABS = [
   { id: "projects", label: "Projects" },
@@ -19,7 +21,15 @@ const TABS = [
   { id: "inbox", label: "Inbox" },
 ];
 
-const BUILT_TABS = ["projects", "experience", "education", "skills", "stack"];
+const BUILT_TABS = [
+  "projects",
+  "experience",
+  "education",
+  "skills",
+  "stack",
+  "blogs",
+  "resume",
+];
 
 // One page with a tab per content type. The active tab lives in ?tab=, so a
 // reload, a deep link and the back button all land on the same tab.
@@ -146,6 +156,15 @@ const ManageShell = ({ user, content }) => {
             resource="tools"
             rows={content.tools}
             note="Shown alphabetically in the “Also using” list."
+          />
+        )}
+        {activeTab === "blogs" && (
+          <BlogsTab rows={content.blogs} author={user.name} />
+        )}
+        {activeTab === "resume" && (
+          <ResumeTab
+            resume={content.resume.latest ?? null}
+            failed={Boolean(content.resume.failed)}
           />
         )}
         {!BUILT_TABS.includes(activeTab) && (
