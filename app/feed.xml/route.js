@@ -26,7 +26,7 @@ const toItem = (blog) => {
       <guid isPermaLink="true">${link}</guid>
       ${blog.blog_date ? `<pubDate>${new Date(blog.blog_date).toUTCString()}</pubDate>` : ""}
       ${blog.blog_author ? `<dc:creator>${escapeXml(blog.blog_author)}</dc:creator>` : ""}
-      <description>${escapeXml(stripMarkdown(blog.blog_content, 300))}</description>
+      <description>${escapeXml(stripMarkdown(blog.content_head, 300))}</description>
     </item>`;
 };
 

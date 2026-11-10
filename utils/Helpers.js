@@ -25,7 +25,7 @@ export const stripMarkdown = (text, maxLength = 160) => {
   if (!text) return "";
 
   const plain = text
-    .replace(/```[\s\S]*?```/g, " ") // fenced code blocks
+    .replace(/```[\s\S]*?(```|$)/g, " ") // fenced code blocks, even if cut off
     .replace(/`([^`]*)`/g, "$1") // inline code
     .replace(/!\[[^\]]*\]\([^)]*\)/g, " ") // images
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1") // links → their label

@@ -14,7 +14,7 @@ const Writing = async () => {
     title: blog.blog_title,
     date: blog.blog_date,
     readTime: blog.read_time,
-    excerpt: stripMarkdown(blog.blog_content, 180),
+    excerpt: stripMarkdown(blog.content_head, 180),
   }));
 
   return (

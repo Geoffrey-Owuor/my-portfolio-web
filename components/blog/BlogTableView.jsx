@@ -3,7 +3,12 @@ import { ProgressLink } from "../Modules/RouteProgress";
 import { Calendar, Clock, ArrowUpRight, UserRound } from "lucide-react";
 import { formatDate } from "@/utils/Helpers";
 
-const BlogTableView = ({ currentBlogs, searchQuery, highlightText }) => {
+const BlogTableView = ({
+  currentBlogs,
+  searchQuery,
+  highlightText,
+  startIndex,
+}) => {
   if (currentBlogs.length === 0) {
     return (
       <div className="border-border-subtle rounded-card col-span-full flex min-h-[50vh] flex-col items-center justify-center border-[1.5px] border-dashed text-center">
@@ -48,7 +53,7 @@ const BlogTableView = ({ currentBlogs, searchQuery, highlightText }) => {
             {/* Index + Title */}
             <div className="flex max-w-[400px] min-w-0 items-center gap-4">
               <span className="text-text-muted hidden w-6 shrink-0 truncate text-left text-xs tabular-nums sm:block">
-                {String(index + 1).padStart(2, "0")}
+                {String(startIndex + index + 1).padStart(2, "0")}
               </span>
               <span className="text-text-primary group-hover:text-accent truncate font-semibold transition-colors">
                 {highlightText(blog.blog_title, searchQuery)}

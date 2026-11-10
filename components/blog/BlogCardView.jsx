@@ -1,6 +1,5 @@
 "use client";
 import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
-import MarkdownPreview from "../Modules/MarkdownPreview";
 import { Calendar, Clock, ArrowRight, UserRound } from "lucide-react";
 import { formatDate } from "@/utils/Helpers";
 
@@ -39,9 +38,9 @@ const BlogCardView = ({ currentBlogs, searchQuery, highlightText }) => {
             </div>
 
             {/* Content preview, clamped for a consistent, skimmable card height */}
-            <MarkdownPreview className="text-text-muted mb-6 line-clamp-3 grow">
-              {blog.blog_content}
-            </MarkdownPreview>
+            <p className="text-text-muted mb-6 line-clamp-3 grow">
+              {blog.excerpt}
+            </p>
 
             {/* Read more button */}
             <ProgressLink

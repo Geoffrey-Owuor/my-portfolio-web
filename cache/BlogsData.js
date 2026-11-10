@@ -1,10 +1,13 @@
-"use server";
+import "server-only";
 import { query } from "@/lib/db";
 import { unstable_cache } from "next/cache";
 
 const getBlogData = async () => {
+  // Every reader of this list only builds a short excerpt, so whole posts stay
+  // out of the cache entry (unstable_cache caps one at 2 MB).
   const blogsQuery = `
-    SELECT id, slug, blog_title, blog_author, blog_date, read_time, blog_content
+    SELECT id, slug, blog_title, blog_author, blog_date, read_time,
+           LEFT(blog_content, 2000) AS content_head
     FROM blogs
     ORDER BY blog_date DESC
     `;
