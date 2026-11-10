@@ -25,6 +25,7 @@ Path alias: `@/*` maps to the repo root (see `jsconfig.json`), e.g. `@/lib/db`, 
 ### Data layer
 
 - `lib/db.js` exports a single `query(queryString, params)` helper built on `@neondatabase/serverless`'s `Pool`. It uses a global singleton pool in development (`globalThis.postgresPool`) to survive HMR, and a fresh pool in production. All raw SQL lives inline in the calling module — there is no ORM/query builder. Schema changes are kept as SQL files in `db/migrations/`.
+- `lib/ObjectStorage.js` is the shared S3 client for Neon Object Storage (private bucket, `NEON_STORAGE_*`). `lib/ResumeStorage.js` and `lib/ProjectImages.js` build on it, and both kinds of file are streamed from our own origin (`/resume/file`, `/project-images/[name]`). A project image's name is never reused, so its route is cached permanently. `projects.project_image` holds the URL path. When an image is replaced or removed, change the database first and delete the old object after: a leftover object is harmless, a missing one breaks the page.
 - `cache/CachedData.js`, `cache/BlogsData.js` wrap DB reads in `unstable_cache(fn, [key], { tags: [...] })`, so homepage sections (skills, stack, projects, experience, education) and blog listings are cached and only re-fetched on tag-based revalidation.
 - Cache invalidation happens two ways:
   - `app/api/revalidate/route.js` — `POST` endpoint that calls `revalidatePath("/")`, gated by an `Authorization: Bearer <REVALIDATE_KEY>` header.
@@ -37,23 +38,34 @@ Path alias: `@/*` maps to the repo root (see `jsconfig.json`), e.g. `@/lib/db`, 
 Custom-rolled JWT auth, split across three layers:
 
 - `lib/Auth.js` — token signing/verification using `jose` (HS256), bcrypt password hashing, `ACCESS_TOKEN_SECRET` (15 min expiry) and `REFRESH_TOKEN_SECRET` (7 day expiry). Refresh tokens are additionally hashed and stored in the `users` table so they can be revoked server-side; `requireSession()` and `verifyAccessTokenJWT()` are the main entry points for Server Components/route handlers.
-- `middleware.js` — Edge middleware (matches `/createblog`, `/login`) that redirects unauthenticated users away from `/createblog` and redirects already-logged-in users away from `/login`. It's a convenience, not an authorization boundary. Blog and project pages are cached and identical for every visitor, so owner-only controls ask `GET /api/session` from the browser.
+- `middleware.js` — Edge middleware (matches `/createblog`, `/login`, `/manage`) that redirects unauthenticated users away from `/createblog` and `/manage`, and redirects already-logged-in users from `/login` to `/manage`. It's a convenience, not an authorization boundary. Public pages carry no owner controls; `GET /api/session` is only asked when the command palette first opens, to offer its "Manage portfolio" command.
 - `lib/AxiosClient.js` — client-side axios instance (`baseURL: /api`, `withCredentials: true`) with a response interceptor that, on a 401, calls `/api/refresh-token` once and retries the original request (concurrent failures share one refresh); if the session is rejected it hard-redirects to `/login`, while a network or server failure is passed to the caller.
 - Route handlers under `app/api/{login,logout,refresh-token}` do the actual cookie issuance (`accessToken`, `refreshToken` — both `httpOnly`, `sameSite: lax`, `secure` in production) and DB-side refresh-token rotation/revocation.
 
-When adding a new protected route or mutation, follow the existing pattern: verify via `verifyAccessTokenJWT()`/`requireSession()` inside the route handler or Server Component itself — don't rely solely on the middleware matcher.
+When adding a new protected route or mutation, follow the existing pattern: verify via `verifyAccessTokenJWT()`/`requireSession()` inside the route handler or Server Component itself — don't rely solely on the middleware matcher. `requireSession()` only checks the refresh token's signature, so a logged-out or replaced token still passes it for up to 7 days: use it to render pages that show nothing private, and read private data (like the contact inbox) through a route that checks the access token.
+
+### Owner area (`/manage`)
+
+`app/manage/page.jsx` is one owner-only page with a tab per content type, deep-linkable as `/manage?tab=projects`. Every owner action lives here.
+
+- `lib/manage/resources.js` maps each resource to its table, cache tag and ordering. It is the only source of table and column names for `/api/manage`: never build SQL identifiers from request input. Field rules are in `utils/manageFields.js`, shared by the forms and the routes, and each `max` must match the column's limit.
+- `/api/manage/[resource]` (`POST`), `/[id]` (`PUT`, `DELETE`) and `/reorder` (`PUT`) serve the simple lists. Project images, blog reads and the inbox have their own routes under `/api/manage/`. Blog writes stay in `/api/blogpost`.
+- Every handler checks `requireOwner()` before reading the body, then calls `revalidateTag` for the resource; the client follows with `router.refresh()`.
+- Ascending `sort_order` is display order, with up/down controls. New rows go first in projects, experience and education, and last in skills. Tools stay alphabetical and have no `sort_order`. Project previous/next is computed from the same order as the grid.
+- `/manage` reads with direct, uncached queries (`lib/manage/readers.js`). Don't use `BlogsData` to edit a post: it only holds the first 2000 characters.
 
 ### App Router structure
 
 - Route groups: `app/(auth)/login`, `app/(blogposts)/blog/[slug]` and `app/(blogposts)/blogs` — grouped for organization only, no shared layout side effects beyond routing.
-- `app/api/*` — REST-style route handlers (`route.js`) for login/logout/refresh, blog CRUD (`blogpost`, `blogpost/[id]`), contact form (`submitfeedback`), and cache revalidation.
+- `app/api/*` — REST-style route handlers (`route.js`) for login/logout/refresh, blog CRUD (`blogpost`, `blogpost/[id]`), contact form (`submitfeedback`), owner content (`manage/*`), and cache revalidation.
 - `app/layout.js` defines global metadata (Open Graph/Twitter defaults, icons) and wraps every page in `Providers` (theme), `ToastProvider` (+ `NetworkStatus`), a persistent `NavBar`/`Footer`.
 
 ### Component organization (`components/`)
 
 - `Home/` — one component per homepage section (Hero, Skills, Stack, Projects, Experience, Education, Contact, NavBar, Footer); these are Server Components that fetch their own data.
 - `Wrappers/` — presentational/client wrapper components that receive fetched data as props from their `Home/` counterpart (e.g. `SkillsWrapper`, `ProjectsWrapper`) — this is the seam between server data-fetching and client interactivity/animation. `SectionTitle` is shared by every section and also owns the section note: pass it `alertMessage` + `alertIcon` and it self-triggers a timed note that briefly takes the place of the section's `~/path` (right of the subtitle) when that title scrolls into view (both props optional — omit them for a plain heading).
-- `blog/` — blog authoring/viewing pipeline: `BlogForm` → `CustomMdEditor` (markdown editing) → `PreviewModal`; `ViewBlog` is a Server Component that renders the article (`react-markdown` + `remark-gfm`) with `BlogOwnerActions` (edit/delete, lazy-loads `EditBlog`) and the table of contents as client pieces. `BlogPost` is the create form; `BlogCardView`/`BlogTableView` are the listing layouts.
+- `Manage/` — the `/manage` page: `ManageShell` (tabs), `ResourceList` + `ResourceFormModal` (the shared list and form, configured by `manageLists.js`), `ProjectImageField`, `BlogsTab`, `ResumeTab`, `InboxTab`.
+- `blog/` — blog authoring/viewing pipeline: `BlogModal` (new and edit, opened from `/manage`) → `BlogForm` → `CustomMdEditor` (markdown editing, also used by the `/manage` forms through its `id` and `name` props) → `PreviewModal`; `ViewBlog` is a Server Component that renders the article (`react-markdown` + `remark-gfm`) with the table of contents as the client piece. `BlogCardView`/`BlogTableView` are the listing layouts.
 - `Modules/` — cross-cutting UI primitives: `Toaster` (the app's only notification system: `ToastProvider` is mounted once in `app/layout.js`; call `useToast()` → `toast.success/error/info(message, { title, id, duration, icon })` from any client component — a repeated `id` replaces in place; field errors stay inline in their form), `ConfirmationDialog`, `Pagination`, `NetworkStatus` (headless; drives the offline/back-online toast), `LogoutOverlay`/`LogoutButton`.
 - `Skeletons/` — loading-state placeholders paired 1:1 with sections/components, used via `<Suspense fallback={...}>` in `app/page.js` and other async pages.
 - `Theme/` — `next-themes`-based dark mode (`Providers`, `ThemeToggleCompact`, `TooltipUI`).
