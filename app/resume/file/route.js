@@ -24,13 +24,19 @@ export async function GET(request) {
 
   // The key changes on every upload, so it doubles as a strong ETag.
   const etag = `"${latest.key}"`;
-  const download = new URL(request.url).searchParams.has("download");
+  const { searchParams } = new URL(request.url);
+  const download = searchParams.has("download");
+  // The /resume preview asks for ?v=<current key>, a URL that only ever means
+  // this version, so it can be kept forever. Every other link, and an
+  // outdated ?v=, revalidates: replacing the file must show up immediately,
+  // and an unchanged file costs only a 304.
+  const versioned = searchParams.get("v") === latest.key;
   const headers = {
     "Content-Type": "application/pdf",
     "Content-Disposition": `${download ? "attachment" : "inline"}; filename="${RESUME_FILENAME}"`,
-    // Revalidate every time: replacing the file must show up immediately,
-    // and an unchanged file costs only a 304.
-    "Cache-Control": "no-cache",
+    "Cache-Control": versioned
+      ? "public, max-age=31536000, immutable"
+      : "no-cache",
     ETag: etag,
     "Last-Modified": new Date(latest.updatedAt).toUTCString(),
   };
