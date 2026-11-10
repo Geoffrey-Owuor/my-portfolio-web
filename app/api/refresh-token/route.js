@@ -105,6 +105,8 @@ export async function POST() {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Refresh error:", error);
-    return NextResponse.json({ message: "Server Error" }, { status: 401 });
+    // Not a 401: a database blip says nothing about the session, and the
+    // client signs out on 401.
+    return NextResponse.json({ message: "Server Error" }, { status: 500 });
   }
 }

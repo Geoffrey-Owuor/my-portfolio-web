@@ -7,10 +7,39 @@ import {
 } from "@/lib/Auth";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { clientIp, describeWait, rateLimit } from "@/lib/RateLimit";
+
+const WRONG_CREDENTIALS = "Wrong username or password";
 
 export async function POST(request) {
   try {
     const { email, password } = await request.json();
+
+    // Without this, a missing password makes bcrypt throw and answers 500.
+    if (
+      typeof email !== "string" ||
+      typeof password !== "string" ||
+      !email ||
+      !password
+    ) {
+      return NextResponse.json(
+        { message: "Email and password are required" },
+        { status: 400 },
+      );
+    }
+
+    const { allowed, retryAfter } = await rateLimit(
+      `login:${clientIp(request)}`,
+      { limit: 10, windowSeconds: 15 * 60 },
+    );
+    if (!allowed) {
+      return NextResponse.json(
+        {
+          message: `Too many sign-in attempts. Please try again in ${describeWait(retryAfter)}.`,
+        },
+        { status: 429, headers: { "Retry-After": String(retryAfter) } },
+      );
+    }
 
     // Find user by email
     const query1 = `SELECT id, password, user_name 
@@ -20,10 +49,7 @@ export async function POST(request) {
     const result1 = await query(query1, params1);
 
     if (!result1.length) {
-      return NextResponse.json(
-        { message: "wrong username or password" },
-        { status: 401 },
-      );
+      return NextResponse.json({ message: WRONG_CREDENTIALS }, { status: 401 });
     }
 
     // Assign result to user
@@ -32,10 +58,7 @@ export async function POST(request) {
     // Verify password
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
-      return NextResponse.json(
-        { message: "Wrong username or password" },
-        { status: 401 },
-      );
+      return NextResponse.json({ message: WRONG_CREDENTIALS }, { status: 401 });
     }
 
     // Define the payload
