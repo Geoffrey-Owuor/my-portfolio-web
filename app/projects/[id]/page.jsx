@@ -14,33 +14,32 @@ const readProjectInfo = async (id) => {
   // Anything else would make Postgres reject the integer parameter.
   if (!/^\d{1,9}$/.test(id)) return [];
 
-  // Neighbours follow the same order the projects grid renders in (id DESC),
-  // so "previous" is the card above this one on the homepage and "next" is
-  // the card below it. Both ends wrap: the newest project's previous is the
-  // oldest, and the oldest project's next is the newest.
+  // Neighbours follow the same order the projects grid renders in, so
+  // "previous" is the card above this one on the homepage and "next" is the
+  // card below it. Both ends wrap: the first project's previous is the last,
+  // and the last project's next is the first.
   const selectQuery = `
-    WITH bounds AS (
-      SELECT MIN(id) AS min_id, MAX(id) AS max_id FROM projects
+    WITH ordered AS (
+      SELECT
+        id,
+        ROW_NUMBER() OVER grid AS position,
+        COUNT(*) OVER () AS total,
+        LAG(id) OVER grid AS above_id,
+        LEAD(id) OVER grid AS below_id,
+        FIRST_VALUE(id) OVER grid AS first_id,
+        LAST_VALUE(id) OVER (grid ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_id
+      FROM projects
+      WINDOW grid AS (ORDER BY sort_order, id DESC)
     ),
     neighbours AS (
       SELECT
-        p.id,
-
-        (p.id = bounds.max_id) AS is_first_project,
-        (p.id = bounds.min_id) AS is_last_project,
-
-        COALESCE(
-          (SELECT id FROM projects WHERE id > p.id ORDER BY id ASC LIMIT 1),
-          bounds.min_id
-        ) AS previous_project_id,
-
-        COALESCE(
-          (SELECT id FROM projects WHERE id < p.id ORDER BY id DESC LIMIT 1),
-          bounds.max_id
-        ) AS next_project_id
-
-      FROM projects p, bounds
-      WHERE p.id = $1
+        id,
+        (position = 1) AS is_first_project,
+        (position = total) AS is_last_project,
+        COALESCE(above_id, last_id) AS previous_project_id,
+        COALESCE(below_id, first_id) AS next_project_id
+      FROM ordered
+      WHERE id = $1
     )
     SELECT
       p.id, p.project_name, p.project_link, p.project_description, p.project_stack, p.project_image,
