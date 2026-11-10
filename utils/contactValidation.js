@@ -1,7 +1,8 @@
 // Contact form rules, shared by the form (inline errors) and
 // /api/submitfeedback (the check that counts).
 export const CONTACT_INFO_MAX = 120;
-export const CONTACT_MESSAGE_MAX = 4000;
+// Matches user_feedback.feedback_description's varchar(2000).
+export const CONTACT_MESSAGE_MAX = 2000;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
