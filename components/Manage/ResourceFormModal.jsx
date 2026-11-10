@@ -14,6 +14,7 @@ import ClientPortal from "../Modules/ClientPortal";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import { useToast } from "../Modules/Toaster";
 import { capitalize, MANAGE_LISTS } from "./manageLists";
+import ProjectImageField from "./ProjectImageField";
 
 const inputClass =
   "border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none aria-invalid:border-danger";
@@ -37,6 +38,7 @@ const ResourceFormModal = ({ resource, row, onClose }) => {
   );
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
+  const [image, setImage] = useState({ file: null, remove: false });
 
   useHideScrollbar(true);
   useFocusTrapping(modalRef, true, onClose);
@@ -70,6 +72,34 @@ const ResourceFormModal = ({ resource, row, onClose }) => {
     }, 0);
   };
 
+  // Resolves to false after telling the owner what didn't happen.
+  const saveImage = async (id) => {
+    const removing = image.remove && row?.project_image;
+    if (!image.file && !removing) return true;
+
+    try {
+      if (image.file) {
+        const body = new FormData();
+        body.append("file", image.file);
+        // Lets the browser add the multipart boundary (see ResumeUpload).
+        await apiClient.post(`/manage/projects/${id}/image`, body, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } else {
+        await apiClient.delete(`/manage/projects/${id}/image`);
+      }
+      return true;
+    } catch (error) {
+      console.error("Error saving the project image:", error);
+      toast.error(error.response?.data?.message || error.message, {
+        title: image.file
+          ? "Project saved without its new image"
+          : "Project saved, but its image wasn't removed",
+      });
+      return false;
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -81,15 +111,18 @@ const ResourceFormModal = ({ resource, row, onClose }) => {
 
     setSaving(true);
     try {
-      if (row) {
-        await apiClient.put(`/manage/${resource}/${row.id}`, formData);
-      } else {
-        await apiClient.post(`/manage/${resource}`, formData);
-      }
+      const response = row
+        ? await apiClient.put(`/manage/${resource}/${row.id}`, formData)
+        : await apiClient.post(`/manage/${resource}`, formData);
       clearDraft();
-      toast.success("Your change is live on the site.", {
-        title: `${capitalize(noun)} ${row ? "updated" : "added"}`,
-      });
+
+      // The row is saved from here on, so a failed image step closes the form
+      // too: resubmitting a new project would create a second one.
+      if (await saveImage(row?.id ?? response.data.id)) {
+        toast.success("Your change is live on the site.", {
+          title: `${capitalize(noun)} ${row ? "updated" : "added"}`,
+        });
+      }
       router.refresh();
       onClose();
     } catch (error) {
@@ -207,6 +240,14 @@ const ResourceFormModal = ({ resource, row, onClose }) => {
 
             <form onSubmit={handleSubmit} noValidate className="space-y-5 p-6">
               {fields.map(renderField)}
+
+              {resource === "projects" && (
+                <ProjectImageField
+                  currentImage={row?.project_image}
+                  value={image}
+                  onChange={setImage}
+                />
+              )}
 
               <div className="flex items-center gap-3 pt-2">
                 <button

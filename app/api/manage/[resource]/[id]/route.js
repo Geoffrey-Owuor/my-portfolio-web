@@ -12,6 +12,7 @@ import {
   unauthenticated,
 } from "@/lib/manage/api";
 import { deleteRow, getResource, updateRow } from "@/lib/manage/resources";
+import { deleteProjectImage } from "@/lib/ProjectImages";
 import { validateManageFields } from "@/utils/manageFields";
 
 export async function PUT(request, { params }) {
@@ -60,6 +61,9 @@ export async function DELETE(_request, { params }) {
     if (rows.length === 0) return notFound();
 
     revalidateTag(resource.tag);
+    // Only after the row is gone, so a live page never loses its image.
+    if (resource.imageColumn) await deleteProjectImage(rows[0].deleted);
+
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {
     console.error(`Failed to delete ${name} ${id}:`, error);
