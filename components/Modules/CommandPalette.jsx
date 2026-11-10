@@ -25,7 +25,10 @@ import { EMAIL, GITHUB_URL, RESUME_URL } from "@/utils/links";
 let searchIndexPromise = null;
 const loadSearchIndex = () => {
   searchIndexPromise ??= fetch("/api/search-index")
-    .then((res) => (res.ok ? res.json() : { projects: [], blogs: [] }))
+    .then((res) => {
+      if (!res.ok) throw new Error(`Search index responded ${res.status}`);
+      return res.json();
+    })
     .catch(() => {
       searchIndexPromise = null; // let the next open retry
       return { projects: [], blogs: [] };
