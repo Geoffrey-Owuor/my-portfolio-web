@@ -54,7 +54,7 @@ const BlogPost = ({ user }) => {
       await revalidateBlogsData();
 
       toast.success(data.message, { title: "Blog published" });
-      setFormData({ title: "", author: "", content: "", tagline: "" });
+      setFormData({ title: "", author: name ?? "", content: "", tagline: "" });
     } catch (error) {
       // Axios error handling
       const message =

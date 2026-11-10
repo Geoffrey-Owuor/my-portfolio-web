@@ -71,9 +71,8 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
 
       toast.success(data.message, { title: "Blog updated" });
 
-      setFormData({ title: "", author: "", content: "", tagline: "" });
-
-      // Hide edit modal immediately
+      // The form keeps what was just saved: this component stays mounted, so
+      // clearing it here left the next Edit with empty fields.
       setShowEditModal(false);
     } catch (error) {
       // Axios error handling
