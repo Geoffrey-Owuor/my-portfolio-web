@@ -1,5 +1,3 @@
-"use client";
-
 import { ProgressLink } from "../Modules/RouteProgress";
 import {
   ArrowLeft,
@@ -80,33 +78,49 @@ const BlogNav = ({ blogPost }) => {
   const hasNext =
     blogPost.next_blog_id && blogPost.next_blog_id !== blogPost.id;
 
+  // The flags mark position in the /blogs listing, which runs newest first.
+  const positionNote = blogPost.is_first_blog
+    ? "You've reached the latest post. More magic coming soon! 🔮"
+    : blogPost.is_last_blog
+      ? "This is my very first post. Where the magic began. 🕰️🚀"
+      : null;
+
+  const note = positionNote && (
+    <p className="text-text-muted mt-8 text-center font-mono text-xs">
+      {positionNote}
+    </p>
+  );
+
   // A lone blog is its own neighbour on both sides — nothing to page through.
-  if (!hasPrevious && !hasNext) return null;
+  if (!hasPrevious && !hasNext) return note;
 
   return (
-    <nav
-      aria-label="Blog navigation"
-      className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2"
-    >
-      {hasPrevious && (
-        <NeighbourCard
-          slug={blogPost.previous_blog_slug}
-          title={blogPost.previous_blog_title}
-          readTime={blogPost.previous_blog_read_time}
-          direction="previous"
-          isWrapping={blogPost.is_first_blog}
-        />
-      )}
-      {hasNext && (
-        <NeighbourCard
-          slug={blogPost.next_blog_slug}
-          title={blogPost.next_blog_title}
-          readTime={blogPost.next_blog_read_time}
-          direction="next"
-          isWrapping={blogPost.is_last_blog}
-        />
-      )}
-    </nav>
+    <>
+      {note}
+      <nav
+        aria-label="Blog navigation"
+        className="mt-8 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2"
+      >
+        {hasPrevious && (
+          <NeighbourCard
+            slug={blogPost.previous_blog_slug}
+            title={blogPost.previous_blog_title}
+            readTime={blogPost.previous_blog_read_time}
+            direction="previous"
+            isWrapping={blogPost.is_first_blog}
+          />
+        )}
+        {hasNext && (
+          <NeighbourCard
+            slug={blogPost.next_blog_slug}
+            title={blogPost.next_blog_title}
+            readTime={blogPost.next_blog_read_time}
+            direction="next"
+            isWrapping={blogPost.is_last_blog}
+          />
+        )}
+      </nav>
+    </>
   );
 };
 

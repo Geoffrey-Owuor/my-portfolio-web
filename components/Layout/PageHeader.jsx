@@ -1,4 +1,4 @@
-// Header for a standalone route page (/blogs, /createblog, 404 …): the
+// Header for a standalone route page (/blogs, /manage, 404 …): the
 // page's `~/path`, an h1 on the shared `text-h1` step, an optional one-line
 // subtitle, and a hairline — the route-level counterpart of the homepage's
 // SectionTitle, without its scroll-linked motion so it can render on the

@@ -26,7 +26,7 @@ export default function LoginPage() {
       const data = await response.json();
       //   Successfull login
       if (response.ok) {
-        window.location.href = "/createblog";
+        window.location.href = "/manage";
       } else {
         setError(data.message || "Login Failed");
         setLoading(false);
@@ -128,7 +128,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="bg-text-primary text-surface rounded-control flex w-full items-center justify-center gap-2 px-4 py-3 font-semibold transition-opacity hover:opacity-90 focus:outline-none disabled:opacity-50"
+              className="bg-text-primary text-surface rounded-control flex w-full items-center justify-center gap-2 px-4 py-3 font-semibold transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               {loading ? (
                 <>

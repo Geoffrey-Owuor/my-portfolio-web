@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import {
   ArrowLeft,
   RefreshCcw,
@@ -12,12 +12,12 @@ import {
 } from "lucide-react";
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
-import { ProgressLink } from "../Modules/RouteProgress";
 import PageHeader from "../Layout/PageHeader";
 import BlogTableView from "./BlogTableView";
 
-const BlogCards = ({ blogs }) => {
+const BlogCards = ({ blogs, failed = false }) => {
   const router = useRouter();
+  const toolbarRef = useRef(null);
 
   // View toggle: "card" | "table"
   const [viewMode, setViewMode] = useState("card");
@@ -66,16 +66,45 @@ const BlogCards = ({ blogs }) => {
     setSearchQuery(e.target.value);
   };
 
-  if (!blogs || blogs.length === 0) {
+  const clearSearch = () => {
+    setCurrentPage(1);
+    setSearchQuery("");
+  };
+
+  // A new page starts at the top of the list, not wherever the last one ended.
+  const changePage = (update) => {
+    setCurrentPage(update);
+    toolbarRef.current?.scrollIntoView({ block: "start" });
+  };
+
+  // Published nothing yet: not an error, so nothing to retry.
+  if (!failed && blogs.length === 0) {
+    return (
+      <div className="container-page py-section">
+        <PageHeader
+          path="blogs"
+          title="Blog Space"
+          subtitle="Thoughts and writing on software, security and emerging tech"
+        />
+        <div className="border-border-subtle rounded-card flex min-h-[40vh] flex-col items-center justify-center gap-4 border-[1.5px] border-dashed px-4 text-center">
+          <p className="text-text-muted text-lg font-semibold">
+            No posts yet. Check back soon.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (failed) {
     return (
       <div className="container-page py-section flex min-h-[60vh] flex-col items-center justify-center">
         <div className="text-center">
           <h1 className="text-text-primary text-h1 mb-4 font-semibold">
-            No Blogs Available
+            Couldn&apos;t load the blogs
           </h1>
           <p className="text-text-muted mb-8">
-            We couldn&apos;t load any blogs at the moment. This might be due to
-            a connection issue.
+            Something went wrong while fetching the posts. Please try again in a
+            moment.
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <button
@@ -106,50 +135,41 @@ const BlogCards = ({ blogs }) => {
           title="Blog Space"
           subtitle="Thoughts and writing on software, security and emerging tech"
         />
-        {/* Toolbar: Create + Search + View Toggle */}
-        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        {/* Toolbar: Search + View Toggle */}
+        <div
+          ref={toolbarRef}
+          className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+        >
           {/* Search input */}
           <div className="relative w-full md:w-80">
             <Search className="text-text-muted absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search for a blog..."
+              aria-label="Search blogs by title"
               value={searchQuery}
               onChange={handleSearchQuery}
               className="border-border-subtle bg-surface-raised text-text-primary placeholder-text-muted focus:border-accent rounded-control w-full border py-3 pr-10 pl-11 text-sm transition-colors focus:outline-none"
             />
-            <button
-              className="text-text-muted hover:bg-surface rounded-control absolute top-1/2 right-4 -translate-y-1/2 p-1"
-              onClick={() => setSearchQuery("")}
-              aria-label="Clear search"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            {searchQuery && (
+              <button
+                type="button"
+                className="text-text-muted hover:bg-surface rounded-control absolute top-1/2 right-4 -translate-y-1/2 p-1"
+                onClick={clearSearch}
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
 
-          {/* View toggle pill, Login & Create Blog */}
           <div className="flex flex-col items-center gap-4 md:flex-row">
-            {/* Login & Create Blog links */}
-            <div className="inline-flex items-center gap-4">
-              <ProgressLink
-                href="/login"
-                className="text-text-muted hover:text-text-primary text-sm underline underline-offset-2 transition-colors duration-150"
-              >
-                Login
-              </ProgressLink>
-              <ProgressLink
-                href="/createblog"
-                className="text-text-muted hover:text-text-primary text-sm underline underline-offset-2 transition-colors duration-150"
-              >
-                Create Blog
-              </ProgressLink>
-            </div>
-
             {/* Toggle pill */}
             <div className="border-border-subtle bg-surface-raised rounded-card flex items-center gap-0.5 border p-1">
               <button
                 onClick={() => setViewMode("card")}
                 aria-label="Card view"
+                aria-pressed={viewMode === "card"}
                 className={`rounded-control flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors duration-150 ${
                   viewMode === "card"
                     ? "bg-surface text-text-primary shadow-sm"
@@ -162,6 +182,7 @@ const BlogCards = ({ blogs }) => {
               <button
                 onClick={() => setViewMode("table")}
                 aria-label="Table view"
+                aria-pressed={viewMode === "table"}
                 className={`rounded-control flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors duration-150 ${
                   viewMode === "table"
                     ? "bg-surface text-text-primary shadow-sm"
@@ -187,13 +208,14 @@ const BlogCards = ({ blogs }) => {
             currentBlogs={currentBlogs}
             searchQuery={searchQuery}
             highlightText={highlightText}
+            startIndex={indexOfFirstBlog}
           />
         )}
 
         {/* Pagination */}
         <Pagination
           currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
+          setCurrentPage={changePage}
           totalPages={totalPages}
           indexOfFirstBlog={indexOfFirstBlog}
           indexOfLastBlog={indexOfLastBlog}

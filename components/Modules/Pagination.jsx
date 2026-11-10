@@ -54,10 +54,14 @@ const Pagination = ({
         )}
 
         {totalPages > 1 && (
-          <nav className="flex items-center justify-center gap-1">
+          <nav
+            aria-label="Pagination"
+            className="flex items-center justify-center gap-1"
+          >
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
+              aria-label="Previous page"
               className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control inline-flex items-center justify-center p-2 text-sm font-semibold transition-colors disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -78,6 +82,10 @@ const Pagination = ({
                     <button
                       key={pageNumber}
                       onClick={() => setCurrentPage(pageNumber)}
+                      aria-label={`Page ${pageNumber}`}
+                      aria-current={
+                        currentPage === pageNumber ? "page" : undefined
+                      }
                       className={`rounded-control inline-flex h-8 w-8 items-center justify-center truncate text-sm font-semibold transition-colors ${
                         currentPage === pageNumber
                           ? "bg-text-primary text-surface"
@@ -109,6 +117,7 @@ const Pagination = ({
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
+              aria-label="Next page"
               className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control inline-flex items-center justify-center p-2 text-sm font-semibold transition-colors disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4 rotate-180" />

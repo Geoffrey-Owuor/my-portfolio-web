@@ -8,7 +8,6 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { project_images } from "@/assets/assets";
 
 // How far (px) the screenshot drifts against the pointer while hovered.
 const DRIFT = 10;
@@ -19,9 +18,8 @@ const DRIFT = 10;
  * a window onto a larger page. Projects without a screenshot get a quiet
  * placeholder so the grid's card heights stay even.
  */
-const ProjectThumb = ({ projectId, name }) => {
+const ProjectThumb = ({ projectId, image, name }) => {
   const prefersReducedMotion = useReducedMotion();
-  const image = project_images.find((entry) => entry.id === projectId)?.image;
 
   // Pointer position across the frame, -0.5 … 0.5 on each axis.
   const px = useMotionValue(0);

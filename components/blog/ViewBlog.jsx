@@ -1,142 +1,61 @@
-"use client";
-import {
-  Calendar,
-  UserRound,
-  Clock,
-  ArrowLeft,
-  Share2,
-  PenLine,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useToast } from "../Modules/Toaster";
-import { formatDate } from "@/utils/Helpers";
-import { extractHeadings } from "@/utils/blogHeadings";
-import EditBlog from "./EditBlog";
+import { Calendar, UserRound, Clock, ArrowLeft, Share2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { formatDate } from "@/utils/Helpers";
+import { extractHeadings } from "@/utils/blogHeadings";
 import { highlightPlugin } from "@/utils/rehypeHighlight";
-import { useState, useEffect, useMemo } from "react";
-import { useProgressRouter } from "../Modules/RouteProgress";
-import TableOfContents from "../Modules/TableOfContents";
+import { SITE_URL } from "@/utils/metadata";
 import { shareIcons } from "@/assets/assets";
+import { ProgressLink } from "../Modules/RouteProgress";
+import TableOfContents, {
+  MobileTableOfContents,
+} from "../Modules/TableOfContents";
 import BlogNav from "./BlogNav";
 
+const getShareLink = (platformKey, url, title) => {
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
+
+  switch (platformKey) {
+    case "twitterLink":
+      return `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`;
+    case "linkedinLink":
+      return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+    case "facebookLink":
+      return `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+    case "whatsappLink":
+      return `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
+    default:
+      return "#";
+  }
+};
+
+// Rendered on the server, so readers don't download the markdown and syntax
+// highlighting libraries. Only the table of contents runs in the browser.
 const ViewBlog = ({ blogPost }) => {
-  const router = useRouter();
-  const [showEditBlog, setShowEditBlog] = useState(false);
-  const progressRouter = useProgressRouter();
-  const toast = useToast();
-
-  const shareIconEntries = Object.entries(shareIcons);
-
-  const handleBlogsRoute = (link) => {
-    progressRouter.push(link);
-  };
-
   // One set of ids for the article and the table of contents.
-  const headings = useMemo(
-    () => extractHeadings(blogPost.blog_content),
-    [blogPost.blog_content],
+  const headings = extractHeadings(blogPost.blog_content);
+  const idsByOffset = new Map(headings.map((h) => [h.offset, h.id]));
+
+  const AnchoredHeading = ({ as: Tag, node, children, ...props }) => (
+    <Tag
+      id={idsByOffset.get(node.position?.start.offset)}
+      style={{ scrollMarginTop: "6rem" }}
+      {...props}
+    >
+      {children}
+    </Tag>
   );
 
-  // 1. Define custom renderer for ReactMarkdown to add IDs to h3
-  const MarkdownComponents = useMemo(() => {
-    const idsByOffset = new Map(headings.map((h) => [h.offset, h.id]));
-
-    return {
-      h3: ({ node, children, ...props }) => (
-        <h3
-          id={idsByOffset.get(node.position?.start.offset)}
-          style={{ scrollMarginTop: "6rem" }}
-          {...props}
-        >
-          {children}
-        </h3>
-      ),
-    };
-  }, [headings]);
-
-  // The page is cached and identical for every visitor, so whether to offer
-  // Edit is settled here in the browser. The update route still checks the
-  // session itself.
-  const [signedIn, setSignedIn] = useState(false);
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch("/api/session", { signal: controller.signal })
-      .then((response) => response.json())
-      .then((session) => setSignedIn(session.signedIn === true))
-      .catch(() => {});
-    return () => controller.abort();
-  }, []);
-
-  // 1. State to hold the current URL (avoids hydration mismatch)
-  const [currentUrl, setCurrentUrl] = useState("");
-
-  // UseEffect to run some functionalities on mount
-  useEffect(() => {
-    // Determine the URL only after mounting on the client
-    if (typeof window !== "undefined") {
-      setCurrentUrl(window.location.href);
-    }
-
-    // The flags mark position in the /blogs listing, which runs newest first —
-    // so the first blog is the newset one written and the last is the oldest.
-    // A fixed id, so a re-run (Strict Mode, or the same flags again) replaces
-    // the note instead of stacking a second copy.
-    if (blogPost.is_first_blog) {
-      toast.info("More magic coming soon! 🔮", {
-        id: "blog-position",
-        title: "You've reached the latest post",
-      });
-    } else if (blogPost.is_last_blog) {
-      toast.info("Where the magic began. 🕰️🚀", {
-        id: "blog-position",
-        title: "This is my very first post",
-      });
-    }
-  }, [blogPost.is_first_blog, blogPost.is_last_blog, toast]);
-
-  // 2. Helper to generate share links based on the platform key
-  const getShareLink = (platformKey, url, title) => {
-    if (!url) return "#"; // Fallback if URL isn't loaded yet
-
-    const encodedUrl = encodeURIComponent(url);
-    const encodedTitle = encodeURIComponent(title);
-
-    switch (platformKey) {
-      case "twitterLink":
-        // X (Twitter) format
-        return `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`;
-      case "linkedinLink":
-        // LinkedIn format
-        return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
-      case "facebookLink":
-        // Facebook format
-        return `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
-      case "whatsappLink":
-        // WhatsApp format
-        return `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`;
-      default:
-        return "#";
-    }
+  const markdownComponents = {
+    h2: (props) => <AnchoredHeading as="h2" {...props} />,
+    h3: (props) => <AnchoredHeading as="h3" {...props} />,
   };
 
-  // Data needed by the Edit Blog Modal
-  const editBlogData = {
-    blog_id: blogPost.id,
-    blog_title: blogPost.blog_title,
-    blog_author: blogPost.blog_author,
-    blog_content: blogPost.blog_content,
-    author_tagline: blogPost.author_tagline,
-  };
+  const shareUrl = `${SITE_URL}/blog/${blogPost.slug}`;
+
   return (
     <div>
-      <EditBlog
-        setShowEditModal={setShowEditBlog}
-        showEditModal={showEditBlog}
-        blogInfo={editBlogData}
-      />
-
       <div className="container-page flex flex-col py-8 lg:flex-row lg:gap-6">
         <article className="w-full max-w-none min-w-0">
           {/* Header Section */}
@@ -170,24 +89,13 @@ const ViewBlog = ({ blogPost }) => {
                 <span>{blogPost.read_time}</span>
               </div>
 
-              {/* The edit button */}
-              {signedIn && (
-                <button
-                  onClick={() => setShowEditBlog(true)}
-                  className="hover:text-text-primary flex cursor-pointer items-center gap-2 transition-colors duration-150"
-                >
-                  <PenLine className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span>Edit</span>
-                </button>
-              )}
-
-              <button
-                onClick={() => handleBlogsRoute("/blogs")}
-                className="hover:text-text-primary flex cursor-pointer items-center gap-2 transition-colors duration-150"
+              <ProgressLink
+                href="/blogs"
+                className="hover:text-text-primary flex items-center gap-2 transition-colors duration-150"
               >
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>back to blogs</span>
-              </button>
+              </ProgressLink>
             </div>
 
             <div className="text-text-muted mt-6 flex items-center gap-4">
@@ -196,10 +104,10 @@ const ViewBlog = ({ blogPost }) => {
                 Share:
               </span>
               <div className="flex items-center gap-2">
-                {shareIconEntries.map(([key, Icon]) => (
+                {Object.entries(shareIcons).map(([key, Icon]) => (
                   <a
                     key={key}
-                    href={getShareLink(key, currentUrl, blogPost.blog_title)}
+                    href={getShareLink(key, shareUrl, blogPost.blog_title)}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Share the blog on ${key.replace("Link", "")}`}
@@ -215,12 +123,14 @@ const ViewBlog = ({ blogPost }) => {
           {/* Divider */}
           <div className="bg-border-subtle mb-8 h-px sm:mb-12" />
 
+          <MobileTableOfContents headings={headings} />
+
           {/* Content Section */}
           <div className="prose prose-lg dark:prose-invert prose-img:rounded-card prose-headings:font-semibold prose-a:text-accent max-w-none wrap-break-word">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[highlightPlugin]}
-              components={MarkdownComponents}
+              components={markdownComponents}
             >
               {blogPost.blog_content}
             </ReactMarkdown>
@@ -233,7 +143,7 @@ const ViewBlog = ({ blogPost }) => {
               names where each link lands before they commit to it. */}
           <BlogNav blogPost={blogPost} />
         </article>
-        {/* 3. The Sidebar (Only visible on large screens via CSS in component) */}
+        {/* The sidebar (only visible on large screens via CSS in the component) */}
         <TableOfContents headings={headings} />
       </div>
     </div>

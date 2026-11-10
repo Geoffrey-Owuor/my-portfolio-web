@@ -22,7 +22,7 @@ export async function POST() {
           [payload.id],
         );
       }
-    } catch {
+    } catch (error) {
       console.error("Logout DB update failed:", error);
     }
   }

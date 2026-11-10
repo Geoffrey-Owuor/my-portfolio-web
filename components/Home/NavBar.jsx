@@ -35,20 +35,21 @@ const Wordmark = () => (
 
 // Every tab in the command bar: a transparent hit area above the single
 // sliding pill, which NavBar renders once per list.
-const Tab = ({ isActive, onClick, children }) => (
+// Real links, so a tab can be middle-clicked or opened in a new tab.
+const Tab = ({ isActive, href, onClick, as: Component = Link, children }) => (
   <li className="relative">
-    <button
-      type="button"
+    <Component
+      href={href}
       onClick={onClick}
       aria-current={isActive ? "true" : undefined}
-      className={`rounded-control relative cursor-pointer px-3 py-1.5 text-sm transition-colors ${
+      className={`rounded-control relative block cursor-pointer px-3 py-1.5 text-sm transition-colors ${
         isActive
           ? "text-text-primary"
           : "text-text-muted hover:text-text-primary"
       }`}
     >
       {children}
-    </button>
+    </Component>
   </li>
 );
 
@@ -185,16 +186,6 @@ const NavBar = () => {
     router.push(route);
   };
 
-  // Jump to a section on the homepage, or route there first from elsewhere.
-  const handleTabClick = (link) => {
-    if (!isInHome) {
-      handleNavbarRouting(link.href);
-      return;
-    }
-
-    document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
   // Wordmark/section links always render as a <Link href="/#id"> (a real
   // anchor, for accessibility/middle-click/new-tab), but a plain left click is
   // intercepted: on the homepage it goes through the same explicit
@@ -297,7 +288,8 @@ const NavBar = () => {
                 <Tab
                   key={link.id}
                   isActive={activeKey === link.id}
-                  onClick={() => handleTabClick(link)}
+                  href={link.href}
+                  onClick={(e) => handleSectionLinkClick(e, link.id)}
                 >
                   {link.label}
                 </Tab>
@@ -309,12 +301,12 @@ const NavBar = () => {
               />
 
               <Tab
+                as={ProgressLink}
                 isActive={activeKey === "blogs"}
-                onClick={() =>
-                  pathname === "/blogs"
-                    ? undefined
-                    : handleNavbarRouting("/blogs")
-                }
+                href="/blogs"
+                onClick={(e) => {
+                  if (pathname === "/blogs") e.preventDefault();
+                }}
               >
                 Blogs
               </Tab>
@@ -439,6 +431,11 @@ const NavBar = () => {
       {/* Mobile Menu Drawer - slides from left to right */}
       <div
         ref={menuRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
+        // Off-screen isn't enough: its links would stay in the tab order.
+        inert={!isMenuOpen}
         className={`bg-surface z-drawer fixed top-0 bottom-0 left-0 w-72 transform shadow-2xl transition-all duration-200 ease-in-out lg:hidden ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { ProgressLink } from "../Modules/RouteProgress";
 import CustomMdEditor from "./CustomMdEditor";
+import { countWords } from "@/utils/Helpers";
 
 const BlogForm = ({
   handleConfirmSubmit,
@@ -17,6 +18,8 @@ const BlogForm = ({
   isFormValid,
   isSubmitting,
   IsUpdating,
+  canDiscard,
+  onDiscard,
 }) => {
   return (
     <>
@@ -87,14 +90,14 @@ const BlogForm = ({
           <div>
             <div className="mb-2 flex items-center justify-between">
               <label
-                htmlFor="content"
+                htmlFor="markdown-textarea"
                 className="text-text-muted flex items-center gap-2 text-sm font-semibold"
               >
                 <Library className="text-text-muted h-4 w-4" />
                 Content
               </label>
               <span className="text-text-muted text-xs">
-                {formData.content.split(/\s+/).filter(Boolean).length} words
+                {countWords(formData.content)} words
               </span>
             </div>
             <CustomMdEditor value={formData.content} onChange={handleChange} />
@@ -129,6 +132,15 @@ const BlogForm = ({
               View <span className="hidden sm:block">Blogs</span>
               <ArrowUpRight className="h-4 w-4" />
             </ProgressLink>
+            {canDiscard && (
+              <button
+                type="button"
+                onClick={onDiscard}
+                className="text-text-muted hover:text-danger rounded-control px-3 py-3 text-sm font-semibold transition-colors duration-150"
+              >
+                Discard <span className="hidden sm:inline">changes</span>
+              </button>
+            )}
           </div>
         </form>
       </div>

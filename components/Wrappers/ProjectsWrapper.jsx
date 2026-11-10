@@ -84,6 +84,7 @@ const ProjectsWrapper = ({ projects }) => {
               >
                 <ProjectThumb
                   projectId={project.id}
+                  image={project.project_image}
                   name={project.project_name}
                 />
 

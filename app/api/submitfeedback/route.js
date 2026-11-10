@@ -1,28 +1,55 @@
 import { query } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { sendMail } from "@/lib/SendMail";
+import { clientIp, describeWait, rateLimit } from "@/lib/RateLimit";
+import { validateContact } from "@/utils/contactValidation";
 
 export async function POST(request) {
-  const { contactInfo, message } = await request.json();
-
-  if (!contactInfo || !message) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
     return NextResponse.json(
-      { message: "Message to be sent is missing" },
-      { status: 401 },
+      { message: "Expected a JSON body" },
+      { status: 400 },
     );
   }
 
+  const errors = validateContact(body ?? {});
+  if (Object.keys(errors).length > 0) {
+    return NextResponse.json(
+      { message: "Please check the highlighted fields.", errors },
+      { status: 400 },
+    );
+  }
+
+  const { allowed, retryAfter } = await rateLimit(
+    `contact:${clientIp(request)}`,
+    { limit: 5, windowSeconds: 60 * 60 },
+  );
+  if (!allowed) {
+    return NextResponse.json(
+      {
+        message: `That's a lot of messages. Please try again in ${describeWait(retryAfter)}.`,
+      },
+      { status: 429, headers: { "Retry-After": String(retryAfter) } },
+    );
+  }
+
+  const contactInfo = body.contactInfo.trim();
+  const message = body.message.trim();
+
   try {
-    const insertQuery = `INSERT INTO user_feedback (user_identity, feedback_description)
-  VALUES ($1, $2)`;
-    const params = [contactInfo, message];
+    await query(
+      `INSERT INTO user_feedback (user_identity, feedback_description)
+       VALUES ($1, $2)`,
+      [contactInfo, message],
+    );
 
-    await query(insertQuery, params);
+    // Sent after the response, but still inside the invocation: an un-awaited
+    // promise can be frozen with the function before the email goes out.
+    after(() => sendMail({ contactInfo, message }));
 
-    // Call the sendMail function
-    sendMail({ contactInfo, message });
-
-    // 3. Send success response
     return NextResponse.json(
       { message: "Message received! I'll get back to you soon😊" },
       { status: 201 },

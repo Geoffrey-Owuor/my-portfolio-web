@@ -19,7 +19,17 @@ import {
 import TooltipUI, { isFocusVisible } from "../Theme/TooltipUI";
 
 // --- 2. THE MAIN EDITOR COMPONENT ---
-const CustomMdEditor = ({ value, onChange }) => {
+// id and name default to the blog form's; other forms pass their own field's.
+const CustomMdEditor = ({
+  value,
+  onChange,
+  id = "markdown-textarea",
+  name = "content",
+  placeholder = "Start writing your masterpiece... (Markdown supported)",
+  rows = 16,
+  invalid = false,
+  describedBy,
+}) => {
   const [showPreview, setShowPreview] = useState(false);
   const [showToolTip, setShowToolTip] = useState(false);
   const [suppressHover, setSuppressHover] = useState(false);
@@ -27,8 +37,8 @@ const CustomMdEditor = ({ value, onChange }) => {
   // UseEffect which is a shortcut for toggling preview mode (alt + P)
   useEffect(() => {
     const handleKeyDown = (event) => {
-      // Check for alt + p
-      if (event.altKey && event.key === "p") {
+      // Check for alt + p. By key position: on macOS Option+P types "π".
+      if (event.altKey && event.code === "KeyP") {
         // prevent browsers default action for this particular shortcut
         event.preventDefault();
 
@@ -40,7 +50,7 @@ const CustomMdEditor = ({ value, onChange }) => {
     document.addEventListener("keydown", handleKeyDown);
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [showPreview]); //rerun when showPreview changes
+  }, []);
 
   // Detect if current device supports hovering and has a pointer
   const canHover =
@@ -49,7 +59,7 @@ const CustomMdEditor = ({ value, onChange }) => {
 
   // Helper to insert markdown characters
   const insertText = (before, after) => {
-    const textarea = document.getElementById("markdown-textarea");
+    const textarea = document.getElementById(id);
     if (!textarea) return;
 
     const start = textarea.selectionStart;
@@ -59,10 +69,23 @@ const CustomMdEditor = ({ value, onChange }) => {
     const selectedText = previousText.substring(start, end);
     const afterText = previousText.substring(end);
 
-    const newText = `${beforeText}${before}${selectedText}${after}${afterText}`;
+    // execCommand is the only way to edit a textarea that keeps Ctrl+Z working;
+    // it fires a normal input event, which reaches `onChange`.
+    textarea.focus();
+    const inserted = document.execCommand(
+      "insertText",
+      false,
+      `${before}${selectedText}${after}`,
+    );
 
-    // Simulate event for parent handler
-    onChange({ target: { name: "content", value: newText } });
+    if (!inserted) {
+      onChange({
+        target: {
+          name,
+          value: `${beforeText}${before}${selectedText}${after}${afterText}`,
+        },
+      });
+    }
 
     // Restore focus and cursor position
     setTimeout(() => {
@@ -103,7 +126,7 @@ const CustomMdEditor = ({ value, onChange }) => {
   };
 
   return (
-    <div className="border-border-subtle rounded-card w-full border transition-colors focus:outline-none">
+    <div className="border-border-subtle rounded-card focus-within:border-accent w-full border transition-colors">
       {/* Toolbar */}
       <div className="border-border-subtle bg-surface-raised rounded-t-card flex flex-wrap items-center gap-2 border-b p-2">
         {/* Toolbar buttons */}
@@ -165,7 +188,7 @@ const CustomMdEditor = ({ value, onChange }) => {
         {/* Preview Heading */}
         {showPreview && (
           <div className="px-2 py-[3px]">
-            <span className="font-semibold">Blog Preview</span>
+            <span className="font-semibold">Preview</span>
           </div>
         )}
         <div className="grow" /> {/* Spacer */}
@@ -195,7 +218,7 @@ const CustomMdEditor = ({ value, onChange }) => {
           {/* Tooltip div */}
           <TooltipUI
             id="preview-toggle-tip"
-            label="Preview Blog"
+            label="Preview"
             shortcut="alt + P"
             show={showToolTip}
           />
@@ -205,13 +228,15 @@ const CustomMdEditor = ({ value, onChange }) => {
       {/* Text Area */}
       {!showPreview && (
         <textarea
-          id="markdown-textarea"
-          name="content"
+          id={id}
+          name={name}
           value={value}
           onChange={onChange}
-          rows={16}
+          rows={rows}
+          aria-invalid={invalid || undefined}
+          aria-describedby={describedBy}
           className="text-text-primary placeholder:text-text-muted w-full resize-none p-4 text-sm leading-relaxed [scrollbar-width:thin] focus:outline-none"
-          placeholder="Start writing your masterpiece... (Markdown supported)"
+          placeholder={placeholder}
         />
       )}
 
@@ -227,6 +252,7 @@ const ToolbarButton = ({ icon, onClick, label }) => (
     type="button"
     onClick={onClick}
     title={label}
+    aria-label={label}
     className="text-text-muted hover:bg-surface hover:text-text-primary rounded-control cursor-pointer p-1.5 transition-colors"
   >
     {icon}

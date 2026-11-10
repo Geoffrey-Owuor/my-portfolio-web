@@ -6,6 +6,25 @@ import { Loader2, SendHorizonal } from "lucide-react";
 import { useToast } from "../Modules/Toaster";
 import SectionTitle from "../Wrappers/SectionTitle";
 import ScrollReveal from "../Modules/ScrollReveal";
+import {
+  CONTACT_INFO_MAX,
+  CONTACT_MESSAGE_MAX,
+  validateContact,
+} from "@/utils/contactValidation";
+
+const fieldClass = (hasError) =>
+  `bg-surface-raised text-text-primary rounded-card border p-4 transition-colors focus:outline-none ${
+    hasError
+      ? "border-danger focus:border-danger"
+      : "border-border-subtle focus:border-accent"
+  }`;
+
+const FieldError = ({ id, message }) =>
+  message ? (
+    <p id={id} role="alert" className="text-danger mt-2 text-sm">
+      {message}
+    </p>
+  ) : null;
 
 const Contact = () => {
   // Set for form inputs
@@ -14,24 +33,32 @@ const Contact = () => {
     message: "",
   });
 
+  // One message per invalid field, shown under that field.
+  const [errors, setErrors] = useState({});
   const [sending, setSending] = useState(false);
   const toast = useToast();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // A field's error clears as soon as it's being corrected.
+    setErrors((prev) => (prev[name] ? { ...prev, [name]: undefined } : prev));
   };
 
   //Handling form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Check if form data is available
-    if (!formData.contactInfo || !formData.message) {
-      toast.error("Please fill in both fields so I can get back to you.", {
-        title: "A field is missing",
-      });
+
+    const found = validateContact(formData);
+    if (Object.keys(found).length > 0) {
+      setErrors(found);
+      // Take the reader to the first field that needs attention.
+      document
+        .getElementById(found.contactInfo ? "contactInfo" : "message")
+        ?.focus();
       return;
     }
+
     setSending(true);
     try {
       const response = await fetch("/api/submitfeedback", {
@@ -45,6 +72,9 @@ const Contact = () => {
       if (response.ok) {
         toast.success(result.message, { title: "Message sent" });
         setFormData({ contactInfo: "", message: "" }); // Clear form data
+        setErrors({});
+      } else if (result.errors) {
+        setErrors(result.errors);
       } else {
         throw new Error(result.message || "Something went wrong");
       }
@@ -100,6 +130,7 @@ const Contact = () => {
             {/* Header spans the shared measure; the form keeps a readable width */}
             <form
               onSubmit={handleSubmit}
+              noValidate
               className="flex max-w-3xl flex-col gap-6"
             >
               {/* Email/Phone Input */}
@@ -117,8 +148,19 @@ const Contact = () => {
                   value={formData.contactInfo}
                   onChange={handleChange}
                   disabled={sending}
+                  required
+                  maxLength={CONTACT_INFO_MAX}
+                  autoComplete="email"
+                  aria-invalid={errors.contactInfo ? "true" : undefined}
+                  aria-describedby={
+                    errors.contactInfo ? "contactInfo-error" : undefined
+                  }
                   placeholder="name@example.com or 07xx xxx xxx"
-                  className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-card border p-4 transition-colors focus:outline-none"
+                  className={fieldClass(errors.contactInfo)}
+                />
+                <FieldError
+                  id="contactInfo-error"
+                  message={errors.contactInfo}
                 />
               </div>
 
@@ -137,9 +179,16 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   disabled={sending}
+                  required
+                  maxLength={CONTACT_MESSAGE_MAX}
+                  aria-invalid={errors.message ? "true" : undefined}
+                  aria-describedby={
+                    errors.message ? "message-error" : undefined
+                  }
                   placeholder="Hi Jeff, I'd like to talk about..."
-                  className="bg-surface-raised text-text-primary border-border-subtle focus:border-accent rounded-card border p-4 transition-colors focus:outline-none"
+                  className={fieldClass(errors.message)}
                 />
+                <FieldError id="message-error" message={errors.message} />
               </div>
 
               {/* Submit Button */}

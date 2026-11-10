@@ -1,4 +1,16 @@
-export function EmailTemplate(contactInfo, message) {
+// Visitor input goes into an HTML email, so it is escaped first: otherwise a
+// message could carry its own markup (links, images, hidden text).
+const escapeHtml = (value = "") =>
+  String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+export function EmailTemplate(rawContactInfo, rawMessage) {
+  const contactInfo = escapeHtml(rawContactInfo);
+  const message = escapeHtml(rawMessage);
   const portfolioName = "Jeff's Portfolio"; // You can change this
   const greeting = "Hi Jeff,";
   const intro =

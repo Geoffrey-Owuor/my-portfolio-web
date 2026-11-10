@@ -367,6 +367,13 @@ html:not([data-theme="dark"]) .theme-inverse {
 }
 
 @layer base {
+  /* One keyboard focus ring for everything. In the base layer so a control
+     that shows focus another way can still opt out with focus:outline-none. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
   /* Custom blur compatible in all browsers */
   .custom-blur {
     -webkit-backdrop-filter: blur(6px);

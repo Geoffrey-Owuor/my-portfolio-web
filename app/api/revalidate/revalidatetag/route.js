@@ -1,38 +1,33 @@
 // Api endpoint for revalidating a specific tag
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
+import { isRevalidateAuthorized } from "@/lib/RevalidateAuth";
 
-// Get current date and time
-const date = new Date().toLocaleString();
-
-export async function GET(request) {
-  // Getting the search Params Object
-  const { searchParams } = request.nextUrl;
-
-  // Getting the values in search params
-  const { secret, tag } = Object.fromEntries(searchParams);
-
-  // Security Check
-  if (!secret || secret !== process.env.REVALIDATE_KEY) {
+export async function POST(request) {
+  if (!isRevalidateAuthorized(request)) {
     return NextResponse.json(
       { message: "Invalid token secret" },
       { status: 401 },
     );
   }
 
-  //   Check if the tag is available
+  const tag = request.nextUrl.searchParams.get("tag");
+
   if (!tag) {
     return NextResponse.json(
       { message: "Missing tag parameter" },
-      { status: 401 },
+      { status: 400 },
     );
   }
 
   try {
-    // Revalidate tag
     revalidateTag(tag);
-    return NextResponse.json({ revalidated: true, time: date });
+    return NextResponse.json({
+      revalidated: true,
+      time: new Date().toISOString(),
+    });
   } catch (error) {
+    console.error(`Error while invalidating tag "${tag}":`, error);
     return NextResponse.json(
       { message: "Error while invalidating" },
       { status: 500 },

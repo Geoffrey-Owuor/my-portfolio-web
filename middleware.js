@@ -11,8 +11,8 @@ export async function middleware(request) {
   const refreshToken = request.cookies.get("refreshToken")?.value;
 
   // Verify once, up front. Redirect decisions must hinge on a *valid* token,
-  // not a present one: a stale/expired cookie used to bounce /login →
-  // /createblog, whose requireSession() rejected it and bounced straight
+  // not a present one: a stale/expired cookie used to bounce /login → the
+  // owner's page, whose requireSession() rejected it and bounced straight
   // back — an infinite redirect loop.
   let payload = null;
   if (refreshToken) {
@@ -26,13 +26,15 @@ export async function middleware(request) {
   }
 
   // --- 1. PROTECTED ROUTES LOGIC (Redirect to Login) ---
-  if (pathname.startsWith("/createblog") && !payload) {
+  const isProtected =
+    pathname.startsWith("/createblog") || pathname.startsWith("/manage");
+  if (isProtected && !payload) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
   // --- 2. Already signed in: skip the login page ---
   if (pathname.startsWith("/login") && payload) {
-    return NextResponse.redirect(new URL("/createblog", request.url));
+    return NextResponse.redirect(new URL("/manage", request.url));
   }
 
   return NextResponse.next();
@@ -40,5 +42,5 @@ export async function middleware(request) {
 
 export const config = {
   // This ensures the middleware ONLY runs on these paths
-  matcher: ["/createblog", "/login"],
+  matcher: ["/createblog", "/login", "/manage/:path*"],
 };

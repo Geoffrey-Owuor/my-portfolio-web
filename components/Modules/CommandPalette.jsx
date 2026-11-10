@@ -12,6 +12,7 @@ import {
   Hash,
   Mail,
   NotebookPen,
+  Settings,
   SunMoon,
   X,
 } from "lucide-react";
@@ -25,12 +26,29 @@ import { EMAIL, GITHUB_URL, RESUME_URL } from "@/utils/links";
 let searchIndexPromise = null;
 const loadSearchIndex = () => {
   searchIndexPromise ??= fetch("/api/search-index")
-    .then((res) => (res.ok ? res.json() : { projects: [], blogs: [] }))
+    .then((res) => {
+      if (!res.ok) throw new Error(`Search index responded ${res.status}`);
+      return res.json();
+    })
     .catch(() => {
       searchIndexPromise = null; // let the next open retry
       return { projects: [], blogs: [] };
     });
   return searchIndexPromise;
+};
+
+// Also once per page load on first open, so ordinary visitors never ask unless
+// they use the palette. It only decides whether to offer the Manage command.
+let sessionPromise = null;
+const loadSignedIn = () => {
+  sessionPromise ??= fetch("/api/session")
+    .then((res) => res.json())
+    .then((session) => session.signedIn === true)
+    .catch(() => {
+      sessionPromise = null; // let the next open retry
+      return false;
+    });
+  return sessionPromise;
 };
 
 // Case- and accent-insensitive matching, so "resume" finds "résumé".
@@ -49,6 +67,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
   const [queryText, setQueryText] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const [index, setIndex] = useState({ projects: [], blogs: [] });
+  const [signedIn, setSignedIn] = useState(false);
 
   const inputRef = useRef(null);
   const listRef = useRef(null);
@@ -64,6 +83,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
     setQueryText("");
     setActiveIndex(0);
     loadSearchIndex().then(setIndex);
+    loadSignedIn().then(setSignedIn);
 
     // Hand focus back to whatever opened the palette.
     const previousFocus = document.activeElement;
@@ -111,6 +131,17 @@ const CommandPalette = ({ isOpen, onClose }) => {
         icon: FileText,
         run: () => router.push(`/blog/${blog.slug}`),
       })),
+      ...(signedIn
+        ? [
+            {
+              id: "action-manage",
+              group: "Actions",
+              label: "Manage portfolio",
+              icon: Settings,
+              run: () => router.push("/manage"),
+            },
+          ]
+        : []),
       {
         id: "action-theme",
         group: "Actions",
@@ -142,7 +173,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
         },
       },
     ];
-  }, [index, pathname, router, resolvedTheme, setTheme]);
+  }, [index, signedIn, pathname, router, resolvedTheme, setTheme]);
 
   const results = useMemo(() => {
     const needle = foldForSearch(queryText.trim());

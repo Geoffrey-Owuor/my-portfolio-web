@@ -7,6 +7,12 @@ export const formatDate = (dateInput) => {
   });
 };
 
+export const countWords = (text = "") =>
+  text.split(/\s+/).filter(Boolean).length;
+
+export const estimateReadTime = (content) =>
+  `${Math.max(1, Math.ceil(countWords(content) / 200))} min read`;
+
 // simple slugify function to create safe ids from text
 export const generateSlug = (text) => {
   return text
@@ -25,7 +31,7 @@ export const stripMarkdown = (text, maxLength = 160) => {
   if (!text) return "";
 
   const plain = text
-    .replace(/```[\s\S]*?```/g, " ") // fenced code blocks
+    .replace(/```[\s\S]*?(```|$)/g, " ") // fenced code blocks, even if cut off
     .replace(/`([^`]*)`/g, "$1") // inline code
     .replace(/!\[[^\]]*\]\([^)]*\)/g, " ") // images
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1") // links → their label

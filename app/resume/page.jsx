@@ -1,11 +1,13 @@
 import { Download, ExternalLink } from "lucide-react";
 import PageHeader from "@/components/Layout/PageHeader";
 import ResumePreview from "@/components/Resume/ResumePreview";
-import ResumeUpload from "@/components/Resume/ResumeUpload";
-import { getSession } from "@/cache/getSession";
 import { getCachedLatestResume } from "@/lib/ResumeStorage";
 import { formatDate } from "@/utils/Helpers";
 import { pageMetadata, SITE_NAME } from "@/utils/metadata";
+
+// Prerendering would freeze a failed storage lookup into the page until the
+// next upload. The lookup itself stays cached, so this costs very little.
+export const dynamic = "force-dynamic";
 
 export const metadata = pageMetadata({
   title: "Résumé",
@@ -23,17 +25,13 @@ const actionClass =
 const ResumePage = async () => {
   // The lookup throws when storage can't be reached; null means nothing has
   // been uploaded yet.
-  const [session, lookup] = await Promise.all([
-    getSession(),
-    getCachedLatestResume().then(
-      (resume) => ({ resume }),
-      (error) => {
-        console.error("Failed to look up the résumé:", error);
-        return { failed: true };
-      },
-    ),
-  ]);
-  const { resume, failed } = lookup;
+  const { resume, failed } = await getCachedLatestResume().then(
+    (resume) => ({ resume }),
+    (error) => {
+      console.error("Failed to look up the résumé:", error);
+      return { failed: true };
+    },
+  );
 
   return (
     <div className="container-page py-section">
@@ -69,7 +67,6 @@ const ResumePage = async () => {
             </a>
           </>
         )}
-        {session && !failed && <ResumeUpload hasResume={Boolean(resume)} />}
       </div>
 
       {resume ? (

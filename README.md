@@ -28,7 +28,7 @@ Check out the live site **[Here](https://jeff-portfolio-web.vercel.app)**
 - **Auth:** [jose](https://github.com/panva/jose) (JWT) + [bcryptjs](https://github.com/dcodeIO/bcrypt.js)
 - **State Management:** [Zustand](https://zustand-demo.pmnd.rs/)
 - **Blog Rendering:** [react-markdown](https://github.com/remarkjs/react-markdown) + [remark-gfm](https://github.com/remarkjs/remark-gfm)
-- **Email:** [Nodemailer](https://nodemailer.com/) (Gmail OAuth2) + [Resend](https://resend.com/)
+- **Email:** [Resend](https://resend.com/)
 - **Animations:** [Framer Motion](https://www.framer.com/motion/)
 - **Deployment:** [Vercel](https://vercel.com/)
 - **Fonts:** Inter + JetBrains Mono by default, with DM Sans, Geist, Source Serif 4 and Lora (each paired with a mono font) in the font switcher (via `next/font`; only the default pair is preloaded)
