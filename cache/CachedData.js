@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 import { query } from "@/lib/db";
 import { unstable_cache } from "next/cache";
 
