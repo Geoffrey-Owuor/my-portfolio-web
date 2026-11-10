@@ -26,7 +26,7 @@ const BlogPost = ({ user }) => {
   const toast = useToast();
   const router = useRouter();
 
-  const { hasDraft, clearDraft, discardDraft } = useFormDraft(
+  const { hasDraft, discardDraft } = useFormDraft(
     "blog-draft:new",
     formData,
     setFormData,
@@ -69,8 +69,7 @@ const BlogPost = ({ user }) => {
       router.refresh();
 
       toast.success(data.message, { title: "Blog published" });
-      clearDraft();
-      setFormData({ title: "", author: name ?? "", content: "", tagline: "" });
+      discardDraft(); // back to the blank form, author still filled in
     } catch (error) {
       // Axios error handling
       const message =
