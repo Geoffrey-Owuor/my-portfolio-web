@@ -19,7 +19,17 @@ import {
 import TooltipUI, { isFocusVisible } from "../Theme/TooltipUI";
 
 // --- 2. THE MAIN EDITOR COMPONENT ---
-const CustomMdEditor = ({ value, onChange }) => {
+// id and name default to the blog form's; other forms pass their own field's.
+const CustomMdEditor = ({
+  value,
+  onChange,
+  id = "markdown-textarea",
+  name = "content",
+  placeholder = "Start writing your masterpiece... (Markdown supported)",
+  rows = 16,
+  invalid = false,
+  describedBy,
+}) => {
   const [showPreview, setShowPreview] = useState(false);
   const [showToolTip, setShowToolTip] = useState(false);
   const [suppressHover, setSuppressHover] = useState(false);
@@ -49,7 +59,7 @@ const CustomMdEditor = ({ value, onChange }) => {
 
   // Helper to insert markdown characters
   const insertText = (before, after) => {
-    const textarea = document.getElementById("markdown-textarea");
+    const textarea = document.getElementById(id);
     if (!textarea) return;
 
     const start = textarea.selectionStart;
@@ -71,7 +81,7 @@ const CustomMdEditor = ({ value, onChange }) => {
     if (!inserted) {
       onChange({
         target: {
-          name: "content",
+          name,
           value: `${beforeText}${before}${selectedText}${after}${afterText}`,
         },
       });
@@ -178,7 +188,7 @@ const CustomMdEditor = ({ value, onChange }) => {
         {/* Preview Heading */}
         {showPreview && (
           <div className="px-2 py-[3px]">
-            <span className="font-semibold">Blog Preview</span>
+            <span className="font-semibold">Preview</span>
           </div>
         )}
         <div className="grow" /> {/* Spacer */}
@@ -208,7 +218,7 @@ const CustomMdEditor = ({ value, onChange }) => {
           {/* Tooltip div */}
           <TooltipUI
             id="preview-toggle-tip"
-            label="Preview Blog"
+            label="Preview"
             shortcut="alt + P"
             show={showToolTip}
           />
@@ -218,13 +228,15 @@ const CustomMdEditor = ({ value, onChange }) => {
       {/* Text Area */}
       {!showPreview && (
         <textarea
-          id="markdown-textarea"
-          name="content"
+          id={id}
+          name={name}
           value={value}
           onChange={onChange}
-          rows={16}
+          rows={rows}
+          aria-invalid={invalid || undefined}
+          aria-describedby={describedBy}
           className="text-text-primary placeholder:text-text-muted w-full resize-none p-4 text-sm leading-relaxed [scrollbar-width:thin] focus:outline-none"
-          placeholder="Start writing your masterpiece... (Markdown supported)"
+          placeholder={placeholder}
         />
       )}
 
