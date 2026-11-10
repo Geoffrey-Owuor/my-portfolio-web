@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
@@ -8,7 +9,6 @@ import apiClient from "@/lib/AxiosClient";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import BlogForm from "./BlogForm";
 import IconPattern from "../Modules/IconPattern";
-import revalidateBlogsData from "@/cache/revalidateBlogsData";
 
 const BlogPost = ({ user }) => {
   const name = user.name;
@@ -22,6 +22,7 @@ const BlogPost = ({ user }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const toast = useToast();
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,8 +51,9 @@ const BlogPost = ({ user }) => {
       // Axios puts the response body in `response.data`
       const data = response.data;
 
-      // Revalidate blogs data
-      await revalidateBlogsData();
+      // The route has already refreshed the server cache; this drops stale
+      // listings from the client router.
+      router.refresh();
 
       toast.success(data.message, { title: "Blog published" });
       setFormData({ title: "", author: name ?? "", content: "", tagline: "" });

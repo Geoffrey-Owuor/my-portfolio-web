@@ -5,15 +5,16 @@ import { X } from "lucide-react";
 import BlogForm from "./BlogForm";
 import apiClient from "@/lib/AxiosClient";
 import { useState, useRef, useCallback, useId } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import ClientPortal from "../Modules/ClientPortal";
 import { useToast } from "../Modules/Toaster";
-import revalidateBlogsData from "@/cache/revalidateBlogsData";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
 const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
   const toast = useToast();
+  const router = useRouter();
   const blogId = blogInfo.blog_id;
   const modalRef = useRef(null);
   const titleId = useId();
@@ -66,8 +67,9 @@ const EditBlog = ({ showEditModal, setShowEditModal, blogInfo }) => {
       // Axios puts the response body in `response.data`
       const data = response.data;
 
-      // Revalidate blogs data
-      await revalidateBlogsData();
+      // The route has already refreshed the server cache; this redraws the
+      // post being viewed and drops stale listings from the client router.
+      router.refresh();
 
       toast.success(data.message, { title: "Blog updated" });
 

@@ -2,19 +2,11 @@ import { query } from "@/lib/db";
 import { verifyAccessTokenJWT } from "@/lib/Auth";
 import { createBlogSlug } from "@/lib/BlogSlug";
 import { notifyIndexNow } from "@/lib/IndexNow";
+import { revalidateTag } from "next/cache";
 import { after, NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
-    const { title, author, content, tagline, readTime } = await request.json();
-
-    if (!title || !author || !content) {
-      return NextResponse.json(
-        { message: "Missing required fields" },
-        { status: 400 },
-      );
-    }
-
     const user = await verifyAccessTokenJWT();
 
     if (!user) {
@@ -24,7 +16,16 @@ export async function POST(request) {
       );
     }
 
-    const blogQuery = `INSERT INTO blogs 
+    const { title, author, content, tagline, readTime } = await request.json();
+
+    if (!title || !author || !content) {
+      return NextResponse.json(
+        { message: "Missing required fields" },
+        { status: 400 },
+      );
+    }
+
+    const blogQuery = `INSERT INTO blogs
                        (user_id, blog_title, blog_author, blog_date, read_time, blog_content, author_tagline, slug)
                        VALUES ($1, $2, $3, CURRENT_TIMESTAMP, $4, $5, $6, $7)`;
     const slug = await createBlogSlug(title);
@@ -40,6 +41,7 @@ export async function POST(request) {
 
     await query(blogQuery, blogParams);
 
+    revalidateTag("BlogsData");
     after(() => notifyIndexNow([`/blog/${slug}`, "/blogs"]));
 
     return NextResponse.json(
