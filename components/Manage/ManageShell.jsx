@@ -3,10 +3,10 @@
 import { useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import PageHeader from "../Layout/PageHeader";
-import EmptyState from "../Modules/EmptyState";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
 import BlogsTab from "./BlogsTab";
+import InboxTab from "./InboxTab";
 import ResourceList from "./ResourceList";
 import ResumeTab from "./ResumeTab";
 
@@ -19,16 +19,6 @@ const TABS = [
   { id: "blogs", label: "Blogs" },
   { id: "resume", label: "Résumé" },
   { id: "inbox", label: "Inbox" },
-];
-
-const BUILT_TABS = [
-  "projects",
-  "experience",
-  "education",
-  "skills",
-  "stack",
-  "blogs",
-  "resume",
 ];
 
 // One page with a tab per content type. The active tab lives in ?tab=, so a
@@ -167,12 +157,7 @@ const ManageShell = ({ user, content }) => {
             failed={Boolean(content.resume.failed)}
           />
         )}
-        {!BUILT_TABS.includes(activeTab) && (
-          <EmptyState
-            command={`manage ${activeTab}`}
-            emptyMessage="Nothing to manage here yet."
-          />
-        )}
+        {activeTab === "inbox" && <InboxTab />}
       </div>
     </div>
   );
