@@ -1,9 +1,5 @@
 import profile_photo from "../public/profile2.webp";
 import github_avatar from "../public/profile1.webp";
-import google_sheet_image from "../public/project_images/google_sheet_image.webp";
-import staffproductpurchase_image from "../public/project_images/staffproductpurchase_image.webp";
-import helpdesk_image from "../public/project_images/helpdesk_image.webp";
-import apps_hub_image from "../public/project_images/apps_hub_image.webp";
 import {
   AwsIcon,
   AzureIcon,
@@ -31,13 +27,6 @@ export const assets = {
   profile_photo,
   github_avatar,
 };
-
-export const project_images = [
-  { id: 3, image: staffproductpurchase_image },
-  { id: 5, image: google_sheet_image },
-  { id: 7, image: helpdesk_image },
-  { id: 8, image: apps_hub_image },
-];
 
 export const tools = {
   awsLogo: AwsIcon,

@@ -43,7 +43,7 @@ const readProjectInfo = async (id) => {
       WHERE p.id = $1
     )
     SELECT
-      p.id, p.project_name, p.project_link, p.project_description, p.project_stack,
+      p.id, p.project_name, p.project_link, p.project_description, p.project_stack, p.project_image,
 
       n.is_first_project,
       n.is_last_project,

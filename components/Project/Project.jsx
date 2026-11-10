@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { project_images } from "@/assets/assets";
 import Image from "next/image";
 import { ExternalLink, ArrowLeft } from "lucide-react";
 import { useProgressRouter } from "../Modules/RouteProgress";
@@ -10,11 +9,13 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import ProjectNav from "./ProjectNav";
 
+// The screenshots' shared shape; h-auto lets each keep its exact proportions.
+const PREVIEW_WIDTH = 1792;
+const PREVIEW_HEIGHT = 830;
+
 const Project = ({ projectInfo }) => {
   const progressRouter = useProgressRouter();
   const project = projectInfo[0];
-
-  const projectImage = project_images.find((image) => image.id === project.id);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -91,7 +92,7 @@ const Project = ({ projectInfo }) => {
           </motion.div>
 
           {/* Preview pane */}
-          {projectImage && (
+          {project.project_image && (
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -106,9 +107,11 @@ const Project = ({ projectInfo }) => {
                 preview.png
               </div>
               <Image
-                src={projectImage.image}
+                src={project.project_image}
                 alt={`${project.project_name} preview`}
-                className="w-full object-cover"
+                width={PREVIEW_WIDTH}
+                height={PREVIEW_HEIGHT}
+                className="h-auto w-full object-cover"
                 sizes="(max-width: 896px) 100vw, 896px"
                 priority
               />

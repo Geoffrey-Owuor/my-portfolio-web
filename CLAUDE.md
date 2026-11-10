@@ -24,7 +24,7 @@ Path alias: `@/*` maps to the repo root (see `jsconfig.json`), e.g. `@/lib/db`, 
 
 ### Data layer
 
-- `lib/db.js` exports a single `query(queryString, params)` helper built on `@neondatabase/serverless`'s `Pool`. It uses a global singleton pool in development (`globalThis.postgresPool`) to survive HMR, and a fresh pool in production. All raw SQL lives inline in the calling module — there is no ORM/query builder.
+- `lib/db.js` exports a single `query(queryString, params)` helper built on `@neondatabase/serverless`'s `Pool`. It uses a global singleton pool in development (`globalThis.postgresPool`) to survive HMR, and a fresh pool in production. All raw SQL lives inline in the calling module — there is no ORM/query builder. Schema changes are kept as SQL files in `db/migrations/`.
 - `cache/CachedData.js`, `cache/BlogsData.js` wrap DB reads in `unstable_cache(fn, [key], { tags: [...] })`, so homepage sections (skills, stack, projects, experience, education) and blog listings are cached and only re-fetched on tag-based revalidation.
 - Cache invalidation happens two ways:
   - `app/api/revalidate/route.js` — `POST` endpoint that calls `revalidatePath("/")`, gated by an `Authorization: Bearer <REVALIDATE_KEY>` header.
