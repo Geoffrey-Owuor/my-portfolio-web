@@ -16,7 +16,7 @@ const claimId = (text, usedIds) => {
   return id;
 };
 
-// The post's top-level ### headings. Parsed rather than pattern-matched, so
+// The post's top-level ## and ### headings. Parsed rather than pattern-matched, so
 // code samples are skipped and inline markdown doesn't leak into the labels.
 // `offset` is the heading's position in the source, which is how the article
 // renderer finds the id assigned here.
@@ -25,11 +25,14 @@ export const extractHeadings = (content) => {
 
   return parser
     .parse(content ?? "")
-    .children.filter((node) => node.type === "heading" && node.depth === 3)
+    .children.filter(
+      (node) => node.type === "heading" && [2, 3].includes(node.depth),
+    )
     .map((node) => {
       const text = toString(node);
       return {
         text,
+        depth: node.depth,
         id: claimId(text, usedIds),
         offset: node.position.start.offset,
       };
