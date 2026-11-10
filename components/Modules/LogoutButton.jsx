@@ -31,6 +31,7 @@ export default function LogoutButton() {
       <button
         onClick={handleLogout}
         disabled={isLoggingOut}
+        aria-label="Sign out"
         className="bg-surface-raised text-text-muted hover:bg-danger/10 hover:text-danger rounded-control flex w-full items-center gap-3 px-2.5 py-2.5 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-70 lg:px-6"
       >
         <LogOut className="h-4 w-4" />

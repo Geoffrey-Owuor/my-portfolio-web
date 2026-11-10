@@ -26,7 +26,7 @@ export default function LoginPage() {
       const data = await response.json();
       //   Successfull login
       if (response.ok) {
-        window.location.href = "/createblog";
+        window.location.href = "/manage";
       } else {
         setError(data.message || "Login Failed");
         setLoading(false);

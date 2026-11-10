@@ -6,7 +6,7 @@ export default function robots() {
       userAgent: "*",
       allow: "/",
       // Auth and authoring pages, and the JSON API, have nothing to index.
-      disallow: ["/api/", "/login", "/createblog"],
+      disallow: ["/api/", "/login", "/createblog", "/manage"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
