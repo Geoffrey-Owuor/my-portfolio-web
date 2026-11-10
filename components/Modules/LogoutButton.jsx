@@ -5,9 +5,11 @@ import apiClient from "@/lib/AxiosClient";
 
 import { LogOut } from "lucide-react";
 import LogoutOverlay from "./LogoutOverlay";
+import { useToast } from "./Toaster";
 
 export default function LogoutButton() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const toast = useToast();
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -16,6 +18,9 @@ export default function LogoutButton() {
       window.location.href = "/login";
     } catch (error) {
       console.error("Logout failed", error);
+      toast.error("Please try again in a moment.", {
+        title: "Couldn't sign you out",
+      });
       setIsLoggingOut(false);
     }
   };
