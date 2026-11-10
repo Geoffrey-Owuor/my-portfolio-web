@@ -19,7 +19,7 @@ const TABS = [
   { id: "inbox", label: "Inbox" },
 ];
 
-const BUILT_TABS = ["experience", "education", "skills", "stack"];
+const BUILT_TABS = ["projects", "experience", "education", "skills", "stack"];
 
 // One page with a tab per content type. The active tab lives in ?tab=, so a
 // reload, a deep link and the back button all land on the same tab.
@@ -118,6 +118,9 @@ const ManageShell = ({ user, content }) => {
         tabIndex={0}
         className="focus-visible:outline-none"
       >
+        {activeTab === "projects" && (
+          <ResourceList resource="projects" rows={content.projects} />
+        )}
         {activeTab === "experience" && (
           <ResourceList resource="experience" rows={content.experience} />
         )}

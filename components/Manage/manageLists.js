@@ -1,5 +1,11 @@
 // How each list reads on /manage. Field rules live in utils/manageFields.js.
 export const MANAGE_LISTS = {
+  projects: {
+    noun: "project",
+    title: (row) => row.project_name,
+    detail: (row) => row.project_stack,
+    reorderable: true,
+  },
   experience: {
     noun: "role",
     title: (row) => row.work_title,
