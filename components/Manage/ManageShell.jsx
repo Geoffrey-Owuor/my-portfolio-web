@@ -6,6 +6,7 @@ import PageHeader from "../Layout/PageHeader";
 import EmptyState from "../Modules/EmptyState";
 import LogoutButton from "../Modules/LogoutButton";
 import UserInfoCard from "../Modules/UserInfoCard";
+import ResourceList from "./ResourceList";
 
 const TABS = [
   { id: "projects", label: "Projects" },
@@ -18,9 +19,11 @@ const TABS = [
   { id: "inbox", label: "Inbox" },
 ];
 
+const BUILT_TABS = ["experience", "education", "skills", "stack"];
+
 // One page with a tab per content type. The active tab lives in ?tab=, so a
 // reload, a deep link and the back button all land on the same tab.
-const ManageShell = ({ user }) => {
+const ManageShell = ({ user, content }) => {
   const searchParams = useSearchParams();
   const tabRefs = useRef({});
 
@@ -115,10 +118,39 @@ const ManageShell = ({ user }) => {
         tabIndex={0}
         className="focus-visible:outline-none"
       >
-        <EmptyState
-          command={`manage ${activeTab}`}
-          emptyMessage="Nothing to manage here yet."
-        />
+        {activeTab === "experience" && (
+          <ResourceList resource="experience" rows={content.experience} />
+        )}
+        {activeTab === "education" && (
+          <ResourceList resource="education" rows={content.education} />
+        )}
+        {activeTab === "skills" && (
+          <div className="space-y-10">
+            <ResourceList
+              resource="technical-skills"
+              rows={content["technical-skills"]}
+              heading="Technical skills"
+            />
+            <ResourceList
+              resource="soft-skills"
+              rows={content["soft-skills"]}
+              heading="Soft skills"
+            />
+          </div>
+        )}
+        {activeTab === "stack" && (
+          <ResourceList
+            resource="tools"
+            rows={content.tools}
+            note="Shown alphabetically in the “Also using” list."
+          />
+        )}
+        {!BUILT_TABS.includes(activeTab) && (
+          <EmptyState
+            command={`manage ${activeTab}`}
+            emptyMessage="Nothing to manage here yet."
+          />
+        )}
       </div>
     </div>
   );
