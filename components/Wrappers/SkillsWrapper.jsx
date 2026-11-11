@@ -3,7 +3,7 @@
 import { HeartHandshake, Sparkle } from "lucide-react";
 import SectionTitle from "./SectionTitle";
 import EmptyState from "../Modules/EmptyState";
-import ScrollReveal from "../Modules/ScrollReveal";
+import ScrollReveal, { RevealItem } from "../Modules/ScrollReveal";
 
 const SkillsWrapper = ({ technicalSkills, softSkills }) => {
   return (
@@ -40,8 +40,11 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
                   {technicalSkills.map((skill, index) => {
                     if (index % 2 !== col) return null;
                     return (
-                      <div
+                      <RevealItem
                         key={skill.id}
+                        from="slide"
+                        index={index + 2}
+                        step={0.04}
                         className="hover:bg-surface-raised group flex items-center gap-3 px-5 py-3 transition-colors duration-150"
                       >
                         <span className="text-accent/70 text-xs tabular-nums">
@@ -50,7 +53,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
                         <span className="text-text-primary group-hover:text-accent text-sm transition-colors duration-150">
                           {skill.skill_description}
                         </span>
-                      </div>
+                      </RevealItem>
                     );
                   })}
                 </div>
@@ -78,13 +81,17 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
 
           {softSkills?.length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-              {softSkills.map((skill) => (
-                <span
+              {softSkills.map((skill, index) => (
+                <RevealItem
+                  as="span"
                   key={skill.id}
+                  from="pop"
+                  index={index}
+                  step={0.04}
                   className="border-border-subtle text-text-muted rounded-chip border px-3 py-1 text-sm"
                 >
                   {skill.skill_description}
-                </span>
+                </RevealItem>
               ))}
             </div>
           )}

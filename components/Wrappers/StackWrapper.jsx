@@ -2,7 +2,7 @@
 import { Layers2, Loader2, MessageCircleCode } from "lucide-react";
 import SectionTitle from "./SectionTitle";
 import EmptyState from "../Modules/EmptyState";
-import ScrollReveal from "../Modules/ScrollReveal";
+import ScrollReveal, { RevealItem } from "../Modules/ScrollReveal";
 
 // Monochrome logos paint with currentColor, so text-text-primary is what
 // keeps them legible in both themes.
@@ -76,13 +76,17 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
             // so the pills laid out one long row that overflowed and clipped on
             // both sides instead of wrapping.
             <div className="flex w-full min-w-0 flex-wrap justify-center gap-2 sm:justify-start">
-              {toolNames.map((tool) => (
-                <span
+              {toolNames.map((tool, index) => (
+                <RevealItem
+                  as="span"
                   key={tool.id}
+                  from="pop"
+                  index={index}
+                  step={0.04}
                   className="border-border-subtle text-text-muted rounded-chip border px-3 py-1 text-sm"
                 >
                   {tool.tool_name}
-                </span>
+                </RevealItem>
               ))}
             </div>
           )}

@@ -1,10 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import HeroClock from "./HeroClock";
 import HeroEditor from "./HeroEditor";
@@ -12,28 +18,6 @@ import { RESUME_URL } from "@/utils/links";
 import { ProgressLink } from "../Modules/RouteProgress";
 
 const STACK = ["Next.js", "React", "Node.js", "PostgreSQL", "Tailwind CSS"];
-
-// One orchestrated entrance on load: the column steps in line by line.
-const columnVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
-};
-const cardVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-const lineVariants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  },
-};
 
 // Section links in the hero scroll smoothly rather than jumping, matching
 // the navbar (there is deliberately no CSS scroll-smooth).
@@ -54,10 +38,17 @@ const scrollToSection = (e, id) => {
  * that its column would be too narrow to show the code, so the card stacks
  * under the calls to action instead, left-aligned and capped to the copy's
  * 42rem.
+ *
+ * The entrance is CSS (the hero-* animations in globals.css), one motion per
+ * element on a shared timeline, so it plays on first paint rather than
+ * waiting for hydration.
+ *
+ * Leaving is tied to scroll, and reverses on the way back: once the hero
+ * reaches the top of the viewport the copy drifts up and fades while the
+ * card lags behind it. Two-column layout only — stacked, the hero is taller
+ * than the screen and would fade content that is still being read.
  */
 const Hero = () => {
-  const prefersReducedMotion = useReducedMotion();
-
   // "⌘K" on Apple platforms, "Ctrl K" elsewhere — resolved after mount so
   // the server-rendered label never mismatches (same as the navbar).
   const [shortcutLabel, setShortcutLabel] = useState("Ctrl K");
@@ -65,118 +56,136 @@ const Hero = () => {
     if (/Mac|iPhone|iPad/.test(navigator.platform)) setShortcutLabel("⌘K");
   }, []);
 
+  const prefersReducedMotion = useReducedMotion();
+  const [isTwoColumn, setIsTwoColumn] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1100px)"); // custom-content
+    const update = () => setIsTwoColumn(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  // 0 as the grid's top reaches the viewport's, 1 as its bottom leaves —
+  // and held at 0 (everything at rest) whenever the effect is off. Gating the
+  // progress rather than swapping the style props keeps the motion values
+  // bound to the elements from the first render.
+  const gridRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: gridRef,
+    offset: ["start start", "end start"],
+  });
+  const enabled = useMotionValue(0);
+  useEffect(() => {
+    enabled.set(isTwoColumn && !prefersReducedMotion ? 1 : 0);
+  }, [enabled, isTwoColumn, prefersReducedMotion]);
+  const progress = useTransform(() => enabled.get() * scrollYProgress.get());
+
+  const copyY = useTransform(progress, [0, 1], [0, -48]);
+  const copyOpacity = useTransform(progress, [0.35, 1], [1, 0.2]);
+  const cardY = useTransform(progress, [0, 1], [0, 32]);
+  const cardScale = useTransform(progress, [0, 1], [1, 0.95]);
+  const cardOpacity = useTransform(progress, [0.35, 1], [1, 0.3]);
+
   return (
     <section id="home" className="container-page pb-section pt-10 md:pt-14">
-      <motion.div
-        variants={prefersReducedMotion ? undefined : columnVariants}
-        initial="hidden"
-        animate="visible"
+      <div
+        ref={gridRef}
+        className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] custom-content:gap-10"
       >
-        <div className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] custom-content:gap-10">
-          <motion.div
-            variants={prefersReducedMotion ? undefined : columnVariants}
-          >
-            <motion.div
-              variants={prefersReducedMotion ? undefined : lineVariants}
-              className="flex flex-wrap items-center gap-x-4 gap-y-1.5"
-            >
-              <HeroClock />
-            </motion.div>
+        <motion.div style={{ y: copyY, opacity: copyOpacity }}>
+          <div className="motion-safe:animate-hero-fade flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            <HeroClock />
+          </div>
 
-            <motion.div
-              variants={prefersReducedMotion ? undefined : lineVariants}
-              className="mt-8 flex items-center gap-4"
-            >
-              <Image
-                src={assets.profile_photo}
-                alt="Portrait of Geoffrey Owuor"
-                className="ring-border-subtle h-14 w-14 rounded-full object-cover object-[50%_25%] ring-1"
-                priority
-                width={112}
-                height={112}
-                sizes="56px"
-              />
-              <div>
-                <p className="text-text-primary font-semibold">
-                  Geoffrey Owuor
-                </p>
-                <p className="text-text-muted text-sm">
-                  Full-stack developer · Nairobi, Kenya
-                </p>
-              </div>
-            </motion.div>
+          <div className="mt-8 flex items-center gap-4">
+            <Image
+              src={assets.profile_photo}
+              alt="Portrait of Geoffrey Owuor"
+              className="ring-border-subtle motion-safe:animate-hero-pop h-20 w-20 rounded-full object-cover object-[50%_25%] ring-1 [--hero-delay:60ms] sm:h-24 sm:w-24"
+              priority
+              width={192}
+              height={192}
+              sizes="(min-width: 640px) 96px, 80px"
+            />
+            <div className="motion-safe:animate-hero-slide [--hero-delay:140ms]">
+              <p className="text-text-primary text-lg font-semibold">
+                Geoffrey Owuor
+              </p>
+              <p className="text-text-muted text-sm">
+                Full-stack developer · Nairobi, Kenya
+              </p>
+            </div>
+          </div>
 
-            {/* Not animated: this is the largest text on first paint, and a
-                fade from opacity 0 would hold it back until hydration. */}
-            <h1 className="text-text-primary text-display mt-6 font-semibold text-balance">
-              I build production-ready web apps, from database schema to
-              polished UI.
-            </h1>
+          <h1 className="text-text-primary text-display motion-safe:animate-hero-wipe mt-6 font-semibold text-balance [--hero-delay:160ms]">
+            I build production-ready web apps, from database schema to polished
+            UI.
+          </h1>
 
-            <motion.p
-              variants={prefersReducedMotion ? undefined : lineVariants}
-              className="text-text-muted mt-5 max-w-2xl text-base leading-relaxed md:text-lg"
-            >
-              I work across the whole stack - APIs, databases, interfaces and
-              deploys, shipping complete products rather than fragments. A
-              researcher, developer and builder at heart.
-            </motion.p>
-
-            <motion.div
-              variants={prefersReducedMotion ? undefined : lineVariants}
-              className="mt-8 flex flex-wrap items-center gap-3"
-            >
-              <Link
-                href="/#projects"
-                onClick={(e) => scrollToSection(e, "projects")}
-                className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
-              >
-                See projects
-                <ArrowDown className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/#contact"
-                onClick={(e) => scrollToSection(e, "contact")}
-                className="border-border-subtle text-text-primary hover:border-accent hover:text-accent rounded-control inline-flex items-center border px-4 py-2.5 text-sm font-semibold transition-colors"
-              >
-                Get in touch
-              </Link>
-              <ProgressLink
-                href={RESUME_URL}
-                className="text-text-muted hover:text-accent inline-flex items-center gap-1 px-2 py-2.5 text-sm font-medium transition-colors"
-              >
-                Résumé
-                <ArrowRight className="h-4 w-4" />
-              </ProgressLink>
-            </motion.div>
-          </motion.div>
-
-          {/* Beside the copy from custom-content, stacked below it before. */}
-          <motion.div
-            variants={prefersReducedMotion ? undefined : cardVariants}
-            className="custom-content:mt-0 custom-content:max-w-none mt-10 max-w-2xl min-w-0 self-center"
-          >
-            <HeroEditor />
-          </motion.div>
-        </div>
-
-        {/* Closing rule: the core stack, and where to find everything else */}
-        <motion.div
-          variants={prefersReducedMotion ? undefined : lineVariants}
-          className="border-border-subtle mt-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t pt-5 font-mono text-xs"
-        >
-          <p className="text-text-muted">
-            <span className="text-accent">stack:</span> {STACK.join(" · ")}
+          <p className="text-text-muted motion-safe:animate-hero-rise mt-5 max-w-2xl text-base leading-relaxed [--hero-delay:340ms] md:text-lg">
+            I work across the whole stack - APIs, databases, interfaces and
+            deploys, shipping complete products rather than fragments. A
+            researcher, developer and builder at heart.
           </p>
-          <p className="text-text-muted hidden lg:block">
-            Press{" "}
-            <kbd className="border-border-subtle text-text-primary rounded-chip border px-1.5 py-0.5">
-              {shortcutLabel}
-            </kbd>{" "}
-            to search projects, posts and more
-          </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              href="/#projects"
+              onClick={(e) => scrollToSection(e, "projects")}
+              className="bg-text-primary text-surface rounded-control motion-safe:animate-hero-rise inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold transition-opacity [--hero-delay:440ms] hover:opacity-90"
+            >
+              See projects
+              <ArrowDown className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/#contact"
+              onClick={(e) => scrollToSection(e, "contact")}
+              className="border-border-subtle text-text-primary hover:border-accent hover:text-accent rounded-control motion-safe:animate-hero-rise inline-flex items-center border px-4 py-2.5 text-sm font-semibold transition-colors [--hero-delay:510ms]"
+            >
+              Get in touch
+            </Link>
+            <ProgressLink
+              href={RESUME_URL}
+              className="text-text-muted hover:text-accent motion-safe:animate-hero-rise inline-flex items-center gap-1 px-2 py-2.5 text-sm font-medium transition-colors [--hero-delay:580ms]"
+            >
+              Résumé
+              <ArrowRight className="h-4 w-4" />
+            </ProgressLink>
+          </div>
         </motion.div>
-      </motion.div>
+
+        {/* Beside the copy from custom-content, stacked below it before.
+            The scroll transform sits on this wrapper and the entrance on the
+            div inside, so the two never fight over one element. */}
+        <motion.div
+          style={{ y: cardY, scale: cardScale, opacity: cardOpacity }}
+          className="custom-content:mt-0 custom-content:max-w-none mt-10 max-w-2xl min-w-0 self-center"
+        >
+          <div className="motion-safe:animate-hero-card [--hero-delay:260ms]">
+            <HeroEditor />
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Closing rule: the core stack, and where to find everything else.
+          The rule is its own element so it can draw across. */}
+      <div className="relative mt-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-5 font-mono text-xs">
+        <span
+          aria-hidden="true"
+          className="bg-border-subtle motion-safe:animate-hero-draw absolute inset-x-0 top-0 h-px origin-left [--hero-delay:620ms]"
+        />
+        <p className="text-text-muted motion-safe:animate-hero-fade [--hero-delay:800ms]">
+          <span className="text-accent">stack:</span> {STACK.join(" · ")}
+        </p>
+        <p className="text-text-muted motion-safe:animate-hero-fade hidden [--hero-delay:900ms] lg:block">
+          Press{" "}
+          <kbd className="border-border-subtle text-text-primary rounded-chip border px-1.5 py-0.5">
+            {shortcutLabel}
+          </kbd>{" "}
+          to search projects, posts and more
+        </p>
+      </div>
     </section>
   );
 };
