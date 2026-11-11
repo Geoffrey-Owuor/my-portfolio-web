@@ -351,6 +351,100 @@ html:not([data-theme="dark"]) .theme-inverse {
   animation: hero-code 0.35s ease-out;
 }
 
+/* Hero entrance (components/Home/Hero.jsx). CSS rather than JS so it starts
+   on first paint instead of after hydration. Each keyframe only names its
+   start, so an element with no animation (reduced motion) is simply in place.
+   Apply with motion-safe: and stagger with --hero-delay. */
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes hero-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+}
+
+@keyframes hero-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+/* The headline is uncovered from the top down, so its lines arrive in
+   reading order however they wrap. The negative end inset keeps descenders
+   unclipped. */
+@keyframes hero-wipe {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.3em);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 -0.3em 0);
+    transform: none;
+  }
+}
+
+@keyframes hero-card {
+  from {
+    opacity: 0;
+    transform: translateX(48px) rotate(2deg) scale(0.97);
+  }
+}
+
+@keyframes hero-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@utility animate-hero-fade {
+  animation: hero-fade 0.6s ease-out var(--hero-delay, 0ms) backwards;
+}
+
+@utility animate-hero-rise {
+  animation: hero-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--hero-delay, 0ms) backwards;
+}
+
+@utility animate-hero-slide {
+  animation: hero-slide 0.6s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--hero-delay, 0ms) backwards;
+}
+
+@utility animate-hero-pop {
+  animation: hero-pop 0.6s cubic-bezier(0.34, 1.4, 0.64, 1)
+    var(--hero-delay, 0ms) backwards;
+}
+
+@utility animate-hero-wipe {
+  animation: hero-wipe 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--hero-delay, 0ms) backwards;
+}
+
+@utility animate-hero-card {
+  animation: hero-card 0.9s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--hero-delay, 0ms) backwards;
+}
+
+@utility animate-hero-draw {
+  animation: hero-draw 0.8s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--hero-delay, 0ms) backwards;
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);
