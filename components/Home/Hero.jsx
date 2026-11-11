@@ -13,6 +13,7 @@ import {
 } from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import HeroEditor from "./HeroEditor";
+import HeroBot from "./HeroBot";
 import { RESUME_URL } from "@/utils/links";
 import { ProgressLink } from "../Modules/RouteProgress";
 
@@ -152,12 +153,15 @@ const Hero = () => {
 
         {/* Beside the copy from custom-content, stacked below it before.
             The scroll transform sits on this wrapper and the entrance on the
-            div inside, so the two never fight over one element. */}
+            div inside, so the two never fight over one element. The bot
+            sits on the card's top edge, outside its overflow clip; stacked,
+            the extra top margin makes room for it. */}
         <motion.div
           style={{ y: cardY, scale: cardScale, opacity: cardOpacity }}
-          className="custom-content:mt-0 custom-content:max-w-none mt-10 max-w-2xl min-w-0 self-center"
+          className="custom-content:mt-0 custom-content:max-w-none mt-20 max-w-2xl min-w-0 self-center"
         >
-          <div className="motion-safe:animate-hero-card [--hero-delay:260ms]">
+          <div className="group/bot motion-safe:animate-hero-card relative [--hero-delay:260ms]">
+            <HeroBot />
             <HeroEditor />
           </div>
         </motion.div>
