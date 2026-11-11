@@ -16,7 +16,7 @@ import {
 import { assets } from "@/assets/assets";
 import SectionTitle from "./SectionTitle";
 import { GITHUB_URL } from "@/utils/links";
-import ScrollReveal from "../Modules/ScrollReveal";
+import ScrollReveal, { RevealItem } from "../Modules/ScrollReveal";
 
 const cardClass = "bg-surface border-border-subtle rounded-card border p-6";
 
@@ -414,31 +414,31 @@ const GitHubWrapper = ({ data }) => {
       )}
 
       {data && (
-        <ScrollReveal className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="flex min-w-0 flex-col gap-6">
-            <div>
+            <RevealItem from="lift">
               <ProfileCard profile={data.profile} />
-            </div>
+            </RevealItem>
             {data.languages.length > 0 && (
-              <div>
+              <RevealItem from="lift" index={1} step={0.1}>
                 <LanguagesCard languages={data.languages} />
-              </div>
+              </RevealItem>
             )}
           </div>
 
           <div className="flex min-w-0 flex-col gap-6 lg:col-span-2">
             {data.contributions && (
-              <div>
+              <RevealItem from="lift" index={1} step={0.1}>
                 <ContributionsCard contributions={data.contributions} />
-              </div>
+              </RevealItem>
             )}
             {data.recentRepos.length > 0 && (
-              <div>
+              <RevealItem from="lift" index={2} step={0.1}>
                 <RecentReposCard repos={data.recentRepos} />
-              </div>
+              </RevealItem>
             )}
           </div>
-        </ScrollReveal>
+        </div>
       )}
     </div>
   );

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Loader2, SendHorizonal } from "lucide-react";
 import { useToast } from "../Modules/Toaster";
 import SectionTitle from "../Wrappers/SectionTitle";
-import ScrollReveal from "../Modules/ScrollReveal";
+import { RevealItem } from "../Modules/ScrollReveal";
 import {
   CONTACT_INFO_MAX,
   CONTACT_MESSAGE_MAX,
@@ -126,72 +126,68 @@ const Contact = () => {
             subtitle="Don't be a stranger"
           />
 
-          <ScrollReveal>
-            {/* Header spans the shared measure; the form keeps a readable width */}
-            <form
-              onSubmit={handleSubmit}
-              noValidate
-              className="flex max-w-3xl flex-col gap-6"
-            >
-              {/* Email/Phone Input */}
-              <div className="flex flex-col">
-                <label
-                  htmlFor="contactInfo"
-                  className="text-text-muted mb-2 text-sm font-semibold"
-                >
-                  Your Email or Mobile
-                </label>
-                <input
-                  type="text"
-                  id="contactInfo"
-                  name="contactInfo"
-                  value={formData.contactInfo}
-                  onChange={handleChange}
-                  disabled={sending}
-                  required
-                  maxLength={CONTACT_INFO_MAX}
-                  autoComplete="email"
-                  aria-invalid={errors.contactInfo ? "true" : undefined}
-                  aria-describedby={
-                    errors.contactInfo ? "contactInfo-error" : undefined
-                  }
-                  placeholder="name@example.com or 07xx xxx xxx"
-                  className={fieldClass(errors.contactInfo)}
-                />
-                <FieldError
-                  id="contactInfo-error"
-                  message={errors.contactInfo}
-                />
-              </div>
+          {/* Header spans the shared measure; the form keeps a readable width */}
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+            className="flex max-w-3xl flex-col gap-6"
+          >
+            {/* Email/Phone Input */}
+            <RevealItem className="flex flex-col">
+              <label
+                htmlFor="contactInfo"
+                className="text-text-muted mb-2 text-sm font-semibold"
+              >
+                Your Email or Mobile
+              </label>
+              <input
+                type="text"
+                id="contactInfo"
+                name="contactInfo"
+                value={formData.contactInfo}
+                onChange={handleChange}
+                disabled={sending}
+                required
+                maxLength={CONTACT_INFO_MAX}
+                autoComplete="email"
+                aria-invalid={errors.contactInfo ? "true" : undefined}
+                aria-describedby={
+                  errors.contactInfo ? "contactInfo-error" : undefined
+                }
+                placeholder="name@example.com or 07xx xxx xxx"
+                className={fieldClass(errors.contactInfo)}
+              />
+              <FieldError id="contactInfo-error" message={errors.contactInfo} />
+            </RevealItem>
 
-              {/* Message Textarea */}
-              <div className="flex flex-col">
-                <label
-                  htmlFor="message"
-                  className="text-text-muted mb-2 text-sm font-semibold"
-                >
-                  Your Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={handleChange}
-                  disabled={sending}
-                  required
-                  maxLength={CONTACT_MESSAGE_MAX}
-                  aria-invalid={errors.message ? "true" : undefined}
-                  aria-describedby={
-                    errors.message ? "message-error" : undefined
-                  }
-                  placeholder="Hi Jeff, I'd like to talk about..."
-                  className={fieldClass(errors.message)}
-                />
-                <FieldError id="message-error" message={errors.message} />
-              </div>
+            {/* Message Textarea */}
+            <RevealItem index={1} step={0.08} className="flex flex-col">
+              <label
+                htmlFor="message"
+                className="text-text-muted mb-2 text-sm font-semibold"
+              >
+                Your Message
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={5}
+                value={formData.message}
+                onChange={handleChange}
+                disabled={sending}
+                required
+                maxLength={CONTACT_MESSAGE_MAX}
+                aria-invalid={errors.message ? "true" : undefined}
+                aria-describedby={errors.message ? "message-error" : undefined}
+                placeholder="Hi Jeff, I'd like to talk about..."
+                className={fieldClass(errors.message)}
+              />
+              <FieldError id="message-error" message={errors.message} />
+            </RevealItem>
 
-              {/* Submit Button */}
+            {/* Submit Button. The entrance sits on a wrapper: the
+                  button's own motion props are its hover and tap states. */}
+            <RevealItem index={2} step={0.08} className="md:self-start">
               <motion.button
                 variants={buttonVariants}
                 initial="rest"
@@ -215,8 +211,8 @@ const Contact = () => {
                   </>
                 )}
               </motion.button>
-            </form>
-          </ScrollReveal>
+            </RevealItem>
+          </form>
         </div>
       </section>
     </>

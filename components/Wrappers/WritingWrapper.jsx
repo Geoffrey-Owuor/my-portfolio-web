@@ -4,7 +4,7 @@ import { ArrowRight, NotebookPen } from "lucide-react";
 import { formatDate } from "@/utils/Helpers";
 import SectionTitle from "./SectionTitle";
 import EmptyState from "../Modules/EmptyState";
-import ScrollReveal from "../Modules/ScrollReveal";
+import ScrollReveal, { RevealItem } from "../Modules/ScrollReveal";
 import { ProgressLink } from "../Modules/RouteProgress";
 
 // The most recent posts as a ruled list rather than another card grid, so
@@ -23,8 +23,8 @@ const WritingWrapper = ({ posts }) => {
       <ScrollReveal>
         {posts?.length > 0 && (
           <ol className="divide-border-subtle border-border-subtle divide-y border-y">
-            {posts.map((post) => (
-              <li key={post.id}>
+            {posts.map((post, index) => (
+              <RevealItem as="li" key={post.id} index={index + 1} step={0.08}>
                 <ProgressLink
                   href={`/blog/${post.slug}`}
                   className="group hover:bg-surface-raised/60 focus-visible:bg-surface-raised/60 grid grid-cols-1 gap-2 px-2 py-6 transition-colors focus-visible:outline-none sm:grid-cols-[9rem_1fr_auto] sm:gap-6 sm:px-4"
@@ -45,7 +45,7 @@ const WritingWrapper = ({ posts }) => {
 
                   <ArrowRight className="text-text-muted group-hover:text-accent hidden h-5 w-5 self-center transition-transform duration-150 group-hover:translate-x-1 sm:block" />
                 </ProgressLink>
-              </li>
+              </RevealItem>
             ))}
           </ol>
         )}

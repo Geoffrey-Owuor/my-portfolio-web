@@ -6,7 +6,7 @@ import ReactMarkDown from "react-markdown";
 import ShowMoreButtons from "./ShowMoreButtons";
 import SectionTitle from "./SectionTitle";
 import EmptyState from "../Modules/EmptyState";
-import ScrollReveal from "../Modules/ScrollReveal";
+import { RevealItem } from "../Modules/ScrollReveal";
 
 const EducationWrapper = ({ educationData }) => {
   // Number of experiences we see on mount
@@ -34,39 +34,42 @@ const EducationWrapper = ({ educationData }) => {
       />
 
       {/* Vertical Timeline */}
-      <ScrollReveal>
-        <ol className="border-border-subtle relative md:border-l">
-          {visibleEducationData.map((education, _index) => (
-            <li key={education.id} className="mb-10 md:ml-6">
-              {/* The "dot" breakpoint with animation */}
-              <span className="bg-surface-raised ring-surface absolute -left-3 hidden h-6 w-6 items-center justify-center rounded-full ring-8 md:flex">
-                <GraduationCap className="text-text-muted h-4 w-4" />
-              </span>
+      <ol className="border-border-subtle relative md:border-l">
+        {visibleEducationData.map((education, _index) => (
+          <RevealItem
+            as="li"
+            from="slide"
+            key={education.id}
+            className="mb-10 md:ml-6"
+          >
+            {/* The "dot" breakpoint with animation */}
+            <span className="bg-surface-raised ring-surface absolute -left-3 hidden h-6 w-6 items-center justify-center rounded-full ring-8 md:flex">
+              <GraduationCap className="text-text-muted h-4 w-4" />
+            </span>
 
-              {/* Timeline Content with hover effect */}
-              <div className="border-border-subtle hover:border-accent group rounded-card relative flex flex-col border p-6 transition-colors duration-150">
-                <time className="text-text-muted mb-2 block font-mono text-sm leading-none">
-                  {education.timeline}
-                </time>
+            {/* Timeline Content with hover effect */}
+            <div className="border-border-subtle hover:border-accent group rounded-card relative flex flex-col border p-6 transition-colors duration-150">
+              <time className="text-text-muted mb-2 block font-mono text-sm leading-none">
+                {education.timeline}
+              </time>
 
-                <h3 className="text-text-primary text-h3 font-semibold">
-                  {education.learning_title}
-                </h3>
+              <h3 className="text-text-primary text-h3 font-semibold">
+                {education.learning_title}
+              </h3>
 
-                <p className="text-text-muted mb-3 font-mono text-base italic">
-                  {education.institution}
-                </p>
+              <p className="text-text-muted mb-3 font-mono text-base italic">
+                {education.institution}
+              </p>
 
-                <div className="prose prose-gray dark:prose-invert text-text-muted max-w-[75ch] text-base font-normal">
-                  <ReactMarkDown remarkPlugins={[remarkGfm]}>
-                    {education.learning_description}
-                  </ReactMarkDown>
-                </div>
+              <div className="prose prose-gray dark:prose-invert text-text-muted max-w-[75ch] text-base font-normal">
+                <ReactMarkDown remarkPlugins={[remarkGfm]}>
+                  {education.learning_description}
+                </ReactMarkDown>
               </div>
-            </li>
-          ))}
-        </ol>
-      </ScrollReveal>
+            </div>
+          </RevealItem>
+        ))}
+      </ol>
 
       {!educationData?.length && (
         <EmptyState

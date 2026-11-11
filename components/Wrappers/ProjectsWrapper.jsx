@@ -9,7 +9,7 @@ import ShowMoreButtons from "./ShowMoreButtons";
 import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
 import SectionTitle from "./SectionTitle";
 import EmptyState from "../Modules/EmptyState";
-import ScrollReveal from "../Modules/ScrollReveal";
+import { RevealItem } from "../Modules/ScrollReveal";
 
 const ProjectsWrapper = ({ projects }) => {
   const router = useProgressRouter();
@@ -63,11 +63,18 @@ const ProjectsWrapper = ({ projects }) => {
           alertIcon={BadgeCheck}
         />
         {/* Responsive Projects Grid */}
-        <ScrollReveal>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {visibleProjects.map((project, _index) => (
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {/* The entrance sits on a wrapper: the card's own motion props
+              are its hover state. Staggered across a row of up to three. */}
+          {visibleProjects.map((project, index) => (
+            <RevealItem
+              key={project.id}
+              from="lift"
+              index={index % 3}
+              step={0.08}
+              className="h-full"
+            >
               <motion.div
-                key={project.id}
                 role="link"
                 tabIndex={0}
                 initial="rest"
@@ -120,9 +127,9 @@ const ProjectsWrapper = ({ projects }) => {
                   <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
                 </ProgressLink>
               </motion.div>
-            ))}
-          </div>
-        </ScrollReveal>
+            </RevealItem>
+          ))}
+        </div>
 
         {/* Show more buttons */}
         <ShowMoreButtons
