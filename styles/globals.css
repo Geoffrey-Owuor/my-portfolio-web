@@ -134,6 +134,11 @@
   --color-code-number: var(--code-number);
   --color-code-comment: var(--code-comment);
 
+  /* The hero mascot (components/Home/HeroBot): a dark screen in both themes,
+     so its glowing eyes read the same either way. */
+  --color-bot-screen: var(--bot-screen);
+  --color-bot-eye: var(--bot-eye);
+
   /* `font-mono` resolves through `--font-mono-active`, which each
      html[data-font] block below repoints to that font's mono counterpart. */
   --font-mono: var(--font-mono-active);
@@ -171,6 +176,9 @@ html[data-theme="dark"] .theme-inverse {
   --code-function: oklch(48% 0.18 295);
   --code-number: oklch(48% 0.13 210);
   --code-comment: var(--color-gray-500);
+
+  --bot-screen: var(--color-gray-900);
+  --bot-eye: oklch(86% 0.12 215);
 
   /* Inline-code chip — GitHub's neutral tint, which reads on both the
      page surface and the raised panels it can sit inside. */
@@ -227,6 +235,9 @@ html:not([data-theme="dark"]) .theme-inverse {
   --code-function: oklch(78% 0.13 300);
   --code-number: oklch(80% 0.1 200);
   --code-comment: var(--color-gray-400);
+
+  --bot-screen: var(--color-gray-950);
+  --bot-eye: oklch(86% 0.12 215);
 
   --inline-code-bg: rgb(110 118 129 / 0.4);
 }
@@ -405,6 +416,14 @@ html:not([data-theme="dark"]) .theme-inverse {
   }
 }
 
+/* The mascot rises onto the hero's closing band once it has drawn across. */
+@keyframes hero-peek {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.9);
+  }
+}
+
 @keyframes hero-draw {
   from {
     transform: scaleX(0);
@@ -437,6 +456,22 @@ html:not([data-theme="dark"]) .theme-inverse {
 
 @utility animate-hero-card {
   animation: hero-card 0.9s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--hero-delay, 0ms) backwards;
+}
+
+/* Hairline right-slanted ("/") hatching in the divider colour — the hero's
+   closing band. 135deg runs the gradient toward the bottom right, so the
+   stripes across it lean right. */
+@utility hatch-lines {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--color-border-subtle) 0 1px,
+    transparent 1px 6px
+  );
+}
+
+@utility animate-hero-peek {
+  animation: hero-peek 0.7s cubic-bezier(0.34, 1.4, 0.64, 1)
     var(--hero-delay, 0ms) backwards;
 }
 
