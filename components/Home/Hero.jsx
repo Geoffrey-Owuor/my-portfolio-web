@@ -153,27 +153,27 @@ const Hero = () => {
 
         {/* Beside the copy from custom-content, stacked below it before.
             The scroll transform sits on this wrapper and the entrance on the
-            div inside, so the two never fight over one element. The bot
-            sits on the card's top edge, outside its overflow clip; stacked,
-            the extra top margin makes room for it. */}
+            div inside, so the two never fight over one element. */}
         <motion.div
           style={{ y: cardY, scale: cardScale, opacity: cardOpacity }}
-          className="custom-content:mt-0 custom-content:max-w-none mt-20 max-w-2xl min-w-0 self-center"
+          className="custom-content:mt-0 custom-content:max-w-none mt-10 max-w-2xl min-w-0 self-center"
         >
-          <div className="group/bot motion-safe:animate-hero-card relative [--hero-delay:260ms]">
-            <HeroBot />
+          <div className="motion-safe:animate-hero-card [--hero-delay:260ms]">
             <HeroEditor />
           </div>
         </motion.div>
       </div>
 
-      {/* Closing rule: the core stack, and where to find everything else.
-          The rule is its own element so it can draw across. */}
-      <div className="relative mt-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-5 font-mono text-xs">
+      {/* Closing band: a hatched strip the bot sits on, then the core stack
+          and where to find everything else. The band is its own element so
+          it can draw across; the top margin leaves the bot room under the
+          card. */}
+      <div className="relative mt-20 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-7 font-mono text-xs">
         <span
           aria-hidden="true"
-          className="bg-border-subtle motion-safe:animate-hero-draw absolute inset-x-0 top-0 h-px origin-left [--hero-delay:620ms]"
+          className="border-border-subtle hatch-lines motion-safe:animate-hero-draw absolute inset-x-0 top-0 h-2.5 origin-left border-y [--hero-delay:620ms]"
         />
+        <HeroBot />
         <p className="text-text-muted motion-safe:animate-hero-fade [--hero-delay:800ms]">
           <span className="text-accent">stack:</span> {STACK.join(" · ")}
         </p>

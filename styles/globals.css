@@ -416,7 +416,7 @@ html:not([data-theme="dark"]) .theme-inverse {
   }
 }
 
-/* The mascot rises onto the card's top edge once the card has landed. */
+/* The mascot rises onto the hero's closing band once it has drawn across. */
 @keyframes hero-peek {
   from {
     opacity: 0;
@@ -457,6 +457,17 @@ html:not([data-theme="dark"]) .theme-inverse {
 @utility animate-hero-card {
   animation: hero-card 0.9s cubic-bezier(0.22, 1, 0.36, 1)
     var(--hero-delay, 0ms) backwards;
+}
+
+/* Hairline right-slanted ("/") hatching in the divider colour — the hero's
+   closing band. 135deg runs the gradient toward the bottom right, so the
+   stripes across it lean right. */
+@utility hatch-lines {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--color-border-subtle) 0 1px,
+    transparent 1px 6px
+  );
 }
 
 @utility animate-hero-peek {
