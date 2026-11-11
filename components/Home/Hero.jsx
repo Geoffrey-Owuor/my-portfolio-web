@@ -90,14 +90,14 @@ const Hero = () => {
               <Image
                 src={assets.profile_photo}
                 alt="Portrait of Geoffrey Owuor"
-                className="ring-border-subtle h-14 w-14 rounded-full object-cover object-[50%_25%] ring-1"
+                className="ring-border-subtle h-20 w-20 rounded-full object-cover object-[50%_25%] ring-1 sm:h-24 sm:w-24"
                 priority
-                width={112}
-                height={112}
-                sizes="56px"
+                width={192}
+                height={192}
+                sizes="(min-width: 640px) 96px, 80px"
               />
               <div>
-                <p className="text-text-primary font-semibold">
+                <p className="text-text-primary text-lg font-semibold">
                   Geoffrey Owuor
                 </p>
                 <p className="text-text-muted text-sm">
