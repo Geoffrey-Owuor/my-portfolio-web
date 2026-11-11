@@ -12,7 +12,6 @@ import {
   useTransform,
 } from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
-import HeroClock from "./HeroClock";
 import HeroEditor from "./HeroEditor";
 import { RESUME_URL } from "@/utils/links";
 import { ProgressLink } from "../Modules/RouteProgress";
@@ -28,8 +27,8 @@ const scrollToSection = (e, id) => {
 };
 
 /**
- * Editorial, text-led intro in the shared page measure: local clock, who
- * (avatar + name), what (the display headline), a short bio, calls to
+ * Editorial, text-led intro in the shared page measure: who (avatar +
+ * name), what (the display headline), a short bio, calls to
  * action, and a closing rule with the core stack. Content-height on every
  * screen — it never stretches to fill the viewport.
  *
@@ -94,11 +93,7 @@ const Hero = () => {
         className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] custom-content:gap-10"
       >
         <motion.div style={{ y: copyY, opacity: copyOpacity }}>
-          <div className="motion-safe:animate-hero-fade flex flex-wrap items-center gap-x-4 gap-y-1.5">
-            <HeroClock />
-          </div>
-
-          <div className="mt-8 flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <Image
               src={assets.profile_photo}
               alt="Portrait of Geoffrey Owuor"
