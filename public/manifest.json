@@ -1,6 +1,7 @@
 {
-  "name": "Portfolio",
+  "name": "Geoffrey Owuor",
   "short_name": "Portfolio",
+  "start_url": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -13,6 +14,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/web-app-manifest-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "theme_color": "#ffffff",
