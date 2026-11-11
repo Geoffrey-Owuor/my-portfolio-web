@@ -17,6 +17,7 @@ import { ToastProvider } from "@/components/Modules/Toaster";
 import NavBar from "@/components/Home/NavBar";
 import { RouteProgressProvider } from "@/components/Modules/RouteProgress";
 import Footer from "@/components/Home/Footer";
+import { THEME_COLORS } from "@/utils/themeColors";
 import {
   RSS_ALTERNATES,
   SITE_DESCRIPTION,
@@ -116,6 +117,15 @@ const fontInitScript = `(function(){try{var raw=localStorage.getItem(${JSON.stri
 )};if(renamed.hasOwnProperty(font))font=renamed[font];if(${JSON.stringify(
   FONT_ORDER,
 )}.indexOf(font)!==-1)document.documentElement.setAttribute("data-font",font);}catch(e){}})();`;
+
+// Browser/app title bar colour. These follow the OS until hydration;
+// components/Theme/ThemeColor then repoints them at the site's own theme.
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: THEME_COLORS.light },
+    { media: "(prefers-color-scheme: dark)", color: THEME_COLORS.dark },
+  ],
+};
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
