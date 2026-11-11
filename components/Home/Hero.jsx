@@ -166,12 +166,13 @@ const Hero = () => {
 
       {/* Closing band: a hatched strip the bot sits on, then the core stack
           and where to find everything else. The band is its own element so
-          it can draw across; the top margin leaves the bot room under the
-          card. */}
+          it can draw across, and bleeds to the screen's edges (the page's
+          overflow-x-hidden wrapper clips the scrollbar gutter's overshoot);
+          the top margin leaves the bot room under the card. */}
       <div className="relative mt-20 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-7 font-mono text-xs">
         <span
           aria-hidden="true"
-          className="border-border-subtle hatch-lines motion-safe:animate-hero-draw absolute inset-x-0 top-0 h-2.5 origin-left border-y [--hero-delay:620ms]"
+          className="border-border-subtle hatch-lines motion-safe:animate-hero-draw absolute inset-x-[calc(50%-50vw)] top-0 h-2.5 origin-left border-y [--hero-delay:620ms]"
         />
         <HeroBot />
         <p className="text-text-muted motion-safe:animate-hero-fade [--hero-delay:800ms]">

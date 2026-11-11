@@ -10,19 +10,20 @@ import {
   useTransform,
 } from "framer-motion";
 
-// How far the cursor has to be before the bot is looking "all the way".
-const REACH = 260;
 // Within this distance of the cursor (or a tap) it smiles.
 const NEAR = 120;
 const LOOK_SPRING = { stiffness: 140, damping: 16, mass: 0.6 };
 
 const random = (min, max) => min + Math.random() * (max - min);
+const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
 /**
  * The hero's mascot: a small code-bot sitting at the middle of the hatched
  * band that closes the hero (it must be placed inside that band's `relative`
  * row). It stays put; its head turns and tilts and its eyes follow the
  * cursor, it blinks now and then, and it smiles when the cursor comes close.
+ * The gaze is scaled to the viewport, so it keeps turning until the cursor
+ * reaches the screen's edge.
  *
  * With no hovering pointer (touch) it glances around every few seconds and
  * looks toward taps. Reduced motion: drawn at rest, nothing moves.
@@ -70,13 +71,18 @@ const HeroBot = () => {
     const lookAt = (clientX, clientY) => {
       const box = ref.current?.getBoundingClientRect();
       if (!box) return;
-      const dx = clientX - (box.left + box.width / 2);
-      const dy = clientY - (box.top + box.height / 2);
-      const dist = Math.hypot(dx, dy) || 1;
-      const reach = Math.min(dist / REACH, 1);
-      lookX.set((dx / dist) * reach);
-      lookY.set((dy / dist) * reach);
-      near.set(dist < NEAR ? 1 : 0);
+      const cx = box.left + box.width / 2;
+      const cy = box.top + box.height / 2;
+      const dx = clientX - cx;
+      const dy = clientY - cy;
+      // Each side's reach is the room from the bot to that edge of the
+      // viewport, so the cursor at an edge is "all the way" that way. The
+      // floor keeps it from snapping when the bot is near an edge itself.
+      const reachX = Math.max(dx < 0 ? cx : window.innerWidth - cx, NEAR);
+      const reachY = Math.max(dy < 0 ? cy : window.innerHeight - cy, NEAR);
+      lookX.set(clamp(dx / reachX, -1, 1));
+      lookY.set(clamp(dy / reachY, -1, 1));
+      near.set(Math.hypot(dx, dy) < NEAR ? 1 : 0);
     };
     const lookAhead = () => {
       lookX.set(0);
