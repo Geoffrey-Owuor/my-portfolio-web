@@ -8,33 +8,24 @@ import {
   useReducedMotion,
   useSpring,
   useTransform,
-  useVelocity,
 } from "framer-motion";
 
 // How far the cursor has to be before the bot is looking "all the way".
 const REACH = 260;
 // Within this distance of the cursor (or a tap) it smiles.
 const NEAR = 120;
-// How close to either end of the band it may travel, past its own half-width.
-const EDGE = 24;
 const LOOK_SPRING = { stiffness: 140, damping: 16, mass: 0.6 };
-// Deliberately slow, so it ambles after the cursor rather than chasing it.
-const SLIDE_SPRING = { stiffness: 30, damping: 14, mass: 1 };
 
 const random = (min, max) => min + Math.random() * (max - min);
-const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
 /**
- * The hero's mascot: a small code-bot sitting on the hatched band that
- * closes the hero (it must be placed inside that band's `relative` row).
- * It ambles along the band toward the cursor's horizontal position, stopping
- * short of either end, with its head leaning into the movement. Its eyes
- * follow the cursor, it blinks now and then, and it smiles when the cursor
- * comes close.
+ * The hero's mascot: a small code-bot sitting at the middle of the hatched
+ * band that closes the hero (it must be placed inside that band's `relative`
+ * row). It stays put; its head turns and tilts and its eyes follow the
+ * cursor, it blinks now and then, and it smiles when the cursor comes close.
  *
- * With no hovering pointer (touch) it drifts to a new spot and glances
- * around every few seconds, and looks (and heads) toward taps. Reduced
- * motion: drawn at rest in the middle of the band, nothing moves.
+ * With no hovering pointer (touch) it glances around every few seconds and
+ * looks toward taps. Reduced motion: drawn at rest, nothing moves.
  *
  * Everything runs on motion values, so tracking never re-renders React.
  */
@@ -48,11 +39,6 @@ const HeroBot = () => {
   const x = useSpring(lookX, LOOK_SPRING);
   const y = useSpring(lookY, LOOK_SPRING);
 
-  // Offset from the middle of the band, in px.
-  const slideTarget = useMotionValue(0);
-  const slide = useSpring(slideTarget, SLIDE_SPRING);
-  const slideVelocity = useVelocity(slide);
-
   const near = useMotionValue(0);
   const smile = useSpring(near, { stiffness: 300, damping: 30 });
   const level = useTransform(smile, (v) => 1 - v);
@@ -61,10 +47,8 @@ const HeroBot = () => {
   const eyeY = useTransform(y, (v) => v * 3);
   const headX = useTransform(x, (v) => v * 3);
   const headY = useTransform(y, (v) => v * 1.5);
-  // Leans after its gaze, and into the direction it's moving.
-  const headRotate = useTransform(
-    () => x.get() * 7 + clamp(slideVelocity.get() / 30, -8, 8),
-  );
+  // Tilts after its gaze.
+  const headRotate = useTransform(x, (v) => v * 7);
   const blink = useMotionValue(1);
 
   useEffect(() => {
@@ -81,20 +65,6 @@ const HeroBot = () => {
     const cancel = (id) => {
       clearTimeout(id);
       timers.delete(id);
-    };
-
-    // The band is the row the bot is positioned in.
-    const band = () => ref.current?.offsetParent?.getBoundingClientRect();
-    const range = () => {
-      const box = band();
-      const half = (ref.current?.offsetWidth ?? 0) / 2;
-      return box ? Math.max(box.width / 2 - half - EDGE, 0) : 0;
-    };
-    const slideTo = (clientX) => {
-      const box = band();
-      if (!box) return;
-      const max = range();
-      slideTarget.set(clamp(clientX - (box.left + box.width / 2), -max, max));
     };
 
     const lookAt = (clientX, clientY) => {
@@ -138,7 +108,6 @@ const HeroBot = () => {
         frame = 0;
         if (!last) return;
         lookAt(last.clientX, last.clientY);
-        slideTo(last.clientX);
       };
       const schedule = () => {
         if (!frame) frame = requestAnimationFrame(update);
@@ -149,7 +118,7 @@ const HeroBot = () => {
       };
       // The page scrolled under a still cursor: the bot moved, so re-aim.
       const onScroll = () => last && schedule();
-      // The pointer left the window: look back ahead and stay put.
+      // The pointer left the window: look back ahead.
       const onOut = (e) => {
         if (!e.relatedTarget) {
           last = null;
@@ -166,14 +135,11 @@ const HeroBot = () => {
         document.removeEventListener("pointerout", onOut);
       });
     } else {
-      // Touch: every few seconds drift somewhere and glance around; taps
-      // pull its gaze (and it) toward them.
+      // Touch: every few seconds glance around; taps pull its gaze.
       let idle;
       const scheduleWander = (delay) => {
         cancel(idle);
         idle = later(() => {
-          const max = range();
-          slideTarget.set(random(-max, max));
           lookX.set(random(-1, 1));
           lookY.set(random(-0.6, 0.8));
           idle = later(
@@ -187,7 +153,6 @@ const HeroBot = () => {
       };
       const onTap = (e) => {
         lookAt(e.clientX, e.clientY);
-        slideTo(e.clientX);
         cancel(idle);
         idle = later(() => {
           lookAhead();
@@ -199,30 +164,19 @@ const HeroBot = () => {
       cleanups.push(() => window.removeEventListener("pointerdown", onTap));
     }
 
-    // Keep it on the band when the band narrows (resize, rotation).
-    const onResize = () => {
-      const max = range();
-      slideTarget.set(clamp(slideTarget.get(), -max, max));
-    };
-    window.addEventListener("resize", onResize);
-    cleanups.push(() => window.removeEventListener("resize", onResize));
-
     return () => {
       timers.forEach(clearTimeout);
       cleanups.forEach((fn) => fn());
       lookAhead();
-      slideTarget.set(0);
       blink.set(1);
     };
-  }, [prefersReducedMotion, lookX, lookY, slideTarget, near, blink]);
+  }, [prefersReducedMotion, lookX, lookY, near, blink]);
 
-  // Paws straddle the band's top half; the slide sits on this wrapper, the
-  // entrance on the svg, so the two transforms never meet.
+  // Centred on the band, paws straddling its top half.
   return (
-    <motion.div
+    <div
       ref={ref}
       aria-hidden="true"
-      style={{ x: slide }}
       className="z-raised pointer-events-none absolute bottom-[calc(100%-13px)] left-1/2 -ml-10 w-20"
     >
       <svg
@@ -355,7 +309,7 @@ const HeroBot = () => {
           strokeWidth="1.5"
         />
       </svg>
-    </motion.div>
+    </div>
   );
 };
 
