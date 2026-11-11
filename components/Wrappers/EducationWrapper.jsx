@@ -36,19 +36,24 @@ const EducationWrapper = ({ educationData }) => {
       {/* Vertical Timeline */}
       <ol className="border-border-subtle relative md:border-l">
         {visibleEducationData.map((education, _index) => (
-          <RevealItem
-            as="li"
-            from="slide"
-            key={education.id}
-            className="mb-10 md:ml-6"
-          >
-            {/* The "dot" breakpoint with animation */}
-            <span className="bg-surface-raised ring-surface absolute -left-3 hidden h-6 w-6 items-center justify-center rounded-full ring-8 md:flex">
+          // Only the card slides. A transform on the <li> would make it the
+          // dot's containing block, so the dot would ride along and then snap
+          // back to the line when the transform is cleared.
+          <li key={education.id} className="mb-10 md:ml-6">
+            {/* The "dot" on the line: pops in place, never moves */}
+            <RevealItem
+              as="span"
+              from="pop"
+              className="bg-surface-raised ring-surface absolute -left-3 hidden h-6 w-6 items-center justify-center rounded-full ring-8 md:flex"
+            >
               <GraduationCap className="text-text-muted h-4 w-4" />
-            </span>
+            </RevealItem>
 
             {/* Timeline Content with hover effect */}
-            <div className="border-border-subtle hover:border-accent group rounded-card relative flex flex-col border p-6 transition-colors duration-150">
+            <RevealItem
+              from="slide"
+              className="border-border-subtle hover:border-accent group rounded-card relative flex flex-col border p-6 transition-colors duration-150"
+            >
               <time className="text-text-muted mb-2 block font-mono text-sm leading-none">
                 {education.timeline}
               </time>
@@ -66,8 +71,8 @@ const EducationWrapper = ({ educationData }) => {
                   {education.learning_description}
                 </ReactMarkDown>
               </div>
-            </div>
-          </RevealItem>
+            </RevealItem>
+          </li>
         ))}
       </ol>
 
