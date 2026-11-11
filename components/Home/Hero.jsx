@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import HeroClock from "./HeroClock";
 import HeroEditor from "./HeroEditor";
@@ -35,6 +42,11 @@ const scrollToSection = (e, id) => {
  * The entrance is CSS (the hero-* animations in globals.css), one motion per
  * element on a shared timeline, so it plays on first paint rather than
  * waiting for hydration.
+ *
+ * Leaving is tied to scroll, and reverses on the way back: once the hero
+ * reaches the top of the viewport the copy drifts up and fades while the
+ * card lags behind it. Two-column layout only — stacked, the hero is taller
+ * than the screen and would fade content that is still being read.
  */
 const Hero = () => {
   // "⌘K" on Apple platforms, "Ctrl K" elsewhere — resolved after mount so
@@ -44,10 +56,44 @@ const Hero = () => {
     if (/Mac|iPhone|iPad/.test(navigator.platform)) setShortcutLabel("⌘K");
   }, []);
 
+  const prefersReducedMotion = useReducedMotion();
+  const [isTwoColumn, setIsTwoColumn] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1100px)"); // custom-content
+    const update = () => setIsTwoColumn(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  // 0 as the grid's top reaches the viewport's, 1 as its bottom leaves —
+  // and held at 0 (everything at rest) whenever the effect is off. Gating the
+  // progress rather than swapping the style props keeps the motion values
+  // bound to the elements from the first render.
+  const gridRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: gridRef,
+    offset: ["start start", "end start"],
+  });
+  const enabled = useMotionValue(0);
+  useEffect(() => {
+    enabled.set(isTwoColumn && !prefersReducedMotion ? 1 : 0);
+  }, [enabled, isTwoColumn, prefersReducedMotion]);
+  const progress = useTransform(() => enabled.get() * scrollYProgress.get());
+
+  const copyY = useTransform(progress, [0, 1], [0, -48]);
+  const copyOpacity = useTransform(progress, [0.35, 1], [1, 0.2]);
+  const cardY = useTransform(progress, [0, 1], [0, 32]);
+  const cardScale = useTransform(progress, [0, 1], [1, 0.95]);
+  const cardOpacity = useTransform(progress, [0.35, 1], [1, 0.3]);
+
   return (
     <section id="home" className="container-page pb-section pt-10 md:pt-14">
-      <div className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] custom-content:gap-10">
-        <div>
+      <div
+        ref={gridRef}
+        className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] custom-content:gap-10"
+      >
+        <motion.div style={{ y: copyY, opacity: copyOpacity }}>
           <div className="motion-safe:animate-hero-fade flex flex-wrap items-center gap-x-4 gap-y-1.5">
             <HeroClock />
           </div>
@@ -107,14 +153,19 @@ const Hero = () => {
               <ArrowRight className="h-4 w-4" />
             </ProgressLink>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Beside the copy from custom-content, stacked below it before. */}
-        <div className="custom-content:mt-0 custom-content:max-w-none mt-10 max-w-2xl min-w-0 self-center">
+        {/* Beside the copy from custom-content, stacked below it before.
+            The scroll transform sits on this wrapper and the entrance on the
+            div inside, so the two never fight over one element. */}
+        <motion.div
+          style={{ y: cardY, scale: cardScale, opacity: cardOpacity }}
+          className="custom-content:mt-0 custom-content:max-w-none mt-10 max-w-2xl min-w-0 self-center"
+        >
           <div className="motion-safe:animate-hero-card [--hero-delay:260ms]">
             <HeroEditor />
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Closing rule: the core stack, and where to find everything else.
