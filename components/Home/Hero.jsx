@@ -4,13 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, useMotionValue, useScroll, useTransform } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { scrollToId } from "@/utils/motion";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import HeroEditor from "./HeroEditor";
 import HeroBot from "./HeroBot";
@@ -24,7 +20,7 @@ const STACK = ["Next.js", "React", "Node.js", "PostgreSQL", "Tailwind CSS"];
 const scrollToSection = (e, id) => {
   if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   e.preventDefault();
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  scrollToId(id);
 };
 
 /**
@@ -56,7 +52,7 @@ const Hero = () => {
     if (/Mac|iPhone|iPad/.test(navigator.platform)) setShortcutLabel("⌘K");
   }, []);
 
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [isTwoColumn, setIsTwoColumn] = useState(false);
   useEffect(() => {
     const query = window.matchMedia("(min-width: 1100px)"); // custom-content

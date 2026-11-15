@@ -5,10 +5,10 @@ import {
   AnimatePresence,
   motion,
   useInView,
-  useReducedMotion,
   useScroll,
   useSpring,
 } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { getSection } from "../Home/sections";
 
 // The note waits for the section's own entrance animation to land before it
@@ -30,7 +30,7 @@ const SectionTitle = ({
   alertIcon: AlertIcon,
 }) => {
   const titleRef = useRef(null);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const section = getSection(sectionId);
 
   // Observed on the title block itself rather than the whole section, so the
@@ -65,16 +65,17 @@ const SectionTitle = ({
     };
   }, [hasAlert, isInView]);
 
-  // Reduced motion keeps the fade but drops the rise and the de-blur.
-  const hidden = prefersReducedMotion
-    ? { opacity: 0 }
-    : { opacity: 0, y: 6, filter: "blur(4px)" };
-  const visible = prefersReducedMotion
-    ? { opacity: 1 }
-    : { opacity: 1, y: 0, filter: "blur(0px)" };
+  // Reduced motion keeps the fade but drops the rise and the de-blur. The
+  // targets stay the same either way (the server rendered `hidden`, so it has
+  // to be animated away from): MotionConfig makes the rise instant, and the
+  // blur is cleared at once here.
+  const hidden = { opacity: 0, y: 6, filter: "blur(4px)" };
+  const visible = { opacity: 1, y: 0, filter: "blur(0px)" };
   const leaving = prefersReducedMotion
     ? { opacity: 0 }
     : { opacity: 0, y: -4, filter: "blur(4px)" };
+  const entering = prefersReducedMotion ? { opacity: 0 } : hidden;
+  const blur = prefersReducedMotion ? { filter: { duration: 0 } } : null;
 
   return (
     <header ref={titleRef} className="relative mb-8">
@@ -82,7 +83,7 @@ const SectionTitle = ({
       <motion.div
         initial={hidden}
         animate={isInView ? visible : hidden}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], ...blur }}
         className="flex items-start gap-3 md:gap-4"
       >
         <span
@@ -111,7 +112,7 @@ const SectionTitle = ({
                   <motion.span
                     key="note"
                     aria-hidden="true"
-                    initial={hidden}
+                    initial={entering}
                     animate={visible}
                     exit={leaving}
                     transition={{ duration: 0.3, ease: "easeOut" }}
@@ -123,7 +124,7 @@ const SectionTitle = ({
                 ) : (
                   <motion.span
                     key="path"
-                    initial={hidden}
+                    initial={entering}
                     animate={visible}
                     exit={leaving}
                     transition={{ duration: 0.3, ease: "easeOut" }}
@@ -141,7 +142,7 @@ const SectionTitle = ({
       {/* Hairline track with the accent drawn across it by scroll position */}
       <div className="bg-border-subtle relative mt-5 h-px overflow-hidden">
         <motion.div
-          style={prefersReducedMotion ? undefined : { scaleX: ruleProgress }}
+          style={{ scaleX: prefersReducedMotion ? 1 : ruleProgress }}
           className="bg-accent absolute inset-0 origin-left"
         />
       </div>

@@ -9,7 +9,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
 
 // The app's one notification system. Mounted once in app/layout.js; any
@@ -143,7 +144,7 @@ const Toast = ({ toast, onDismiss }) => {
   const { type, title, message, duration, version } = toast;
   const { icon: TypeIcon, iconClass, bar } = TYPES[type] ?? TYPES.info;
   const Icon = toast.icon ?? TypeIcon;
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const timed = Number.isFinite(duration);
 
   // The countdown pauses while the toast is hovered or holds focus, so a
