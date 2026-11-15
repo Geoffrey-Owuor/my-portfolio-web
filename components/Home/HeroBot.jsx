@@ -5,10 +5,10 @@ import {
   animate,
   motion,
   useMotionValue,
-  useReducedMotion,
   useSpring,
   useTransform,
 } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 // Within this distance of the cursor (or a tap) it smiles.
 const NEAR = 120;
@@ -31,7 +31,7 @@ const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
  * Everything runs on motion values, so tracking never re-renders React.
  */
 const HeroBot = () => {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const ref = useRef(null);
 
   // Where it's looking, -1…1 on each axis, smoothed by a spring.

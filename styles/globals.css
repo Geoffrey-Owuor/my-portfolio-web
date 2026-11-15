@@ -495,6 +495,29 @@ html:not([data-theme="dark"]) .theme-inverse {
   animation: marquee 26s linear infinite;
 }
 
+/* Reduced motion: keep fades, drop movement. Transitions are limited to
+   properties that don't move anything, so transforms and sizes (hover nudges,
+   the mobile drawer, the route progress bar) change at once while colours and
+   opacity still ease. Unlayered on purpose, so it wins over the `transition-*`
+   utilities. Framer's side of this is `<MotionConfig reducedMotion="user">`
+   (components/Theme/Providers.jsx); CSS keyframe animations opt out one by
+   one with `motion-safe:` / `motion-reduce:`. Loading indicators (spinners,
+   skeleton pulse, the toast countdown) keep running: they report status. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    transition-property:
+      color, background-color, border-color, outline-color,
+      text-decoration-color, fill, stroke, opacity, box-shadow;
+  }
+
+  /* The hero editor's file swap: the fade without the 4px rise. */
+  .animate-hero-code {
+    animation-name: hero-fade;
+  }
+}
+
 @layer base {
   /* One keyboard focus ring for everything. In the base layer so a control
      that shows focus another way can still opt out with focus:outline-none. */

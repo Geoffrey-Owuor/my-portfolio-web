@@ -16,11 +16,12 @@ import CommandPalette from "../Modules/CommandPalette";
 import {
   AnimatePresence,
   motion,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
 } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { scrollToId } from "@/utils/motion";
 
 // Section links double as scroll-spy targets (see components/Home/sections.js).
 // `blogs` is a route, not a section, so it is matched against the pathname
@@ -55,7 +56,7 @@ const Tab = ({ isActive, href, onClick, as: Component = Link, children }) => (
 
 // Reading progress through the page, drawn along the header's bottom edge.
 const ScrollProgress = () => {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll();
   const smoothed = useSpring(scrollYProgress, {
     stiffness: 200,
@@ -66,15 +67,15 @@ const ScrollProgress = () => {
   // settling), which pushes the full-width bar past the viewport and adds a
   // horizontal scrollbar — and that scrollbar changes the scroll range, so
   // the bar shrinks, the scrollbar goes, and it loops. Keep it within 0–1.
-  const scaleX = useTransform(
-    prefersReducedMotion ? scrollYProgress : smoothed,
-    (v) => Math.min(Math.max(v, 0), 1),
-  );
+  const clamp = (v) => Math.min(Math.max(v, 0), 1);
+  const eased = useTransform(smoothed, clamp);
+  // Reduced motion: the bar follows the scroll position exactly, no spring.
+  const direct = useTransform(scrollYProgress, clamp);
 
   return (
     <motion.span
       aria-hidden="true"
-      style={{ scaleX }}
+      style={{ scaleX: prefersReducedMotion ? direct : eased }}
       className="bg-accent pointer-events-none absolute right-0 bottom-0 left-0 h-px origin-left"
     />
   );
@@ -206,7 +207,7 @@ const NavBar = () => {
       return;
     }
 
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    scrollToId(id);
   };
 
   // Function to explicitly close the mobile menu (used for link clicks)

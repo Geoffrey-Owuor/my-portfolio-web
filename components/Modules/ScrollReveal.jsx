@@ -1,19 +1,18 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 
 const EASE = [0.22, 1, 0.36, 1];
 
 // Entrance for a section's body: a short fade-up, once, the first time it
 // comes into view. Deliberately quiet — the section title already marks the
 // hand-over between sections.
+//
+// Neither entrance here checks for reduced motion: the server has already
+// sent the hidden starting styles, so rendering something else on the client
+// would mismatch and leave them stuck. `<MotionConfig reducedMotion="user">`
+// (components/Theme/Providers.jsx) drops the movement and keeps the fade.
 const ScrollReveal = ({ children, className = "" }) => {
-  const prefersReducedMotion = useReducedMotion();
-
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   // `className` goes on the element that directly holds `children`, so
   // layout classes (e.g. a grid) apply to them rather than to a wrapper.
   return (
@@ -60,13 +59,6 @@ export const RevealItem = ({
   children,
   ...props
 }) => {
-  const prefersReducedMotion = useReducedMotion();
-
-  if (prefersReducedMotion) {
-    const Tag = as;
-    return <Tag {...props}>{children}</Tag>;
-  }
-
   const MotionTag = motion[as];
   return (
     <MotionTag

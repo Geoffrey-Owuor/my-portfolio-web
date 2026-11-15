@@ -1,13 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 // How far (px) the screenshot drifts against the pointer while hovered.
 const DRIFT = 10;
@@ -19,7 +14,7 @@ const DRIFT = 10;
  * placeholder so the grid's card heights stay even.
  */
 const ProjectThumb = ({ projectId, image, name }) => {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Pointer position across the frame, -0.5 … 0.5 on each axis.
   const px = useMotionValue(0);
@@ -48,10 +43,7 @@ const ProjectThumb = ({ projectId, image, name }) => {
       {image ? (
         // Drift (inline transform, from framer) and hover zoom (CSS) live on
         // separate elements so neither overwrites the other's transform.
-        <motion.div
-          style={prefersReducedMotion ? undefined : { x, y }}
-          className="absolute -inset-3"
-        >
+        <motion.div style={{ x, y }} className="absolute -inset-3">
           <div className="relative h-full w-full transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
             <Image
               src={image}

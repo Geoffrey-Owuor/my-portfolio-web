@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
 import {
   Component,
   Database,
@@ -159,10 +158,10 @@ const highlight = (line, lang) => {
  * per layer, schema → API → UI → ship), an icon rail, and the active file.
  * Tabs advance on their own — the progress bar under the active tab *is* the
  * timer (its animationend advances), so hovering or focusing the card pauses
- * it with plain CSS. Reduced motion: no bar, no cycling; tabs still click.
+ * it with plain CSS. Reduced motion: the bar is `display: none`, so its
+ * animation never runs and nothing cycles; tabs still click.
  */
 const HeroEditor = () => {
-  const prefersReducedMotion = useReducedMotion();
   const [active, setActive] = useState(0);
   const tabRefs = useRef([]);
   const tab = TABS[active];
@@ -215,12 +214,12 @@ const HeroEditor = () => {
               >
                 <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                 {label}
-                {selected && !prefersReducedMotion && (
+                {selected && (
                   <span
                     key={active}
                     aria-hidden="true"
                     onAnimationEnd={advance}
-                    className="bg-accent animate-hero-tab absolute bottom-0 left-0 h-0.5 w-full origin-left group-focus-within:[animation-play-state:paused] group-hover:[animation-play-state:paused]"
+                    className="bg-accent animate-hero-tab absolute bottom-0 left-0 h-0.5 w-full origin-left group-focus-within:[animation-play-state:paused] group-hover:[animation-play-state:paused] motion-reduce:hidden"
                   />
                 )}
               </button>

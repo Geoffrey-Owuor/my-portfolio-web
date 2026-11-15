@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { scrollToId } from "@/utils/motion";
 import {
   ArrowUpRight,
   CornerDownLeft,
@@ -74,7 +76,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
   const pathname = usePathname();
   const router = useProgressRouter();
   const { resolvedTheme, setTheme } = useTheme();
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useHideScrollbar(isOpen);
 
@@ -93,7 +95,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
   const commands = useMemo(() => {
     const goToSection = (id) => {
       if (pathname === "/") {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        scrollToId(id);
       } else {
         router.push(`/#${id}`);
       }

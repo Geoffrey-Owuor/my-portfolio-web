@@ -182,6 +182,12 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="apple-mobile-web-app-title" content="Portfolio" />
         <script dangerouslySetInnerHTML={{ __html: fontInitScript }} />
+        {/* Scroll reveals are server-rendered at `opacity:0` and shown by
+            framer once it hydrates. Without JavaScript nothing would ever
+            reveal them, so show them outright. */}
+        <noscript>
+          <style>{`[style*="opacity:0"]{opacity:1!important;transform:none!important;filter:none!important}`}</style>
+        </noscript>
       </head>
       {/* The column layout pins the footer: a `flex-1` <main> soaks up any
           leftover height on short pages, while tall pages scroll the
