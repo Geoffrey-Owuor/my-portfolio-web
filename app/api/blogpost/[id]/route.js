@@ -3,6 +3,8 @@ import { verifyAccessTokenJWT } from "@/lib/Auth";
 import { notifyIndexNow } from "@/lib/IndexNow";
 import { revalidateTag } from "next/cache";
 import { after, NextResponse } from "next/server";
+import { validateBlog } from "@/utils/blogFields";
+import { estimateReadTime } from "@/utils/Helpers";
 
 const unauthenticated = () =>
   NextResponse.json({ message: "User is not authenticated" }, { status: 401 });
@@ -24,30 +26,42 @@ export async function PUT(request, { params }) {
     const { id } = await params;
     if (!isValidId(id)) return notFound();
 
-    const { title, author, content, tagline, readTime } = await request.json();
-
-    if (!title && !author && !content && !tagline && !readTime) {
+    let body;
+    try {
+      body = await request.json();
+    } catch {
       return NextResponse.json(
-        { message: "No fields provided for update" },
+        { message: "Expected a JSON body" },
+        { status: 400 },
+      );
+    }
+
+    // The editor always sends the whole post, so an edit replaces every
+    // field: that is what lets a tagline be cleared.
+    const { values, errors } = validateBlog(body);
+    if (Object.keys(errors).length > 0) {
+      return NextResponse.json(
+        { message: "Please check the highlighted fields.", errors },
         { status: 400 },
       );
     }
 
     const blogUpdateQuery = `UPDATE blogs SET
-                            blog_title = COALESCE($1, blog_title),
-                            blog_author = COALESCE($2, blog_author),
-                            blog_content = COALESCE($3, blog_content),
-                            author_tagline = COALESCE($4, author_tagline),
-                            read_time = COALESCE($5, read_time)
+                            blog_title = $1,
+                            blog_author = $2,
+                            blog_content = $3,
+                            author_tagline = $4,
+                            read_time = $5,
+                            updated_at = NOW()
                             WHERE id = $6 AND user_id = $7
                             RETURNING id, slug
                            `;
     const blogUpdateParams = [
-      title,
-      author,
-      content,
-      tagline,
-      readTime,
+      values.title,
+      values.author,
+      values.content,
+      values.tagline,
+      estimateReadTime(values.content),
       id,
       user.id,
     ];

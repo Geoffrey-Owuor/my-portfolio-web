@@ -6,10 +6,10 @@ const getBlogData = async () => {
   // Every reader of this list only builds a short excerpt, so whole posts stay
   // out of the cache entry (unstable_cache caps one at 2 MB).
   const blogsQuery = `
-    SELECT id, slug, blog_title, blog_author, blog_date, read_time,
+    SELECT id, slug, blog_title, blog_author, blog_date, updated_at, read_time,
            LEFT(blog_content, 2000) AS content_head
     FROM blogs
-    ORDER BY blog_date DESC
+    ORDER BY blog_date DESC, id DESC
     `;
   const blogs = await query(blogsQuery);
   return blogs;

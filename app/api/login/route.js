@@ -11,6 +11,12 @@ import { clientIp, describeWait, rateLimit } from "@/lib/RateLimit";
 
 const WRONG_CREDENTIALS = "Wrong username or password";
 
+// Compared against when the email is unknown, so that answer takes as long as
+// a wrong password and response times don't reveal which emails exist. It is
+// the hash of a throwaway string, not of any real password.
+const DUMMY_HASH =
+  "$2b$10$CTZx15D9o6NE1QYZGthdQeWeQbVIonc7pb6fDj79j.CHXf4eqTu3G";
+
 export async function POST(request) {
   try {
     const { email, password } = await request.json();
@@ -48,16 +54,15 @@ export async function POST(request) {
     const params1 = [email];
     const result1 = await query(query1, params1);
 
-    if (!result1.length) {
-      return NextResponse.json({ message: WRONG_CREDENTIALS }, { status: 401 });
-    }
-
     // Assign result to user
     const user = result1[0];
 
-    // Verify password
-    const isValid = await verifyPassword(password, user.password);
-    if (!isValid) {
+    // Verify password (against the dummy hash when there's no such user)
+    const isValid = await verifyPassword(
+      password,
+      user?.password ?? DUMMY_HASH,
+    );
+    if (!user || !isValid) {
       return NextResponse.json({ message: WRONG_CREDENTIALS }, { status: 401 });
     }
 

@@ -6,17 +6,30 @@ import { motion } from "framer-motion";
 import { useId, useRef } from "react";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 
+/**
+ * Asks before an action goes ahead. `confirmLabel` names the action ("Delete",
+ * "Publish") rather than a generic "Proceed", and `tone="danger"` colours it
+ * for something that can't be undone. Focus starts on Cancel, so a stray
+ * Enter never confirms.
+ */
 const ConfirmationDialog = ({
   message,
   onConfirm,
   showConfirmation,
   onCancel,
   title,
+  confirmLabel = "Confirm",
+  tone = "default",
 }) => {
   const modalRef = useRef(null);
   const titleId = useId();
   const messageId = useId();
   useFocusTrapping(modalRef, showConfirmation, onCancel);
+
+  const confirmClass =
+    tone === "danger"
+      ? "bg-danger text-white hover:opacity-90"
+      : "bg-text-primary text-surface hover:opacity-90";
 
   const content = (
     <motion.div
@@ -63,15 +76,17 @@ const ConfirmationDialog = ({
           <button
             onClick={onCancel}
             type="button"
-            className="border-border-subtle bg-surface text-text-primary hover:bg-surface-raised rounded-control flex-1 border px-4 py-2 transition-colors sm:flex-none"
+            data-autofocus
+            className="border-border-subtle bg-surface text-text-primary hover:bg-surface-raised rounded-control flex-1 cursor-pointer border px-4 py-2 transition-colors sm:flex-none"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="bg-text-primary text-surface rounded-control flex-1 px-4 py-2 transition-opacity hover:opacity-90 sm:flex-none"
+            type="button"
+            className={`rounded-control flex-1 cursor-pointer px-4 py-2 font-semibold transition-opacity sm:flex-none ${confirmClass}`}
           >
-            Proceed
+            {confirmLabel}
           </button>
         </div>
       </motion.div>

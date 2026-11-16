@@ -94,6 +94,59 @@ const CustomMdEditor = ({
     }, 0);
   };
 
+  // Block syntax (headings, lists, quotes) belongs at the start of a line, so
+  // these buttons prefix every line the selection touches rather than
+  // inserting at the cursor. A numbered list counts up; an existing heading
+  // marker is replaced, so H2 on an H1 line doesn't stack into "## # ".
+  const prefixLines = (prefix) => {
+    const textarea = document.getElementById(id);
+    if (!textarea) return;
+
+    const text = textarea.value;
+    const { selectionStart: start, selectionEnd: end } = textarea;
+    const lineStart = text.lastIndexOf("\n", start - 1) + 1;
+    // A selection ending right after a newline doesn't include that line.
+    const lastIndex = end > start && text[end - 1] === "\n" ? end - 1 : end;
+    const nextBreak = text.indexOf("\n", lastIndex);
+    const lineEnd = nextBreak === -1 ? text.length : nextBreak;
+
+    const isHeading = prefix.startsWith("#");
+    const lines = text.slice(lineStart, lineEnd).split("\n");
+    const replaced = lines
+      .map((line, i) => {
+        const marker = prefix === "1. " ? `${i + 1}. ` : prefix;
+        const body = isHeading ? line.replace(/^#{1,6}\s+/, "") : line;
+        return `${marker}${body}`;
+      })
+      .join("\n");
+
+    textarea.focus();
+    textarea.setSelectionRange(lineStart, lineEnd);
+    // execCommand keeps Ctrl+Z working and fires the input event onChange
+    // listens for; the fallback covers browsers that dropped it.
+    if (!document.execCommand("insertText", false, replaced)) {
+      onChange({
+        target: {
+          name,
+          value: text.slice(0, lineStart) + replaced + text.slice(lineEnd),
+        },
+      });
+    }
+
+    // One line: keep the caret where it was in the text. Several: select the
+    // block, so the change is visible.
+    setTimeout(() => {
+      textarea.focus();
+      if (lines.length === 1) {
+        const shift = replaced.length - (lineEnd - lineStart);
+        const caret = Math.max(lineStart, end + shift);
+        textarea.setSelectionRange(caret, caret);
+      } else {
+        textarea.setSelectionRange(lineStart, lineStart + replaced.length);
+      }
+    }, 0);
+  };
+
   const handleClick = () => {
     setShowToolTip(false);
     setSuppressHover(true);
@@ -144,38 +197,38 @@ const CustomMdEditor = ({
             />
             <ToolbarButton
               icon={<Heading1 size={18} />}
-              onClick={() => insertText("# ", "")}
+              onClick={() => prefixLines("# ")}
               label="Heading1"
             />
             <ToolbarButton
               icon={<Heading2 size={18} />}
-              onClick={() => insertText("## ", "")}
+              onClick={() => prefixLines("## ")}
               label="Heading2"
             />
             <ToolbarButton
               icon={<Heading3 size={18} />}
-              onClick={() => insertText("### ", "")}
+              onClick={() => prefixLines("### ")}
               label="Heading3"
             />
             <ToolbarButton
               icon={<Heading4 size={18} />}
-              onClick={() => insertText("#### ", "")}
+              onClick={() => prefixLines("#### ")}
               label="Heading4"
             />
             <div className="bg-border-subtle mx-2 h-4 w-px" />
             <ToolbarButton
               icon={<List size={18} />}
-              onClick={() => insertText("- ", "")}
+              onClick={() => prefixLines("- ")}
               label="List"
             />
             <ToolbarButton
               icon={<ListOrdered size={18} />}
-              onClick={() => insertText("1. ", "")}
+              onClick={() => prefixLines("1. ")}
               label="Numbered List"
             />
             <ToolbarButton
               icon={<Quote size={18} />}
-              onClick={() => insertText("> ", "")}
+              onClick={() => prefixLines("> ")}
               label="Quote"
             />
             <ToolbarButton

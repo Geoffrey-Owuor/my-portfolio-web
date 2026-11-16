@@ -31,8 +31,12 @@ export const useFocusTrapping = (modalRef, modalOpen, closeModal) => {
         ? [...modalRef.current.querySelectorAll(FOCUSABLE_SELECTOR)]
         : [];
 
-    // Deferred until the portal has rendered into the DOM.
-    const timer = setTimeout(() => getFocusable()[0]?.focus(), 0);
+    // Deferred until the portal has rendered into the DOM. A control marked
+    // `data-autofocus` (e.g. a dialog's Cancel) takes focus first.
+    const timer = setTimeout(() => {
+      const preferred = modalRef.current?.querySelector("[data-autofocus]");
+      (preferred ?? getFocusable()[0])?.focus();
+    }, 0);
 
     const handleKeyDown = (e) => {
       if (openTraps[openTraps.length - 1] !== trap) return;

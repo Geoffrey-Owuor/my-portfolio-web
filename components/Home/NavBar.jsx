@@ -11,7 +11,7 @@ import FontSwitcher from "../Modules/FontSwitcher";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 import { sections } from "./sections";
-import { GITHUB_URL } from "@/utils/links";
+import { GITHUB_URL, RESUME_URL } from "@/utils/links";
 import CommandPalette from "../Modules/CommandPalette";
 import {
   AnimatePresence,
@@ -101,6 +101,7 @@ const NavBar = () => {
   // is active until the user navigates back to a section.
   const activeKey = useMemo(() => {
     if (pathname === "/blogs") return "blogs";
+    if (pathname === RESUME_URL) return "resume";
     return isInHome ? activeId : "";
   }, [pathname, isInHome, activeId]);
 
@@ -117,7 +118,10 @@ const NavBar = () => {
 
     const placePill = () => {
       const tab = list.querySelector('[aria-current="true"]');
-      if (!tab) {
+      // A tab with no width is in a hidden bar (below lg, or measured
+      // mid-layout): drawing the pill there would leave its border as a
+      // stray line at the left edge.
+      if (!tab || tab.getBoundingClientRect().width === 0) {
         setPill(null);
         return;
       }
@@ -311,6 +315,17 @@ const NavBar = () => {
               >
                 Blogs
               </Tab>
+
+              <Tab
+                as={ProgressLink}
+                isActive={activeKey === "resume"}
+                href={RESUME_URL}
+                onClick={(e) => {
+                  if (pathname === RESUME_URL) e.preventDefault();
+                }}
+              >
+                Résumé
+              </Tab>
             </ul>
           </div>
 
@@ -324,7 +339,9 @@ const NavBar = () => {
               className="border-border-subtle text-text-muted hover:text-text-primary hover:bg-surface-raised rounded-control flex h-9 cursor-pointer items-center gap-2 border px-2.5 text-sm transition-colors"
             >
               <Search className="h-4 w-4" />
-              <kbd className="font-mono text-xs">{shortcutLabel}</kbd>
+              <kbd className="hidden font-mono text-xs xl:inline">
+                {shortcutLabel}
+              </kbd>
             </button>
             <div className="text-text-muted hover:bg-surface-raised rounded-control flex h-9 w-9 items-center justify-center transition-colors">
               <FontSwitcher />
@@ -341,7 +358,8 @@ const NavBar = () => {
               className="bg-text-primary text-surface rounded-control flex items-center gap-2 px-3 py-2 text-sm transition-opacity hover:opacity-90"
             >
               <GitHubIcon className="h-4 w-4 shrink-0" />
-              GitHub
+              {/* The tabs need the room between lg and xl. */}
+              <span className="hidden xl:inline">GitHub</span>
             </a>
           </div>
         </div>
@@ -490,6 +508,21 @@ const NavBar = () => {
                 className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control block w-full px-4 py-3 text-base transition-colors"
               >
                 Blogs
+              </ProgressLink>
+            )}
+          </li>
+          <li>
+            {pathname === RESUME_URL ? (
+              <span className="bg-surface-raised text-text-primary rounded-control block w-full px-4 py-3 text-base">
+                Résumé
+              </span>
+            ) : (
+              <ProgressLink
+                href={RESUME_URL}
+                onClick={closeMenu}
+                className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control block w-full px-4 py-3 text-base transition-colors"
+              >
+                Résumé
               </ProgressLink>
             )}
           </li>

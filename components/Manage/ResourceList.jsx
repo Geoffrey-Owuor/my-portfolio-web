@@ -229,6 +229,8 @@ const ResourceList = ({ resource, rows, heading, note }) => {
       {confirmingDelete && (
         <ConfirmationDialog
           title={`Delete ${config.noun}`}
+          confirmLabel="Delete"
+          tone="danger"
           message={`Delete "${shortLabel(config.title(confirmingDelete))}"? This can't be undone.`}
           showConfirmation
           onConfirm={handleDelete}

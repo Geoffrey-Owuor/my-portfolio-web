@@ -23,16 +23,19 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      // A crashed or proxied response may not be JSON.
+      const data = await response.json().catch(() => ({}));
       //   Successfull login
       if (response.ok) {
         window.location.href = "/manage";
       } else {
-        setError(data.message || "Login Failed");
+        setError(data.message || "Couldn't sign in. Please try again.");
         setLoading(false);
       }
     } catch (error) {
-      setError(error.message);
+      // fetch itself failed: the request never reached the server.
+      console.error("Error while signing in:", error);
+      setError("Couldn't reach the server. Check your connection.");
       setLoading(false);
     }
   };

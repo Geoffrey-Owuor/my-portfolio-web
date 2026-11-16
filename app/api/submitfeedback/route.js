@@ -15,6 +15,16 @@ export async function POST(request) {
     );
   }
 
+  // The hidden "website" field is left empty by people and filled in by
+  // bots. A bot gets the usual success reply, so it has no reason to retry,
+  // but nothing is stored or emailed.
+  if (typeof body?.website === "string" && body.website.trim()) {
+    return NextResponse.json(
+      { message: "Message received! I'll get back to you soon😊" },
+      { status: 201 },
+    );
+  }
+
   const errors = validateContact(body ?? {});
   if (Object.keys(errors).length > 0) {
     return NextResponse.json(

@@ -65,7 +65,7 @@ CREATE TABLE blogs (
   const posts = blogs?.slice(0, 3).map((blog) => ({
     id: blog.id,
     title: blog.blog_title,
-    excerpt: stripMarkdown(blog.blog_content, 180),
+    excerpt: stripMarkdown(blog.content_head, 180),
   }));
 
   return <WritingWrapper posts={posts ?? null} />;

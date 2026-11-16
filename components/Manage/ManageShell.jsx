@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import apiClient from "@/lib/AxiosClient";
 import { useSearchParams } from "next/navigation";
 import PageHeader from "../Layout/PageHeader";
 import LogoutButton from "../Modules/LogoutButton";
@@ -26,6 +27,22 @@ const TABS = [
 const ManageShell = ({ user, content }) => {
   const searchParams = useSearchParams();
   const tabRefs = useRef({});
+
+  // Unread messages, for the Inbox tab's badge. null until known; a failed
+  // count just leaves the tab without one.
+  const [unread, setUnread] = useState(null);
+  useEffect(() => {
+    let current = true;
+    apiClient
+      .get("/manage/inbox/unread")
+      .then(({ data }) => current && setUnread(data.unread))
+      .catch((error) =>
+        console.error("Error counting unread messages:", error),
+      );
+    return () => {
+      current = false;
+    };
+  }, []);
 
   const requested = searchParams.get("tab");
   const activeTab = TABS.some((tab) => tab.id === requested)
@@ -97,6 +114,11 @@ const ManageShell = ({ user, content }) => {
               id={`manage-tab-${tab.id}`}
               aria-selected={selected}
               aria-controls="manage-panel"
+              aria-label={
+                tab.id === "inbox" && unread > 0
+                  ? `Inbox, ${unread} unread`
+                  : undefined
+              }
               tabIndex={selected ? 0 : -1}
               onClick={() => selectTab(tab.id)}
               className={`rounded-control focus-visible:outline-accent shrink-0 cursor-pointer px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-2 ${
@@ -106,6 +128,11 @@ const ManageShell = ({ user, content }) => {
               }`}
             >
               {tab.label}
+              {tab.id === "inbox" && unread > 0 && (
+                <span className="bg-accent text-surface ml-2 inline-flex min-w-5 items-center justify-center rounded-full px-1.5 font-mono text-xs tabular-nums">
+                  {unread}
+                </span>
+              )}
             </button>
           );
         })}
@@ -157,7 +184,7 @@ const ManageShell = ({ user, content }) => {
             failed={Boolean(content.resume.failed)}
           />
         )}
-        {activeTab === "inbox" && <InboxTab />}
+        {activeTab === "inbox" && <InboxTab onUnreadChange={setUnread} />}
       </div>
     </div>
   );

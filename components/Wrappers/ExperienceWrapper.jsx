@@ -1,8 +1,6 @@
 "use client";
 import { Briefcase, BriefcaseBusiness } from "lucide-react";
 import { useState } from "react";
-import remarkGfm from "remark-gfm";
-import ReactMarkDown from "react-markdown";
 import ShowMoreButtons from "./ShowMoreButtons";
 import SectionTitle from "./SectionTitle";
 import EmptyState from "../Modules/EmptyState";
@@ -13,7 +11,7 @@ const ExperienceWrapper = ({ experiences }) => {
   const [visibleCount, setVisibleCount] = useState(1);
 
   // Derived states for button visibility logic
-  const visibleExperiences = (experiences ?? []).slice(0, visibleCount);
+  // Every entry is in the HTML; the ones past visibleCount are only hidden.
   const canShowMore = visibleCount < (experiences?.length ?? 0);
   const canShowLess = visibleCount > 1;
 
@@ -28,18 +26,21 @@ const ExperienceWrapper = ({ experiences }) => {
       <SectionTitle
         sectionId="experience"
         title="My Experience"
-        subtitle="Where i've been"
+        subtitle="Where I've been"
         alertMessage="Evolving with challenges, always moving forward"
         alertIcon={BriefcaseBusiness}
       />
 
       {/* Vertical Timeline */}
       <ol className="border-border-subtle relative md:border-l">
-        {visibleExperiences.map((exp, _index) => (
+        {(experiences ?? []).map((exp, index) => (
           // Only the card slides. A transform on the <li> would make it the
           // dot's containing block, so the dot would ride along and then snap
           // back to the line when the transform is cleared.
-          <li key={exp.id} className="mb-10 md:ml-6">
+          <li
+            key={exp.id}
+            className={index < visibleCount ? "mb-10 md:ml-6" : "hidden"}
+          >
             {/* The "dot" on the line: pops in place, never moves */}
             <RevealItem
               as="span"
@@ -67,9 +68,7 @@ const ExperienceWrapper = ({ experiences }) => {
               </p>
 
               <div className="prose prose-gray dark:prose-invert text-text-muted max-w-[75ch] text-base font-normal">
-                <ReactMarkDown remarkPlugins={[remarkGfm]}>
-                  {exp.work_description}
-                </ReactMarkDown>
+                {exp.description}
               </div>
             </RevealItem>
           </li>

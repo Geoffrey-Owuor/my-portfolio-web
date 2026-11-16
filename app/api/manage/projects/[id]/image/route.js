@@ -24,7 +24,7 @@ import {
 const swapImage = async (id, path) => {
   const rows = await query(
     `UPDATE projects AS target
-     SET project_image = $1
+     SET project_image = $1, updated_at = NOW()
      FROM (SELECT id, project_image FROM projects WHERE id = $2 FOR UPDATE) AS previous
      WHERE target.id = previous.id
      RETURNING previous.project_image AS previous_image`,

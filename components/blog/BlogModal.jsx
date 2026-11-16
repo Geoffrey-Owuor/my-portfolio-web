@@ -11,8 +11,9 @@ import ClientPortal from "../Modules/ClientPortal";
 import { useToast } from "../Modules/Toaster";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
+import { useBackdropClose } from "@/hooks/useBackdropClose";
 import { useFormDraft } from "@/hooks/useFormDraft";
-import { estimateReadTime } from "@/utils/Helpers";
+import { validateBlog } from "@/utils/blogFields";
 
 // Writes a new post (`blogInfo` null) or edits one. Mounted only while open, so
 // each opening starts from the saved values plus any draft.
@@ -25,6 +26,7 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
 
   useHideScrollbar(true);
   useFocusTrapping(modalRef, true, onClose);
+  const backdropProps = useBackdropClose(onClose);
 
   const [formData, setFormData] = useState({
     title: blogInfo?.blog_title || "",
@@ -48,6 +50,8 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
 
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // One message per invalid field, shown under that field.
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,11 +59,33 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
       ...prev,
       [name]: value,
     }));
+    setErrors((prev) => {
+      if (!prev[name]) return prev;
+      const { [name]: _cleared, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const showErrors = (found) => {
+    setErrors(found);
+    // After the render that marks the fields invalid.
+    setTimeout(() => {
+      modalRef.current?.querySelector('[aria-invalid="true"]')?.focus();
+    }, 0);
   };
 
   const handleConfirmSubmit = (e) => {
     e.preventDefault();
-    setShowConfirmDialog(true);
+
+    const { errors: found } = validateBlog(formData);
+    if (Object.keys(found).length > 0) {
+      showErrors(found);
+      return;
+    }
+    // Publishing is public (and announced to search engines), so it asks
+    // first. An edit saves straight away, like the other /manage forms.
+    if (isNew) setShowConfirmDialog(true);
+    else handleSubmit();
   };
 
   const handleSubmit = async () => {
@@ -67,13 +93,9 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
     setIsSubmitting(true);
 
     try {
-      const payload = {
-        ...formData,
-        readTime: estimateReadTime(formData.content),
-      };
       const { data } = isNew
-        ? await apiClient.post("/blogpost", payload)
-        : await apiClient.put(`/blogpost/${blogInfo.blog_id}`, payload);
+        ? await apiClient.post("/blogpost", formData)
+        : await apiClient.put(`/blogpost/${blogInfo.blog_id}`, formData);
 
       // The route has already refreshed the server cache; this redraws the
       // list and drops stale listings from the client router.
@@ -85,6 +107,14 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
       clearDraft();
       onClose();
     } catch (error) {
+      console.error("Error saving the blog:", error);
+
+      const fieldErrors = error.response?.data?.errors;
+      if (fieldErrors) {
+        showErrors(fieldErrors);
+        return;
+      }
+
       const message =
         error.response?.data?.message ||
         error.message ||
@@ -93,28 +123,20 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
       toast.error(message, {
         title: isNew ? "Couldn't publish the blog" : "Couldn't update the blog",
       });
-
-      console.error("Error saving the blog:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const isFormValid =
-    formData.title.trim() && formData.author.trim() && formData.content.trim();
-
   return (
     <>
       {showConfirmDialog && (
         <ConfirmationDialog
-          title={isNew ? "Post Blog" : "Edit Blog"}
+          title="Publish blog"
           onConfirm={handleSubmit}
           showConfirmation={showConfirmDialog}
-          message={
-            isNew
-              ? "Are you sure you want to post this blog?"
-              : "Are you sure you want to edit this blog?"
-          }
+          message="Publish this post? It goes live on the site straight away."
+          confirmLabel="Publish"
           onCancel={() => setShowConfirmDialog(false)}
         />
       )}
@@ -124,7 +146,7 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2 }}
-          onClick={onClose}
+          {...backdropProps}
           className="z-modal fixed inset-0 flex items-stretch justify-center bg-black/50 sm:items-center dark:bg-black/60"
         >
           <motion.div
@@ -135,7 +157,6 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            onClick={(e) => e.stopPropagation()}
             // Full-screen below sm; a centred card from sm up.
             className="border-border-subtle bg-surface sm:rounded-dialog h-dvh w-full max-w-4xl overflow-y-auto shadow-2xl sm:mx-4 sm:h-auto sm:max-h-[calc(100dvh-3rem)] sm:border"
           >
@@ -168,7 +189,7 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
               handleConfirmSubmit={handleConfirmSubmit}
               formData={formData}
               handleChange={handleChange}
-              isFormValid={isFormValid}
+              errors={errors}
               IsUpdating={!isNew}
               isSubmitting={isSubmitting}
               canDiscard={hasDraft}

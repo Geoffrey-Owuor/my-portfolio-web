@@ -28,9 +28,11 @@ const FieldError = ({ id, message }) =>
 
 const Contact = () => {
   // Set for form inputs
+  // `website` is a honeypot: hidden from people, filled in by bots.
   const [formData, setFormData] = useState({
     contactInfo: "",
     message: "",
+    website: "",
   });
 
   // One message per invalid field, shown under that field.
@@ -67,20 +69,30 @@ const Contact = () => {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
+      // A crashed or proxied response may not be JSON; its parse error is not
+      // something to show a visitor.
+      const result = await response.json().catch(() => ({}));
 
       if (response.ok) {
-        toast.success(result.message, { title: "Message sent" });
-        setFormData({ contactInfo: "", message: "" }); // Clear form data
+        toast.success(result.message || "Message received!", {
+          title: "Message sent",
+        });
+        setFormData({ contactInfo: "", message: "", website: "" }); // Clear form data
         setErrors({});
       } else if (result.errors) {
         setErrors(result.errors);
       } else {
-        throw new Error(result.message || "Something went wrong");
+        toast.error(
+          result.message || "Something went wrong. Please try again.",
+          { title: "Couldn't send your message" },
+        );
       }
     } catch (error) {
+      // fetch itself failed: the request never reached the server.
       console.error("Error while submitting form data:", error);
-      toast.error(error.message, { title: "Couldn't send your message" });
+      toast.error("Check your connection and try again.", {
+        title: "Couldn't send your message",
+      });
     } finally {
       setSending(false);
     }
@@ -132,6 +144,24 @@ const Contact = () => {
             noValidate
             className="flex max-w-3xl flex-col gap-6"
           >
+            {/* Honeypot: off-screen and out of the tab order, so only a bot
+                fills it in. Not display:none, which some bots skip. */}
+            <div
+              aria-hidden="true"
+              className="absolute -left-[10000px] h-px w-px overflow-hidden"
+            >
+              <label htmlFor="website">Website</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                value={formData.website}
+                onChange={handleChange}
+              />
+            </div>
+
             {/* Email/Phone Input */}
             <RevealItem className="flex flex-col">
               <label

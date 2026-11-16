@@ -17,7 +17,8 @@ const shortLabel = (text) =>
 
 // Visitor text is untrusted: it only ever renders as plain text, and only a
 // value that passes isEmail becomes a mailto link.
-const InboxTab = () => {
+// `onUnreadChange` keeps the Inbox tab's badge in step with what's shown here.
+const InboxTab = ({ onUnreadChange }) => {
   const toast = useToast();
   const [page, setPage] = useState(1);
   const [reloadKey, setReloadKey] = useState(0);
@@ -40,6 +41,7 @@ const InboxTab = () => {
           return;
         }
         setData(response.data);
+        onUnreadChange?.(response.data.unread);
       })
       .catch((error) => {
         if (!current) return;
@@ -50,7 +52,7 @@ const InboxTab = () => {
     return () => {
       current = false;
     };
-  }, [page, reloadKey]);
+  }, [page, reloadKey, onUnreadChange]);
 
   if (failed) {
     return (
@@ -86,10 +88,12 @@ const InboxTab = () => {
       );
       setData((previous) => ({
         ...previous,
+        unread: previous.unread + (read ? -1 : 1),
         messages: previous.messages.map((item) =>
           item.id === message.id ? { ...item, read_at: updated.read_at } : item,
         ),
       }));
+      onUnreadChange?.((count) => Math.max(0, (count ?? 0) + (read ? -1 : 1)));
     } catch (error) {
       console.error("Error updating the message:", error);
       toast.error(error.response?.data?.message || error.message, {
@@ -218,6 +222,8 @@ const InboxTab = () => {
       {confirmingDelete && (
         <ConfirmationDialog
           title="Delete message"
+          confirmLabel="Delete"
+          tone="danger"
           message={`Delete the message from "${shortLabel(confirmingDelete.user_identity)}"? This can't be undone.`}
           showConfirmation
           onConfirm={handleDelete}
