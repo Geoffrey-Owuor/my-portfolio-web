@@ -1,6 +1,7 @@
-// Content Security Policy, in report-only mode: violations show up in the
-// browser console and nothing is blocked. Once a deploy shows no reports,
-// rename the header to Content-Security-Policy to enforce it.
+// Content Security Policy, enforced: anything it doesn't allow is blocked.
+// It ran in report-only mode first, and production showed no reports. To
+// trial a change without risk, send it as Content-Security-Policy-Report-Only
+// for a deploy before enforcing it.
 //
 // 'unsafe-inline' scripts cover Next's inline bootstrap, the font-init
 // script and JSON-LD (no per-request nonces, so pages stay static);
@@ -32,7 +33,7 @@ const contentSecurityPolicy = [
 
 /** @type {import('next').NextConfig} */
 const securityHeaders = [
-  { key: "Content-Security-Policy-Report-Only", value: contentSecurityPolicy },
+  { key: "Content-Security-Policy", value: contentSecurityPolicy },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
