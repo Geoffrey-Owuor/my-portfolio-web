@@ -118,7 +118,10 @@ const NavBar = () => {
 
     const placePill = () => {
       const tab = list.querySelector('[aria-current="true"]');
-      if (!tab) {
+      // A tab with no width is in a hidden bar (below lg, or measured
+      // mid-layout): drawing the pill there would leave its border as a
+      // stray line at the left edge.
+      if (!tab || tab.getBoundingClientRect().width === 0) {
         setPill(null);
         return;
       }
