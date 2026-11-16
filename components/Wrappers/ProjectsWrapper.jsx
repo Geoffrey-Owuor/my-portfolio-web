@@ -1,6 +1,5 @@
 "use client";
 import { ArrowRight, BadgeCheck } from "lucide-react";
-import MarkdownPreview from "../Modules/MarkdownPreview";
 import { useState } from "react";
 import ProjectStack from "./ProjectStack";
 import ProjectThumb from "./ProjectThumb";
@@ -14,8 +13,8 @@ const ProjectsWrapper = ({ projects }) => {
   // The number of projects we see on mount
   const [visibleCount, setVisibleCount] = useState(3);
 
-  // Derived states for button visibility logic
-  const visibleProjects = (projects ?? []).slice(0, visibleCount);
+  // Every card is in the HTML, so crawlers and find-in-page see them all;
+  // the ones past visibleCount are only hidden.
   const canShowMore = visibleCount < (projects?.length ?? 0);
   const canShowLess = visibleCount > 3;
 
@@ -38,13 +37,13 @@ const ProjectsWrapper = ({ projects }) => {
         {/* Responsive Projects Grid */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* Staggered across a row of up to three. */}
-          {visibleProjects.map((project, index) => (
+          {(projects ?? []).map((project, index) => (
             <RevealItem
               key={project.id}
               from="lift"
               index={index % 3}
               step={0.08}
-              className="h-full"
+              className={index < visibleCount ? "h-full" : "hidden"}
             >
               {/* The card is one real link, so it can be middle-clicked or
                   opened in a new tab. Its name is the project's title; the
@@ -70,10 +69,9 @@ const ProjectsWrapper = ({ projects }) => {
                 {/* Tech stack pills — quick-scan metadata, high in the hierarchy */}
                 <ProjectStack projectStack={project.project_stack} limit={4} />
 
-                {/* Card Description, trimmed for a consistent, skimmable card height */}
-                <MarkdownPreview className="text-text-muted mt-3 line-clamp-3 flex-1 leading-relaxed">
-                  {project.project_description}
-                </MarkdownPreview>
+                {/* Card Description (rendered on the server), clamped for a
+                    consistent, skimmable card height */}
+                {project.preview}
 
                 {/* Footer: says where the card goes */}
                 <span className="border-border-subtle text-accent mt-4 flex items-center gap-1.5 border-t pt-4 text-sm font-semibold underline-offset-4 group-hover:underline">
