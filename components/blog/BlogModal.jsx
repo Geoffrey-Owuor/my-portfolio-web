@@ -12,7 +12,7 @@ import { useToast } from "../Modules/Toaster";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 import { useFormDraft } from "@/hooks/useFormDraft";
-import { estimateReadTime } from "@/utils/Helpers";
+import { validateBlog } from "@/utils/blogFields";
 
 // Writes a new post (`blogInfo` null) or edits one. Mounted only while open, so
 // each opening starts from the saved values plus any draft.
@@ -48,6 +48,8 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
 
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // One message per invalid field, shown under that field.
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,10 +57,29 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
       ...prev,
       [name]: value,
     }));
+    setErrors((prev) => {
+      if (!prev[name]) return prev;
+      const { [name]: _cleared, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const showErrors = (found) => {
+    setErrors(found);
+    // After the render that marks the fields invalid.
+    setTimeout(() => {
+      modalRef.current?.querySelector('[aria-invalid="true"]')?.focus();
+    }, 0);
   };
 
   const handleConfirmSubmit = (e) => {
     e.preventDefault();
+
+    const { errors: found } = validateBlog(formData);
+    if (Object.keys(found).length > 0) {
+      showErrors(found);
+      return;
+    }
     setShowConfirmDialog(true);
   };
 
@@ -67,13 +88,9 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
     setIsSubmitting(true);
 
     try {
-      const payload = {
-        ...formData,
-        readTime: estimateReadTime(formData.content),
-      };
       const { data } = isNew
-        ? await apiClient.post("/blogpost", payload)
-        : await apiClient.put(`/blogpost/${blogInfo.blog_id}`, payload);
+        ? await apiClient.post("/blogpost", formData)
+        : await apiClient.put(`/blogpost/${blogInfo.blog_id}`, formData);
 
       // The route has already refreshed the server cache; this redraws the
       // list and drops stale listings from the client router.
@@ -85,6 +102,14 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
       clearDraft();
       onClose();
     } catch (error) {
+      console.error("Error saving the blog:", error);
+
+      const fieldErrors = error.response?.data?.errors;
+      if (fieldErrors) {
+        showErrors(fieldErrors);
+        return;
+      }
+
       const message =
         error.response?.data?.message ||
         error.message ||
@@ -93,15 +118,10 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
       toast.error(message, {
         title: isNew ? "Couldn't publish the blog" : "Couldn't update the blog",
       });
-
-      console.error("Error saving the blog:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  const isFormValid =
-    formData.title.trim() && formData.author.trim() && formData.content.trim();
 
   return (
     <>
@@ -168,7 +188,7 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
               handleConfirmSubmit={handleConfirmSubmit}
               formData={formData}
               handleChange={handleChange}
-              isFormValid={isFormValid}
+              errors={errors}
               IsUpdating={!isNew}
               isSubmitting={isSubmitting}
               canDiscard={hasDraft}

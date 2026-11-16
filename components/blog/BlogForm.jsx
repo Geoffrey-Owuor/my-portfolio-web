@@ -10,12 +10,29 @@ import {
 import { ProgressLink } from "../Modules/RouteProgress";
 import CustomMdEditor from "./CustomMdEditor";
 import { countWords } from "@/utils/Helpers";
+import { BLOG_LIMITS } from "@/utils/blogFields";
+
+const inputClass =
+  "border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent aria-invalid:border-danger rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none";
+
+const FieldError = ({ id, message }) =>
+  message ? (
+    <p id={id} className="text-danger mt-1.5 text-sm">
+      {message}
+    </p>
+  ) : null;
+
+// What marks a field invalid and points it at its message.
+const invalidProps = (errors, name) =>
+  errors[name]
+    ? { "aria-invalid": true, "aria-describedby": `${name}-error` }
+    : {};
 
 const BlogForm = ({
   handleConfirmSubmit,
   formData,
   handleChange,
-  isFormValid,
+  errors = {},
   isSubmitting,
   IsUpdating,
   canDiscard,
@@ -24,7 +41,7 @@ const BlogForm = ({
   return (
     <>
       <div className="p-6 sm:p-8">
-        <form onSubmit={handleConfirmSubmit} className="space-y-6">
+        <form onSubmit={handleConfirmSubmit} noValidate className="space-y-6">
           {/* Title Input */}
           <div>
             <label
@@ -41,9 +58,11 @@ const BlogForm = ({
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter an engaging title..."
-              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none"
-              required
+              maxLength={BLOG_LIMITS.title}
+              {...invalidProps(errors, "title")}
+              className={inputClass}
             />
+            <FieldError id="title-error" message={errors.title} />
           </div>
 
           {/* Author Input */}
@@ -62,9 +81,11 @@ const BlogForm = ({
               value={formData.author}
               onChange={handleChange}
               placeholder="Your name or pen name"
-              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none"
-              required
+              maxLength={BLOG_LIMITS.author}
+              {...invalidProps(errors, "author")}
+              className={inputClass}
             />
+            <FieldError id="author-error" message={errors.author} />
           </div>
           <div>
             <label
@@ -73,6 +94,7 @@ const BlogForm = ({
             >
               <Signature className="text-text-muted h-4 w-4" />
               Tagline
+              <span className="font-normal">(optional)</span>
             </label>
             <input
               type="text"
@@ -81,9 +103,11 @@ const BlogForm = ({
               value={formData.tagline}
               onChange={handleChange}
               placeholder="Your hashtag line"
-              className="border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none"
-              required
+              maxLength={BLOG_LIMITS.tagline}
+              {...invalidProps(errors, "tagline")}
+              className={inputClass}
             />
+            <FieldError id="tagline-error" message={errors.tagline} />
           </div>
 
           {/* Content Textarea */}
@@ -100,7 +124,13 @@ const BlogForm = ({
                 {countWords(formData.content)} words
               </span>
             </div>
-            <CustomMdEditor value={formData.content} onChange={handleChange} />
+            <CustomMdEditor
+              value={formData.content}
+              onChange={handleChange}
+              invalid={Boolean(errors.content)}
+              describedBy={errors.content ? "content-error" : undefined}
+            />
+            <FieldError id="content-error" message={errors.content} />
 
             <p className="text-text-muted mt-2 text-xs">
               **Use markdown tools for editing**
@@ -111,7 +141,7 @@ const BlogForm = ({
           <div className="flex items-center justify-center gap-3 pt-2">
             <button
               type="submit"
-              disabled={!isFormValid || isSubmitting}
+              disabled={isSubmitting}
               className="bg-text-primary text-surface rounded-control flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               <Send className="h-4 w-4" />
