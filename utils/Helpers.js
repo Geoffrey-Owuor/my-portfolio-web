@@ -42,8 +42,12 @@ export const stripMarkdown = (text, maxLength = 160) => {
     .replace(/^\s{0,3}\d+\.\s+/gm, "") // ordered list markers
     .replace(/^\s{0,3}(?=[^\n]*-)[-:\s|]*\|[-:\s|]*$/gm, " ") // table delimiter rows
     .replace(/\|/g, " ") // table pipes
-    .replace(/(\*\*|__)(.*?)\1/g, "$2") // bold
-    .replace(/(\*|_)(.*?)\1/g, "$2") // italics
+    // Emphasis hugs its text ("2 * 3 * 4" is arithmetic), and an underscore
+    // inside a word is part of a name like refresh_token, not a marker.
+    .replace(/\*\*(?!\s)(.+?)(?<!\s)\*\*/g, "$1") // bold
+    .replace(/(?<!\w)__(?!\s)(.+?)(?<!\s)__(?!\w)/g, "$1") // bold
+    .replace(/\*(?!\s)(.+?)(?<!\s)\*/g, "$1") // italics
+    .replace(/(?<!\w)_(?!\s)(.+?)(?<!\s)_(?!\w)/g, "$1") // italics
     .replace(/~~(.*?)~~/g, "$1") // strikethrough
     .replace(/\s+/g, " ")
     .trim();
