@@ -44,7 +44,7 @@ const Project = ({ projectInfo }) => {
           {project.project_name}
         </h1>
 
-        {/* Meta row: stack + live CTA */}
+        {/* Meta row: stack + repository link */}
         <div
           className={`mt-5 flex flex-col gap-4 [--hero-delay:160ms] sm:flex-row sm:items-center sm:justify-between ${rise}`}
         >
@@ -55,14 +55,18 @@ const Project = ({ projectInfo }) => {
               href={project.project_link}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Visit live project"
               className="border-border-subtle text-text-primary hover:border-accent hover:text-accent focus-visible:border-accent rounded-control inline-flex w-fit shrink-0 items-center gap-2 border px-4 py-2 font-mono text-sm font-medium transition-colors focus-visible:outline-none"
             >
               <span className="text-accent" aria-hidden="true">
                 $
               </span>
               open --repo
-              <ExternalLink className="h-3.5 w-3.5" />
+              {/* The visible label stays the accessible name's start, so
+                  voice control can target it. */}
+              <span className="sr-only">
+                : {project.project_name} repository, opens in a new tab
+              </span>
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
           )}
         </div>
