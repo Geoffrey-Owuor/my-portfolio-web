@@ -67,20 +67,30 @@ const Contact = () => {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
+      // A crashed or proxied response may not be JSON; its parse error is not
+      // something to show a visitor.
+      const result = await response.json().catch(() => ({}));
 
       if (response.ok) {
-        toast.success(result.message, { title: "Message sent" });
+        toast.success(result.message || "Message received!", {
+          title: "Message sent",
+        });
         setFormData({ contactInfo: "", message: "" }); // Clear form data
         setErrors({});
       } else if (result.errors) {
         setErrors(result.errors);
       } else {
-        throw new Error(result.message || "Something went wrong");
+        toast.error(
+          result.message || "Something went wrong. Please try again.",
+          { title: "Couldn't send your message" },
+        );
       }
     } catch (error) {
+      // fetch itself failed: the request never reached the server.
       console.error("Error while submitting form data:", error);
-      toast.error(error.message, { title: "Couldn't send your message" });
+      toast.error("Check your connection and try again.", {
+        title: "Couldn't send your message",
+      });
     } finally {
       setSending(false);
     }
