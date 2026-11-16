@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { Search, X, LayoutGrid, List } from "lucide-react";
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
@@ -16,12 +16,14 @@ const BlogCards = ({ blogs }) => {
   // Search query states
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Function to filter blogs based on blog title
+  // Matches a post's title or its excerpt.
   const filteredBlogs = useMemo(() => {
-    if (!searchQuery) return blogs;
-    const lowerQuery = searchQuery.toLowerCase();
-    return blogs.filter((blog) =>
-      blog.blog_title?.toLowerCase().includes(lowerQuery),
+    const lowerQuery = searchQuery.trim().toLowerCase();
+    if (!lowerQuery) return blogs;
+    return blogs.filter(
+      (blog) =>
+        blog.blog_title?.toLowerCase().includes(lowerQuery) ||
+        blog.excerpt?.toLowerCase().includes(lowerQuery),
     );
   }, [blogs, searchQuery]);
 
@@ -41,10 +43,39 @@ const BlogCards = ({ blogs }) => {
     );
   };
 
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
+  // Pagination. The page is clamped when read, so a stale ?page= from the
+  // URL can't land past the end of a shorter list.
+  const [requestedPage, setCurrentPage] = useState(1);
   const blogsPerPage = 6;
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+  const currentPage = Math.min(requestedPage, Math.max(totalPages, 1));
+
+  // Search, page and view live in the URL, so coming back from a post (or
+  // sharing the link) lands on the same list. They are read after mount
+  // rather than with useSearchParams, which would take the whole listing out
+  // of the prerendered HTML.
+  const [urlRead, setUrlRead] = useState(false);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const page = Number(params.get("page"));
+    setSearchQuery(params.get("q") ?? "");
+    if (Number.isInteger(page) && page > 1) setCurrentPage(page);
+    if (params.get("view") === "table") setViewMode("table");
+    setUrlRead(true);
+  }, []);
+
+  useEffect(() => {
+    if (!urlRead) return;
+    const params = new URLSearchParams();
+    if (searchQuery) params.set("q", searchQuery);
+    if (currentPage > 1) params.set("page", String(currentPage));
+    if (viewMode === "table") params.set("view", "table");
+    const search = params.toString();
+    const url = `${window.location.pathname}${search ? `?${search}` : ""}`;
+    if (url !== `${window.location.pathname}${window.location.search}`) {
+      window.history.replaceState(null, "", url);
+    }
+  }, [urlRead, searchQuery, currentPage, viewMode]);
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   const currentBlogs = filteredBlogs.slice(
@@ -105,7 +136,7 @@ const BlogCards = ({ blogs }) => {
             <input
               type="text"
               placeholder="Search for a blog..."
-              aria-label="Search blogs by title"
+              aria-label="Search blogs"
               value={searchQuery}
               onChange={handleSearchQuery}
               className="border-border-subtle bg-surface-raised text-text-primary placeholder-text-muted focus:border-accent rounded-control w-full border py-3 pr-10 pl-11 text-sm transition-colors focus:outline-none"
