@@ -15,13 +15,19 @@ export const metadata = pageMetadata({
 const BlogCardsData = async () => {
   const blogs = await BlogsData();
 
+  // This page is static, so rendering a "couldn't load" state would cache it
+  // until the next blog edit. Throwing keeps the last good page in the cache
+  // and lets the next request try again; a visitor who does hit the failure
+  // gets error.jsx.
+  if (blogs === null) throw new Error("Couldn't load the blog listing");
+
   // Only what the listing shows crosses to the client.
-  const cards = (blogs ?? []).map(({ content_head, ...blog }) => ({
+  const cards = blogs.map(({ content_head, ...blog }) => ({
     ...blog,
     excerpt: stripMarkdown(content_head, 220),
   }));
 
-  return <BlogCards blogs={cards} failed={blogs === null} />;
+  return <BlogCards blogs={cards} />;
 };
 
 const page = () => {

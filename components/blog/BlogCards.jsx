@@ -1,22 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState, useMemo, useRef } from "react";
-import {
-  ArrowLeft,
-  RefreshCcw,
-  Search,
-  X,
-  LayoutGrid,
-  List,
-} from "lucide-react";
+import { Search, X, LayoutGrid, List } from "lucide-react";
 import Pagination from "../Modules/Pagination";
 import BlogCardView from "./BlogCardView";
 import PageHeader from "../Layout/PageHeader";
 import BlogTableView from "./BlogTableView";
 
-const BlogCards = ({ blogs, failed = false }) => {
-  const router = useRouter();
+const BlogCards = ({ blogs }) => {
   const toolbarRef = useRef(null);
 
   // View toggle: "card" | "table"
@@ -78,7 +69,7 @@ const BlogCards = ({ blogs, failed = false }) => {
   };
 
   // Published nothing yet: not an error, so nothing to retry.
-  if (!failed && blogs.length === 0) {
+  if (blogs.length === 0) {
     return (
       <div className="container-page py-section">
         <PageHeader
@@ -90,38 +81,6 @@ const BlogCards = ({ blogs, failed = false }) => {
           <p className="text-text-muted text-lg font-semibold">
             No posts yet. Check back soon.
           </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (failed) {
-    return (
-      <div className="container-page py-section flex min-h-[60vh] flex-col items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-text-primary text-h1 mb-4 font-semibold">
-            Couldn&apos;t load the blogs
-          </h1>
-          <p className="text-text-muted mb-8">
-            Something went wrong while fetching the posts. Please try again in a
-            moment.
-          </p>
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-text-primary text-surface rounded-control inline-flex items-center gap-2 px-6 py-3 font-medium transition-opacity hover:opacity-90"
-            >
-              <RefreshCcw className="h-5 w-5" />
-              Try Again
-            </button>
-            <button
-              onClick={() => router.back()}
-              className="border-border-subtle bg-surface text-text-primary hover:bg-surface-raised rounded-control inline-flex items-center gap-2 border px-6 py-3 font-medium transition-colors"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              Go Back
-            </button>
-          </div>
         </div>
       </div>
     );
