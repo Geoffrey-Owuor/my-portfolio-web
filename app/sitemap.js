@@ -14,8 +14,16 @@ export default async function sitemap() {
     getCachedProjects(),
   ]);
 
-  const latestBlogDate = blogs?.[0]?.blog_date
-    ? new Date(blogs[0].blog_date)
+  // An edit counts as a change, so the edit date wins when there is one.
+  const lastChanged = (blog) => {
+    const date = blog.updated_at ?? blog.blog_date;
+    return date ? new Date(date) : undefined;
+  };
+
+  // The listing changes when any post is published or edited.
+  const blogDates = (blogs ?? []).map(lastChanged).filter(Boolean);
+  const latestBlogDate = blogDates.length
+    ? new Date(Math.max(...blogDates))
     : undefined;
 
   const staticRoutes = [
@@ -31,7 +39,7 @@ export default async function sitemap() {
 
   const blogRoutes = (blogs ?? []).map((blog) => ({
     url: `${SITE_URL}/blog/${blog.slug}`,
-    lastModified: blog.blog_date ? new Date(blog.blog_date) : undefined,
+    lastModified: lastChanged(blog),
     changeFrequency: "monthly",
     priority: 0.7,
   }));

@@ -20,31 +20,31 @@ const readBlogInfo = async (slug) => {
   // The neighbour titles are joined in so the nav can name where each link
   // lands before the reader commits to it.
   const blogQuery = `
-      WITH bounds AS (
-        SELECT MIN(id) AS min_id, MAX(id) AS max_id FROM blogs
+      WITH ordered AS (
+        SELECT
+          id,
+          slug,
+          ROW_NUMBER() OVER listing AS position,
+          COUNT(*) OVER () AS total,
+          LAG(id) OVER listing AS above_id,
+          LEAD(id) OVER listing AS below_id,
+          FIRST_VALUE(id) OVER listing AS first_id,
+          LAST_VALUE(id) OVER (listing ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_id
+        FROM blogs
+        WINDOW listing AS (ORDER BY blog_date DESC, id DESC)
       ),
       neighbours AS (
         SELECT
-          b.id,
-
-          (b.id = bounds.max_id) AS is_first_blog,
-          (b.id = bounds.min_id) AS is_last_blog,
-
-          COALESCE(
-            (SELECT id FROM blogs WHERE id > b.id ORDER BY id ASC LIMIT 1),
-            bounds.min_id
-          ) AS previous_blog_id,
-
-          COALESCE(
-            (SELECT id FROM blogs WHERE id < b.id ORDER BY id DESC LIMIT 1),
-            bounds.max_id
-          ) AS next_blog_id
-
-        FROM blogs b, bounds
-        WHERE b.slug = $1
+          id,
+          (position = 1) AS is_first_blog,
+          (position = total) AS is_last_blog,
+          COALESCE(above_id, last_id) AS previous_blog_id,
+          COALESCE(below_id, first_id) AS next_blog_id
+        FROM ordered
+        WHERE slug = $1
       )
       SELECT
-        b.id, b.slug, b.blog_title, b.blog_author, b.blog_date, b.read_time, b.blog_content, b.author_tagline,
+        b.id, b.slug, b.blog_title, b.blog_author, b.blog_date, b.updated_at, b.read_time, b.blog_content, b.author_tagline,
 
         n.is_first_blog,
         n.is_last_blog,
@@ -117,6 +117,9 @@ export async function generateMetadata({ params }) {
       type: "article",
       openGraph: {
         publishedTime: new Date(blogPost.blog_date).toISOString(),
+        modifiedTime: new Date(
+          blogPost.updated_at ?? blogPost.blog_date,
+        ).toISOString(),
         authors: [blogPost.blog_author],
       },
     }),
@@ -143,6 +146,9 @@ const page = async ({ params }) => {
           headline: blogPost.blog_title,
           description: stripMarkdown(blogPost.blog_content, 155),
           datePublished: new Date(blogPost.blog_date).toISOString(),
+          dateModified: new Date(
+            blogPost.updated_at ?? blogPost.blog_date,
+          ).toISOString(),
           url: `${SITE_URL}/blog/${blogPost.slug}`,
           mainEntityOfPage: `${SITE_URL}/blog/${blogPost.slug}`,
           image: `${SITE_URL}${OG_IMAGE}`,

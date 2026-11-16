@@ -54,6 +54,13 @@ const ViewBlog = ({ blogPost }) => {
 
   const shareUrl = `${SITE_URL}/blog/${blogPost.slug}`;
 
+  // Only worth a mention once the edit falls on a later day than publishing.
+  const publishedOn = formatDate(blogPost.blog_date);
+  const updatedOn =
+    blogPost.updated_at && formatDate(blogPost.updated_at) !== publishedOn
+      ? formatDate(blogPost.updated_at)
+      : null;
+
   return (
     <div>
       <div className="container-page flex flex-col py-8 lg:flex-row lg:gap-6">
@@ -82,6 +89,11 @@ const ViewBlog = ({ blogPost }) => {
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>{formatDate(blogPost.blog_date)}</span>
+                {updatedOn && (
+                  <span className="text-text-muted/80">
+                    (updated {updatedOn})
+                  </span>
+                )}
               </div>
 
               <div className="flex items-center gap-2">
