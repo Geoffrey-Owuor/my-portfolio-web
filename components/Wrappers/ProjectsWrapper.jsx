@@ -58,7 +58,7 @@ const ProjectsWrapper = ({ projects }) => {
         <SectionTitle
           sectionId="projects"
           title="My Projects"
-          subtitle="Things i've built"
+          subtitle="Things I've built"
           alertMessage="Thoughtful, well-crafted project work"
           alertIcon={BadgeCheck}
         />

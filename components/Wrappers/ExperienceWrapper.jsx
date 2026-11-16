@@ -28,7 +28,7 @@ const ExperienceWrapper = ({ experiences }) => {
       <SectionTitle
         sectionId="experience"
         title="My Experience"
-        subtitle="Where i've been"
+        subtitle="Where I've been"
         alertMessage="Evolving with challenges, always moving forward"
         alertIcon={BriefcaseBusiness}
       />
