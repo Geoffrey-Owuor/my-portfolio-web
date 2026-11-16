@@ -11,6 +11,7 @@ import ClientPortal from "../Modules/ClientPortal";
 import { useToast } from "../Modules/Toaster";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
+import { useBackdropClose } from "@/hooks/useBackdropClose";
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { validateBlog } from "@/utils/blogFields";
 
@@ -25,6 +26,7 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
 
   useHideScrollbar(true);
   useFocusTrapping(modalRef, true, onClose);
+  const backdropProps = useBackdropClose(onClose);
 
   const [formData, setFormData] = useState({
     title: blogInfo?.blog_title || "",
@@ -80,7 +82,10 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
       showErrors(found);
       return;
     }
-    setShowConfirmDialog(true);
+    // Publishing is public (and announced to search engines), so it asks
+    // first. An edit saves straight away, like the other /manage forms.
+    if (isNew) setShowConfirmDialog(true);
+    else handleSubmit();
   };
 
   const handleSubmit = async () => {
@@ -127,14 +132,11 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
     <>
       {showConfirmDialog && (
         <ConfirmationDialog
-          title={isNew ? "Post Blog" : "Edit Blog"}
+          title="Publish blog"
           onConfirm={handleSubmit}
           showConfirmation={showConfirmDialog}
-          message={
-            isNew
-              ? "Are you sure you want to post this blog?"
-              : "Are you sure you want to edit this blog?"
-          }
+          message="Publish this post? It goes live on the site straight away."
+          confirmLabel="Publish"
           onCancel={() => setShowConfirmDialog(false)}
         />
       )}
@@ -144,7 +146,7 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2 }}
-          onClick={onClose}
+          {...backdropProps}
           className="z-modal fixed inset-0 flex items-stretch justify-center bg-black/50 sm:items-center dark:bg-black/60"
         >
           <motion.div
@@ -155,7 +157,6 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            onClick={(e) => e.stopPropagation()}
             // Full-screen below sm; a centred card from sm up.
             className="border-border-subtle bg-surface sm:rounded-dialog h-dvh w-full max-w-4xl overflow-y-auto shadow-2xl sm:mx-4 sm:h-auto sm:max-h-[calc(100dvh-3rem)] sm:border"
           >

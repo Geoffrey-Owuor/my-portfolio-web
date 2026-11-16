@@ -148,7 +148,9 @@ const BlogsTab = ({ rows, author }) => {
 
       {confirmingDelete && (
         <ConfirmationDialog
-          title="Delete Blog"
+          title="Delete blog"
+          confirmLabel="Delete"
+          tone="danger"
           message={`Delete "${confirmingDelete.blog_title}"? This can't be undone.`}
           showConfirmation
           onConfirm={handleDelete}
