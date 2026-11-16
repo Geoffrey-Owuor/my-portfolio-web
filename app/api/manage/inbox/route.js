@@ -14,7 +14,7 @@ export async function GET(request) {
   const page = /^[1-9]\d{0,5}$/.test(requested) ? Number(requested) : 1;
 
   try {
-    const [messages, [{ total }]] = await Promise.all([
+    const [messages, [{ total, unread }]] = await Promise.all([
       // Messages from before created_at existed have no date and sort last.
       query(
         `SELECT id, user_identity, feedback_description, created_at, read_at
@@ -23,11 +23,15 @@ export async function GET(request) {
          LIMIT $1 OFFSET $2`,
         [PAGE_SIZE, (page - 1) * PAGE_SIZE],
       ),
-      query(`SELECT COUNT(*)::int AS total FROM user_feedback`),
+      query(
+        `SELECT COUNT(*)::int AS total,
+                COUNT(*) FILTER (WHERE read_at IS NULL)::int AS unread
+         FROM user_feedback`,
+      ),
     ]);
 
     return NextResponse.json(
-      { messages, total, page, pageSize: PAGE_SIZE },
+      { messages, total, unread, page, pageSize: PAGE_SIZE },
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (error) {
