@@ -42,6 +42,8 @@ Custom-rolled JWT auth, split across three layers:
 - `lib/AxiosClient.js` — client-side axios instance (`baseURL: /api`, `withCredentials: true`) with a response interceptor that, on a 401, calls `/api/refresh-token` once and retries the original request (concurrent failures share one refresh); if the session is rejected it hard-redirects to `/login`, while a network or server failure is passed to the caller.
 - Route handlers under `app/api/{login,logout,refresh-token}` do the actual cookie issuance (`accessToken`, `refreshToken` — both `httpOnly`, `sameSite: lax`, `secure` in production) and DB-side refresh-token rotation/revocation.
 
+`users.refresh_token` holds one token per user, so there is one session at a time: signing in anywhere signs out everywhere else, including production when you sign in on a dev server (both use the same database). That's deliberate. Tabs of the same session share one refresh through a Web Lock in `lib/AxiosClient.js`, so they don't revoke each other.
+
 When adding a new protected route or mutation, follow the existing pattern: verify via `verifyAccessTokenJWT()`/`requireSession()` inside the route handler or Server Component itself — don't rely solely on the middleware matcher. `requireSession()` only checks the refresh token's signature, so a logged-out or replaced token still passes it for up to 7 days: use it to render pages that show nothing private, and read private data (like the contact inbox) through a route that checks the access token.
 
 ### Owner area (`/manage`)
