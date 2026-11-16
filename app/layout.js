@@ -201,8 +201,21 @@ export default function RootLayout({ children }) {
             {/* Owns the app-wide progress line; client navigations go through
               its `useProgressRouter()`/`ProgressLink` so the line tracks them. */}
             <RouteProgressProvider>
+              {/* First stop for keyboard users: past the navbar's tabs. */}
+              <a
+                href="#main"
+                className="bg-text-primary text-surface rounded-control z-progress sr-only px-4 py-2 text-sm font-semibold focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+              >
+                Skip to content
+              </a>
               <NavBar />
-              <main className="flex flex-1 flex-col">{children}</main>
+              <main
+                id="main"
+                tabIndex={-1}
+                className="flex flex-1 flex-col focus:outline-none"
+              >
+                {children}
+              </main>
               <Footer />
             </RouteProgressProvider>
           </ToastProvider>
