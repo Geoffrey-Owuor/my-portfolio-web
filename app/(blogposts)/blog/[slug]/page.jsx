@@ -115,6 +115,8 @@ export async function generateMetadata({ params }) {
       description: stripMarkdown(blogPost.blog_content, 155),
       path: `/blog/${blogPost.slug}`,
       type: "article",
+      // Each post has its own card (./opengraph-image.jsx).
+      siteImage: false,
       openGraph: {
         publishedTime: new Date(blogPost.blog_date).toISOString(),
         modifiedTime: new Date(
@@ -151,6 +153,7 @@ const page = async ({ params }) => {
           ).toISOString(),
           url: `${SITE_URL}/blog/${blogPost.slug}`,
           mainEntityOfPage: `${SITE_URL}/blog/${blogPost.slug}`,
+          // The site card: the post's own card has a build-hashed URL.
           image: `${SITE_URL}${OG_IMAGE}`,
           author: { "@id": PERSON_ID, name: blogPost.blog_author },
         }}

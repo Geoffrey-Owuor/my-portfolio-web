@@ -65,6 +65,9 @@ export const pageMetadata = ({
   path,
   type = "website",
   openGraph,
+  // false leaves the preview image to the route's own opengraph-image and
+  // twitter-image files: a configured image would take precedence over them.
+  siteImage = true,
 }) => ({
   title,
   description,
@@ -75,13 +78,13 @@ export const pageMetadata = ({
     type,
     url: path,
     siteName: SITE_NAME,
-    images: OG_IMAGE,
+    ...(siteImage && { images: OG_IMAGE }),
     ...openGraph,
   },
   twitter: {
     card: "summary_large_image",
     title: socialTitle,
     description,
-    images: TWITTER_IMAGE,
+    ...(siteImage && { images: TWITTER_IMAGE }),
   },
 });
