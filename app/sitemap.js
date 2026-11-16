@@ -46,6 +46,8 @@ export default async function sitemap() {
 
   const projectRoutes = (projects ?? []).map((project) => ({
     url: `${SITE_URL}/projects/${project.id}`,
+    // Only known once a project has been edited.
+    lastModified: project.updated_at ? new Date(project.updated_at) : undefined,
     changeFrequency: "monthly",
     priority: 0.6,
   }));
