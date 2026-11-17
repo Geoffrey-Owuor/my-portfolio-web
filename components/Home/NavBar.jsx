@@ -455,29 +455,29 @@ const NavBar = () => {
         aria-label="Menu"
         // Off-screen isn't enough: its links would stay in the tab order.
         inert={!isMenuOpen}
-        className={`bg-surface z-drawer fixed top-0 bottom-0 left-0 w-72 transform shadow-2xl transition-all duration-200 ease-in-out lg:hidden ${
+        // A column: the header and the GitHub link keep their height and the
+        // links take what is left, scrolling when a short screen can't fit them.
+        className={`bg-surface z-drawer fixed top-0 bottom-0 left-0 flex w-72 transform flex-col shadow-2xl transition-all duration-200 ease-in-out lg:hidden ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Menu Header */}
-        <div className="px-4">
-          <div className="border-border-subtle flex items-center justify-between border-b p-4">
-            <span className="text-text-primary font-mono text-xl font-medium">
-              Menu
-            </span>
+        <div className="border-border-subtle flex shrink-0 items-center justify-between border-b px-8 py-4">
+          <span className="text-text-primary font-mono text-xl font-medium">
+            Menu
+          </span>
 
-            <button
-              onClick={closeMenu}
-              className="text-text-muted hover:bg-surface-raised rounded-control p-2 transition"
-              aria-label="Close menu"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
+          <button
+            onClick={closeMenu}
+            className="text-text-muted hover:bg-surface-raised rounded-control p-2 transition"
+            aria-label="Close menu"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
 
         {/* Mobile Navigation Links */}
-        <ul className="flex flex-col gap-2 p-6">
+        <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain p-6">
           {navLinks.map((link) => (
             <li key={link.label}>
               <Link
@@ -529,7 +529,7 @@ const NavBar = () => {
         </ul>
 
         {/* Mobile GitHub Link (In mobile sidebar) */}
-        <div className="absolute right-6 bottom-6 left-6">
+        <div className="border-border-subtle shrink-0 border-t px-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
           <a
             href={GITHUB_URL}
             target="_blank"
