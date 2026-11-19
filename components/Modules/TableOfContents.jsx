@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { ArrowUp } from "lucide-react";
+import { prefersReducedMotion } from "@/utils/motion";
 
 const CLICK_HOLD_PX = 8;
 
@@ -48,6 +50,36 @@ export const MobileTableOfContents = ({ headings }) => {
 const TableOfContents = ({ headings }) => {
   const [activeId, setActiveId] = useState("");
   const clickedRef = useRef(null);
+  const navRef = useRef(null);
+
+  // Keep the active entry visible in a list taller than the sidebar, without
+  // scrollIntoView (it would scroll the page too)
+  useEffect(() => {
+    const nav = navRef.current;
+    const item = nav?.querySelector('[aria-current="location"]');
+    if (!nav || !item) return;
+    // Position within the list's scrolled content, whichever ancestor is
+    // positioned (the sticky nav is, so offsetTop alone would be relative to it)
+    const top =
+      item.getBoundingClientRect().top -
+      nav.getBoundingClientRect().top +
+      nav.scrollTop;
+    const margin = 48;
+    if (top < nav.scrollTop + margin) {
+      nav.scrollTop = top - margin;
+    } else if (
+      top + item.offsetHeight >
+      nav.scrollTop + nav.clientHeight - margin
+    ) {
+      nav.scrollTop = top + item.offsetHeight - nav.clientHeight + margin;
+    }
+  }, [activeId]);
+
+  const scrollToTop = () =>
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
 
   const handleLinkClick = (e, id) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -76,6 +108,12 @@ const TableOfContents = ({ headings }) => {
 
       if (headingElements.length === 0) return;
 
+      // At the very bottom the last sections can be too short to reach the
+      // threshold, so the last heading wins
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 4;
+
       // A clicked heading keeps its highlight until the reader scrolls away,
       // because one near the end of the post may never reach the threshold.
       const clicked = clickedRef.current;
@@ -94,6 +132,11 @@ const TableOfContents = ({ headings }) => {
         parseFloat(getComputedStyle(headingElements[0]).scrollMarginTop) +
         1;
       let currentActiveId = "";
+
+      if (atBottom) {
+        setActiveId(headingElements[headingElements.length - 1].id);
+        return;
+      }
 
       for (let i = headingElements.length - 1; i >= 0; i--) {
         const element = headingElements[i];
@@ -136,6 +179,7 @@ const TableOfContents = ({ headings }) => {
 
   return (
     <nav
+      ref={navRef}
       aria-label="On this page"
       className="rounded-card sticky top-[calc(var(--header-h)+1rem)] hidden max-h-[calc(100dvh-var(--header-h)-2rem)] w-70 shrink-0 flex-col overflow-y-auto p-4 [scrollbar-width:thin] lg:flex"
     >
@@ -162,6 +206,14 @@ const TableOfContents = ({ headings }) => {
           </li>
         ))}
       </ul>
+      <button
+        type="button"
+        onClick={scrollToTop}
+        className="text-text-muted hover:text-accent mt-4 inline-flex w-fit cursor-pointer items-center gap-1.5 px-3 text-sm transition-colors"
+      >
+        <ArrowUp className="h-4 w-4" aria-hidden />
+        Back to top
+      </button>
     </nav>
   );
 };

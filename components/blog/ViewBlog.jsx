@@ -1,9 +1,6 @@
 import { Calendar, UserRound, Clock, ArrowLeft, Share2 } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { formatDate } from "@/utils/Helpers";
 import { extractHeadings } from "@/utils/blogHeadings";
-import { highlightPlugin } from "@/utils/rehypeHighlight";
 import { SITE_URL } from "@/utils/metadata";
 import { shareIcons } from "@/assets/assets";
 import { ProgressLink } from "../Modules/RouteProgress";
@@ -11,6 +8,7 @@ import TableOfContents, {
   MobileTableOfContents,
 } from "../Modules/TableOfContents";
 import BlogNav from "./BlogNav";
+import MarkdownContent from "./MarkdownContent";
 
 const getShareLink = (platformKey, url, title) => {
   const encodedUrl = encodeURIComponent(url);
@@ -35,22 +33,6 @@ const getShareLink = (platformKey, url, title) => {
 const ViewBlog = ({ blogPost }) => {
   // One set of ids for the article and the table of contents.
   const headings = extractHeadings(blogPost.blog_content);
-  const idsByOffset = new Map(headings.map((h) => [h.offset, h.id]));
-
-  const AnchoredHeading = ({ as: Tag, node, children, ...props }) => (
-    <Tag
-      id={idsByOffset.get(node.position?.start.offset)}
-      style={{ scrollMarginTop: "6rem" }}
-      {...props}
-    >
-      {children}
-    </Tag>
-  );
-
-  const markdownComponents = {
-    h2: (props) => <AnchoredHeading as="h2" {...props} />,
-    h3: (props) => <AnchoredHeading as="h3" {...props} />,
-  };
 
   const shareUrl = `${SITE_URL}/blog/${blogPost.slug}`;
 
@@ -63,10 +45,19 @@ const ViewBlog = ({ blogPost }) => {
 
   return (
     <div>
-      <div className="container-page flex flex-col py-8 lg:flex-row lg:gap-6">
-        <article className="w-full max-w-none min-w-0">
+      <div className="container-page flex justify-center gap-10 py-8 xl:gap-16">
+        {/* ~72 characters a line at the post's text size */}
+        <article className="w-full max-w-3xl min-w-0">
           {/* Header Section */}
           <header className="mb-6">
+            <ProgressLink
+              href="/blogs"
+              className="text-text-muted hover:text-text-primary mb-6 inline-flex items-center gap-1.5 font-mono text-sm transition-colors duration-150"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden />
+              back to blogs
+            </ProgressLink>
+
             <h1 className="text-text-primary text-h1 mb-4 font-semibold">
               {blogPost.blog_title}
             </h1>
@@ -100,14 +91,6 @@ const ViewBlog = ({ blogPost }) => {
                 <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span>{blogPost.read_time}</span>
               </div>
-
-              <ProgressLink
-                href="/blogs"
-                className="hover:text-text-primary flex items-center gap-2 transition-colors duration-150"
-              >
-                <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span>back to blogs</span>
-              </ProgressLink>
             </div>
 
             <div className="text-text-muted mt-6 flex items-center gap-4">
@@ -138,15 +121,10 @@ const ViewBlog = ({ blogPost }) => {
           <MobileTableOfContents headings={headings} />
 
           {/* Content Section */}
-          <div className="prose prose-lg dark:prose-invert prose-img:rounded-card prose-headings:font-semibold prose-a:text-accent max-w-none wrap-break-word">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[highlightPlugin]}
-              components={markdownComponents}
-            >
-              {blogPost.blog_content}
-            </ReactMarkdown>
-          </div>
+          <MarkdownContent
+            content={blogPost.blog_content}
+            headings={headings}
+          />
 
           {/* Bottom Divider */}
           <div className="bg-border-subtle mt-12 h-px sm:mt-16" />

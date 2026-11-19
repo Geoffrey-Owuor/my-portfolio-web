@@ -1,4 +1,5 @@
 "use client";
+import { useMemo } from "react";
 import {
   Send,
   ArrowUpRight,
@@ -9,7 +10,7 @@ import {
 } from "lucide-react";
 import { ProgressLink } from "../Modules/RouteProgress";
 import CustomMdEditor from "./CustomMdEditor";
-import { countWords } from "@/utils/Helpers";
+import { countPostWords } from "@/utils/markdownText";
 import { BLOG_LIMITS } from "@/utils/blogFields";
 
 const inputClass =
@@ -38,6 +39,12 @@ const BlogForm = ({
   canDiscard,
   onDiscard,
 }) => {
+  // Counted like the read time: rendered words, not Markdown syntax
+  const wordCount = useMemo(
+    () => countPostWords(formData.content),
+    [formData.content],
+  );
+
   return (
     <>
       <div className="p-6 sm:p-8">
@@ -120,9 +127,7 @@ const BlogForm = ({
                 <Library className="text-text-muted h-4 w-4" />
                 Content
               </label>
-              <span className="text-text-muted text-xs">
-                {countWords(formData.content)} words
-              </span>
+              <span className="text-text-muted text-xs">{wordCount} words</span>
             </div>
             <CustomMdEditor
               value={formData.content}
