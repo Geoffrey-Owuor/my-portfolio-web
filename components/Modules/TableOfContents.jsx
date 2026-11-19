@@ -186,19 +186,20 @@ const TableOfContents = ({ headings }) => {
       <p className="text-text-muted border-border-subtle mb-4 border-b-2 pb-2 text-sm font-bold tracking-wider uppercase">
         On this page
       </p>
-      <ul className="border-border-subtle space-y-3">
+      {/* A rail down the left, with the reader's section marked on it */}
+      <ul className="border-border-subtle space-y-1 border-l">
         {headings.map((heading) => (
           <li key={heading.id}>
             <a
               href={`#${heading.id}`}
               onClick={(e) => handleLinkClick(e, heading.id)}
               aria-current={activeId === heading.id ? "location" : undefined}
-              className={`rounded-control block py-2 pr-3 text-sm text-wrap transition-colors ${
-                heading.depth > minDepth ? "pl-7" : "pl-3"
+              className={`-ml-px block border-l-2 py-2 pr-3 text-sm text-wrap transition-colors ${
+                heading.depth > minDepth ? "pl-8" : "pl-4"
               } ${
                 activeId === heading.id
-                  ? "bg-accent/10 text-accent font-medium"
-                  : "text-text-muted hover:text-accent hover:underline"
+                  ? "border-accent text-accent font-medium"
+                  : "text-text-muted hover:text-accent hover:border-text-muted border-transparent"
               }`}
             >
               {heading.text}
@@ -209,7 +210,7 @@ const TableOfContents = ({ headings }) => {
       <button
         type="button"
         onClick={scrollToTop}
-        className="text-text-muted hover:text-accent mt-4 inline-flex w-fit cursor-pointer items-center gap-1.5 px-3 text-sm transition-colors"
+        className="text-text-muted hover:text-accent mt-4 inline-flex w-fit cursor-pointer items-center gap-1.5 text-sm transition-colors"
       >
         <ArrowUp className="h-4 w-4" aria-hidden />
         Back to top
