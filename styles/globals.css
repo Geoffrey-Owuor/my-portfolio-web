@@ -650,3 +650,84 @@ html {
 .hljs-strong {
   font-weight: 600;
 }
+
+/* Code cards (components/blog/MarkdownCodeBlock.jsx) sit outside `prose`,
+   so the token colours above apply but the plugin's <pre> styling doesn't. */
+.md-code code {
+  font: inherit;
+  background: none;
+}
+
+/* ── Post extras (components/blog/MarkdownContent.jsx) ───────────────── */
+
+/* Task lists: drawn checkboxes replace the bullet. A disabled native
+   checkbox is greyed out and reads as unavailable rather than done/to do. */
+.md-content .contains-task-list {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.md-content .contains-task-list .contains-task-list {
+  padding-inline-start: 1.5em;
+}
+
+.md-content .task-list-item input[type="checkbox"] {
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  width: 1.05em;
+  height: 1.05em;
+  margin: 0 0.55em 0.15em 0;
+  vertical-align: middle;
+  border: 1.5px solid var(--text-muted);
+  border-radius: 0.3em;
+  opacity: 1;
+}
+
+.md-content .task-list-item input[type="checkbox"]:checked {
+  border-color: var(--accent);
+  background-color: var(--accent);
+}
+
+.md-content .task-list-item input[type="checkbox"]:checked::after {
+  content: "";
+  width: 0.3em;
+  height: 0.55em;
+  margin-top: -0.12em;
+  border: solid var(--surface);
+  border-width: 0 0.13em 0.13em 0;
+  transform: rotate(45deg);
+}
+
+/* Raw HTML collapsibles (<details>) */
+.md-content details {
+  margin-block: 1.25em;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  padding: 0.75em 1em;
+}
+
+.md-content summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.md-content details[open] > summary {
+  margin-bottom: 0.5em;
+}
+
+.md-content details > :last-child {
+  margin-bottom: 0;
+}
+
+/* Keyboard keys from raw HTML (<kbd>Ctrl</kbd>) */
+.md-content kbd {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  padding: 0.1em 0.4em;
+  border: 1px solid var(--border-subtle);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-chip);
+  background: var(--surface-raised);
+}
