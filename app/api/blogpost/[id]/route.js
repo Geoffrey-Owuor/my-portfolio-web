@@ -4,7 +4,7 @@ import { notifyIndexNow } from "@/lib/IndexNow";
 import { revalidateTag } from "next/cache";
 import { after, NextResponse } from "next/server";
 import { validateBlog } from "@/utils/blogFields";
-import { estimateReadTime } from "@/utils/Helpers";
+import { estimateReadTime } from "@/utils/markdownText";
 
 const unauthenticated = () =>
   NextResponse.json({ message: "User is not authenticated" }, { status: 401 });

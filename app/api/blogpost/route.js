@@ -5,7 +5,7 @@ import { notifyIndexNow } from "@/lib/IndexNow";
 import { revalidateTag } from "next/cache";
 import { after, NextResponse } from "next/server";
 import { validateBlog } from "@/utils/blogFields";
-import { estimateReadTime } from "@/utils/Helpers";
+import { estimateReadTime } from "@/utils/markdownText";
 
 export async function POST(request) {
   try {
