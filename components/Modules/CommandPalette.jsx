@@ -301,7 +301,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
                 id="command-palette-list"
                 role="listbox"
                 aria-label="Commands"
-                className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2 [scrollbar-width:thin] sm:max-h-[min(60vh,26rem)] sm:flex-none"
+                className="scrollbar-slim min-h-0 flex-1 overflow-y-auto overscroll-contain p-2 sm:max-h-[min(60vh,26rem)] sm:flex-none"
               >
                 {results.length === 0 && (
                   <li className="text-text-muted px-3 py-8 text-center text-sm">

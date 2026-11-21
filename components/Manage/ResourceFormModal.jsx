@@ -220,7 +220,7 @@ const ResourceFormModal = ({ resource, row, onClose }) => {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             // Full-screen below sm; a centred card from sm up.
-            className="border-border-subtle bg-surface sm:rounded-dialog h-dvh w-full max-w-3xl overflow-y-auto shadow-2xl sm:mx-4 sm:h-auto sm:max-h-[calc(100dvh-3rem)] sm:border"
+            className="border-border-subtle bg-surface sm:rounded-dialog scrollbar-slim h-dvh w-full max-w-3xl overflow-y-auto shadow-2xl sm:mx-4 sm:h-auto sm:max-h-[calc(100dvh-3rem)] sm:border"
           >
             <div className="border-border-subtle bg-surface z-raised sticky top-0 flex items-center justify-between border-b px-6 py-4">
               <h2

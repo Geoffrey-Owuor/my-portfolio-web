@@ -1,5 +1,6 @@
 "use client";
 import { ArrowLeft, ArrowRight, ChevronLeft } from "lucide-react";
+import PageSizeMenu from "./PageSizeMenu";
 
 const Pagination = ({
   currentPage,
@@ -8,12 +9,31 @@ const Pagination = ({
   indexOfFirstBlog,
   indexOfLastBlog,
   blogsLength,
+  // Optional "per page" menu. It stays while there's more than the smallest
+  // size to page through, even on one page, so a bigger size can be undone.
+  pageSize,
+  pageSizeOptions,
+  onPageSizeChange,
 }) => {
+  const showSizeMenu =
+    Boolean(onPageSizeChange && pageSizeOptions?.length) &&
+    blogsLength > Math.min(...pageSizeOptions);
+
+  if (totalPages <= 1 && !showSizeMenu) return null;
+
+  const sizeMenu = showSizeMenu && (
+    <PageSizeMenu
+      value={pageSize}
+      options={pageSizeOptions}
+      onChange={onPageSizeChange}
+    />
+  );
+
   return (
-    <div className="mt-6 flex items-center justify-between py-3">
+    <div className="mt-6 flex flex-col gap-4 py-3 md:flex-row md:items-center md:justify-between">
       {/* Mobile Pagination */}
       {totalPages > 1 && (
-        <div className="flex flex-1 justify-between md:hidden">
+        <div className="flex justify-between md:hidden">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
@@ -35,10 +55,15 @@ const Pagination = ({
         </div>
       )}
 
-      {/* Desktop Navigation */}
-      <div className="hidden md:flex md:flex-1 md:items-center md:justify-center lg:justify-between">
-        {totalPages > 1 && (
-          <div className="flex items-center gap-4">
+      {sizeMenu && (
+        <div className="flex justify-center md:hidden">{sizeMenu}</div>
+      )}
+
+      {/* Desktop Navigation: count | pages | per-page; the outer two share the
+          spare width equally, so the page numbers stay centred. */}
+      <div className="hidden md:flex md:flex-1 md:items-center md:justify-between">
+        <div className="flex flex-1 basis-0 items-center">
+          {totalPages > 1 && (
             <div className="hidden pr-3 lg:flex">
               <p className="text-text-muted text-sm">
                 Showing{" "}
@@ -50,8 +75,8 @@ const Pagination = ({
                 {`result${blogsLength > 1 ? "s" : ""}`}
               </p>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {totalPages > 1 && (
           <nav
@@ -124,8 +149,7 @@ const Pagination = ({
             </button>
           </nav>
         )}
-        {/* An invisible div to push pagination to the center */}
-        <div className="hidden lg:inline-flex lg:w-40"></div>
+        <div className="flex flex-1 basis-0 justify-end">{sizeMenu}</div>
       </div>
     </div>
   );

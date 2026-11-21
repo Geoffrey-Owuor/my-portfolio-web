@@ -17,7 +17,7 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
         sectionId="stack"
         title="My Tech Stack"
         subtitle="Tools & tech I work with"
-        alertMessage="Innovating with cutting-edge tools and frameworks"
+        alertMessage="Libraries and tools I use day to day"
         alertIcon={MessageCircleCode}
       />
 

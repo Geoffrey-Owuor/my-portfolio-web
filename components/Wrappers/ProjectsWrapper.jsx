@@ -31,7 +31,7 @@ const ProjectsWrapper = ({ projects }) => {
           sectionId="projects"
           title="My Projects"
           subtitle="Things I've built"
-          alertMessage="Thoughtful, well-crafted project work"
+          alertMessage="Open any card for the full story"
           alertIcon={BadgeCheck}
         />
         {/* Responsive Projects Grid */}

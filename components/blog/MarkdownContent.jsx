@@ -27,7 +27,7 @@ const baseComponents = {
   },
   // Wide tables scroll sideways instead of widening the page on phones
   table: (props) => (
-    <div className="my-8 overflow-x-auto [scrollbar-width:thin]">
+    <div className="scrollbar-slim my-8 overflow-x-auto">
       <table {...withoutNode(props)} className="my-0" />
     </div>
   ),

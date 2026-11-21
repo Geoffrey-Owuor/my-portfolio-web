@@ -477,7 +477,7 @@ const NavBar = () => {
         </div>
 
         {/* Mobile Navigation Links */}
-        <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain p-6">
+        <ul className="scrollbar-slim flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain p-6">
           {navLinks.map((link) => (
             <li key={link.label}>
               <Link

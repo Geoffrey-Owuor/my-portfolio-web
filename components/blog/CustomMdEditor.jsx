@@ -288,7 +288,7 @@ const CustomMdEditor = ({
           rows={rows}
           aria-invalid={invalid || undefined}
           aria-describedby={describedBy}
-          className="text-text-primary placeholder:text-text-muted w-full resize-none p-4 text-sm leading-relaxed [scrollbar-width:thin] focus:outline-none"
+          className="text-text-primary placeholder:text-text-muted scrollbar-slim w-full resize-none p-4 text-sm leading-relaxed focus:outline-none"
           placeholder={placeholder}
         />
       )}

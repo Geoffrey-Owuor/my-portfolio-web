@@ -66,7 +66,7 @@ const MarkdownCodeBlock = ({ node, children }) => {
       </figcaption>
       <pre
         tabIndex={0}
-        className="text-text-primary focus-visible:outline-accent overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6 [scrollbar-width:thin] focus-visible:outline-2 focus-visible:-outline-offset-2 sm:text-sm"
+        className="text-text-primary focus-visible:outline-accent scrollbar-slim overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6 focus-visible:outline-2 focus-visible:-outline-offset-2 sm:text-sm"
       >
         {children}
       </pre>
