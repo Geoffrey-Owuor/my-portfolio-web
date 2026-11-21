@@ -602,11 +602,6 @@ html:not([data-theme="dark"]) .theme-inverse {
     backdrop-filter: blur(6px);
     will-change: backdrop-filter;
   }
-  .navbar-blur {
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    will-change: backdrop-filter;
-  }
 }
 
 /* `scrollbar-gutter: stable` keeps the gutter reserved, so locking the
