@@ -1,0 +1,305 @@
+<!doctype html>
+<!--
+  Source for the résumé PDF. To update it: edit this file, print it to PDF
+  with headless Chrome (US Letter, no headers or footers), check that it still
+  fits two pages, and upload the PDF from /manage → Résumé.
+
+  "C:\Program Files\Google\Chrome\Application\chrome.exe" --headless=new
+    --no-pdf-header-footer --print-to-pdf=Geoffrey-Owuor-Resume.pdf
+    content/resume.html
+
+  Keep it free of employer internals: no hosting setup, network vendors,
+  ERP vendor, internal hostnames or links to private repos.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Geoffrey Owuor - Résumé</title>
+    <meta name="author" content="Geoffrey Owuor" />
+    <style>
+      @page {
+        size: Letter;
+        margin: 0.55in 0.7in 0.55in;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+        font-size: 11pt;
+        line-height: 1.32;
+        color: #000;
+        background: #fff;
+      }
+      a {
+        color: #1f4e79;
+        font-weight: 700;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 12pt;
+      }
+      h1 {
+        margin: 0 0 3pt;
+        font-size: 16pt;
+        letter-spacing: 0.3pt;
+      }
+      header p {
+        margin: 0 0 2pt;
+      }
+      header .links {
+        font-size: 11.5pt;
+      }
+      header .links span {
+        color: #1f4e79;
+        margin: 0 4pt;
+      }
+      h2 {
+        margin: 12pt 0 6pt;
+        padding-bottom: 2pt;
+        border-bottom: 1.25pt solid #1f4e79;
+        color: #1f4e79;
+        font-size: 11.5pt;
+        text-transform: uppercase;
+        letter-spacing: 0.2pt;
+        break-after: avoid;
+      }
+      h3 {
+        margin: 0;
+        font-size: 11pt;
+        font-weight: 400;
+        break-after: avoid;
+      }
+      h3 b {
+        font-weight: 700;
+      }
+      .entry {
+        margin-bottom: 7pt;
+        break-inside: avoid;
+      }
+      ul {
+        margin: 3pt 0 0;
+        padding-left: 20pt;
+      }
+      li {
+        margin-bottom: 2.5pt;
+        text-align: justify;
+      }
+      li::marker {
+        font-size: 9pt;
+      }
+      .summary {
+        margin: 0;
+        text-align: justify;
+      }
+      .role {
+        margin-top: 5pt;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>OWUOR GEOFFREY OKINYI</h1>
+      <p>
+        Nairobi, Kenya | +254 748 163 915 |
+        <a href="mailto:geoffreyowuor22@gmail.com" style="color: #000; font-weight: 400; text-decoration: none">geoffreyowuor22@gmail.com</a>
+      </p>
+      <p class="links">
+        <a href="https://www.linkedin.com/in/owuor-geoffrey22">LinkedIn</a><span>|</span><a href="https://github.com/Geoffrey-Owuor">GitHub</a><span>|</span><a href="https://jeff-portfolio-web.vercel.app/">Portfolio</a>
+      </p>
+    </header>
+
+    <h2>Profile</h2>
+    <p class="summary">
+      Full-stack developer who builds web apps that replace paperwork and long
+      email chains with simple, dependable tools. I build and look after the
+      internal apps my colleagues use every day, from the database through to
+      deployment, mostly with Next.js, TypeScript and PostgreSQL. I care about
+      clear code, good security and software that people find easy to use.
+    </p>
+
+    <h2>Experience</h2>
+    <div class="entry">
+      <h3><b>HOTPOINT APPLIANCES LTD</b> | Nairobi, Kenya</h3>
+      <h3 class="role"><b>Software Developer</b> | April 2026 - Present</h3>
+      <ul>
+        <li>
+          <b>Internal apps hub:</b> built a single portal in Next.js where
+          staff sign in once with their Microsoft work account and reach every
+          internal tool, as part of the company's move from Google Workspace
+          to Microsoft 365.
+        </li>
+        <li>
+          <b>HelpDesk:</b> built an IT ticketing system with automatic routing
+          by category and priority, a named owner for every ticket, live status
+          tracking and email updates through Microsoft Graph.
+        </li>
+        <li>
+          <b>One sign-in for everything:</b> brought separate apps, including
+          HelpDesk and the staff purchase portal, into the hub so staff move
+          between them without signing in again (Microsoft Entra ID single
+          sign-on with OpenID Connect).
+        </li>
+        <li>
+          <b>Approvals without paper:</b> designed multi-step approval
+          workflows with automatic email notifications, so every request
+          reaches the right people and its status is always visible.
+        </li>
+        <li>
+          <b>Running the apps:</b> look after deployment, backups and security
+          for the apps and their PostgreSQL and MySQL databases.
+        </li>
+      </ul>
+
+      <h3 class="role"><b>IT Graduate Trainee</b> | March 2025 - March 2026</h3>
+      <ul>
+        <li>
+          <b>Staff purchase portal:</b> built a full-stack Next.js and MySQL
+          app that takes staff product purchases from request to invoice, with
+          live pricing from the company's ERP system, role-based approvals,
+          emailed PDF summaries and Excel reports.
+        </li>
+        <li>
+          <b>Paperless requests:</b> replaced paper IT equipment and travel
+          request forms with automated workflows in Google Apps Script, Forms
+          and Sheets.
+        </li>
+        <li>
+          <b>IT operations:</b> supported day-to-day IT, including router and
+          firewall administration, network monitoring and preventive hardware
+          maintenance.
+        </li>
+        <li>
+          <b>Graduate Management Trainee rotation:</b> worked in the warehouse,
+          retail, finance and procurement teams, and suggested practical ways
+          technology could improve their workflows.
+        </li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <h3><b>KENYA TEA DEVELOPMENT AGENCY</b> | Nairobi, Kenya</h3>
+      <h3 class="role"><b>ICT Intern</b> | January 2024 - April 2024</h3>
+      <ul>
+        <li>
+          Helped run the central IT helpdesk, answering support requests across
+          departments and helping organise how they were handled so people got
+          help sooner.
+        </li>
+        <li>
+          Assisted with server health checks, backups and disaster recovery
+          drills.
+        </li>
+        <li>
+          Assisted with firewall configuration and security monitoring, and
+          helped standardise hardware and software setups.
+        </li>
+      </ul>
+    </div>
+
+    <h2>Education</h2>
+    <div class="entry">
+      <h3>
+        <b>ST. PAUL'S UNIVERSITY</b> | BSc Computer Science | September 2020 -
+        November 2024
+      </h3>
+      <ul>
+        <li>Graduated with First Class Honours (cumulative average 75.51%).</li>
+        <li>
+          <b>Relevant coursework:</b> Software Engineering, Data Structures &amp;
+          Algorithms, Database Management Systems, Cybersecurity, Unix Shell
+          Programming.
+        </li>
+      </ul>
+    </div>
+    <div class="entry">
+      <h3>
+        <b>KANGA HIGH SCHOOL</b> | Kenya Certificate of Secondary Education
+        (KCSE) | January 2016 - November 2019
+      </h3>
+      <ul>
+        <li>Grade: A- (78 points).</li>
+      </ul>
+    </div>
+
+    <h2>Skills</h2>
+    <ul>
+      <li>
+        <b>Frameworks &amp; libraries:</b> Next.js, React, Node.js, Tailwind
+        CSS, TanStack Query, Zustand.
+      </li>
+      <li>
+        <b>Languages:</b> JavaScript, TypeScript, SQL, Python, PHP, Java.
+      </li>
+      <li>
+        <b>Databases &amp; tools:</b> PostgreSQL (Neon, pg), MySQL (mysql2),
+        Git, GitHub, Vercel, VS Code, AI-assisted development.
+      </li>
+      <li>
+        <b>Integration &amp; infrastructure:</b> Microsoft Entra ID (SSO),
+        Microsoft Graph API, REST APIs, Google Apps Script, Nginx, PM2,
+        Linux/Bash, PowerShell.
+      </li>
+      <li>
+        <b>Working style:</b> collaborating across teams, problem-solving,
+        owning work from start to finish, adapting when plans change, helping
+        teammates learn new tools.
+      </li>
+    </ul>
+
+    <h2>Certifications</h2>
+    <ul>
+      <li>
+        Cybersecurity Fundamentals | IBM SkillsBuild | October 2024 |
+        <a href="https://www.credly.com/badges/62350694-94b9-4866-911c-a60660af33c1/public_url">View credential</a>
+      </li>
+      <li>
+        Web Development Fundamentals | IBM SkillsBuild | November 2024 |
+        <a href="https://www.credly.com/badges/97fc0999-d066-4d5b-94b5-973ee6b1bebe/public_url">View credential</a>
+      </li>
+      <li>
+        Artificial Intelligence Fundamentals | IBM SkillsBuild | March 2025 |
+        <a href="https://www.credly.com/badges/f3d16612-e9c8-4382-87a6-1b742a79cb01/public_url">View credential</a>
+      </li>
+    </ul>
+
+    <h2>Selected projects</h2>
+    <div class="entry">
+      <h3>
+        <b>Internal Apps Hub</b> | Next.js, TypeScript, Microsoft SSO |
+        <a href="https://github.com/Geoffrey-Owuor/requisitions_automation">Repo</a>
+      </h3>
+      <ul>
+        <li>
+          One sign-in portal that brings a company's internal tools and request
+          forms together, with approvals routed to the right managers.
+        </li>
+      </ul>
+    </div>
+    <div class="entry">
+      <h3>
+        <b>HelpDesk System</b> | Next.js, TypeScript, PostgreSQL, TanStack
+        Query | <a href="https://github.com/Geoffrey-Owuor/helpdesk-embedded">Repo</a>
+      </h3>
+      <ul>
+        <li>
+          IT ticketing with automatic routing, a clear owner for every ticket
+          and live status that staff can check themselves.
+        </li>
+      </ul>
+    </div>
+    <div class="entry">
+      <h3>
+        <b>Staff Purchase Portal</b> | Next.js, MySQL, REST APIs |
+        <a href="https://github.com/Geoffrey-Owuor/staffpurchase-embedded">Repo</a>
+      </h3>
+      <ul>
+        <li>
+          Staff shopping portal with role-based approvals, live ERP pricing,
+          emailed PDF summaries and Excel exports.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
