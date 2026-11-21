@@ -209,14 +209,22 @@ export default function RootLayout({ children }) {
                 Skip to content
               </a>
               <NavBar />
-              <main
-                id="main"
-                tabIndex={-1}
-                className="flex flex-1 flex-col focus:outline-none"
-              >
-                {children}
-              </main>
-              <Footer />
+              {/* Everything below the navbar sits between two hatched rails
+                  that hug the page column (see `page-rail` in
+                  styles/globals.css). They only appear where the window
+                  leaves room for them beside the column. */}
+              <div className="relative flex flex-1 flex-col">
+                <div aria-hidden="true" className="page-rail page-rail-left" />
+                <div aria-hidden="true" className="page-rail page-rail-right" />
+                <main
+                  id="main"
+                  tabIndex={-1}
+                  className="flex flex-1 flex-col focus:outline-none"
+                >
+                  {children}
+                </main>
+                <Footer />
+              </div>
             </RouteProgressProvider>
           </ToastProvider>
         </Providers>

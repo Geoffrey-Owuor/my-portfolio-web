@@ -520,6 +520,26 @@ html:not([data-theme="dark"]) .theme-inverse {
   );
 }
 
+/* Page rails (app/layout.js): a hatched strip with hairline edges down each
+   side of the max-w-7xl page column, from below the navbar to the bottom of
+   the page. Hidden until the window is wide enough to fit both rails beside
+   the column with some air left over. */
+@utility page-rail {
+  @apply border-border-subtle hatch-lines pointer-events-none absolute inset-y-0 hidden border-x;
+  width: --spacing(8);
+  @media (width >= 86rem) {
+    display: block;
+  }
+}
+
+@utility page-rail-left {
+  right: calc(50% + var(--container-7xl) / 2);
+}
+
+@utility page-rail-right {
+  left: calc(50% + var(--container-7xl) / 2);
+}
+
 @utility animate-hero-peek {
   animation: hero-peek 0.7s cubic-bezier(0.34, 1.4, 0.64, 1)
     var(--hero-delay, 0ms) backwards;
