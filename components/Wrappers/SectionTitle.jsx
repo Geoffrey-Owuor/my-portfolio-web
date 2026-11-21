@@ -140,7 +140,7 @@ const SectionTitle = ({
       </motion.div>
 
       {/* Hairline track with the accent drawn across it by scroll position */}
-      <div className="bg-border-subtle relative mt-5 h-px overflow-hidden">
+      <div className="bg-border-subtle bleed-rails relative mt-5 h-px overflow-hidden">
         <motion.div
           style={{ scaleX: prefersReducedMotion ? 1 : ruleProgress }}
           className="bg-accent absolute inset-0 origin-left"

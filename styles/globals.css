@@ -568,6 +568,35 @@ html:not([data-theme="dark"]) .theme-inverse {
   right: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
 }
 
+/* Hairlines that run to the rails' inner borders: from lg up they reach
+   `--rail-gap` past the content on both sides; below lg (no rails) they stay
+   at content width.
+     bleed-rails : for a line element itself (an `h-px` div).
+     rule-rails  : for a block whose bottom border is the line. Draws it as an
+                   ::after hairline instead of a border, so the block's own
+                   padding and text stay put. */
+@utility bleed-rails {
+  @media (width >= 64rem) {
+    margin-inline: calc(var(--rail-gap) * -1);
+  }
+}
+
+@utility rule-rails {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: var(--color-border-subtle);
+    pointer-events: none;
+    @media (width >= 64rem) {
+      inset-inline: calc(var(--rail-gap) * -1);
+    }
+  }
+}
+
 /* For a full-width backdrop (positioned against a full-width wrapper) that
    should fill only the space between the rails' inner borders. Below lg,
    where there are no rails, it keeps whatever inset the element sets. */
