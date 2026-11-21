@@ -5,6 +5,7 @@ import { Mail, MailOpen, RefreshCcw, Trash2 } from "lucide-react";
 import apiClient from "@/lib/AxiosClient";
 import { isEmail } from "@/utils/contactValidation";
 import { formatDate } from "@/utils/Helpers";
+import { INBOX_PAGE_SIZES } from "@/utils/inboxPaging";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import EmptyState from "../Modules/EmptyState";
 import { LoadingCircle } from "../Modules/LoadingCircle";
@@ -21,6 +22,7 @@ const shortLabel = (text) =>
 const InboxTab = ({ onUnreadChange }) => {
   const toast = useToast();
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(INBOX_PAGE_SIZES[0]);
   const [reloadKey, setReloadKey] = useState(0);
   const [data, setData] = useState(null);
   const [failed, setFailed] = useState(false);
@@ -32,7 +34,7 @@ const InboxTab = ({ onUnreadChange }) => {
     setFailed(false);
 
     apiClient
-      .get("/manage/inbox", { params: { page } })
+      .get("/manage/inbox", { params: { page, pageSize } })
       .then((response) => {
         if (!current) return;
         // The last message on the last page was deleted.
@@ -52,7 +54,7 @@ const InboxTab = ({ onUnreadChange }) => {
     return () => {
       current = false;
     };
-  }, [page, reloadKey, onUnreadChange]);
+  }, [page, pageSize, reloadKey, onUnreadChange]);
 
   if (failed) {
     return (
@@ -124,7 +126,7 @@ const InboxTab = ({ onUnreadChange }) => {
     }
   };
 
-  const { messages, total, pageSize } = data;
+  const { messages, total } = data;
 
   if (total === 0) {
     return (
@@ -132,7 +134,15 @@ const InboxTab = ({ onUnreadChange }) => {
     );
   }
 
-  const firstIndex = (data.page - 1) * pageSize;
+  // Sizes from the response: they describe the page on screen until a new
+  // one arrives.
+  const firstIndex = (data.page - 1) * data.pageSize;
+
+  // A new size keeps the first message on screen on the page it lands on.
+  const changePageSize = (size) => {
+    setPageSize(size);
+    setPage(Math.floor(firstIndex / size) + 1);
+  };
 
   return (
     <section>
@@ -213,10 +223,13 @@ const InboxTab = ({ onUnreadChange }) => {
       <Pagination
         currentPage={data.page}
         setCurrentPage={setPage}
-        totalPages={Math.ceil(total / pageSize)}
+        totalPages={Math.ceil(total / data.pageSize)}
         indexOfFirstBlog={firstIndex}
-        indexOfLastBlog={firstIndex + pageSize}
+        indexOfLastBlog={firstIndex + data.pageSize}
         blogsLength={total}
+        pageSize={data.pageSize}
+        pageSizeOptions={INBOX_PAGE_SIZES}
+        onPageSizeChange={changePageSize}
       />
 
       {confirmingDelete && (
