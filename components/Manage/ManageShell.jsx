@@ -97,7 +97,7 @@ const ManageShell = ({ user, content }) => {
       </div>
 
       {/* The tabs scroll on their own; the refresh control stays put. */}
-      <div className="border-border-subtle mb-8 flex items-center gap-3 border-b pb-2">
+      <div className="rule-rails mb-8 flex items-center gap-3 pb-2">
         <div
           role="tablist"
           aria-label="Content types"

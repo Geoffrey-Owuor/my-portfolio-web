@@ -257,7 +257,7 @@ const ContributionsCard = ({ contributions }) => {
         ))}
       </div>
 
-      <div ref={scrollRef} className="mt-6 overflow-x-auto pb-2">
+      <div ref={scrollRef} className="scrollbar-slim mt-6 overflow-x-auto pb-2">
         <div className="mx-auto w-max">
           <div
             className="text-text-muted mb-1.5 grid gap-[3px] text-[10px]"

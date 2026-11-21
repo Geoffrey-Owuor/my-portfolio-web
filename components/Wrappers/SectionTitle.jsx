@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  useInView,
-  useScroll,
-  useSpring,
-} from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { getSection } from "../Home/sections";
 
@@ -19,7 +13,7 @@ const VISIBLE_MS = 4500;
 /**
  * Editorial section header: index number (the section's position in the
  * page, shared with the navbar), title, a one-line subtitle, the section's
- * `~/path`, and a rule that draws across as the header scrolls in.
+ * `~/path`, and a hairline rule beneath.
  * `sectionId` must be one of the ids in components/Home/sections.js.
  */
 const SectionTitle = ({
@@ -36,16 +30,6 @@ const SectionTitle = ({
   // Observed on the title block itself rather than the whole section, so the
   // note is tied to the thing it annotates.
   const isInView = useInView(titleRef, { once: true, amount: 0.5 });
-
-  const { scrollYProgress } = useScroll({
-    target: titleRef,
-    offset: ["start end", "start 0.45"],
-  });
-  const ruleProgress = useSpring(scrollYProgress, {
-    stiffness: 160,
-    damping: 30,
-    mass: 0.4,
-  });
 
   const [showAlert, setShowAlert] = useState(false);
   const hasAlert = Boolean(alertMessage && AlertIcon);
@@ -139,13 +123,7 @@ const SectionTitle = ({
         </div>
       </motion.div>
 
-      {/* Hairline track with the accent drawn across it by scroll position */}
-      <div className="bg-border-subtle relative mt-5 h-px overflow-hidden">
-        <motion.div
-          style={{ scaleX: prefersReducedMotion ? 1 : ruleProgress }}
-          className="bg-accent absolute inset-0 origin-left"
-        />
-      </div>
+      <div className="bg-border-subtle bleed-rails mt-5 h-px" />
     </header>
   );
 };

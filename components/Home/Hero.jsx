@@ -29,11 +29,11 @@ const scrollToSection = (e, id) => {
  * action, and a closing rule with the core stack. Content-height on every
  * screen — it never stretches to fill the viewport.
  *
- * From custom-content (1100px) up the copy takes a 42rem column and the
- * editor card fills the rest, ending on the measure's right edge. Below
- * that its column would be too narrow to show the code, so the card stacks
- * under the calls to action instead, left-aligned and capped to the copy's
- * 42rem.
+ * From custom-content (1200px) up the copy takes up to a 42rem column and the
+ * editor card fills the rest, never narrower than 26rem (the copy gives way
+ * near the breakpoint), ending on the measure's right edge. Below that its
+ * column would be too narrow to show the code, so the card stacks under the
+ * calls to action instead, left-aligned and capped to the copy's 42rem.
  *
  * The entrance is CSS (the hero-* animations in globals.css), one motion per
  * element on a shared timeline, so it plays on first paint rather than
@@ -55,7 +55,7 @@ const Hero = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [isTwoColumn, setIsTwoColumn] = useState(false);
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 1100px)"); // custom-content
+    const query = window.matchMedia("(min-width: 75rem)"); // custom-content
     const update = () => setIsTwoColumn(query.matches);
     update();
     query.addEventListener("change", update);
@@ -87,7 +87,7 @@ const Hero = () => {
     <section id="home" className="container-page pb-section pt-10 md:pt-14">
       <div
         ref={gridRef}
-        className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] custom-content:gap-10"
+        className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(26rem,1fr)] custom-content:gap-10"
       >
         <motion.div style={{ y: copyY, opacity: copyOpacity }}>
           <div className="flex items-center gap-4">
@@ -163,13 +163,15 @@ const Hero = () => {
 
       {/* Closing band: a hatched strip the bot sits on, then the core stack
           and where to find everything else. The band is its own element so
-          it can draw across, and bleeds to the screen's edges (the page's
-          overflow-x-hidden wrapper clips the scrollbar gutter's overshoot);
-          the top margin leaves the bot room under the card. */}
-      <div className="relative mt-20 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-7 font-mono text-xs">
+          it can draw across. Below lg it bleeds to the screen's edges (the
+          page's overflow-x-hidden wrapper clips the scrollbar gutter's
+          overshoot); from lg it spans the page rails' outer borders, and its
+          24px height matches their width. The top margin leaves the bot room
+          under the card. */}
+      <div className="relative mt-20 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-10.5 font-mono text-xs">
         <span
           aria-hidden="true"
-          className="border-border-subtle hatch-lines motion-safe:animate-hero-draw absolute inset-x-[calc(50%-50vw)] top-0 h-2.5 origin-left border-y [--hero-delay:620ms]"
+          className="border-border-subtle hatch-lines motion-safe:animate-hero-draw absolute inset-x-[calc(50%-50vw)] top-0 h-6 origin-left border-y [--hero-delay:620ms] lg:inset-x-[calc(var(--rail-inset)*-1)]"
         />
         <HeroBot />
         <p className="text-text-muted motion-safe:animate-hero-fade [--hero-delay:800ms]">

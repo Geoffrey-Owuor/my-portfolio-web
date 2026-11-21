@@ -40,30 +40,39 @@ export default function IconPattern({
   // useId output contains characters (":" / "«»") that aren't safe in url(#…).
   const id = `icon-pattern-${useId().replace(/[^\w-]/g, "")}`;
 
+  // From lg up the wrapper fills only the space between the page rails
+  // (`inset-x-rails`); the svg inside fills the wrapper.
   return (
-    <svg
+    <div
       aria-hidden="true"
-      focusable="false"
-      className={`pointer-events-none absolute inset-0 -z-10 h-full w-full [mask-image:radial-gradient(ellipse_75%_70%_at_50%_40%,black_45%,transparent_100%)] ${className}`}
+      className={`inset-x-rails pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_75%_70%_at_50%_40%,black_45%,transparent_100%)] ${className}`}
     >
-      <defs>
-        <pattern
-          id={id}
-          width={TILE}
-          height={TILE}
-          patternUnits="userSpaceOnUse"
-        >
-          {ICONS.map(([Icon, x, y, rotate], i) => (
-            <g
-              key={i}
-              transform={`rotate(${rotate} ${x + ICON / 2} ${y + ICON / 2})`}
-            >
-              <Icon x={x} y={y} width={ICON} height={ICON} strokeWidth={1.5} />
-            </g>
-          ))}
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#${id})`} />
-    </svg>
+      <svg focusable="false" className="h-full w-full">
+        <defs>
+          <pattern
+            id={id}
+            width={TILE}
+            height={TILE}
+            patternUnits="userSpaceOnUse"
+          >
+            {ICONS.map(([Icon, x, y, rotate], i) => (
+              <g
+                key={i}
+                transform={`rotate(${rotate} ${x + ICON / 2} ${y + ICON / 2})`}
+              >
+                <Icon
+                  x={x}
+                  y={y}
+                  width={ICON}
+                  height={ICON}
+                  strokeWidth={1.5}
+                />
+              </g>
+            ))}
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill={`url(#${id})`} />
+      </svg>
+    </div>
   );
 }
