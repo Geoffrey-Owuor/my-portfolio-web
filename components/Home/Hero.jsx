@@ -111,14 +111,15 @@ const Hero = () => {
           </div>
 
           <h1 className="text-text-primary text-display motion-safe:animate-hero-wipe mt-6 font-semibold text-balance [--hero-delay:160ms]">
-            I build production-ready web apps, from database schema to polished
-            UI.
+            I build web apps that make everyday work a little easier.
           </h1>
 
           <p className="text-text-muted motion-safe:animate-hero-rise mt-5 max-w-2xl text-base leading-relaxed [--hero-delay:340ms] md:text-lg">
-            I work across the whole stack - APIs, databases, interfaces and
-            deploys, shipping complete products rather than fragments. A
-            researcher, developer and builder at heart.
+            I enjoy every part of the job, from designing the database and
+            writing the code behind it to shaping what people see and getting it
+            live. Most of what I build replaces paperwork and long email threads
+            with something simpler. I&apos;m curious by nature and always
+            learning.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">

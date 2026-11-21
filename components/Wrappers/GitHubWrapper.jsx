@@ -403,7 +403,7 @@ const GitHubWrapper = ({ data }) => {
         sectionId="activity"
         title="GitHub Activity"
         subtitle="Code in the open"
-        alertMessage="Shipping consistently, one commit at a time"
+        alertMessage="A peek at what I've been working on"
         alertIcon={GitCommitHorizontal}
       />
 

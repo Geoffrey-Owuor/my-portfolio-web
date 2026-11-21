@@ -27,7 +27,7 @@ const ExperienceWrapper = ({ experiences }) => {
         sectionId="experience"
         title="My Experience"
         subtitle="Where I've been"
-        alertMessage="Evolving with challenges, always moving forward"
+        alertMessage="Every role taught me something new"
         alertIcon={BriefcaseBusiness}
       />
 

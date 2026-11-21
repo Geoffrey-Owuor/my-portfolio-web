@@ -13,7 +13,7 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
         sectionId="skills"
         title="My Skills"
         subtitle="What I bring to the table"
-        alertMessage="Applying technical skills to real-world problems"
+        alertMessage="The things I reach for most"
         alertIcon={Sparkle}
       />
 

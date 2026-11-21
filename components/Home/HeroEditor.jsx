@@ -12,7 +12,7 @@ import {
   SquareTerminal,
 } from "lucide-react";
 
-// The hero's "schema to polished UI" claim, shown rather than told: one tab
+// How the hero's apps get built, shown rather than told: one tab
 // per layer of this site's own blog feature, trimmed from the real files.
 const TABS = [
   {

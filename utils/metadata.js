@@ -8,7 +8,7 @@ export const SITE_URL = (
 export const SITE_NAME = "Geoffrey Owuor";
 export const SITE_TITLE = "Geoffrey Owuor | Full-Stack Developer in Nairobi";
 export const SITE_DESCRIPTION =
-  "Geoffrey Owuor is a full-stack developer in Nairobi, Kenya, building production-ready web apps with Next.js, React, Node.js and PostgreSQL.";
+  "Geoffrey Owuor is a full-stack developer in Nairobi, Kenya, who builds friendly, dependable web apps with Next.js, React, Node.js and PostgreSQL.";
 
 // The site-wide social preview cards (app/opengraph-image.jsx and
 // app/twitter-image.jsx). Next merges metadata shallowly, so a page that sets
