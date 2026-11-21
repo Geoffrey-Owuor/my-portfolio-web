@@ -348,16 +348,41 @@ html:not([data-theme="dark"]) .theme-inverse {
   min-height: calc(100dvh - var(--header-h));
 }
 
-/* The page measure: centred, max-w-7xl, with the shared side gutter. Every
-   top-level block (header bar, sections, footer, route pages) uses this, so
-   their edges always line up. */
-@utility container-page {
+/* Page rails (see `page-rail` below). From lg up, the rails stand just inside
+   the navbar's content edges, and everything below the navbar is inset by
+   `--rail-inset` (rail + gap) so it sits between them. Below lg there are no
+   rails and no inset. */
+:root {
+  --rail-w: 1.5rem;
+  --rail-gap: 1.5rem;
+  --rail-inset: 0px;
+  @media (width >= 64rem) {
+    --rail-inset: calc(var(--rail-w) + var(--rail-gap));
+  }
+}
+
+/* The navbar's measure: centred, max-w-7xl, with the shared side gutter. Its
+   content edges are where the page rails' outer borders fall. */
+@utility container-bar {
   margin-inline: auto;
   width: 100%;
   max-width: var(--container-7xl);
   padding-inline: --spacing(4);
   @media (width >= 48rem) {
     padding-inline: --spacing(6);
+  }
+}
+
+/* The page measure: the navbar's, inset to sit between the page rails. Every
+   top-level block below the navbar (sections, footer, route pages) uses this,
+   so their edges always line up. */
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--container-7xl);
+  padding-inline: calc(--spacing(4) + var(--rail-inset));
+  @media (width >= 48rem) {
+    padding-inline: calc(--spacing(6) + var(--rail-inset));
   }
 }
 
@@ -521,23 +546,42 @@ html:not([data-theme="dark"]) .theme-inverse {
 }
 
 /* Page rails (app/layout.js): a hatched strip with hairline edges down each
-   side of the max-w-7xl page column, from below the navbar to the bottom of
-   the page. Hidden until the window is wide enough to fit both rails beside
-   the column with some air left over. */
+   side of the page, from below the navbar to the bottom of the page. Their
+   outer borders line up with the navbar's content edges (`container-bar`),
+   and `container-page` keeps content `--rail-gap` clear of their inner
+   borders. Shown from lg up, with the desktop navbar. Positioned against the
+   full-width wrapper, so the edge offset is the centred 7xl column's margin
+   plus the md+ gutter. */
 @utility page-rail {
   @apply border-border-subtle hatch-lines pointer-events-none absolute inset-y-0 hidden border-x;
-  width: --spacing(8);
-  @media (width >= 86rem) {
+  width: var(--rail-w);
+  @media (width >= 64rem) {
     display: block;
   }
 }
 
 @utility page-rail-left {
-  right: calc(50% + var(--container-7xl) / 2);
+  left: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
 }
 
 @utility page-rail-right {
-  left: calc(50% + var(--container-7xl) / 2);
+  right: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
+}
+
+/* For a full-width backdrop (positioned against a full-width wrapper) that
+   should fill only the space between the rails' inner borders. Below lg,
+   where there are no rails, it keeps whatever inset the element sets. */
+@utility inset-x-rails {
+  @media (width >= 64rem) {
+    left: calc(
+      (100% - min(100%, var(--container-7xl))) / 2 + --spacing(6) +
+        var(--rail-w)
+    );
+    right: calc(
+      (100% - min(100%, var(--container-7xl))) / 2 + --spacing(6) +
+        var(--rail-w)
+    );
+  }
 }
 
 @utility animate-hero-peek {
