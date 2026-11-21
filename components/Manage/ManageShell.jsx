@@ -9,6 +9,7 @@ import UserInfoCard from "../Modules/UserInfoCard";
 import BlogsTab from "./BlogsTab";
 import InboxTab from "./InboxTab";
 import ResourceList from "./ResourceList";
+import RefreshSiteMenu from "./RefreshSiteMenu";
 import ResumeTab from "./ResumeTab";
 
 const TABS = [
@@ -95,47 +96,51 @@ const ManageShell = ({ user, content }) => {
         </div>
       </div>
 
-      <div
-        role="tablist"
-        aria-label="Content types"
-        onKeyDown={handleKeyDown}
-        className="border-border-subtle mb-8 flex gap-1 overflow-x-auto border-b pb-2 [scrollbar-width:none]"
-      >
-        {TABS.map((tab) => {
-          const selected = tab.id === activeTab;
-          return (
-            <button
-              key={tab.id}
-              ref={(node) => {
-                tabRefs.current[tab.id] = node;
-              }}
-              type="button"
-              role="tab"
-              id={`manage-tab-${tab.id}`}
-              aria-selected={selected}
-              aria-controls="manage-panel"
-              aria-label={
-                tab.id === "inbox" && unread > 0
-                  ? `Inbox, ${unread} unread`
-                  : undefined
-              }
-              tabIndex={selected ? 0 : -1}
-              onClick={() => selectTab(tab.id)}
-              className={`rounded-control focus-visible:outline-accent shrink-0 cursor-pointer px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-2 ${
-                selected
-                  ? "bg-surface-raised text-text-primary"
-                  : "text-text-muted hover:text-text-primary"
-              }`}
-            >
-              {tab.label}
-              {tab.id === "inbox" && unread > 0 && (
-                <span className="bg-accent text-surface ml-2 inline-flex min-w-5 items-center justify-center rounded-full px-1.5 font-mono text-xs tabular-nums">
-                  {unread}
-                </span>
-              )}
-            </button>
-          );
-        })}
+      {/* The tabs scroll on their own; the refresh control stays put. */}
+      <div className="border-border-subtle mb-8 flex items-center gap-3 border-b pb-2">
+        <div
+          role="tablist"
+          aria-label="Content types"
+          onKeyDown={handleKeyDown}
+          className="flex min-w-0 flex-1 gap-1 overflow-x-auto [scrollbar-width:none]"
+        >
+          {TABS.map((tab) => {
+            const selected = tab.id === activeTab;
+            return (
+              <button
+                key={tab.id}
+                ref={(node) => {
+                  tabRefs.current[tab.id] = node;
+                }}
+                type="button"
+                role="tab"
+                id={`manage-tab-${tab.id}`}
+                aria-selected={selected}
+                aria-controls="manage-panel"
+                aria-label={
+                  tab.id === "inbox" && unread > 0
+                    ? `Inbox, ${unread} unread`
+                    : undefined
+                }
+                tabIndex={selected ? 0 : -1}
+                onClick={() => selectTab(tab.id)}
+                className={`rounded-control focus-visible:outline-accent shrink-0 cursor-pointer px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-2 ${
+                  selected
+                    ? "bg-surface-raised text-text-primary"
+                    : "text-text-muted hover:text-text-primary"
+                }`}
+              >
+                {tab.label}
+                {tab.id === "inbox" && unread > 0 && (
+                  <span className="bg-accent text-surface ml-2 inline-flex min-w-5 items-center justify-center rounded-full px-1.5 font-mono text-xs tabular-nums">
+                    {unread}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+        <RefreshSiteMenu />
       </div>
 
       <div
