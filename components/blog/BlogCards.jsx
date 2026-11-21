@@ -7,6 +7,8 @@ import BlogCardView from "./BlogCardView";
 import PageHeader from "../Layout/PageHeader";
 import BlogTableView from "./BlogTableView";
 
+const PAGE_SIZES = [6, 12, 24];
+
 const BlogCards = ({ blogs }) => {
   const toolbarRef = useRef(null);
 
@@ -46,11 +48,11 @@ const BlogCards = ({ blogs }) => {
   // Pagination. The page is clamped when read, so a stale ?page= from the
   // URL can't land past the end of a shorter list.
   const [requestedPage, setCurrentPage] = useState(1);
-  const blogsPerPage = 6;
+  const [blogsPerPage, setBlogsPerPage] = useState(PAGE_SIZES[0]);
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
   const currentPage = Math.min(requestedPage, Math.max(totalPages, 1));
 
-  // Search, page and view live in the URL, so coming back from a post (or
+  // Search, page, page size and view live in the URL, so coming back from a post (or
   // sharing the link) lands on the same list. They are read after mount
   // rather than with useSearchParams, which would take the whole listing out
   // of the prerendered HTML.
@@ -58,8 +60,10 @@ const BlogCards = ({ blogs }) => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const page = Number(params.get("page"));
+    const perPage = Number(params.get("per"));
     setSearchQuery(params.get("q") ?? "");
     if (Number.isInteger(page) && page > 1) setCurrentPage(page);
+    if (PAGE_SIZES.includes(perPage)) setBlogsPerPage(perPage);
     if (params.get("view") === "table") setViewMode("table");
     setUrlRead(true);
   }, []);
@@ -69,13 +73,14 @@ const BlogCards = ({ blogs }) => {
     const params = new URLSearchParams();
     if (searchQuery) params.set("q", searchQuery);
     if (currentPage > 1) params.set("page", String(currentPage));
+    if (blogsPerPage !== PAGE_SIZES[0]) params.set("per", String(blogsPerPage));
     if (viewMode === "table") params.set("view", "table");
     const search = params.toString();
     const url = `${window.location.pathname}${search ? `?${search}` : ""}`;
     if (url !== `${window.location.pathname}${window.location.search}`) {
       window.history.replaceState(null, "", url);
     }
-  }, [urlRead, searchQuery, currentPage, viewMode]);
+  }, [urlRead, searchQuery, currentPage, blogsPerPage, viewMode]);
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
   const currentBlogs = filteredBlogs.slice(
@@ -97,6 +102,12 @@ const BlogCards = ({ blogs }) => {
   const changePage = (update) => {
     setCurrentPage(update);
     toolbarRef.current?.scrollIntoView({ block: "start" });
+  };
+
+  // A new size keeps the first post on screen on the page it lands on.
+  const changePageSize = (size) => {
+    setBlogsPerPage(size);
+    setCurrentPage(Math.floor(indexOfFirstBlog / size) + 1);
   };
 
   // Published nothing yet: not an error, so nothing to retry.
@@ -210,6 +221,9 @@ const BlogCards = ({ blogs }) => {
           indexOfFirstBlog={indexOfFirstBlog}
           indexOfLastBlog={indexOfLastBlog}
           blogsLength={filteredBlogs.length}
+          pageSize={blogsPerPage}
+          pageSizeOptions={PAGE_SIZES}
+          onPageSizeChange={changePageSize}
         />
       </div>
     </>
