@@ -53,6 +53,7 @@ When adding a new protected route or mutation, follow the existing pattern: veri
 - `lib/manage/resources.js` maps each resource to its table, cache tag and ordering. It is the only source of table and column names for `/api/manage`: never build SQL identifiers from request input. Field rules are in `utils/manageFields.js`, shared by the forms and the routes, and each `max` must match the column's limit.
 - `/api/manage/[resource]` (`POST`), `/[id]` (`PUT`, `DELETE`) and `/reorder` (`PUT`) serve the simple lists. Project images, blog reads and the inbox have their own routes under `/api/manage/`. Blog writes stay in `/api/blogpost`.
 - Every handler checks `requireOwner()` before reading the body, then calls `revalidateTag` for the resource; the client follows with `router.refresh()`.
+- The "Refresh site" split button beside the tabs (`RefreshSiteMenu` → `POST /api/manage/revalidate`) refreshes caches after changes made outside `/manage`: all of them, or one section. Its tags come only from `utils/siteCaches.js`, so a new cache tag goes there too.
 - Ascending `sort_order` is display order, with up/down controls. New rows go first in projects, experience and education, and last in skills. Tools stay alphabetical and have no `sort_order`. Project previous/next is computed from the same order as the grid.
 - `/manage` reads with direct, uncached queries (`lib/manage/readers.js`). Don't use `BlogsData` to edit a post: it only holds the first 2000 characters.
 
