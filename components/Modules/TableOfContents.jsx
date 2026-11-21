@@ -181,7 +181,7 @@ const TableOfContents = ({ headings }) => {
     <nav
       ref={navRef}
       aria-label="On this page"
-      className="rounded-card sticky top-[calc(var(--header-h)+1rem)] hidden max-h-[calc(100dvh-var(--header-h)-2rem)] w-70 shrink-0 flex-col overflow-y-auto p-4 [scrollbar-width:thin] lg:flex"
+      className="rounded-card scrollbar-slim sticky top-[calc(var(--header-h)+1rem)] hidden max-h-[calc(100dvh-var(--header-h)-2rem)] w-70 shrink-0 flex-col overflow-y-auto p-4 lg:flex"
     >
       <p className="text-text-muted border-border-subtle mb-4 border-b-2 pb-2 text-sm font-bold tracking-wider uppercase">
         On this page
