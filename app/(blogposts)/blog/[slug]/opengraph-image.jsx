@@ -22,7 +22,7 @@ export default async function BlogImage({ params }) {
   const post = (await BlogsData())?.find((blog) => blog.slug === slug);
 
   const logo = await readFile(
-    join(process.cwd(), "public/web-app-manifest-192x192.png"),
+    join(process.cwd(), "public/icon-192.png"),
   );
   const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
 

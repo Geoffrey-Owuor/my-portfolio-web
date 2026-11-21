@@ -3,6 +3,7 @@
 import { useState, useEffect, useLayoutEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { GitHubIcon } from "@/components/Icons/BrandIcons";
+import LogoMark from "@/components/Icons/LogoMark";
 import { Menu, X, ArrowUpRight, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ProgressLink, useProgressRouter } from "../Modules/RouteProgress";
@@ -29,7 +30,8 @@ import { scrollToId } from "@/utils/motion";
 const navLinks = sections.filter((section) => section.nav !== false);
 
 const Wordmark = () => (
-  <span className="text-text-primary font-mono text-[17px] font-medium">
+  <span className="text-text-primary flex items-center gap-2 font-mono text-[17px] font-medium">
+    <LogoMark className="size-6 shrink-0" />
     Jeff
   </span>
 );
