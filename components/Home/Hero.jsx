@@ -29,11 +29,11 @@ const scrollToSection = (e, id) => {
  * action, and a closing rule with the core stack. Content-height on every
  * screen — it never stretches to fill the viewport.
  *
- * From custom-content (1200px) up the copy takes a 42rem column and the
- * editor card fills the rest, ending on the measure's right edge. Below
- * that its column would be too narrow to show the code, so the card stacks
- * under the calls to action instead, left-aligned and capped to the copy's
- * 42rem.
+ * From custom-content (1200px) up the copy takes up to a 42rem column and the
+ * editor card fills the rest, never narrower than 26rem (the copy gives way
+ * near the breakpoint), ending on the measure's right edge. Below that its
+ * column would be too narrow to show the code, so the card stacks under the
+ * calls to action instead, left-aligned and capped to the copy's 42rem.
  *
  * The entrance is CSS (the hero-* animations in globals.css), one motion per
  * element on a shared timeline, so it plays on first paint rather than
@@ -87,7 +87,7 @@ const Hero = () => {
     <section id="home" className="container-page pb-section pt-10 md:pt-14">
       <div
         ref={gridRef}
-        className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(0,1fr)] custom-content:gap-10"
+        className="custom-content:grid custom-content:grid-cols-[minmax(0,42rem)_minmax(26rem,1fr)] custom-content:gap-10"
       >
         <motion.div style={{ y: copyY, opacity: copyOpacity }}>
           <div className="flex items-center gap-4">
