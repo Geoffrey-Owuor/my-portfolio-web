@@ -83,7 +83,7 @@ The contact form's email path:
 
 ### Styling
 
-Tailwind CSS 4 with the new CSS-first config (`@theme` block in `styles/globals.css`, no `tailwind.config.js`). Dark mode is driven by a custom variant keyed on `[data-theme=dark]` (set by `next-themes`), not Tailwind's default `dark:` media-query strategy. A custom breakpoint `custom-content` (1100px) is defined there.
+Tailwind CSS 4 with the new CSS-first config (`@theme` block in `styles/globals.css`, no `tailwind.config.js`). Dark mode is driven by a custom variant keyed on `[data-theme=dark]` (set by `next-themes`), not Tailwind's default `dark:` media-query strategy. A custom breakpoint `custom-content` (1200px) is defined there: the hero goes two-column from it, and `components/Home/Hero.jsx` repeats it in a `matchMedia` query, so change both together.
 
 Design tokens live in `styles/globals.css` — use them instead of raw values so the UI can't drift:
 

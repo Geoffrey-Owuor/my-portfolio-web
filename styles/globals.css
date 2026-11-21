@@ -5,7 +5,8 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  --breakpoint-custom-content: 1100px;
+  /* The hero switches to two columns here (components/Home/Hero.jsx). */
+  --breakpoint-custom-content: 75rem;
 
   /* ── Type scale ──────────────────────────────────────────────────────
      The only heading sizes in the app: `text-display` (hero), `text-h1`

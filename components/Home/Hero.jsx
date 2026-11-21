@@ -29,7 +29,7 @@ const scrollToSection = (e, id) => {
  * action, and a closing rule with the core stack. Content-height on every
  * screen — it never stretches to fill the viewport.
  *
- * From custom-content (1100px) up the copy takes a 42rem column and the
+ * From custom-content (1200px) up the copy takes a 42rem column and the
  * editor card fills the rest, ending on the measure's right edge. Below
  * that its column would be too narrow to show the code, so the card stacks
  * under the calls to action instead, left-aligned and capped to the copy's
@@ -55,7 +55,7 @@ const Hero = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [isTwoColumn, setIsTwoColumn] = useState(false);
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 1100px)"); // custom-content
+    const query = window.matchMedia("(min-width: 75rem)"); // custom-content
     const update = () => setIsTwoColumn(query.matches);
     update();
     query.addEventListener("change", update);
