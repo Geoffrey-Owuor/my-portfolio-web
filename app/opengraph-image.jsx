@@ -11,7 +11,7 @@ export const contentType = "image/png";
 
 export default async function OpengraphImage() {
   const logo = await readFile(
-    join(process.cwd(), "public/icon-512.png"),
+    join(process.cwd(), "public/web-app-manifest-512x512.png"),
   );
   const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
 

@@ -158,9 +158,11 @@ export const metadata = {
     description: SITE_DESCRIPTION,
   },
 
-  // Icons come from the file conventions: app/favicon.ico, app/icon.svg (the
-  // source artwork) and app/apple-icon.png. The manifest's PNGs in public/
-  // are rendered from the same SVG.
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
+
   manifest: "/manifest.json",
 
   // Proves ownership to Google Search Console; removing it unverifies the site.
