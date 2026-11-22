@@ -370,28 +370,32 @@ html:not([data-theme="dark"]) .theme-inverse {
     --rail-inset: calc(var(--rail-w) + var(--rail-gap));
   }
 
-  /* Rail nodes: a 5px square (a 3px surface fill in a node-coloured ring)
-     on each rail border a line crosses, so four per line. Painted by a
-     pseudo-element 5px tall, centred on the 1px line, and 2px wider than it
-     on each side, so the outer nodes centre on the outer borders and the
-     inner ones `--rail-w` in. Fills are listed first so they paint on top. */
+  /* Rail nodes: a square (a surface fill in a node-coloured ring) on each
+     rail border a line crosses, so four per line. Painted by a
+     pseudo-element `--rail-node-size` tall, centred on the 1px line, and
+     `--rail-node-half` wider than it on each side, so the outer nodes centre
+     on the outer borders and the inner ones `--rail-w` in. Keep the size odd
+     so it centres on the line. Fills are listed first so they paint on top. */
+  --rail-node-size: 7px;
+  --rail-node-half: calc((var(--rail-node-size) - 1px) / 2);
+  --rail-node-fill: calc(var(--rail-node-size) - 2px);
   --rail-nodes:
-    linear-gradient(var(--color-surface) 0 0) left 1px center / 3px 3px
-      no-repeat,
-    linear-gradient(var(--color-surface) 0 0) left var(--rail-w) center / 3px
-      3px no-repeat,
-    linear-gradient(var(--color-surface) 0 0) right 1px center / 3px 3px
-      no-repeat,
-    linear-gradient(var(--color-surface) 0 0) right var(--rail-w) center / 3px
-      3px no-repeat,
-    linear-gradient(var(--color-rail-node) 0 0) left 0 center / 5px 5px
-      no-repeat,
+    linear-gradient(var(--color-surface) 0 0) left 1px center /
+      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
+    linear-gradient(var(--color-surface) 0 0) left var(--rail-w) center /
+      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
+    linear-gradient(var(--color-surface) 0 0) right 1px center /
+      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
+    linear-gradient(var(--color-surface) 0 0) right var(--rail-w) center /
+      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) left 0 center /
+      var(--rail-node-size) var(--rail-node-size) no-repeat,
     linear-gradient(var(--color-rail-node) 0 0) left calc(var(--rail-w) - 1px)
-      center / 5px 5px no-repeat,
-    linear-gradient(var(--color-rail-node) 0 0) right 0 center / 5px 5px
-      no-repeat,
+      center / var(--rail-node-size) var(--rail-node-size) no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) right 0 center /
+      var(--rail-node-size) var(--rail-node-size) no-repeat,
     linear-gradient(var(--color-rail-node) 0 0) right calc(var(--rail-w) - 1px)
-      center / 5px 5px no-repeat;
+      center / var(--rail-node-size) var(--rail-node-size) no-repeat;
 }
 
 /* The page measure: centred, max-w-7xl, with the shared side gutter (where
@@ -639,9 +643,9 @@ html:not([data-theme="dark"]) .theme-inverse {
     &::before {
       content: "";
       position: absolute;
-      inset-inline: -2px;
-      top: -2px;
-      height: 5px;
+      inset-inline: calc(var(--rail-node-half) * -1);
+      top: calc(var(--rail-node-half) * -1);
+      height: var(--rail-node-size);
       background: var(--rail-nodes);
       pointer-events: none;
     }
@@ -666,9 +670,9 @@ html:not([data-theme="dark"]) .theme-inverse {
     &::before {
       content: "";
       position: absolute;
-      inset-inline: calc(var(--rail-inset) * -1 - 2px);
-      bottom: -2px;
-      height: 5px;
+      inset-inline: calc(var(--rail-inset) * -1 - var(--rail-node-half));
+      bottom: calc(var(--rail-node-half) * -1);
+      height: var(--rail-node-size);
       background: var(--rail-nodes);
       pointer-events: none;
       z-index: 1;
@@ -690,9 +694,9 @@ html:not([data-theme="dark"]) .theme-inverse {
   &::before {
     content: "";
     position: absolute;
-    inset-inline: -2px;
-    top: -2px;
-    height: 5px;
+    inset-inline: calc(var(--rail-node-half) * -1);
+    top: calc(var(--rail-node-half) * -1);
+    height: var(--rail-node-size);
     background: var(--rail-nodes);
   }
 }
@@ -705,16 +709,16 @@ html:not([data-theme="dark"]) .theme-inverse {
     &::after {
       content: "";
       position: absolute;
-      inset-inline: -2px;
-      height: 5px;
+      inset-inline: calc(var(--rail-node-half) * -1);
+      height: var(--rail-node-size);
       background: var(--rail-nodes);
       pointer-events: none;
     }
     &::before {
-      top: -3px;
+      top: calc(var(--rail-node-half) * -1 - 1px);
     }
     &::after {
-      bottom: -3px;
+      bottom: calc(var(--rail-node-half) * -1 - 1px);
     }
   }
 }
