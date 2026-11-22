@@ -107,6 +107,21 @@ const Hero = () => {
             <p className="text-text-muted mt-0.5 text-sm sm:text-base">
               Full-stack developer
             </p>
+            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-medium">
+              {[
+                { href: "/blogs", label: "Blog" },
+                { href: RESUME_URL, label: "Résumé" },
+              ].map(({ href, label }) => (
+                <ProgressLink
+                  key={href}
+                  href={href}
+                  className="text-text-muted hover:text-accent group inline-flex items-center gap-1 transition-colors"
+                >
+                  {label}
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                </ProgressLink>
+              ))}
+            </div>
           </div>
         </div>
         <HeroClocks />
