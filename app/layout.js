@@ -214,8 +214,14 @@ export default function RootLayout({ children }) {
                   styles/globals.css). They only appear where the window
                   leaves room for them beside the column. */}
               <div className="relative flex flex-1 flex-col">
-                <div aria-hidden="true" className="page-rail page-rail-left" />
-                <div aria-hidden="true" className="page-rail page-rail-right" />
+                <div
+                  aria-hidden="true"
+                  className="page-rail page-rail-left ruler-y"
+                />
+                <div
+                  aria-hidden="true"
+                  className="page-rail page-rail-right ruler-y"
+                />
                 <main
                   id="main"
                   tabIndex={-1}

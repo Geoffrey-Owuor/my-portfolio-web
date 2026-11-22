@@ -359,10 +359,9 @@ html:not([data-theme="dark"]) .theme-inverse {
   min-height: calc(100dvh - var(--header-h));
 }
 
-/* Page rails (see `page-rail` below). From lg up, the rails stand just inside
-   the navbar's content edges, and everything below the navbar is inset by
-   `--rail-inset` (rail + gap) so it sits between them. Below lg there are no
-   rails and no inset. */
+/* Page rails (see `page-rail` below). From lg up, two rails run down the
+   page, navbar included, and everything is inset by `--rail-inset` (rail +
+   gap) so it sits between them. Below lg there are no rails and no inset. */
 :root {
   --rail-w: 1rem;
   --rail-gap: 1rem;
@@ -372,21 +371,10 @@ html:not([data-theme="dark"]) .theme-inverse {
   }
 }
 
-/* The navbar's measure: centred, max-w-7xl, with the shared side gutter. Its
-   content edges are where the page rails' outer borders fall. */
-@utility container-bar {
-  margin-inline: auto;
-  width: 100%;
-  max-width: var(--container-7xl);
-  padding-inline: --spacing(4);
-  @media (width >= 48rem) {
-    padding-inline: --spacing(6);
-  }
-}
-
-/* The page measure: the navbar's, inset to sit between the page rails. Every
-   top-level block below the navbar (sections, footer, route pages) uses this,
-   so their edges always line up. */
+/* The page measure: centred, max-w-7xl, with the shared side gutter (where
+   the rails' outer borders fall), inset to sit between the page rails. The
+   navbar and every top-level block below it (sections, footer, route pages)
+   use this, so their edges always line up. */
 @utility container-page {
   margin-inline: auto;
   width: 100%;
@@ -547,8 +535,9 @@ html:not([data-theme="dark"]) .theme-inverse {
 
 /* Ruler ticks in the rule colour, like an editor's gutter: a short tick every
    8px and a long one every 64px. Two layers, long ticks over short ones.
-     ruler-y : ticks run down the strip, hanging off its left edge (the
-               right rail moves them to its right edge, its outer side).
+     ruler-y : ticks run down the strip, hanging off its left edge (or
+               its right edge with `--ruler-side: right`, as the right rail
+               sets).
      ruler-x : ticks run across the strip, hanging from its top edge (the
                hero's closing band). */
 @utility ruler-y {
@@ -567,7 +556,7 @@ html:not([data-theme="dark"]) .theme-inverse {
     7px 100%,
     3px 100%;
   background-repeat: no-repeat;
-  background-position: left top;
+  background-position: var(--ruler-side, left) top;
 }
 
 @utility ruler-x {
@@ -589,15 +578,15 @@ html:not([data-theme="dark"]) .theme-inverse {
   background-position: left top;
 }
 
-/* Page rails (app/layout.js): a ruled strip with hairline edges down each
-   side of the page, from below the navbar to the bottom of the page. Their
-   outer borders line up with the navbar's content edges (`container-bar`),
-   and `container-page` keeps content `--rail-gap` clear of their inner
-   borders. Shown from lg up, with the desktop navbar. Positioned against the
-   full-width wrapper, so the edge offset is the centred 7xl column's margin
-   plus the md+ gutter. The ticks sit on each rail's outer side. */
+/* Page rails: a strip with hairline edges down each side of the page, and
+   `container-page` keeps content `--rail-gap` clear of their inner borders.
+   Shown from lg up, with the desktop navbar. Positioned against a full-width
+   box, so the edge offset is the centred 7xl column's margin plus the md+
+   gutter. Below the navbar (app/layout.js) they add `ruler-y`, whose ticks
+   sit on each rail's outer side; inside the sticky navbar they stay plain,
+   since ticks there would stand still while the page's ticks scroll. */
 @utility page-rail {
-  @apply border-border-rule ruler-y pointer-events-none absolute inset-y-0 hidden border-x;
+  @apply border-border-rule pointer-events-none absolute inset-y-0 hidden border-x;
   width: var(--rail-w);
   @media (width >= 64rem) {
     display: block;
@@ -610,7 +599,7 @@ html:not([data-theme="dark"]) .theme-inverse {
 
 @utility page-rail-right {
   right: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
-  background-position: right top;
+  --ruler-side: right;
 }
 
 /* Hairlines that run to the rails' inner borders: from lg up they reach
