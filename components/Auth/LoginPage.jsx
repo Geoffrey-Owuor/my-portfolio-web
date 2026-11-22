@@ -44,7 +44,7 @@ export default function LoginPage() {
     <div className="relative isolate flex flex-1 flex-col">
       <IconPattern />
       <div className="container-page py-section flex flex-1 items-center justify-center">
-        <div className="border-border-subtle bg-surface rounded-card w-full max-w-[410px] border p-6 sm:p-8">
+        <div className="border-border-subtle bg-surface rounded-dialog w-full max-w-[410px] border p-6 sm:p-8">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-text-primary text-h2 mb-2 text-center font-semibold">
@@ -60,7 +60,7 @@ export default function LoginPage() {
             {error && (
               <div
                 role="alert"
-                className="bg-danger/10 text-danger rounded-card px-4 py-3 text-sm"
+                className="bg-danger/10 text-danger rounded-field px-4 py-3 text-sm"
               >
                 {error}
               </div>
@@ -83,7 +83,7 @@ export default function LoginPage() {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent rounded-control block w-full border py-3 pr-3 pl-14 transition-colors focus:outline-none"
+                  className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent rounded-field block w-full border py-3 pr-3 pl-14 transition-colors focus:outline-none"
                   placeholder="you@example.com"
                   required
                 />
@@ -108,7 +108,7 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent rounded-control block w-full border py-3 pr-10 pl-14 transition-colors focus:outline-none"
+                  className="border-border-subtle bg-surface text-text-primary placeholder-text-muted focus:border-accent rounded-field block w-full border py-3 pr-12 pl-14 transition-colors focus:outline-none"
                   placeholder="••••••••"
                   required
                 />
@@ -116,12 +116,12 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute inset-y-0 right-2 flex items-center pr-4"
+                  className="text-text-muted hover:text-text-primary rounded-control focus-visible:outline-accent absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer p-1.5 transition-colors focus-visible:outline-2"
                 >
                   {showPassword ? (
-                    <EyeOff className="text-text-muted hover:text-text-primary h-5 w-5" />
+                    <EyeOff className="h-5 w-5" />
                   ) : (
-                    <Eye className="text-text-muted hover:text-text-primary h-5 w-5" />
+                    <Eye className="h-5 w-5" />
                   )}
                 </button>
               </div>
@@ -131,7 +131,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="bg-text-primary text-surface rounded-control flex w-full items-center justify-center gap-2 px-4 py-3 font-semibold transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="bg-text-primary text-surface rounded-field flex w-full items-center justify-center gap-2 px-4 py-3 font-semibold transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               {loading ? (
                 <>
