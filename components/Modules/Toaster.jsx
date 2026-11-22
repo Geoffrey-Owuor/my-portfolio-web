@@ -20,6 +20,10 @@ import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
 //   toast.success("Blog published");
 //   toast.error(message, { title: "Couldn't save" });
 //   toast.info("…", { id: "network", duration: Infinity, icon: WifiOff });
+//   toast.info("…", { action: { label: "Reload", icon: RotateCw, onClick } });
+//
+// An `action` adds a button under the message; clicking it runs `onClick`
+// and dismisses the toast.
 //
 // Showing a toast with an `id` that's already on screen replaces it in place
 // (no duplicate stacking — e.g. offline → back online, or an effect that
@@ -141,7 +145,7 @@ const SWIPE_DISTANCE = 90;
 const SWIPE_VELOCITY = 500;
 
 const Toast = ({ toast, onDismiss }) => {
-  const { type, title, message, duration, version } = toast;
+  const { type, title, message, duration, version, action } = toast;
   const { icon: TypeIcon, iconClass, bar } = TYPES[type] ?? TYPES.info;
   const Icon = toast.icon ?? TypeIcon;
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -215,6 +219,19 @@ const Toast = ({ toast, onDismiss }) => {
           >
             {message}
           </p>
+          {action && (
+            <button
+              type="button"
+              onClick={() => {
+                onDismiss();
+                action.onClick();
+              }}
+              className="border-border-subtle text-text-primary hover:border-accent hover:text-accent rounded-control mt-2.5 inline-flex cursor-pointer items-center gap-1.5 border px-3 py-1 text-sm font-semibold transition-colors"
+            >
+              {action.icon && <action.icon className="h-3.5 w-3.5" />}
+              {action.label}
+            </button>
+          )}
         </div>
 
         <button
