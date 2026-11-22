@@ -376,7 +376,7 @@ html:not([data-theme="dark"]) .theme-inverse {
      `--rail-node-half` wider than it on each side, so the outer nodes centre
      on the outer borders and the inner ones `--rail-w` in. Keep the size odd
      so it centres on the line. Fills are listed first so they paint on top. */
-  --rail-node-size: 7px;
+  --rail-node-size: 5px;
   --rail-node-half: calc((var(--rail-node-size) - 1px) / 2);
   --rail-node-fill: calc(var(--rail-node-size) - 2px);
   --rail-nodes:
