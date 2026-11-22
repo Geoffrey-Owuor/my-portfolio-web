@@ -13,7 +13,7 @@ import {
 } from "@/utils/contactValidation";
 
 const fieldClass = (hasError) =>
-  `bg-surface-raised text-text-primary rounded-card border p-4 transition-colors focus:outline-none ${
+  `bg-surface-raised text-text-primary rounded-field border p-4 transition-colors focus:outline-none ${
     hasError
       ? "border-danger focus:border-danger"
       : "border-border-subtle focus:border-accent"
@@ -225,7 +225,7 @@ const Contact = () => {
                 whileTap="tap"
                 type="submit"
                 disabled={sending}
-                className="bg-text-primary text-surface rounded-control flex w-full cursor-pointer items-center justify-center gap-2 px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-start"
+                className="bg-text-primary text-surface rounded-field flex w-full cursor-pointer items-center justify-center gap-2 px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto md:self-start"
               >
                 {sending ? (
                   <>

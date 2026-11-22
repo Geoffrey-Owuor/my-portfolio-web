@@ -179,9 +179,9 @@ const CustomMdEditor = ({
   };
 
   return (
-    <div className="border-border-subtle rounded-card focus-within:border-accent w-full border transition-colors">
+    <div className="border-border-subtle rounded-field focus-within:border-accent w-full border transition-colors">
       {/* Toolbar */}
-      <div className="border-border-subtle bg-surface-raised rounded-t-card flex flex-wrap items-center gap-2 border-b p-2">
+      <div className="border-border-subtle bg-surface-raised rounded-t-field flex flex-wrap items-center gap-2 border-b p-2">
         {/* Toolbar buttons */}
         {!showPreview && (
           <div className="flex flex-wrap items-center gap-1">

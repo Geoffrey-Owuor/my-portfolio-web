@@ -18,7 +18,7 @@ import { capitalize, MANAGE_LISTS } from "./manageLists";
 import ProjectImageField from "./ProjectImageField";
 
 const inputClass =
-  "border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none aria-invalid:border-danger";
+  "border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent rounded-field w-full border px-4 py-3 text-base transition-colors focus:outline-none aria-invalid:border-danger";
 
 // Add or edit one row. `row` is null when adding. Mounted only while open, so
 // each opening starts from the row's saved values plus any draft.
@@ -254,7 +254,7 @@ const ResourceFormModal = ({ resource, row, onClose }) => {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="bg-text-primary text-surface rounded-control cursor-pointer px-6 py-3 text-sm font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="bg-text-primary text-surface rounded-field cursor-pointer px-6 py-3 text-sm font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {row ? "Save changes" : `Add ${noun}`}
                 </button>
@@ -262,7 +262,7 @@ const ResourceFormModal = ({ resource, row, onClose }) => {
                   <button
                     type="button"
                     onClick={discardDraft}
-                    className="text-text-muted hover:text-danger rounded-control cursor-pointer px-3 py-3 text-sm font-semibold transition-colors"
+                    className="text-text-muted hover:text-danger rounded-field cursor-pointer px-3 py-3 text-sm font-semibold transition-colors"
                   >
                     Discard changes
                   </button>

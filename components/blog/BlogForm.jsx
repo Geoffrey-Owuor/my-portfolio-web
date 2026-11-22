@@ -14,7 +14,7 @@ import { countPostWords } from "@/utils/markdownText";
 import { BLOG_LIMITS } from "@/utils/blogFields";
 
 const inputClass =
-  "border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent aria-invalid:border-danger rounded-control w-full border px-4 py-3 text-base transition-colors focus:outline-none";
+  "border-border-subtle bg-surface text-text-primary placeholder:text-text-muted focus:border-accent aria-invalid:border-danger rounded-field w-full border px-4 py-3 text-base transition-colors focus:outline-none";
 
 const FieldError = ({ id, message }) =>
   message ? (
@@ -147,7 +147,7 @@ const BlogForm = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-text-primary text-surface rounded-control flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+              className="bg-text-primary text-surface rounded-field flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               <Send className="h-4 w-4" />
               {IsUpdating ? (
@@ -162,7 +162,7 @@ const BlogForm = ({
             </button>
             <ProgressLink
               href="/blogs"
-              className="bg-surface-raised text-text-primary hover:bg-border-subtle/50 rounded-control flex items-center gap-2 px-6 py-3 text-sm font-semibold transition-colors duration-150"
+              className="bg-surface-raised text-text-primary hover:bg-border-subtle/50 rounded-field flex items-center gap-2 px-6 py-3 text-sm font-semibold transition-colors duration-150"
             >
               View <span className="hidden sm:block">Blogs</span>
               <ArrowUpRight className="h-4 w-4" />
@@ -171,7 +171,7 @@ const BlogForm = ({
               <button
                 type="button"
                 onClick={onDiscard}
-                className="text-text-muted hover:text-danger rounded-control px-3 py-3 text-sm font-semibold transition-colors duration-150"
+                className="text-text-muted hover:text-danger rounded-field px-3 py-3 text-sm font-semibold transition-colors duration-150"
               >
                 Discard <span className="hidden sm:inline">changes</span>
               </button>
