@@ -89,7 +89,7 @@ const Hero = () => {
     <section id="home" className="container-page pb-section">
       {/* Who: portrait, name and role, with my local time (and the visitor's
           when it differs) beside them from lg, below them before. */}
-      <div className="flex flex-col gap-6 pt-10 pb-8 md:pt-14 md:pb-10 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-6 py-9 md:py-12 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-4 sm:gap-5">
           <Image
             src={assets.profile_photo}
