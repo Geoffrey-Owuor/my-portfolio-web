@@ -1,4 +1,4 @@
-import profile_photo from "../public/profile2.webp";
+import profile_photo from "../public/profile3.webp";
 import github_avatar from "../public/profile1.webp";
 import {
   AwsIcon,

@@ -37,8 +37,15 @@ const Wordmark = () => (
 // Every tab in the command bar: a transparent hit area above the single
 // sliding pill, which NavBar renders once per list.
 // Real links, so a tab can be middle-clicked or opened in a new tab.
-const Tab = ({ isActive, href, onClick, as: Component = Link, children }) => (
-  <li className="relative">
+const Tab = ({
+  isActive,
+  href,
+  onClick,
+  as: Component = Link,
+  className = "",
+  children,
+}) => (
+  <li className={`relative ${className}`}>
     <Component
       href={href}
       onClick={onClick}
@@ -257,13 +264,22 @@ const NavBar = () => {
           hangs its tooltip below the bar, so no `overflow-hidden` here. ── */}
       <nav
         aria-label="Main"
-        className="border-border-subtle bg-surface z-header sticky top-0 hidden h-(--header-h) border-b lg:block"
+        className="border-border-rule bg-surface z-header sticky top-0 hidden h-(--header-h) border-b lg:block"
       >
+        {/* The page rails run up through the bar, plain (see `page-rail`). */}
+        <span aria-hidden="true" className="page-rail page-rail-left" />
+        <span aria-hidden="true" className="page-rail page-rail-right" />
+
         <ScrollProgress />
 
-        <div className="container-bar flex h-full items-center justify-between gap-3">
-          {/* Left cluster */}
-          <div className="flex items-center gap-3">
+        {/* Nodes where the bar's bottom border crosses the rails, above the
+            progress line so it runs through them. */}
+        <span aria-hidden="true" className="rail-span -bottom-px h-px" />
+
+        <div className="container-page flex h-full items-center justify-between gap-3">
+          {/* Left cluster. Each divider sits 16px from the words on both
+              sides: a tab's own 12px padding plus 4px of margin. */}
+          <div className="flex items-center">
             {/* Wordmark */}
             <Link
               href="/#home"
@@ -273,7 +289,7 @@ const NavBar = () => {
             </Link>
 
             <span
-              className="bg-border-subtle h-6 w-px shrink-0"
+              className="bg-border-subtle mr-1 ml-4 h-6 w-px shrink-0"
               aria-hidden="true"
             />
 
@@ -300,13 +316,16 @@ const NavBar = () => {
                 </Tab>
               ))}
 
+              {/* Blogs and Résumé need the room from xl up; below it they're
+                  in the command palette. */}
               <span
-                className="bg-border-subtle mx-1.5 h-6 w-px shrink-0"
+                className="bg-border-subtle mx-0.5 hidden h-6 w-px shrink-0 xl:block"
                 aria-hidden="true"
               />
 
               <Tab
                 as={ProgressLink}
+                className="hidden xl:block"
                 isActive={activeKey === "blogs"}
                 href="/blogs"
                 onClick={(e) => {
@@ -318,6 +337,7 @@ const NavBar = () => {
 
               <Tab
                 as={ProgressLink}
+                className="hidden xl:block"
                 isActive={activeKey === "resume"}
                 href={RESUME_URL}
                 onClick={(e) => {
@@ -366,7 +386,7 @@ const NavBar = () => {
       </nav>
 
       {/* ── Mobile: the same sticky, blurred bar, without the tabs. ── */}
-      <header className="border-border-subtle bg-surface z-header sticky top-0 flex h-(--header-h) items-center justify-between border-b px-3 lg:hidden">
+      <header className="border-border-rule bg-surface z-header sticky top-0 flex h-(--header-h) items-center justify-between border-b px-3 lg:hidden">
         <ScrollProgress />
 
         {/* min-w-0 + truncate: a long section label ("05 Experience") used to

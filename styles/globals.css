@@ -123,6 +123,8 @@
   --color-text-primary: var(--text-primary);
   --color-text-muted: var(--text-muted);
   --color-border-subtle: var(--border-subtle);
+  --color-border-rule: var(--border-rule);
+  --color-rail-node: var(--rail-node);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-success: var(--success);
@@ -167,6 +169,12 @@ html[data-theme="dark"] .theme-inverse {
   --border-subtle: var(
     --color-gray-200
   ); /* decorative divider, not a text pairing */
+  /* Structural lines (page rails, section rules, navbar and footer edges):
+     the same as border-subtle in light mode, a step quieter in dark, where
+     gray-700 on gray-950 reads too strong for lines that frame the page. */
+  --border-rule: var(--color-gray-200);
+  /* The square nodes where those lines cross a rail's border. */
+  --rail-node: var(--color-gray-300);
   --accent: var(--color-blue-600); /* 5.15:1 on --surface */
   --accent-hover: var(--color-blue-700); /* 6.70:1 on --surface */
   --success: var(--color-green-700); /* 5.01:1 on --surface */
@@ -228,6 +236,8 @@ html:not([data-theme="dark"]) .theme-inverse {
   --border-subtle: var(
     --color-gray-700
   ); /* decorative divider, not a text pairing */
+  --border-rule: var(--color-gray-800);
+  --rail-node: var(--color-gray-700);
   --accent: var(--color-blue-400); /* 7.92:1 on --surface */
   --accent-hover: var(--color-blue-300); /* 11.17:1 on --surface */
   --success: var(--color-green-400); /* 11.58:1 on --surface */
@@ -349,34 +359,49 @@ html:not([data-theme="dark"]) .theme-inverse {
   min-height: calc(100dvh - var(--header-h));
 }
 
-/* Page rails (see `page-rail` below). From lg up, the rails stand just inside
-   the navbar's content edges, and everything below the navbar is inset by
-   `--rail-inset` (rail + gap) so it sits between them. Below lg there are no
-   rails and no inset. */
+/* Page rails (see `page-rail` below). From lg up, two rails run down the
+   page, navbar included, and everything is inset by `--rail-inset` (rail +
+   gap) so it sits between them. Below lg there are no rails and no inset. */
 :root {
-  --rail-w: 1.5rem;
-  --rail-gap: 1.5rem;
+  --rail-w: 1rem;
+  --rail-gap: 1rem;
   --rail-inset: 0px;
   @media (width >= 64rem) {
     --rail-inset: calc(var(--rail-w) + var(--rail-gap));
   }
+
+  /* Rail nodes: a square (a surface fill in a node-coloured ring) on each
+     rail border a line crosses, so four per line. Painted by a
+     pseudo-element `--rail-node-size` tall, centred on the 1px line, and
+     `--rail-node-half` wider than it on each side, so the outer nodes centre
+     on the outer borders and the inner ones `--rail-w` in. Keep the size odd
+     so it centres on the line. Fills are listed first so they paint on top. */
+  --rail-node-size: 5px;
+  --rail-node-half: calc((var(--rail-node-size) - 1px) / 2);
+  --rail-node-fill: calc(var(--rail-node-size) - 2px);
+  --rail-nodes:
+    linear-gradient(var(--color-surface) 0 0) left 1px center /
+      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
+    linear-gradient(var(--color-surface) 0 0) left var(--rail-w) center /
+      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
+    linear-gradient(var(--color-surface) 0 0) right 1px center /
+      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
+    linear-gradient(var(--color-surface) 0 0) right var(--rail-w) center /
+      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) left 0 center /
+      var(--rail-node-size) var(--rail-node-size) no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) left calc(var(--rail-w) - 1px)
+      center / var(--rail-node-size) var(--rail-node-size) no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) right 0 center /
+      var(--rail-node-size) var(--rail-node-size) no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) right calc(var(--rail-w) - 1px)
+      center / var(--rail-node-size) var(--rail-node-size) no-repeat;
 }
 
-/* The navbar's measure: centred, max-w-7xl, with the shared side gutter. Its
-   content edges are where the page rails' outer borders fall. */
-@utility container-bar {
-  margin-inline: auto;
-  width: 100%;
-  max-width: var(--container-7xl);
-  padding-inline: --spacing(4);
-  @media (width >= 48rem) {
-    padding-inline: --spacing(6);
-  }
-}
-
-/* The page measure: the navbar's, inset to sit between the page rails. Every
-   top-level block below the navbar (sections, footer, route pages) uses this,
-   so their edges always line up. */
+/* The page measure: centred, max-w-7xl, with the shared side gutter (where
+   the rails' outer borders fall), inset to sit between the page rails. The
+   navbar and every top-level block below it (sections, footer, route pages)
+   use this, so their edges always line up. */
 @utility container-page {
   margin-inline: auto;
   width: 100%;
@@ -535,26 +560,60 @@ html:not([data-theme="dark"]) .theme-inverse {
     var(--hero-delay, 0ms) backwards;
 }
 
-/* Hairline right-slanted ("/") hatching in the divider colour — the hero's
-   closing band. 135deg runs the gradient toward the bottom right, so the
-   stripes across it lean right. */
-@utility hatch-lines {
-  background-image: repeating-linear-gradient(
-    135deg,
-    var(--color-border-subtle) 0 1px,
-    transparent 1px 6px
-  );
+/* Ruler ticks in the rule colour, like an editor's gutter: a short tick every
+   8px and a long one every 64px. Two layers, long ticks over short ones.
+     ruler-y : ticks run down the strip, hanging off its left edge (or
+               its right edge with `--ruler-side: right`, as the right rail
+               sets).
+     ruler-x : ticks run across the strip, hanging from its top edge (the
+               hero's closing band). */
+@utility ruler-y {
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      var(--color-border-rule) 0 1px,
+      transparent 1px 64px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--color-border-rule) 0 1px,
+      transparent 1px 8px
+    );
+  background-size:
+    7px 100%,
+    3px 100%;
+  background-repeat: no-repeat;
+  background-position: var(--ruler-side, left) top;
 }
 
-/* Page rails (app/layout.js): a hatched strip with hairline edges down each
-   side of the page, from below the navbar to the bottom of the page. Their
-   outer borders line up with the navbar's content edges (`container-bar`),
-   and `container-page` keeps content `--rail-gap` clear of their inner
-   borders. Shown from lg up, with the desktop navbar. Positioned against the
-   full-width wrapper, so the edge offset is the centred 7xl column's margin
-   plus the md+ gutter. */
+@utility ruler-x {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      var(--color-border-rule) 0 1px,
+      transparent 1px 64px
+    ),
+    repeating-linear-gradient(
+      to right,
+      var(--color-border-rule) 0 1px,
+      transparent 1px 8px
+    );
+  background-size:
+    100% 7px,
+    100% 3px;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+/* Page rails: a strip with hairline edges down each side of the page, and
+   `container-page` keeps content `--rail-gap` clear of their inner borders.
+   Shown from lg up, with the desktop navbar. Positioned against a full-width
+   box, so the edge offset is the centred 7xl column's margin plus the md+
+   gutter. Below the navbar (app/layout.js) they add `ruler-y`, whose ticks
+   sit on each rail's outer side; inside the sticky navbar they stay plain,
+   since ticks there would stand still while the page's ticks scroll. */
 @utility page-rail {
-  @apply border-border-subtle hatch-lines pointer-events-none absolute inset-y-0 hidden border-x;
+  @apply border-border-rule pointer-events-none absolute inset-y-0 hidden border-x;
   width: var(--rail-w);
   @media (width >= 64rem) {
     display: block;
@@ -567,18 +626,29 @@ html:not([data-theme="dark"]) .theme-inverse {
 
 @utility page-rail-right {
   right: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
+  --ruler-side: right;
 }
 
-/* Hairlines that run to the rails' inner borders: from lg up they reach
-   `--rail-gap` past the content on both sides; below lg (no rails) they stay
-   at content width.
+/* Hairlines that run to the rails' outer borders, with a node on each rail
+   border they cross: from lg up they reach `--rail-inset` past the content
+   on both sides; below lg (no rails) they stay at content width, plain.
      bleed-rails : for a line element itself (an `h-px` div).
      rule-rails  : for a block whose bottom border is the line. Draws it as an
                    ::after hairline instead of a border, so the block's own
                    padding and text stay put. */
 @utility bleed-rails {
   @media (width >= 64rem) {
-    margin-inline: calc(var(--rail-gap) * -1);
+    position: relative;
+    margin-inline: calc(var(--rail-inset) * -1);
+    &::before {
+      content: "";
+      position: absolute;
+      inset-inline: calc(var(--rail-node-half) * -1);
+      top: calc(var(--rail-node-half) * -1);
+      height: var(--rail-node-size);
+      background: var(--rail-nodes);
+      pointer-events: none;
+    }
   }
 }
 
@@ -590,10 +660,65 @@ html:not([data-theme="dark"]) .theme-inverse {
     inset-inline: 0;
     bottom: 0;
     height: 1px;
-    background-color: var(--color-border-subtle);
+    background-color: var(--color-border-rule);
     pointer-events: none;
     @media (width >= 64rem) {
-      inset-inline: calc(var(--rail-gap) * -1);
+      inset-inline: calc(var(--rail-inset) * -1);
+    }
+  }
+  @media (width >= 64rem) {
+    &::before {
+      content: "";
+      position: absolute;
+      inset-inline: calc(var(--rail-inset) * -1 - var(--rail-node-half));
+      bottom: calc(var(--rail-node-half) * -1);
+      height: var(--rail-node-size);
+      background: var(--rail-nodes);
+      pointer-events: none;
+      z-index: 1;
+    }
+  }
+}
+
+/* A strip from the left rail's outer border to the right one's, positioned
+   against a full-width box (the navbar). From lg up it carries the nodes
+   for a horizontal border it's laid on: give it the border's 1px height and
+   position. */
+@utility rail-span {
+  @apply pointer-events-none absolute hidden;
+  left: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
+  right: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
+  @media (width >= 64rem) {
+    display: block;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: calc(var(--rail-node-half) * -1);
+    top: calc(var(--rail-node-half) * -1);
+    height: var(--rail-node-size);
+    background: var(--rail-nodes);
+  }
+}
+
+/* Nodes on both borders of a bordered strip that spans the rails' outer
+   borders from lg up (the hero's closing band). */
+@utility rail-nodes-y {
+  @media (width >= 64rem) {
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: calc(var(--rail-node-half) * -1);
+      height: var(--rail-node-size);
+      background: var(--rail-nodes);
+      pointer-events: none;
+    }
+    &::before {
+      top: calc(var(--rail-node-half) * -1 - 1px);
+    }
+    &::after {
+      bottom: calc(var(--rail-node-half) * -1 - 1px);
     }
   }
 }

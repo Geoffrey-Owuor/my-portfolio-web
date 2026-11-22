@@ -32,7 +32,7 @@ export const PERSON_SCHEMA = {
   name: SITE_NAME,
   alternateName: "Jeff",
   url: SITE_URL,
-  image: `${SITE_URL}/profile2.webp`,
+  image: `${SITE_URL}/profile3.webp`,
   jobTitle: "Full-Stack Developer",
   address: {
     "@type": "PostalAddress",
