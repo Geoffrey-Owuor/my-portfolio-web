@@ -17,7 +17,7 @@ const Footer = () => {
       className="container-page py-8"
     >
       {/* Border div */}
-      <div className="bg-border-subtle bleed-rails mb-6 h-px" />
+      <div className="bg-border-rule bleed-rails mb-6 h-px" />
 
       {/* Mail to me */}
       <div className="mx-auto flex flex-col items-center justify-between gap-6 md:flex-row">

@@ -123,6 +123,8 @@
   --color-text-primary: var(--text-primary);
   --color-text-muted: var(--text-muted);
   --color-border-subtle: var(--border-subtle);
+  --color-border-rule: var(--border-rule);
+  --color-rail-node: var(--rail-node);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-success: var(--success);
@@ -167,6 +169,12 @@ html[data-theme="dark"] .theme-inverse {
   --border-subtle: var(
     --color-gray-200
   ); /* decorative divider, not a text pairing */
+  /* Structural lines (page rails, section rules, navbar and footer edges):
+     the same as border-subtle in light mode, a step quieter in dark, where
+     gray-700 on gray-950 reads too strong for lines that frame the page. */
+  --border-rule: var(--color-gray-200);
+  /* The square nodes where those lines cross a rail's border. */
+  --rail-node: var(--color-gray-300);
   --accent: var(--color-blue-600); /* 5.15:1 on --surface */
   --accent-hover: var(--color-blue-700); /* 6.70:1 on --surface */
   --success: var(--color-green-700); /* 5.01:1 on --surface */
@@ -228,6 +236,8 @@ html:not([data-theme="dark"]) .theme-inverse {
   --border-subtle: var(
     --color-gray-700
   ); /* decorative divider, not a text pairing */
+  --border-rule: var(--color-gray-800);
+  --rail-node: var(--color-gray-700);
   --accent: var(--color-blue-400); /* 7.92:1 on --surface */
   --accent-hover: var(--color-blue-300); /* 11.17:1 on --surface */
   --success: var(--color-green-400); /* 11.58:1 on --surface */
@@ -541,7 +551,7 @@ html:not([data-theme="dark"]) .theme-inverse {
 @utility hatch-lines {
   background-image: repeating-linear-gradient(
     135deg,
-    var(--color-border-subtle) 0 1px,
+    var(--color-border-rule) 0 1px,
     transparent 1px 6px
   );
 }
@@ -554,7 +564,7 @@ html:not([data-theme="dark"]) .theme-inverse {
    full-width wrapper, so the edge offset is the centred 7xl column's margin
    plus the md+ gutter. */
 @utility page-rail {
-  @apply border-border-subtle hatch-lines pointer-events-none absolute inset-y-0 hidden border-x;
+  @apply border-border-rule hatch-lines pointer-events-none absolute inset-y-0 hidden border-x;
   width: var(--rail-w);
   @media (width >= 64rem) {
     display: block;
@@ -590,7 +600,7 @@ html:not([data-theme="dark"]) .theme-inverse {
     inset-inline: 0;
     bottom: 0;
     height: 1px;
-    background-color: var(--color-border-subtle);
+    background-color: var(--color-border-rule);
     pointer-events: none;
     @media (width >= 64rem) {
       inset-inline: calc(var(--rail-gap) * -1);

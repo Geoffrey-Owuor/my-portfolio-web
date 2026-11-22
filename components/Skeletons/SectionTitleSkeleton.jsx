@@ -9,7 +9,7 @@ const SectionTitleSkeleton = () => (
         <div className="bg-border-subtle rounded-chip mt-2.5 h-4 w-40 animate-pulse" />
       </div>
     </div>
-    <div className="bg-border-subtle bleed-rails mt-5 h-px" />
+    <div className="bg-border-rule bleed-rails mt-5 h-px" />
   </div>
 );
 

@@ -171,7 +171,7 @@ const Hero = () => {
       <div className="relative mt-20 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-10.5 font-mono text-xs">
         <span
           aria-hidden="true"
-          className="border-border-subtle hatch-lines motion-safe:animate-hero-draw absolute inset-x-[calc(50%-50vw)] top-0 h-6 origin-left border-y [--hero-delay:620ms] lg:inset-x-[calc(var(--rail-inset)*-1)]"
+          className="border-border-rule hatch-lines motion-safe:animate-hero-draw absolute inset-x-[calc(50%-50vw)] top-0 h-6 origin-left border-y [--hero-delay:620ms] lg:inset-x-[calc(var(--rail-inset)*-1)]"
         />
         <HeroBot />
         <p className="text-text-muted motion-safe:animate-hero-fade [--hero-delay:800ms]">

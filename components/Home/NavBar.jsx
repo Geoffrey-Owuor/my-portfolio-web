@@ -257,7 +257,7 @@ const NavBar = () => {
           hangs its tooltip below the bar, so no `overflow-hidden` here. ── */}
       <nav
         aria-label="Main"
-        className="border-border-subtle bg-surface z-header sticky top-0 hidden h-(--header-h) border-b lg:block"
+        className="border-border-rule bg-surface z-header sticky top-0 hidden h-(--header-h) border-b lg:block"
       >
         <ScrollProgress />
 
@@ -366,7 +366,7 @@ const NavBar = () => {
       </nav>
 
       {/* ── Mobile: the same sticky, blurred bar, without the tabs. ── */}
-      <header className="border-border-subtle bg-surface z-header sticky top-0 flex h-(--header-h) items-center justify-between border-b px-3 lg:hidden">
+      <header className="border-border-rule bg-surface z-header sticky top-0 flex h-(--header-h) items-center justify-between border-b px-3 lg:hidden">
         <ScrollProgress />
 
         {/* min-w-0 + truncate: a long section label ("05 Experience") used to

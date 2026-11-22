@@ -123,7 +123,7 @@ const SectionTitle = ({
         </div>
       </motion.div>
 
-      <div className="bg-border-subtle bleed-rails mt-5 h-px" />
+      <div className="bg-border-rule bleed-rails mt-5 h-px" />
     </header>
   );
 };
