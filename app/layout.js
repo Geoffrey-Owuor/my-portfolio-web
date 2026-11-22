@@ -13,6 +13,7 @@ import {
 import "../styles/globals.css";
 import { Providers } from "@/components/Theme/Providers";
 import NetworkStatus from "@/components/Modules/NetworkStatus";
+import DeploymentWatcher from "@/components/Modules/DeploymentWatcher";
 import { ToastProvider } from "@/components/Modules/Toaster";
 import NavBar from "@/components/Home/NavBar";
 import { RouteProgressProvider } from "@/components/Modules/RouteProgress";
@@ -197,6 +198,7 @@ export default function RootLayout({ children }) {
           {/* The app's single notification system (see Modules/Toaster). */}
           <ToastProvider>
             <NetworkStatus />
+            <DeploymentWatcher />
 
             {/* Owns the app-wide progress line; client navigations go through
               its `useProgressRouter()`/`ProgressLink` so the line tracks them. */}

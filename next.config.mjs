@@ -46,6 +46,15 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  // Identifies the build, so an open tab can tell a newer deployment is live
+  // (Modules/DeploymentWatcher). Vercel gives every deployment its own id,
+  // redeploys of the same commit included. The dev server gets a fixed one.
+  env: {
+    NEXT_PUBLIC_DEPLOYMENT_ID:
+      process.env.VERCEL_DEPLOYMENT_ID ||
+      process.env.VERCEL_GIT_COMMIT_SHA ||
+      (isDev ? "development" : ""),
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
