@@ -34,13 +34,16 @@
   /* ── Corner radii, by role ───────────────────────────────────────────
      Pick by what the element *is*, not by the size it should look:
        rounded-chip    : kbd, tags/badges, skeleton text bars
-       rounded-control : buttons, inputs, tabs, menu rows
+       rounded-control : buttons, tabs, menu rows, small icon buttons
+       rounded-field   : text inputs, textareas, editors and the full-height
+                         form buttons beside them; softer than a control
        rounded-card    : cards, panels, popovers, toasts, linked cards
        rounded-dialog  : modals and full-page form shells
      rounded-full stays for pills, avatars and dots. Nested surfaces step
      down (a control inside a card) so inner corners never look fatter. */
   --radius-chip: 0.375rem;
   --radius-control: 0.5rem;
+  --radius-field: 0.75rem;
   --radius-card: 0.75rem;
   --radius-dialog: 1rem;
   --font-geistsans: var(--nf-geistsans), ui-sans-serif, system-ui, sans-serif;

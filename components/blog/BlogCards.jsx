@@ -150,7 +150,7 @@ const BlogCards = ({ blogs }) => {
               aria-label="Search blogs"
               value={searchQuery}
               onChange={handleSearchQuery}
-              className="border-border-subtle bg-surface-raised text-text-primary placeholder-text-muted focus:border-accent rounded-control w-full border py-3 pr-10 pl-11 text-sm transition-colors focus:outline-none"
+              className="border-border-subtle bg-surface-raised text-text-primary placeholder-text-muted focus:border-accent rounded-field w-full border py-3 pr-10 pl-11 text-sm transition-colors focus:outline-none"
             />
             {searchQuery && (
               <button
