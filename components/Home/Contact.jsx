@@ -13,7 +13,7 @@ import {
 } from "@/utils/contactValidation";
 
 const fieldClass = (hasError) =>
-  `bg-surface-raised text-text-primary rounded-field border p-4 transition-colors focus:outline-none ${
+  `bg-surface-raised text-text-primary rounded-field border p-4 [--field-bg:var(--color-surface-raised)] transition-colors focus:outline-none ${
     hasError
       ? "border-danger focus:border-danger"
       : "border-border-subtle focus:border-accent"

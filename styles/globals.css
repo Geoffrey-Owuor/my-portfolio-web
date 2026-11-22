@@ -798,6 +798,17 @@ html:not([data-theme="dark"]) .theme-inverse {
     outline-offset: 2px;
   }
 
+  /* Browser autofill paints its own pale-blue (Chrome) or tinted (Firefox)
+     fill with !important, which ignores the theme. An inset shadow covers it
+     in the field's own colour: --field-bg, surface by default; a field on
+     another surface sets it (the contact form uses surface-raised). */
+  :is(input, textarea, select):is(:autofill, :-webkit-autofill) {
+    box-shadow: inset 0 0 0 100vmax var(--field-bg, var(--color-surface));
+    -webkit-text-fill-color: var(--color-text-primary);
+    caret-color: var(--color-text-primary);
+    filter: none;
+  }
+
   /* Custom blur compatible in all browsers */
   .custom-blur {
     -webkit-backdrop-filter: blur(6px);
