@@ -360,8 +360,10 @@ const RecentReposCard = ({ repos }) => (
             </span>
             <ArrowUpRight className="text-text-muted group-hover:text-accent h-4 w-4 shrink-0 transition-colors" />
           </span>
-          <span className="text-text-muted mt-1.5 line-clamp-2 flex-1 text-sm">
-            {repo.description ?? "No description provided."}
+          <span className="flex-1">
+            <span className="text-text-muted mt-1.5 line-clamp-2 text-sm">
+              {repo.description ?? "No description provided."}
+            </span>
           </span>
           <span className="text-text-muted mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
             {repo.language && (
