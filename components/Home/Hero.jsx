@@ -117,7 +117,7 @@ const Hero = () => {
                 <ProgressLink
                   key={href}
                   href={href}
-                  className="border-border-subtle bg-surface-raised text-text-muted hover:border-accent hover:text-accent rounded-control group inline-flex items-center gap-1 border px-2 py-1 text-xs font-medium transition-colors sm:px-2.5"
+                  className="border-border-subtle bg-surface-raised text-text-muted hover:border-accent hover:text-accent rounded-chip group inline-flex items-center gap-1 border px-2 py-1 text-xs font-medium transition-colors sm:px-2.5"
                 >
                   {label}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
