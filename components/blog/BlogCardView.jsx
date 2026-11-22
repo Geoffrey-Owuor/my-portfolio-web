@@ -36,9 +36,9 @@ const BlogCardView = ({ currentBlogs, searchQuery, highlightText }) => {
             </div>
 
             {/* Content preview, clamped for a consistent, skimmable card height */}
-            <p className="text-text-muted mb-6 line-clamp-3 grow">
-              {blog.excerpt}
-            </p>
+            <div className="mb-6 grow">
+              <p className="text-text-muted line-clamp-3">{blog.excerpt}</p>
+            </div>
 
             {/* The card's one link, stretched over the whole card by its
                 ::after, so the card can be middle-clicked or opened in a new
