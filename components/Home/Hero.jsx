@@ -94,7 +94,7 @@ const Hero = () => {
             <Image
               src={assets.profile_photo}
               alt="Portrait of Geoffrey Owuor"
-              className="ring-border-subtle motion-safe:animate-hero-pop h-20 w-20 rounded-full object-cover object-[50%_25%] ring-1 [--hero-delay:60ms] sm:h-24 sm:w-24"
+              className="ring-border-subtle motion-safe:animate-hero-pop h-20 w-20 rounded-full object-cover ring-1 [--hero-delay:60ms] sm:h-24 sm:w-24"
               priority
               width={192}
               height={192}
