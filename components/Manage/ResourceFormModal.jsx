@@ -8,6 +8,7 @@ import apiClient from "@/lib/AxiosClient";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 import { useBackdropClose } from "@/hooks/useBackdropClose";
 import { useFormDraft } from "@/hooks/useFormDraft";
+import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { MANAGE_FIELDS, validateManageFields } from "@/utils/manageFields";
 import CustomMdEditor from "../blog/CustomMdEditor";
@@ -41,6 +42,8 @@ const ResourceFormModal = ({ resource, row, onClose }) => {
   const [saving, setSaving] = useState(false);
   const [image, setImage] = useState({ file: null, remove: false });
 
+  // A picked image lives only in memory, and a save is half done until it ends.
+  useUnsavedChanges(Boolean(image.file || image.remove) || saving);
   useHideScrollbar(true);
   useFocusTrapping(modalRef, true, onClose);
   const backdropProps = useBackdropClose(onClose);
