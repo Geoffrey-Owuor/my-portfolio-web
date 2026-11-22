@@ -18,7 +18,7 @@ const random = (min, max) => min + Math.random() * (max - min);
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
 /**
- * The hero's mascot: a small code-bot sitting at the middle of the hatched
+ * The hero's mascot: a small code-bot sitting at the middle of the ruled
  * band that closes the hero (it must be placed inside that band's `relative`
  * row). It stays put; its head turns and tilts and its eyes follow the
  * cursor, it blinks now and then, and it smiles when the cursor comes close.
@@ -183,7 +183,7 @@ const HeroBot = () => {
     <div
       ref={ref}
       aria-hidden="true"
-      className="z-raised pointer-events-none absolute bottom-[calc(100%-13px)] left-1/2 -ml-10 w-20"
+      className="z-raised pointer-events-none absolute bottom-[calc(100%-9px)] left-1/2 -ml-10 w-20"
     >
       <svg
         viewBox="0 0 72 64"

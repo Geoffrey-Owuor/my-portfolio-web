@@ -364,8 +364,8 @@ html:not([data-theme="dark"]) .theme-inverse {
    `--rail-inset` (rail + gap) so it sits between them. Below lg there are no
    rails and no inset. */
 :root {
-  --rail-w: 1.5rem;
-  --rail-gap: 1.5rem;
+  --rail-w: 1rem;
+  --rail-gap: 1rem;
   --rail-inset: 0px;
   @media (width >= 64rem) {
     --rail-inset: calc(var(--rail-w) + var(--rail-gap));
@@ -545,26 +545,59 @@ html:not([data-theme="dark"]) .theme-inverse {
     var(--hero-delay, 0ms) backwards;
 }
 
-/* Hairline right-slanted ("/") hatching in the divider colour — the hero's
-   closing band. 135deg runs the gradient toward the bottom right, so the
-   stripes across it lean right. */
-@utility hatch-lines {
-  background-image: repeating-linear-gradient(
-    135deg,
-    var(--color-border-rule) 0 1px,
-    transparent 1px 6px
-  );
+/* Ruler ticks in the rule colour, like an editor's gutter: a short tick every
+   8px and a long one every 64px. Two layers, long ticks over short ones.
+     ruler-y : ticks run down the strip, hanging off its left edge (the
+               right rail moves them to its right edge, its outer side).
+     ruler-x : ticks run across the strip, hanging from its top edge (the
+               hero's closing band). */
+@utility ruler-y {
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      var(--color-border-rule) 0 1px,
+      transparent 1px 64px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--color-border-rule) 0 1px,
+      transparent 1px 8px
+    );
+  background-size:
+    7px 100%,
+    3px 100%;
+  background-repeat: no-repeat;
+  background-position: left top;
 }
 
-/* Page rails (app/layout.js): a hatched strip with hairline edges down each
+@utility ruler-x {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      var(--color-border-rule) 0 1px,
+      transparent 1px 64px
+    ),
+    repeating-linear-gradient(
+      to right,
+      var(--color-border-rule) 0 1px,
+      transparent 1px 8px
+    );
+  background-size:
+    100% 7px,
+    100% 3px;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+/* Page rails (app/layout.js): a ruled strip with hairline edges down each
    side of the page, from below the navbar to the bottom of the page. Their
    outer borders line up with the navbar's content edges (`container-bar`),
    and `container-page` keeps content `--rail-gap` clear of their inner
    borders. Shown from lg up, with the desktop navbar. Positioned against the
    full-width wrapper, so the edge offset is the centred 7xl column's margin
-   plus the md+ gutter. */
+   plus the md+ gutter. The ticks sit on each rail's outer side. */
 @utility page-rail {
-  @apply border-border-rule hatch-lines pointer-events-none absolute inset-y-0 hidden border-x;
+  @apply border-border-rule ruler-y pointer-events-none absolute inset-y-0 hidden border-x;
   width: var(--rail-w);
   @media (width >= 64rem) {
     display: block;
@@ -577,6 +610,7 @@ html:not([data-theme="dark"]) .theme-inverse {
 
 @utility page-rail-right {
   right: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
+  background-position: right top;
 }
 
 /* Hairlines that run to the rails' inner borders: from lg up they reach

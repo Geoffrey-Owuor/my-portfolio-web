@@ -209,7 +209,7 @@ export default function RootLayout({ children }) {
                 Skip to content
               </a>
               <NavBar />
-              {/* Everything below the navbar sits between two hatched rails
+              {/* Everything below the navbar sits between two ruled rails
                   that hug the page column (see `page-rail` in
                   styles/globals.css). They only appear where the window
                   leaves room for them beside the column. */}
