@@ -88,7 +88,7 @@ const ManageShell = ({ user, content }) => {
           path="manage"
           title="Manage portfolio"
           subtitle="Everything visitors see, in one place"
-          className="pr-14 sm:pr-32 lg:pr-96"
+          className="mb-0! pr-14 sm:pr-32 lg:pr-96"
         />
         <div className="absolute top-0 right-0 flex items-center gap-3">
           <UserInfoCard user={user} />
@@ -97,7 +97,7 @@ const ManageShell = ({ user, content }) => {
       </div>
 
       {/* The tabs scroll on their own; the refresh control stays put. */}
-      <div className="rule-rails mb-8 flex items-center gap-3 pb-2">
+      <div className="rule-rails mb-8 flex items-center gap-3 py-3">
         <div
           role="tablist"
           aria-label="Content types"

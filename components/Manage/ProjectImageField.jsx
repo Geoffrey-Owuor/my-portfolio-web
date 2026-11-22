@@ -56,10 +56,10 @@ const ProjectImageField = ({ currentImage, value, onChange }) => {
           height={830}
           unoptimized={Boolean(previewUrl)}
           sizes="(max-width: 768px) 100vw, 720px"
-          className="border-border-subtle rounded-control mb-3 h-auto max-h-56 w-full border object-contain"
+          className="border-border-subtle rounded-field mb-3 h-auto max-h-56 w-full border object-contain"
         />
       ) : (
-        <p className="border-border-subtle text-text-muted rounded-control mb-3 border border-dashed px-4 py-6 text-center text-sm">
+        <p className="border-border-subtle text-text-muted rounded-field mb-3 border border-dashed px-4 py-6 text-center text-sm">
           No image. The project shows its placeholder.
         </p>
       )}

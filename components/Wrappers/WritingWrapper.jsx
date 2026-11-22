@@ -7,8 +7,9 @@ import EmptyState from "../Modules/EmptyState";
 import ScrollReveal, { RevealItem } from "../Modules/ScrollReveal";
 import { ProgressLink } from "../Modules/RouteProgress";
 
-// The most recent posts as a ruled list rather than another card grid, so
-// the section reads as a reading list and doesn't echo Projects above it.
+// The most recent posts as a single column of full-width cards rather than
+// another grid, so the section reads as a reading list and doesn't echo
+// Projects above it.
 const WritingWrapper = ({ posts }) => {
   return (
     <div className="min-w-0">
@@ -22,12 +23,12 @@ const WritingWrapper = ({ posts }) => {
 
       <ScrollReveal>
         {posts?.length > 0 && (
-          <ol className="divide-border-subtle border-border-subtle divide-y border-y">
+          <ol className="space-y-3">
             {posts.map((post, index) => (
               <RevealItem as="li" key={post.id} index={index + 1} step={0.08}>
                 <ProgressLink
                   href={`/blog/${post.slug}`}
-                  className="group hover:bg-surface-raised/60 focus-visible:bg-surface-raised/60 grid grid-cols-1 gap-2 px-2 py-6 transition-colors focus-visible:outline-none sm:grid-cols-[9rem_1fr_auto] sm:gap-6 sm:px-4"
+                  className="group border-border-subtle rounded-card hover:border-accent hover:bg-surface-raised/60 focus-visible:border-accent focus-visible:bg-surface-raised/60 grid grid-cols-1 gap-2 border p-5 transition-colors focus-visible:outline-none sm:grid-cols-[9rem_1fr_auto] sm:gap-6 sm:px-6"
                 >
                   <span className="text-text-muted pt-1 font-mono text-xs tabular-nums">
                     {formatDate(post.date)}

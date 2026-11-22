@@ -187,7 +187,7 @@ const HeroBot = () => {
     >
       <svg
         viewBox="0 0 72 64"
-        className="motion-safe:animate-hero-peek block aspect-[9/8] w-full overflow-visible [--hero-delay:900ms]"
+        className="motion-safe:animate-hero-peek block aspect-[9/8] w-full overflow-visible [--hero-delay:1000ms]"
       >
         <motion.g
           style={{
