@@ -13,6 +13,7 @@ import { useHideScrollbar } from "@/hooks/useHideScrollbar";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 import { useBackdropClose } from "@/hooks/useBackdropClose";
 import { useFormDraft } from "@/hooks/useFormDraft";
+import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import { validateBlog } from "@/utils/blogFields";
 
 // Writes a new post (`blogInfo` null) or edits one. Mounted only while open, so
@@ -52,6 +53,8 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   // One message per invalid field, shown under that field.
   const [errors, setErrors] = useState({});
+
+  useUnsavedChanges(isSubmitting);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

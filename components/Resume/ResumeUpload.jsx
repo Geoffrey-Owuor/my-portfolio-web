@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Upload } from "lucide-react";
 import apiClient from "@/lib/AxiosClient";
 import { useToast } from "../Modules/Toaster";
+import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 
 const MAX_BYTES = 4 * 1024 * 1024; // matches RESUME_MAX_BYTES on the server
 
@@ -15,6 +16,7 @@ const ResumeUpload = ({ hasResume }) => {
   const router = useRouter();
   const toast = useToast();
   const [isUploading, setIsUploading] = useState(false);
+  useUnsavedChanges(isUploading);
 
   const handleFile = async (event) => {
     const file = event.target.files?.[0];
