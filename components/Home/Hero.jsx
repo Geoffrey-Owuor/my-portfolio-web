@@ -89,7 +89,7 @@ const Hero = () => {
     <section id="home" className="container-page pb-section">
       {/* Who: portrait, name and role, with my local time (and the visitor's
           when it differs) beside them from lg, below them before. */}
-      <div className="flex flex-col gap-6 pt-10 pb-8 md:pt-14 md:pb-10 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-6 py-9 md:py-12 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-4 sm:gap-5">
           <Image
             src={assets.profile_photo}
@@ -117,7 +117,7 @@ const Hero = () => {
                 <ProgressLink
                   key={href}
                   href={href}
-                  className="border-border-subtle bg-surface-raised text-text-muted hover:border-accent hover:text-accent rounded-control group inline-flex items-center gap-1 border px-2 py-1 text-xs font-medium transition-colors sm:px-2.5"
+                  className="border-border-subtle bg-surface-raised text-text-muted hover:border-accent hover:text-accent rounded-chip group inline-flex items-center gap-1 border px-2 py-1 text-xs font-medium transition-colors sm:px-2.5"
                 >
                   {label}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
