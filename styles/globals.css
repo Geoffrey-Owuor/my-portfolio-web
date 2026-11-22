@@ -369,6 +369,29 @@ html:not([data-theme="dark"]) .theme-inverse {
   @media (width >= 64rem) {
     --rail-inset: calc(var(--rail-w) + var(--rail-gap));
   }
+
+  /* Rail nodes: a 5px square (a 3px surface fill in a node-coloured ring)
+     on each rail border a line crosses, so four per line. Painted by a
+     pseudo-element 5px tall, centred on the 1px line, and 2px wider than it
+     on each side, so the outer nodes centre on the outer borders and the
+     inner ones `--rail-w` in. Fills are listed first so they paint on top. */
+  --rail-nodes:
+    linear-gradient(var(--color-surface) 0 0) left 1px center / 3px 3px
+      no-repeat,
+    linear-gradient(var(--color-surface) 0 0) left var(--rail-w) center / 3px
+      3px no-repeat,
+    linear-gradient(var(--color-surface) 0 0) right 1px center / 3px 3px
+      no-repeat,
+    linear-gradient(var(--color-surface) 0 0) right var(--rail-w) center / 3px
+      3px no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) left 0 center / 5px 5px
+      no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) left calc(var(--rail-w) - 1px)
+      center / 5px 5px no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) right 0 center / 5px 5px
+      no-repeat,
+    linear-gradient(var(--color-rail-node) 0 0) right calc(var(--rail-w) - 1px)
+      center / 5px 5px no-repeat;
 }
 
 /* The page measure: centred, max-w-7xl, with the shared side gutter (where
@@ -602,16 +625,26 @@ html:not([data-theme="dark"]) .theme-inverse {
   --ruler-side: right;
 }
 
-/* Hairlines that run to the rails' inner borders: from lg up they reach
-   `--rail-gap` past the content on both sides; below lg (no rails) they stay
-   at content width.
+/* Hairlines that run to the rails' outer borders, with a node on each rail
+   border they cross: from lg up they reach `--rail-inset` past the content
+   on both sides; below lg (no rails) they stay at content width, plain.
      bleed-rails : for a line element itself (an `h-px` div).
      rule-rails  : for a block whose bottom border is the line. Draws it as an
                    ::after hairline instead of a border, so the block's own
                    padding and text stay put. */
 @utility bleed-rails {
   @media (width >= 64rem) {
-    margin-inline: calc(var(--rail-gap) * -1);
+    position: relative;
+    margin-inline: calc(var(--rail-inset) * -1);
+    &::before {
+      content: "";
+      position: absolute;
+      inset-inline: -2px;
+      top: -2px;
+      height: 5px;
+      background: var(--rail-nodes);
+      pointer-events: none;
+    }
   }
 }
 
@@ -626,7 +659,62 @@ html:not([data-theme="dark"]) .theme-inverse {
     background-color: var(--color-border-rule);
     pointer-events: none;
     @media (width >= 64rem) {
-      inset-inline: calc(var(--rail-gap) * -1);
+      inset-inline: calc(var(--rail-inset) * -1);
+    }
+  }
+  @media (width >= 64rem) {
+    &::before {
+      content: "";
+      position: absolute;
+      inset-inline: calc(var(--rail-inset) * -1 - 2px);
+      bottom: -2px;
+      height: 5px;
+      background: var(--rail-nodes);
+      pointer-events: none;
+      z-index: 1;
+    }
+  }
+}
+
+/* A strip from the left rail's outer border to the right one's, positioned
+   against a full-width box (the navbar). From lg up it carries the nodes
+   for a horizontal border it's laid on: give it the border's 1px height and
+   position. */
+@utility rail-span {
+  @apply pointer-events-none absolute hidden;
+  left: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
+  right: calc((100% - min(100%, var(--container-7xl))) / 2 + --spacing(6));
+  @media (width >= 64rem) {
+    display: block;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: -2px;
+    top: -2px;
+    height: 5px;
+    background: var(--rail-nodes);
+  }
+}
+
+/* Nodes on both borders of a bordered strip that spans the rails' outer
+   borders from lg up (the hero's closing band). */
+@utility rail-nodes-y {
+  @media (width >= 64rem) {
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: -2px;
+      height: 5px;
+      background: var(--rail-nodes);
+      pointer-events: none;
+    }
+    &::before {
+      top: -3px;
+    }
+    &::after {
+      bottom: -3px;
     }
   }
 }

@@ -272,6 +272,10 @@ const NavBar = () => {
 
         <ScrollProgress />
 
+        {/* Nodes where the bar's bottom border crosses the rails, above the
+            progress line so it runs through them. */}
+        <span aria-hidden="true" className="rail-span -bottom-px h-px" />
+
         <div className="container-page flex h-full items-center justify-between gap-3">
           {/* Left cluster. Each divider sits 16px from the words on both
               sides: a tab's own 12px padding plus 4px of margin. */}
