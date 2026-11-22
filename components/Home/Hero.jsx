@@ -107,15 +107,17 @@ const Hero = () => {
             <p className="text-text-muted mt-0.5 text-sm sm:text-base">
               Full-stack developer
             </p>
-            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-medium">
+            {/* Small cards on the clocks' surface, so the band reads as one
+                set. */}
+            <div className="mt-3 flex flex-wrap items-center gap-2">
               {[
-                { href: "/blogs", label: "Blog" },
+                { href: "/blogs", label: "Blogs" },
                 { href: RESUME_URL, label: "Résumé" },
               ].map(({ href, label }) => (
                 <ProgressLink
                   key={href}
                   href={href}
-                  className="text-text-muted hover:text-accent group inline-flex items-center gap-1 transition-colors"
+                  className="border-border-subtle bg-surface-raised text-text-muted hover:border-accent hover:text-accent rounded-control group inline-flex items-center gap-1 border px-2 py-1 text-xs font-medium transition-colors sm:px-2.5"
                 >
                   {label}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -164,13 +166,6 @@ const Hero = () => {
             >
               Get in touch
             </Link>
-            <ProgressLink
-              href={RESUME_URL}
-              className="text-text-muted hover:text-accent motion-safe:animate-hero-rise inline-flex items-center gap-1 px-2 py-2.5 text-sm font-medium transition-colors [--hero-delay:680ms]"
-            >
-              Résumé
-              <ArrowRight className="h-4 w-4" />
-            </ProgressLink>
           </div>
         </motion.div>
 
