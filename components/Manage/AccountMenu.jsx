@@ -114,9 +114,9 @@ const AccountMenu = ({ user }) => {
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-label={`Account menu for ${name || "owner"}`}
-        className="hover:bg-surface-raised text-text-muted hover:text-text-primary flex items-center gap-1 rounded-full p-1 pr-2 transition-colors disabled:cursor-not-allowed disabled:opacity-70"
+        className="border-border-subtle hover:bg-surface-raised text-text-muted hover:text-text-primary rounded-control flex items-center gap-1 border p-1 pr-2 transition-colors disabled:cursor-not-allowed disabled:opacity-70"
       >
-        <span className="bg-surface-raised text-text-muted flex h-9 w-9 shrink-0 items-center justify-center rounded-full">
+        <span className="bg-surface-raised text-text-muted flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
           {initials ? (
             <span className="text-sm font-bold tracking-tight">{initials}</span>
           ) : (
