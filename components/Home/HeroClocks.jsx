@@ -123,19 +123,46 @@ const availability = (date) => {
   };
 };
 
-// One card. Every line keeps its height before mount, when it is still
-// empty, so nothing shifts when the content lands; long lines wrap (on the
-// narrowest phones) and the row stretches both cards to match.
+// One line's content, or a pulsing bar in its place until mount. Content that
+// replaces a bar fades in; content the server already had (the home label)
+// is left alone, so it doesn't fade on first paint.
+const Slot = ({ value, bar, className = "" }) => {
+  const [arrives] = useState(value == null);
+  return value == null ? (
+    <span
+      key="bar"
+      aria-hidden="true"
+      className={`bg-border-subtle rounded-chip block animate-pulse ${bar}`}
+    />
+  ) : (
+    <span
+      key="value"
+      className={`${arrives ? "animate-hero-settle" : ""} ${className}`}
+    >
+      {value}
+    </span>
+  );
+};
+
+// One card. Every line keeps its height before mount, when it shows a
+// skeleton bar, so nothing shifts when the content lands; long lines wrap (on
+// the narrowest phones) and the row stretches both cards to match.
 const Card = ({ label, main, caption, note, className }) => (
   <li
     className={`border-border-subtle bg-surface-raised rounded-card min-w-0 border px-3 py-3 sm:px-4 ${className}`}
   >
-    <p className="text-text-muted min-h-4 font-mono text-xs">{label}</p>
-    <p className="text-text-primary mt-1 flex h-7 items-center gap-2 text-xl font-semibold tabular-nums">
-      {main}
+    <p className="text-text-muted min-h-4 font-mono text-xs">
+      <Slot value={label} bar="my-0.5 h-3 w-24" />
     </p>
-    <p className="text-text-muted mt-0.5 min-h-4 text-xs">{caption}</p>
-    <p className="text-accent mt-1 min-h-4 font-mono text-xs">{note}</p>
+    <p className="text-text-primary mt-1 flex h-7 items-center text-xl font-semibold tabular-nums">
+      <Slot value={main} bar="h-5 w-20" className="flex items-center gap-2" />
+    </p>
+    <p className="text-text-muted mt-0.5 min-h-4 text-xs">
+      <Slot value={caption} bar="my-0.5 h-3 w-28" />
+    </p>
+    <p className="text-accent mt-1 min-h-4 font-mono text-xs">
+      <Slot value={note} bar="my-0.5 h-3 w-24" />
+    </p>
   </li>
 );
 
@@ -154,8 +181,9 @@ const Time = ({ date, timeZone }) => (
  * reads differently (compared by UTC offset, not zone name, so Kampala counts
  * as the same), or my working hours when it doesn't. Content is client-only:
  * the server can't know the visitor's zone, and a clock rendered there would
- * mismatch on hydration. Until mount both cards are empty frames of their
- * final size. They tick on the minute.
+ * mismatch on hydration. Until mount both cards are frames of their final
+ * size with skeleton bars in place of what depends on the time zone. They
+ * tick on the minute.
  */
 const HeroClocks = () => {
   const [now, setNow] = useState(null);
@@ -227,6 +255,7 @@ const HeroClocks = () => {
   return (
     <ul
       aria-label="Local time and availability"
+      aria-busy={!now}
       className="grid max-w-md grid-cols-2 gap-3 lg:flex lg:max-w-none"
     >
       <Card

@@ -538,6 +538,12 @@ html:not([data-theme="dark"]) .theme-inverse {
   animation: hero-fade 0.6s ease-out var(--hero-delay, 0ms) backwards;
 }
 
+/* Client-only content replacing its skeleton (HeroClocks). Opacity only, so
+   it runs under reduced motion too, and no delay: it fades in as it lands. */
+@utility animate-hero-settle {
+  animation: hero-fade 0.2s ease-out;
+}
+
 @utility animate-hero-rise {
   animation: hero-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1)
     var(--hero-delay, 0ms) backwards;
