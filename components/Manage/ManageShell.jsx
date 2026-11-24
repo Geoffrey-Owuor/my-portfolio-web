@@ -4,8 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import apiClient from "@/lib/AxiosClient";
 import { useSearchParams } from "next/navigation";
 import PageHeader from "../Layout/PageHeader";
-import LogoutButton from "../Modules/LogoutButton";
-import UserInfoCard from "../Modules/UserInfoCard";
+import AccountMenu from "./AccountMenu";
 import BlogsTab from "./BlogsTab";
 import InboxTab from "./InboxTab";
 import ResourceList from "./ResourceList";
@@ -83,16 +82,15 @@ const ManageShell = ({ user, content }) => {
   return (
     <div className="container-page py-section">
       <div className="relative">
-        {/* The padding keeps the title clear of the account controls. */}
+        {/* The padding keeps the title clear of the account menu. */}
         <PageHeader
           path="manage"
           title="Manage portfolio"
           subtitle="Everything visitors see, in one place"
-          className="mb-0! pr-14 sm:pr-32 lg:pr-96"
+          className="mb-0! pr-20"
         />
-        <div className="absolute top-0 right-0 flex items-center gap-3">
-          <UserInfoCard user={user} />
-          <LogoutButton />
+        <div className="absolute top-0 right-0">
+          <AccountMenu user={user} />
         </div>
       </div>
 
