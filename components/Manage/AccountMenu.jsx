@@ -5,6 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ExternalLink, LogOut, UserRound } from "lucide-react";
 import apiClient from "@/lib/AxiosClient";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
+import { hasUnsavedChanges } from "@/hooks/useUnsavedChanges";
+import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import LogoutOverlay from "../Modules/LogoutOverlay";
 import { useToast } from "../Modules/Toaster";
 
@@ -26,6 +28,7 @@ const AccountMenu = ({ user }) => {
   const { name, email } = user;
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [confirming, setConfirming] = useState(false);
   const containerRef = useRef(null);
   const toast = useToast();
 
@@ -46,8 +49,8 @@ const AccountMenu = ({ user }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  const handleLogout = async () => {
-    closeMenu();
+  const signOut = async () => {
+    setConfirming(false);
     setIsLoggingOut(true);
     try {
       await apiClient.post("/logout");
@@ -59,6 +62,14 @@ const AccountMenu = ({ user }) => {
       });
       setIsLoggingOut(false);
     }
+  };
+
+  // Signing out navigates away, so work still in flight (a résumé upload) is
+  // asked about first. Modals cover the menu, so nothing else can be pending.
+  const handleSignOutClick = () => {
+    closeMenu();
+    if (hasUnsavedChanges()) setConfirming(true);
+    else signOut();
   };
 
   const handleMenuKeyDown = (e) => {
@@ -83,6 +94,19 @@ const AccountMenu = ({ user }) => {
   return (
     <div ref={containerRef} className="relative">
       {isLoggingOut && <LogoutOverlay />}
+      <AnimatePresence>
+        {confirming && (
+          <ConfirmationDialog
+            showConfirmation={confirming}
+            title="Sign out during an upload?"
+            message="A file is still uploading. Signing out now stops it, and you'll need to upload it again."
+            confirmLabel="Sign out anyway"
+            tone="danger"
+            onConfirm={signOut}
+            onCancel={() => setConfirming(false)}
+          />
+        )}
+      </AnimatePresence>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -140,7 +164,7 @@ const AccountMenu = ({ user }) => {
             <button
               type="button"
               role="menuitem"
-              onClick={handleLogout}
+              onClick={handleSignOutClick}
               className={`${itemBase} hover:bg-danger/10 hover:text-danger`}
             >
               <LogOut className="h-4 w-4" aria-hidden="true" />
