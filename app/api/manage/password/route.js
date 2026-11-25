@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import {
   hashPassword,
@@ -16,7 +16,8 @@ import {
   serverError,
   unauthenticated,
 } from "@/lib/manage/api";
-import { describeWait, rateLimit } from "@/lib/RateLimit";
+import { clientIp, describeWait, rateLimit } from "@/lib/RateLimit";
+import { sendPasswordChangedNotice } from "@/lib/SendMail";
 import { newPasswordError } from "@/utils/passwordRules";
 
 // Changes the owner's password. A wrong current password answers 400, never
@@ -108,6 +109,16 @@ export async function PUT(request) {
       ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60,
     });
+
+    // Sent after the response, but still inside the invocation (see
+    // submitfeedback). Tells the owner if someone else changed it.
+    after(() =>
+      sendPasswordChangedNotice({
+        to: user.user_email,
+        name: user.user_name,
+        ip: clientIp(request),
+      }),
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {

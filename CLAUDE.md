@@ -81,6 +81,7 @@ The contact form's email path:
 - `services/EmailSender.js` — sends through Resend (`RESEND_API_KEY`).
 - `lib/SendMail.js` — uses `RECIPIENT_EMAIL` for the contact form target address.
 - `utils/EmailTemplate.js` — HTML email template used by the contact form (`app/api/submitfeedback`).
+- `sendPasswordChangedNotice()` in `lib/SendMail.js` (template `utils/PasswordChangedEmail.js`) emails the account's own address after `PUT /api/manage/password` (the account menu's Change password). With Resend's `onboarding@resend.dev` sender it only reaches the Resend account's address.
 
 ### Styling
 

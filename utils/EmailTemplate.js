@@ -1,6 +1,6 @@
 // Visitor input goes into an HTML email, so it is escaped first: otherwise a
 // message could carry its own markup (links, images, hidden text).
-const escapeHtml = (value = "") =>
+export const escapeHtml = (value = "") =>
   String(value)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
