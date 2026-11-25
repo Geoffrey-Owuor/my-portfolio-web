@@ -3,7 +3,10 @@ import { PageHeaderSkeleton } from "../Layout/PageHeader";
 const BlogCardsSkeleton = () => {
   return (
     <div className="container-page py-section">
-      <PageHeaderSkeleton />
+      <PageHeaderSkeleton
+        title="Blog Space"
+        subtitle="Thoughts and writing on software, security and emerging tech"
+      />
 
       {/* Toolbar: Create + Search + View Toggle */}
       <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
