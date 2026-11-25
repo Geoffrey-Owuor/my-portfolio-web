@@ -22,7 +22,7 @@ const BlogsTab = ({ rows, author }) => {
   const searchParams = useSearchParams();
   const toast = useToast();
 
-  // { blogInfo } while the editor is open; blogInfo is null for a new post.
+  // { blogId } while the editor is open; blogId is null for a new post.
   const [editing, setEditing] = useState(null);
   const [confirmingDelete, setConfirmingDelete] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -33,7 +33,7 @@ const BlogsTab = ({ rows, author }) => {
   useEffect(() => {
     if (consumedNew.current || searchParams.get("new") !== "1") return;
     consumedNew.current = true;
-    setEditing({ blogInfo: null });
+    setEditing({ blogId: null });
     const params = new URLSearchParams(searchParams.toString());
     params.delete("new");
     window.history.replaceState(null, "", `?${params.toString()}`);
@@ -42,21 +42,6 @@ const BlogsTab = ({ rows, author }) => {
   if (rows === null) {
     return <EmptyState command="manage blogs" failed />;
   }
-
-  const handleEdit = async (row) => {
-    setBusy(true);
-    try {
-      const { data } = await apiClient.get(`/manage/blogs/${row.id}`);
-      setEditing({ blogInfo: data });
-    } catch (error) {
-      console.error("Error loading the blog:", error);
-      toast.error(error.response?.data?.message || error.message, {
-        title: "Couldn't open the blog",
-      });
-    } finally {
-      setBusy(false);
-    }
-  };
 
   const handleDelete = async () => {
     const row = confirmingDelete;
@@ -81,7 +66,7 @@ const BlogsTab = ({ rows, author }) => {
       <div className="mb-4 flex justify-end">
         <button
           type="button"
-          onClick={() => setEditing({ blogInfo: null })}
+          onClick={() => setEditing({ blogId: null })}
           className="bg-text-primary text-surface rounded-control inline-flex cursor-pointer items-center gap-2 px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90"
         >
           <Plus className="h-4 w-4" />
@@ -118,7 +103,7 @@ const BlogsTab = ({ rows, author }) => {
                 </ProgressLink>
                 <button
                   type="button"
-                  onClick={() => handleEdit(row)}
+                  onClick={() => setEditing({ blogId: row.id })}
                   aria-label={`Edit ${row.blog_title}`}
                   className={iconButtonClass}
                 >
@@ -140,7 +125,7 @@ const BlogsTab = ({ rows, author }) => {
 
       {editing && (
         <BlogModal
-          blogInfo={editing.blogInfo}
+          blogId={editing.blogId}
           defaultAuthor={author ?? ""}
           onClose={() => setEditing(null)}
         />
