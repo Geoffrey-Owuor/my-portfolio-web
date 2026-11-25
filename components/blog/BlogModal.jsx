@@ -3,8 +3,9 @@ import { LoadingCircle } from "../Modules/LoadingCircle";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import { X } from "lucide-react";
 import BlogForm from "./BlogForm";
+import BlogFormSkeleton from "../Skeletons/BlogFormSkeleton";
 import apiClient from "@/lib/AxiosClient";
-import { useState, useRef, useId } from "react";
+import { useEffect, useState, useRef, useId } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import ClientPortal from "../Modules/ClientPortal";
@@ -16,18 +17,12 @@ import { useFormDraft } from "@/hooks/useFormDraft";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import { validateBlog } from "@/utils/blogFields";
 
-// Writes a new post (`blogInfo` null) or edits one. Mounted only while open, so
-// each opening starts from the saved values plus any draft.
-const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
+// The form for a new post (`blogInfo` null) or a loaded one. Mounted once the
+// post is in hand, so each opening starts from the saved values plus any draft.
+const BlogEditor = ({ blogInfo, defaultAuthor, modalRef, onClose }) => {
   const toast = useToast();
   const router = useRouter();
-  const modalRef = useRef(null);
-  const titleId = useId();
   const isNew = !blogInfo;
-
-  useHideScrollbar(true);
-  useFocusTrapping(modalRef, true, onClose);
-  const backdropProps = useBackdropClose(onClose);
 
   const [formData, setFormData] = useState({
     title: blogInfo?.blog_title || "",
@@ -133,6 +128,7 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
 
   return (
     <>
+      {/* Both render through their own portals. */}
       {showConfirmDialog && (
         <ConfirmationDialog
           title="Publish blog"
@@ -144,64 +140,122 @@ const BlogModal = ({ blogInfo, defaultAuthor = "", onClose }) => {
         />
       )}
       {isSubmitting && <LoadingCircle />}
-      <ClientPortal>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.2 }}
-          {...backdropProps}
-          className="z-modal fixed inset-0 flex items-stretch justify-center bg-black/50 sm:items-center dark:bg-black/60"
-        >
-          <motion.div
-            ref={modalRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={titleId}
-            initial={{ scale: 0.95, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            // Full-screen below sm; a centred card from sm up.
-            className="border-border-subtle bg-surface sm:rounded-dialog scrollbar-slim h-dvh w-full max-w-4xl overflow-y-auto shadow-2xl sm:mx-4 sm:h-auto sm:max-h-[calc(100dvh-3rem)] sm:border"
-          >
-            <div className="border-border-subtle bg-surface z-raised sticky top-0 border-b px-6 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <h2
-                    id={titleId}
-                    className="text-text-primary text-2xl font-semibold"
-                  >
-                    {isNew ? "Write a new blog" : "Edit the blog"}
-                  </h2>
-                  <p className="text-text-muted mt-1 text-sm">
-                    {isNew
-                      ? "Share your thoughts with the world"
-                      : "Update your blog content and details"}
-                  </p>
-                </div>
-                <button
-                  onClick={onClose}
-                  aria-label="Close blog dialog"
-                  className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control p-2 transition-colors"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
 
-            <BlogForm
-              handleConfirmSubmit={handleConfirmSubmit}
-              formData={formData}
-              handleChange={handleChange}
-              errors={errors}
-              IsUpdating={!isNew}
-              isSubmitting={isSubmitting}
-              canDiscard={hasDraft}
-              onDiscard={discardDraft}
-            />
-          </motion.div>
-        </motion.div>
-      </ClientPortal>
+      <BlogForm
+        handleConfirmSubmit={handleConfirmSubmit}
+        formData={formData}
+        handleChange={handleChange}
+        errors={errors}
+        IsUpdating={!isNew}
+        isSubmitting={isSubmitting}
+        canDiscard={hasDraft}
+        onDiscard={discardDraft}
+      />
     </>
+  );
+};
+
+// Writes a new post (`blogId` null) or edits one. An edit opens straight away
+// on a skeleton of the form and loads the post itself; if that fails, it says
+// so and closes. Mounted only while open.
+const BlogModal = ({ blogId = null, defaultAuthor = "", onClose }) => {
+  const toast = useToast();
+  const modalRef = useRef(null);
+  const titleId = useId();
+  const isNew = blogId === null;
+  const [blogInfo, setBlogInfo] = useState(null);
+
+  useHideScrollbar(true);
+  useFocusTrapping(modalRef, true, onClose);
+  const backdropProps = useBackdropClose(onClose);
+
+  // Read through a ref so an inline `onClose` doesn't refetch on each render.
+  const closeRef = useRef(onClose);
+  useEffect(() => {
+    closeRef.current = onClose;
+  });
+
+  useEffect(() => {
+    if (isNew) return;
+    let current = true;
+
+    apiClient
+      .get(`/manage/blogs/${blogId}`)
+      .then(({ data }) => {
+        if (current) setBlogInfo(data);
+      })
+      .catch((error) => {
+        if (!current) return;
+        console.error("Error loading the blog:", error);
+        toast.error(error.response?.data?.message || error.message, {
+          title: "Couldn't open the blog",
+        });
+        closeRef.current();
+      });
+
+    return () => {
+      current = false;
+    };
+  }, [blogId, isNew, toast]);
+
+  return (
+    <ClientPortal>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+        {...backdropProps}
+        className="z-modal fixed inset-0 flex items-stretch justify-center bg-black/50 sm:items-center dark:bg-black/60"
+      >
+        <motion.div
+          ref={modalRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+          initial={{ scale: 0.95, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          // Full-screen below sm; a centred card from sm up.
+          className="border-border-subtle bg-surface sm:rounded-dialog scrollbar-slim h-dvh w-full max-w-4xl overflow-y-auto shadow-2xl sm:mx-4 sm:h-auto sm:max-h-[calc(100dvh-3rem)] sm:border"
+        >
+          <div className="border-border-subtle bg-surface z-raised sticky top-0 border-b px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col">
+                <h2
+                  id={titleId}
+                  className="text-text-primary text-2xl font-semibold"
+                >
+                  {isNew ? "Write a new blog" : "Edit the blog"}
+                </h2>
+                <p className="text-text-muted mt-1 text-sm">
+                  {isNew
+                    ? "Share your thoughts with the world"
+                    : "Update your blog content and details"}
+                </p>
+              </div>
+              <button
+                onClick={onClose}
+                aria-label="Close blog dialog"
+                className="text-text-muted hover:bg-surface-raised hover:text-text-primary rounded-control p-2 transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+
+          {isNew || blogInfo ? (
+            <BlogEditor
+              blogInfo={blogInfo}
+              defaultAuthor={defaultAuthor}
+              modalRef={modalRef}
+              onClose={onClose}
+            />
+          ) : (
+            <BlogFormSkeleton />
+          )}
+        </motion.div>
+      </motion.div>
+    </ClientPortal>
   );
 };
 
