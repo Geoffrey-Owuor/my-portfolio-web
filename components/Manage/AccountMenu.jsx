@@ -2,13 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, ExternalLink, LogOut, UserRound } from "lucide-react";
+import {
+  ChevronDown,
+  ExternalLink,
+  KeyRound,
+  LogOut,
+  UserRound,
+} from "lucide-react";
 import apiClient from "@/lib/AxiosClient";
 import { useFocusTrapping } from "@/hooks/useFocusTrapping";
 import { hasUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import LogoutOverlay from "../Modules/LogoutOverlay";
 import { useToast } from "../Modules/Toaster";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 const initialsOf = (name) =>
   name
@@ -22,13 +29,14 @@ const initialsOf = (name) =>
     : null;
 
 // The /manage account control: an avatar button that opens a menu with who
-// is signed in, a link to the live site and Sign out. Same menu look and keys
+// is signed in, a link to the live site, Change password and Sign out. Same menu look and keys
 // as RefreshSiteMenu.
 const AccountMenu = ({ user }) => {
   const { name, email } = user;
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
   const containerRef = useRef(null);
   const toast = useToast();
 
@@ -107,6 +115,14 @@ const AccountMenu = ({ user }) => {
           />
         )}
       </AnimatePresence>
+      <AnimatePresence>
+        {changingPassword && (
+          <ChangePasswordModal
+            email={email}
+            onClose={() => setChangingPassword(false)}
+          />
+        )}
+      </AnimatePresence>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -161,6 +177,18 @@ const AccountMenu = ({ user }) => {
               <ExternalLink className="h-4 w-4" aria-hidden="true" />
               View live site
             </a>
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                closeMenu();
+                setChangingPassword(true);
+              }}
+              className={`${itemBase} hover:bg-surface-raised hover:text-text-primary`}
+            >
+              <KeyRound className="h-4 w-4" aria-hidden="true" />
+              Change password
+            </button>
             <button
               type="button"
               role="menuitem"
