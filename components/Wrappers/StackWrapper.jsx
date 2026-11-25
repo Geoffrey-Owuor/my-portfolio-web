@@ -1,5 +1,5 @@
 "use client";
-import { Layers2, Loader2, MessageCircleCode } from "lucide-react";
+import { Layers2, MessageCircleCode } from "lucide-react";
 import SectionTitle from "./SectionTitle";
 import EmptyState from "../Modules/EmptyState";
 import ScrollReveal, { RevealItem } from "../Modules/ScrollReveal";
@@ -23,8 +23,10 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
 
       <ScrollReveal>
         {/* --- Core Technologies: dominant scrolling marquee --- */}
-        <div className="bg-surface border-border-subtle rounded-card w-full overflow-hidden border py-8">
-          {toolIcons.length > 0 && (
+        {/* The logos are static (assets/assets.js), so an empty list means
+            none are defined, not that anything is still loading. */}
+        {toolIcons.length > 0 ? (
+          <div className="bg-surface border-border-subtle rounded-card w-full overflow-hidden border py-8">
             <div className="motion-safe:mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:px-6">
               <div className="motion-safe:animate-marquee flex items-center gap-10 motion-safe:w-max motion-safe:hover:[animation-play-state:paused] motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:justify-center">
                 {toolIcons.map(({ name, icon }) => (
@@ -50,17 +52,10 @@ const StackWrapper = ({ toolNames, toolIcons }) => {
                 ))}
               </div>
             </div>
-          )}
-
-          {toolIcons.length === 0 && (
-            <div className="flex items-center justify-center gap-4 px-5 py-10">
-              <Loader2 className="h-6 w-6 animate-spin" />
-              <span className="text-text-muted text-sm">
-                Waiting for connection...
-              </span>
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <EmptyState command="ls ~/stack" emptyMessage="No logos added yet." />
+        )}
 
         {/* --- Other Tools & Skills: quiet, additive strip --- */}
         <div className="mt-8 flex w-full flex-col items-center gap-3 sm:flex-row sm:items-start">
