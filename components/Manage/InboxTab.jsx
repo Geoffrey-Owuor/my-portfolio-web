@@ -8,6 +8,7 @@ import { formatDate } from "@/utils/Helpers";
 import { INBOX_PAGE_SIZES } from "@/utils/inboxPaging";
 import ConfirmationDialog from "../Modules/ConfirmationDialog";
 import EmptyState from "../Modules/EmptyState";
+import InboxSkeleton from "../Skeletons/InboxSkeleton";
 import { LoadingCircle } from "../Modules/LoadingCircle";
 import Pagination from "../Modules/Pagination";
 import { useToast } from "../Modules/Toaster";
@@ -26,12 +27,16 @@ const InboxTab = ({ onUnreadChange }) => {
   const [reloadKey, setReloadKey] = useState(0);
   const [data, setData] = useState(null);
   const [failed, setFailed] = useState(false);
+  // True while a page is on its way. The first load shows the skeleton;
+  // later ones keep the current page on screen, dimmed.
+  const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(null);
 
   useEffect(() => {
     let current = true;
     setFailed(false);
+    setLoading(true);
 
     apiClient
       .get("/manage/inbox", { params: { page, pageSize } })
@@ -43,12 +48,14 @@ const InboxTab = ({ onUnreadChange }) => {
           return;
         }
         setData(response.data);
+        setLoading(false);
         onUnreadChange?.(response.data.unread);
       })
       .catch((error) => {
         if (!current) return;
         console.error("Error loading the inbox:", error);
         setFailed(true);
+        setLoading(false);
       });
 
     return () => {
@@ -73,11 +80,7 @@ const InboxTab = ({ onUnreadChange }) => {
   }
 
   if (!data) {
-    return (
-      <p className="text-text-muted py-8 text-center text-sm" role="status">
-        Loading messages…
-      </p>
-    );
+    return <InboxSkeleton />;
   }
 
   const toggleRead = async (message) => {
@@ -145,8 +148,10 @@ const InboxTab = ({ onUnreadChange }) => {
   };
 
   return (
-    <section>
-      <ul className="space-y-2">
+    <section aria-busy={loading}>
+      <ul
+        className={`space-y-2 transition-opacity duration-200 ${loading ? "pointer-events-none opacity-50" : ""}`}
+      >
         {messages.map((message) => {
           const unread = !message.read_at;
           const sender = shortLabel(message.user_identity);
