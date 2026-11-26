@@ -176,8 +176,9 @@ html[data-theme="dark"] .theme-inverse {
      the same as border-subtle in light mode, a step quieter in dark, where
      gray-700 on gray-950 reads too strong for lines that frame the page. */
   --border-rule: var(--color-gray-200);
-  /* The square nodes where those lines cross a rail's border. */
-  --rail-node: var(--color-gray-300);
+  /* The diamond nodes where those lines cross a rail's border. A step
+     stronger than the line, so the hairline diamonds still read on white. */
+  --rail-node: var(--color-gray-400);
   --accent: var(--color-blue-600); /* 5.15:1 on --surface */
   --accent-hover: var(--color-blue-700); /* 6.70:1 on --surface */
   --success: var(--color-green-700); /* 5.01:1 on --surface */
@@ -373,32 +374,14 @@ html:not([data-theme="dark"]) .theme-inverse {
     --rail-inset: calc(var(--rail-w) + var(--rail-gap));
   }
 
-  /* Rail nodes: a square (a surface fill in a node-coloured ring) on each
-     rail border a line crosses, so four per line. Painted by a
-     pseudo-element `--rail-node-size` tall, centred on the 1px line, and
-     `--rail-node-half` wider than it on each side, so the outer nodes centre
-     on the outer borders and the inner ones `--rail-w` in. Keep the size odd
-     so it centres on the line. Fills are listed first so they paint on top. */
-  --rail-node-size: 5px;
-  --rail-node-half: calc((var(--rail-node-size) - 1px) / 2);
-  --rail-node-fill: calc(var(--rail-node-size) - 2px);
-  --rail-nodes:
-    linear-gradient(var(--color-surface) 0 0) left 1px center /
-      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
-    linear-gradient(var(--color-surface) 0 0) left var(--rail-w) center /
-      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
-    linear-gradient(var(--color-surface) 0 0) right 1px center /
-      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
-    linear-gradient(var(--color-surface) 0 0) right var(--rail-w) center /
-      var(--rail-node-fill) var(--rail-node-fill) no-repeat,
-    linear-gradient(var(--color-rail-node) 0 0) left 0 center /
-      var(--rail-node-size) var(--rail-node-size) no-repeat,
-    linear-gradient(var(--color-rail-node) 0 0) left calc(var(--rail-w) - 1px)
-      center / var(--rail-node-size) var(--rail-node-size) no-repeat,
-    linear-gradient(var(--color-rail-node) 0 0) right 0 center /
-      var(--rail-node-size) var(--rail-node-size) no-repeat,
-    linear-gradient(var(--color-rail-node) 0 0) right calc(var(--rail-w) - 1px)
-      center / var(--rail-node-size) var(--rail-node-size) no-repeat;
+  /* Rail nodes (see `rail-node` below): a hollow diamond, a surface fill in
+     a hairline node-coloured border, on each rail border a line crosses.
+     `--rail-node-off` centres one on a 1px line or border. `--rail-node-g`
+     is the outer-to-inner rail border distance, rotated into the diamond's
+     own axes (÷√2), for the box-shadow twin that draws the second node. */
+  --rail-node-size: 6px;
+  --rail-node-off: calc(0.5px - var(--rail-node-size) / 2);
+  --rail-node-g: calc((var(--rail-w) - 1px) * 0.7071068);
 }
 
 /* The page measure: centred, max-w-7xl, with the shared side gutter (where
@@ -638,53 +621,81 @@ html:not([data-theme="dark"]) .theme-inverse {
   --ruler-side: right;
 }
 
+/* Rail nodes, applied to a pseudo-element: a diamond (a square turned 45°)
+   on a rail's outer border, plus a box-shadow twin on the same rail's inner
+   border. Two shadows per twin, fill over ring, copy the diamond's 1px
+   border. Shadow offsets are in the turned square's axes, so a twin
+   `--rail-w - 1px` across the screen sits at (±g, ∓g). A user places the
+   pseudo (top/bottom and left/right, using `--rail-node-off`) and picks
+   the side; `rail-nodes-y` overrides the shadow for its 2×2 block. */
+@utility rail-node {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+  width: var(--rail-node-size);
+  height: var(--rail-node-size);
+  border: 1px solid var(--color-rail-node);
+  background-color: var(--color-surface);
+  rotate: 45deg;
+  pointer-events: none;
+  box-shadow:
+    var(--rail-node-dx) var(--rail-node-dy) 0 -1px var(--color-surface),
+    var(--rail-node-dx) var(--rail-node-dy) 0 0 var(--color-rail-node);
+}
+
+@utility rail-node-left {
+  left: var(--rail-node-off);
+  --rail-node-dx: var(--rail-node-g);
+  --rail-node-dy: calc(var(--rail-node-g) * -1);
+}
+
+@utility rail-node-right {
+  right: var(--rail-node-off);
+  --rail-node-dx: calc(var(--rail-node-g) * -1);
+  --rail-node-dy: var(--rail-node-g);
+}
+
 /* Hairlines that run to the rails' outer borders, with a node on each rail
    border they cross: from lg up they reach `--rail-inset` past the content
    on both sides; below lg (no rails) they stay at content width, plain.
      bleed-rails : for a line element itself (an `h-px` div).
-     rule-rails  : for a block whose bottom border is the line. Draws it as an
-                   ::after hairline instead of a border, so the block's own
-                   padding and text stay put. */
+     rule-rails  : for a block whose bottom border is the line. From lg up a
+                   border-image outset carries the border past the block's
+                   sides, so the block's own padding and text stay put. */
 @utility bleed-rails {
   @media (width >= 64rem) {
     position: relative;
     margin-inline: calc(var(--rail-inset) * -1);
     &::before {
-      content: "";
-      position: absolute;
-      inset-inline: calc(var(--rail-node-half) * -1);
-      top: calc(var(--rail-node-half) * -1);
-      height: var(--rail-node-size);
-      background: var(--rail-nodes);
-      pointer-events: none;
+      @apply rail-node rail-node-left;
+      top: var(--rail-node-off);
+    }
+    &::after {
+      @apply rail-node rail-node-right;
+      top: var(--rail-node-off);
     }
   }
 }
 
 @utility rule-rails {
   position: relative;
-  &::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    height: 1px;
-    background-color: var(--color-border-rule);
-    pointer-events: none;
-    @media (width >= 64rem) {
-      inset-inline: calc(var(--rail-inset) * -1);
-    }
-  }
+  border-bottom: 1px solid var(--color-border-rule);
   @media (width >= 64rem) {
-    &::before {
-      content: "";
-      position: absolute;
-      inset-inline: calc(var(--rail-inset) * -1 - var(--rail-node-half));
-      bottom: calc(var(--rail-node-half) * -1);
-      height: var(--rail-node-size);
-      background: var(--rail-nodes);
-      pointer-events: none;
+    border-image: linear-gradient(var(--color-border-rule) 0 0) 0 0 1 0 / 0 0
+      1px 0 / 0 var(--rail-inset);
+    &::before,
+    &::after {
+      @apply rail-node;
+      bottom: calc(var(--rail-node-off) - 1px);
       z-index: 1;
+    }
+    &::before {
+      @apply rail-node-left;
+      left: calc(var(--rail-inset) * -1 + var(--rail-node-off));
+    }
+    &::after {
+      @apply rail-node-right;
+      right: calc(var(--rail-inset) * -1 + var(--rail-node-off));
     }
   }
 }
@@ -701,33 +712,49 @@ html:not([data-theme="dark"]) .theme-inverse {
     display: block;
   }
   &::before {
-    content: "";
-    position: absolute;
-    inset-inline: calc(var(--rail-node-half) * -1);
-    top: calc(var(--rail-node-half) * -1);
-    height: var(--rail-node-size);
-    background: var(--rail-nodes);
+    @apply rail-node rail-node-left;
+    top: var(--rail-node-off);
+  }
+  &::after {
+    @apply rail-node rail-node-right;
+    top: var(--rail-node-off);
   }
 }
 
 /* Nodes on both borders of a bordered strip that spans the rails' outer
-   borders from lg up (the hero's closing band). */
+   borders from lg up (the hero's closing band). The strip is as tall as a
+   rail is wide, so each pseudo draws a 2×2 block: one node on the top
+   border and three twins, (g, 0), (0, g) and (g, g) away on screen. */
 @utility rail-nodes-y {
   @media (width >= 64rem) {
     &::before,
     &::after {
-      content: "";
-      position: absolute;
-      inset-inline: calc(var(--rail-node-half) * -1);
-      height: var(--rail-node-size);
-      background: var(--rail-nodes);
-      pointer-events: none;
+      @apply rail-node;
+      top: calc(var(--rail-node-off) - 1px);
     }
     &::before {
-      top: calc(var(--rail-node-half) * -1 - 1px);
+      left: var(--rail-node-off);
+      box-shadow:
+        var(--rail-node-g) calc(var(--rail-node-g) * -1) 0 -1px
+          var(--color-surface),
+        var(--rail-node-g) calc(var(--rail-node-g) * -1) 0 0
+          var(--color-rail-node),
+        var(--rail-node-g) var(--rail-node-g) 0 -1px var(--color-surface),
+        var(--rail-node-g) var(--rail-node-g) 0 0 var(--color-rail-node),
+        calc(var(--rail-node-g) * 2) 0 0 -1px var(--color-surface),
+        calc(var(--rail-node-g) * 2) 0 0 0 var(--color-rail-node);
     }
     &::after {
-      bottom: calc(var(--rail-node-half) * -1 - 1px);
+      right: var(--rail-node-off);
+      box-shadow:
+        calc(var(--rail-node-g) * -1) var(--rail-node-g) 0 -1px
+          var(--color-surface),
+        calc(var(--rail-node-g) * -1) var(--rail-node-g) 0 0
+          var(--color-rail-node),
+        var(--rail-node-g) var(--rail-node-g) 0 -1px var(--color-surface),
+        var(--rail-node-g) var(--rail-node-g) 0 0 var(--color-rail-node),
+        0 calc(var(--rail-node-g) * 2) 0 -1px var(--color-surface),
+        0 calc(var(--rail-node-g) * 2) 0 0 var(--color-rail-node);
     }
   }
 }
