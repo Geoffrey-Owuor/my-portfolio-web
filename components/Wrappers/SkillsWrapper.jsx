@@ -47,9 +47,12 @@ const SkillsWrapper = ({ technicalSkills, softSkills }) => {
                         step={0.04}
                         className="hover:bg-surface-raised group flex items-center gap-3 px-5 py-3 transition-colors duration-150"
                       >
-                        <span className="text-accent/70 text-xs tabular-nums">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
+                        {/* A hollow diamond, the rail nodes' shape, that
+                            fills in on hover. */}
+                        <span
+                          aria-hidden="true"
+                          className="border-accent/70 group-hover:bg-accent size-1.5 shrink-0 rotate-45 border transition-colors duration-150"
+                        />
                         <span className="text-text-primary group-hover:text-accent text-sm transition-colors duration-150">
                           {skill.skill_description}
                         </span>

@@ -1,7 +1,7 @@
 // Homepage sections in page order — the single source for the navbar tabs,
-// scroll-spy, the command palette, and each SectionTitle's index number. `id`
+// scroll-spy and the command palette (which shows each section's index). `id`
 // must match the id on the corresponding <section>. `nav: false` keeps a
-// section out of the navbar tabs (it's still numbered and in the palette).
+// section out of the navbar tabs (it's still in the palette).
 export const sections = [
   { id: "skills", label: "Skills" },
   { id: "stack", label: "Stack" },

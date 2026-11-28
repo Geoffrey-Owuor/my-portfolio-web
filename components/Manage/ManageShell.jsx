@@ -184,6 +184,7 @@ const ManageShell = ({ user, content }) => {
         {activeTab === "resume" && (
           <ResumeTab
             resume={content.resume.latest ?? null}
+            html={content.resume.html ?? null}
             failed={Boolean(content.resume.failed)}
           />
         )}

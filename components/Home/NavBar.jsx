@@ -421,7 +421,6 @@ const NavBar = () => {
                 transition={{ duration: 0.18 }}
                 className="text-text-muted min-w-0 truncate font-mono text-xs"
               >
-                <span className="text-accent">{activeSection.index}</span>{" "}
                 {activeSection.label}
               </motion.span>
             )}

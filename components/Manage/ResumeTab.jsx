@@ -1,15 +1,14 @@
-import { Download, ExternalLink } from "lucide-react";
 import { formatDate } from "@/utils/Helpers";
+import ResumeHtmlControls from "../Resume/ResumeHtmlControls";
 import ResumeUpload from "../Resume/ResumeUpload";
+import ResumeView from "../Resume/ResumeView";
 
-const FILE_URL = "/resume/file";
-
-const linkClass =
-  "border-border-subtle text-text-primary hover:border-accent hover:text-accent rounded-control inline-flex items-center gap-2 border px-4 py-2.5 text-sm font-semibold transition-colors";
-
+// The /resume page's own view, with the owner's controls on top: upload or
+// replace the PDF, and manage its web version. The web version shows here
+// even while it's hidden from visitors, so it can be checked first.
 // `resume` is null until something has been uploaded; `failed` means storage
 // couldn't be reached, so nothing is known about the current file.
-const ResumeTab = ({ resume, failed }) => {
+const ResumeTab = ({ resume, html, failed }) => {
   if (failed) {
     return (
       <p className="border-border-subtle text-danger rounded-card border border-dashed px-5 py-8 text-center text-sm">
@@ -25,26 +24,16 @@ const ResumeTab = ({ resume, failed }) => {
           ? `Last updated ${formatDate(resume.updatedAt)}`
           : "No résumé has been uploaded yet."}
       </p>
-      <div className="flex flex-wrap items-center gap-3">
-        <ResumeUpload hasResume={Boolean(resume)} />
-        {resume && (
-          <>
-            <a
-              href={FILE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkClass}
-            >
-              <ExternalLink className="h-4 w-4" />
-              Preview
-            </a>
-            <a href={`${FILE_URL}?download=1`} download className={linkClass}>
-              <Download className="h-4 w-4" />
-              Download
-            </a>
-          </>
-        )}
-      </div>
+      {resume ? (
+        <>
+          <ResumeHtmlControls html={html} />
+          <ResumeView resume={resume} html={html}>
+            <ResumeUpload hasResume />
+          </ResumeView>
+        </>
+      ) : (
+        <ResumeUpload hasResume={false} />
+      )}
     </section>
   );
 };

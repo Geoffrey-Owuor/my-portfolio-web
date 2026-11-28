@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion, useMotionValue, useScroll, useTransform } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { scrollToId } from "@/utils/motion";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowDown, FileText, NotebookPen } from "lucide-react";
 import HeroEditor from "./HeroEditor";
 import HeroBot from "./HeroBot";
 import HeroClocks from "./HeroClocks";
@@ -111,16 +111,17 @@ const Hero = () => {
                 set. */}
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {[
-                { href: "/blogs", label: "Blogs" },
-                { href: RESUME_URL, label: "Résumé" },
-              ].map(({ href, label }) => (
+                // The command palette's icons for the same destinations.
+                { href: "/blogs", label: "Blogs", icon: NotebookPen },
+                { href: RESUME_URL, label: "Résumé", icon: FileText },
+              ].map(({ href, label, icon: Icon }) => (
                 <ProgressLink
                   key={href}
                   href={href}
-                  className="border-border-subtle bg-surface-raised text-text-muted hover:border-accent hover:text-accent rounded-chip group inline-flex items-center gap-1 border px-2 py-1 text-xs font-medium transition-colors sm:px-2.5"
+                  className="border-border-subtle bg-surface-raised text-text-muted hover:border-accent hover:text-accent rounded-chip inline-flex items-center gap-1.5 border px-2 py-1 text-xs font-medium transition-colors sm:px-2.5"
                 >
+                  <Icon className="h-3.5 w-3.5" aria-hidden="true" />
                   {label}
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                 </ProgressLink>
               ))}
             </div>
