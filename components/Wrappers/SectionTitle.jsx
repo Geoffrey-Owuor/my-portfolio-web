@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-import { getSection } from "../Home/sections";
 
 // The note waits for the section's own entrance animation to land before it
 // appears, then retires itself — it's an aside, not something to dismiss.
@@ -11,10 +10,8 @@ const APPEAR_DELAY_MS = 900;
 const VISIBLE_MS = 4500;
 
 /**
- * Editorial section header: index number (the section's position in the
- * page, shared with the navbar), title, a one-line subtitle, the section's
+ * Editorial section header: title, a one-line subtitle, the section's
  * `~/path`, and a hairline rule beneath.
- * `sectionId` must be one of the ids in components/Home/sections.js.
  */
 const SectionTitle = ({
   sectionId,
@@ -25,7 +22,6 @@ const SectionTitle = ({
 }) => {
   const titleRef = useRef(null);
   const prefersReducedMotion = usePrefersReducedMotion();
-  const section = getSection(sectionId);
 
   // Observed on the title block itself rather than the whole section, so the
   // note is tied to the thing it annotates.
@@ -68,57 +64,45 @@ const SectionTitle = ({
         initial={hidden}
         animate={isInView ? visible : hidden}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], ...blur }}
-        className="flex items-start gap-3 md:gap-4"
       >
-        <span
-          className="text-accent pt-1.5 font-mono text-sm tabular-nums md:pt-2"
-          aria-hidden="true"
-        >
-          {section?.index}
-        </span>
+        <h2 className="text-text-primary text-h2 font-semibold">{title}</h2>
 
-        <div className="min-w-0 flex-1">
-          <h2 className="text-text-primary text-h2 font-semibold">{title}</h2>
-
-          <div className="mt-1.5 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-            {subtitle && (
-              <p className="text-text-muted text-base">{subtitle}</p>
-            )}
-            {/* The note borrows the ~/path slot: the path cross-fades into
-                it and back once it retires, so the note needs no space of its
-                own and never overlaps the section body. Fixed height, so the
-                swap can't shift the layout. The note is hidden from assistive
-                tech: it's a transient flourish, and a timed live region would
-                only interrupt. */}
-            <div className="flex h-5 min-w-0 items-center sm:justify-end">
-              <AnimatePresence mode="wait" initial={false}>
-                {showAlert ? (
-                  <motion.span
-                    key="note"
-                    aria-hidden="true"
-                    initial={entering}
-                    animate={visible}
-                    exit={leaving}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="text-text-muted flex min-w-0 items-center gap-1.5 font-mono text-xs"
-                  >
-                    <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
-                    <span className="truncate">{alertMessage}</span>
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key="path"
-                    initial={entering}
-                    animate={visible}
-                    exit={leaving}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="text-text-muted/80 font-mono text-xs"
-                  >
-                    ~/{sectionId}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </div>
+        <div className="mt-1.5 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+          {subtitle && <p className="text-text-muted text-base">{subtitle}</p>}
+          {/* The note borrows the ~/path slot: the path cross-fades into
+              it and back once it retires, so the note needs no space of its
+              own and never overlaps the section body. Fixed height, so the
+              swap can't shift the layout. The note is hidden from assistive
+              tech: it's a transient flourish, and a timed live region would
+              only interrupt. */}
+          <div className="flex h-5 min-w-0 items-center sm:justify-end">
+            <AnimatePresence mode="wait" initial={false}>
+              {showAlert ? (
+                <motion.span
+                  key="note"
+                  aria-hidden="true"
+                  initial={entering}
+                  animate={visible}
+                  exit={leaving}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="text-text-muted flex min-w-0 items-center gap-1.5 font-mono text-xs"
+                >
+                  <AlertIcon className="text-accent h-3.5 w-3.5 shrink-0" />
+                  <span className="truncate">{alertMessage}</span>
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="path"
+                  initial={entering}
+                  animate={visible}
+                  exit={leaving}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="text-text-muted/80 font-mono text-xs"
+                >
+                  ~/{sectionId}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </motion.div>
